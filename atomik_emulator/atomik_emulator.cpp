@@ -103,9 +103,8 @@ std::string toString(char in){
 
 std::string findCypher(int x, int y, int z)
 {
-
-        std::stringstream buffer;
-        auto t = MiLightCypher.find(std::make_tuple(x, y, z));
+    std::stringstream buffer;
+    auto t = MiLightCypher.find(std::make_tuple(x, y, z));
     if (t == MiLightCypher.end()) return string();
         buffer << t->second;
     return buffer.str();
@@ -169,7 +168,6 @@ void listen()
             fflush(stdout);
         }
 
-printf("starting while loop\n");
     while (1)
         {
             socklen_t len = sizeof(cliaddr);
@@ -177,13 +175,10 @@ printf("starting while loop\n");
             FD_ZERO(&socks);
             FD_SET(discover_fd, &socks);
             FD_SET(data_fd, &socks);
-        printf("an if happened\n");
             if (select(FD_SETSIZE, &socks, NULL, NULL, NULL) >= 0)
                 {
-printf("an if 2 happened\n");
                     if (FD_ISSET(discover_fd, &socks))
-                        {
-printf("an if 3happened\n");                          
+                        {                       
 
 						  int n = recvfrom(discover_fd, mesg, 41, 0, (struct sockaddr *)&cliaddr, &len);
                             mesg[n] = '\0';
@@ -201,7 +196,6 @@ printf("an if 3happened\n");
                                     sendto(discover_fd, reply, 30, 0, (struct sockaddr*)&cliaddr, len);
                                 }
                         }
-printf("downhere\n");
                     if (FD_ISSET(data_fd, &socks))
                         {
                             int n = recvfrom(data_fd, mesg, 41, 0, (struct sockaddr *)&cliaddr, &len);
