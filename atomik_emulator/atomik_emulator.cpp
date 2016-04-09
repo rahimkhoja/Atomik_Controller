@@ -76,20 +76,6 @@ static char *ethernet_mactoa(struct sockaddr *addr)
     return (buff);
 }
 
-void printTime(){
-
-    timeval curTime;
-    gettimeofday(&curTime, NULL);
-    int milli = curTime.tv_usec / 1000;
-
-    char buffer [80];
-    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
-
-    char currentTime[84] = "";
-    sprintf(currentTime, "%s:%d", buffer, milli);
-    printf("current time: %s \n", currentTime);
-}
-
 // outputs a ISO 8601 string of localtime.
 // need a way to make this UTC time
 std::string getTime(){
@@ -113,7 +99,7 @@ std::string createJSON(std::string mac, std::string ip, std::string data, std::s
     output = output + "\"MAC\": \"" + mac + "\",\n ";
     output = output + "\"IP\": \"" + ip + "\",\n ";
     output = output + "\"Data\": \"" + data + "\",\n ";
-    output = output + "\"Configuration\": {\n " + config + "\n}}\n}";
+    output = output + "\"Configuration\": {\n " + config + " }\n}";
     return output;
 }
    
@@ -222,10 +208,8 @@ void listen()
                                     char str[INET_ADDRSTRLEN];
                                     long ip = cliaddr.sin_addr.s_addr;
                                     inet_ntop(AF_INET, &ip, str, INET_ADDRSTRLEN);
-                                    printf("\n");
-                                    printf("Start Transmission Block");
-                                    printf("\n");
-									printf("Connection from %s\n", str);
+                                    
+									// printf("Connection from %s\n", str);
 
                                     struct arpreq       areq;
                                     struct sockaddr_in *sin;
@@ -242,10 +226,6 @@ void listen()
                                     int cint;
                                     char message [50];
                                     
-                                    
-                                    
-                                    
-
                                     
                                     /* Make the ARP request.
                                                          */
@@ -272,13 +252,13 @@ void listen()
                                         }
 
                                         
-                                        printf("%s (%s) -> %s\n", str,
+                                        // printf("%s (%s) -> %s\n", str,
                                            inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr),
                                            ethernet_mactoa(&areq.arp_ha));
 
                                     mac_address = ethernet_mactoa(&areq.arp_ha);
 
-                                    printf("UDP --> Received hex value (%02x, %02x, %02x)\n", mesg[0], mesg[1], mesg[2]);
+                                    // printf("UDP --> Received hex value (%02x, %02x, %02x)\n", mesg[0], mesg[1], mesg[2]);
 
                                     achar = mesg[0];
                                     aint = achar;
@@ -290,16 +270,11 @@ void listen()
                                     messagedata = sprintf (message, "%02x, %02x, %02x", mesg[0], mesg[1], mesg[2]);
                                     
                                     printf("\n");
-                                    printf("\n");
-                                    
                                     
                                     printf(createJSON(mac_address.c_str(), str, message, cypherData).c_str());
 
-                                   
-                                                                        printf("\n");
-                                                                        printf("End Transmission Block");
-                                                                        printf("\n");
-fflush(stdout);
+                                    printf("\n");
+                                    fflush(stdout);
                                 }
                             else
                                 {
