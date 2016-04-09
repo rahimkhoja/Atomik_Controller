@@ -109,11 +109,11 @@ std::string getTime(){
 std::string createJSON(std::string mac, std::string ip, std::string data, std::string config)
 {                                    
     std::string output;
-    output = '{\n "Command": "Issue",\n "DateTime": "' + getTime() + '",\n ';
-    output = output + '"MAC": "' + mac + '",\n ';
-    output = output + '"IP": "' + ip + '",\n ';
-    output = output + '"Data": "' + data + '",\n ';
-    output = output + '"Configuration": {\n ' + config + '\n}}\n}';
+    output = "{\n \"Command\": \"Issue\",\n \"DateTime\": \"" + getTime() + "\",\n ";
+    output = output + "\"MAC\": \"" + mac + "\",\n ";
+    output = output + "\"IP\": \"" + ip + "\",\n ";
+    output = output + "\"Data\": \"" + data + "\",\n ";
+    output = output + "\"Configuration\": {\n " + config + "\n}}\n}";
     return output;
 }
    
