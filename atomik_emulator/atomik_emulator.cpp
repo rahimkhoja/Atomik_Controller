@@ -250,7 +250,7 @@ void listen()
                                         }
 
                                         
-                                    printf("%s (%s) -> %s\n", str,
+                                    // printf("%s (%s) -> %s\n", str,
                                     inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr), ethernet_mactoa(&areq.arp_ha));
 
                                     mac_address = ethernet_mactoa(&areq.arp_ha);
@@ -264,7 +264,7 @@ void listen()
                                     cchar = mesg[2];
                                     cint = cchar;
                                     cypherData = findCypher(aint, bint, cint);
-                                    messagedata = sprintf (message, "%02x, %02x, %02x", mesg[0], mesg[1], mesg[2]);
+                                    messagedata = sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                                     
                                     printf("\n");
                                     
@@ -548,9 +548,9 @@ void buildCypher()
     MiLightCypher[std::make_tuple(64, 254, 0)] = "Color";                                                 // HEX Values 40, fe, 00
     MiLightCypher[std::make_tuple(64, 255, 0)] = "Color";                                                 // HEX Values 40, ff, 00
 
-    MiLightCypher[std::make_tuple(65, 0, 0)] = "Master Off";                                      // HEX Values 41, 00, 00
-    MiLightCypher[std::make_tuple(66, 0, 0)] = "Master On";                                       // HEX Values 42, 00, 00
-    MiLightCypher[std::make_tuple(194, 0, 0)] = "Master White Mode Full";                         // HEX Values c2, 00, 00
+    MiLightCypher[std::make_tuple(65, 0, 0)] = "\"Status\": \"Off\"";                             // HEX Values 41, 00, 00
+    MiLightCypher[std::make_tuple(66, 0, 0)] = "\"Status\": \"On\"";                              // HEX Values 42, 00, 00
+    MiLightCypher[std::make_tuple(194, 0, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";                         // HEX Values c2, 00, 00
     MiLightCypher[std::make_tuple(193, 0, 0)] = "Master Nightlight";                              // HEX Values c1, 00, 00
     MiLightCypher[std::make_tuple(77, 0, 0)] = "Mode";                                            // HEX Values 4d, 00, 00
     MiLightCypher[std::make_tuple(205, 0, 0)] = "Unknown (Hold Mode Button)";                     // HEX Values cd, 00, 00
