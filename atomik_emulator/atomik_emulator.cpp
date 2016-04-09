@@ -158,8 +158,6 @@ void listen()
             fd = popen("ifconfig | grep \"HWaddr\" | cut -d ' ' -f 11 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
             s2 = fread(reply + s1, 1, 12 ,fd);
             reply[s1 + s2] = ',';
-            //s2++;
-            //reply[s1 + s2] = '\0';
         }
 
     if (debug)
@@ -252,9 +250,8 @@ void listen()
                                         }
 
                                         
-                                        // printf("%s (%s) -> %s\n", str,
-                                           inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr),
-                                           ethernet_mactoa(&areq.arp_ha));
+                                    printf("%s (%s) -> %s\n", str,
+                                    inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr), ethernet_mactoa(&areq.arp_ha));
 
                                     mac_address = ethernet_mactoa(&areq.arp_ha);
 
