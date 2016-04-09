@@ -57,7 +57,6 @@ namespace Atomik    {
 };
 
 
-
 static int debug = 1;
 static int dupesPrinted = 0;
 static Atomik::map_t MiLightCypher;
@@ -89,9 +88,35 @@ void printTime(){
     char currentTime[84] = "";
     sprintf(currentTime, "%s:%d", buffer, milli);
     printf("current time: %s \n", currentTime);
-
 }
 
+// outputs a ISO 8601 string of localtime.
+// need a way to make this UTC time
+std::string getTime(){
+
+    timeval curTime;
+    gettimeofday(&curTime, NULL);
+    int milli = curTime.tv_usec / 1000;
+
+    char buffer [80];
+    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+
+    char currentTime[84] = "";
+    sprintf(currentTime, "%s:%d", buffer, milli);
+    return currentTime;
+}
+
+std::string createJSON(std::string mac, std::string ip, std::string data, std::string config)
+{                                    
+    std::string output;
+    output = '{\n "Command": "Issue",\n "DateTime": "' + getTime() + '",\n ';
+    output = output + '"MAC": "' + mac + '",\n ';
+    output = output + '"IP": "' + ip + '",\n ';
+    output = output + '"Data": "' + data + '",\n ';
+    output = output + '"Configuration": {\n ' + config + '\n}}\n}';
+    return output;
+}
+   
 std::string toString(char in){
     std::stringstream buffer;
     buffer << in;
@@ -208,12 +233,19 @@ void listen()
 
                                     std:string cypherData;
 									string mac_address;
+                                    int messagedata;
                                     char achar;
                                     int aint;
                                     char bchar;
                                     int bint;
                                     char cchar;
                                     int cint;
+                                    char message [50];
+                                    
+                                    
+                                    
+                                    
+
                                     
                                     /* Make the ARP request.
                                                          */
@@ -254,24 +286,16 @@ void listen()
                                     bint = bchar;
                                     cchar = mesg[2];
                                     cint = cchar;
-
-
-                                    printf("%02x", achar);
-                                    printf("\n");
-                                    printf(mac_address.c_str());
-                                    printf("\n");
-                                    printTime();
-                                    printf("\n");
-
                                     cypherData = findCypher(aint, bint, cint);
-                                                                        printf("Searching Cypher:");
-                                                                        printf("%02x", achar);
-                                                                        printf(" ");
-                                                                        printf("%02x", bchar);
-                                                                        printf(" ");
-                                                                        printf("%02x", cchar);
-                                                                        printf("\n");
-                                    printf(cypherData.c_str());
+                                    messagedata = sprintf (message, "%02x, %02x, %02x", mesg[0], mesg[1], mesg[2]);
+                                    
+                                    printf("\n");
+                                    printf("\n");
+                                    
+                                    
+                                    printf(createJSON(mac_address.c_str(), str, message, cypherData).c_str());
+
+                                   
                                                                         printf("\n");
                                                                         printf("End Transmission Block");
                                                                         printf("\n");
