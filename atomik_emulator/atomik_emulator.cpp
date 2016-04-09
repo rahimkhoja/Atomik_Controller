@@ -147,8 +147,8 @@ void listen()
             fd = popen("ifconfig | grep \"HWaddr\" | cut -d ' ' -f 11 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
             s2 = fread(reply + s1, 1, 12 ,fd);
             reply[s1 + s2] = ',';
-            s2++;
-            reply[s1 + s2] = '\0';
+            //s2++;
+            //reply[s1 + s2] = '\0';
         }
 
     if (debug)
@@ -182,7 +182,7 @@ void listen()
 
                             if (!strncmp(mesg, "Link_Wi-Fi", 41))
                                 {
-                                    sendto(discover_fd, reply, 30, 0, (struct sockaddr*)&cliaddr, &len);
+                                    sendto(discover_fd, reply, strlen(reply), 0, (struct sockaddr*)&cliaddr, len);
                                 }
                         }
                     if (FD_ISSET(data_fd, &socks))
