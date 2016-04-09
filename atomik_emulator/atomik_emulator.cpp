@@ -251,7 +251,7 @@ void listen()
 
                                         
                                     // printf("%s (%s) -> %s\n", str,
-                                    inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr), ethernet_mactoa(&areq.arp_ha));
+                                    // inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr), ethernet_mactoa(&areq.arp_ha));
 
                                     mac_address = ethernet_mactoa(&areq.arp_ha);
 
