@@ -79,18 +79,16 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 
 void printTime(){
 
-timeval curTime;
-gettimeofday(&curTime, NULL);
-int milli = curTime.tv_usec / 1000;
+    timeval curTime;
+    gettimeofday(&curTime, NULL);
+    int milli = curTime.tv_usec / 1000;
 
-char buffer [80];
-strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+    char buffer [80];
+    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
-char currentTime[84] = "";
-sprintf(currentTime, "%s:%d", buffer, milli);
-printf("current time: %s \n", currentTime);
-
-
+    char currentTime[84] = "";
+    sprintf(currentTime, "%s:%d", buffer, milli);
+    printf("current time: %s \n", currentTime);
 
 }
 
@@ -109,15 +107,6 @@ std::string findCypher(int x, int y, int z)
         buffer << t->second;
     return buffer.str();
 }
-
-
-double getTime()
-{
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-    return tv.tv_sec + ((double)tv.tv_usec) * 1e-6;
-}
-
 
 void listen()
 {
@@ -193,7 +182,7 @@ void listen()
 
                             if (!strncmp(mesg, "Link_Wi-Fi", 41))
                                 {
-                                    sendto(discover_fd, reply, 30, 0, (struct sockaddr*)&cliaddr, len);
+                                    sendto(discover_fd, reply, 30, 0, (struct sockaddr*)&cliaddr, &len);
                                 }
                         }
                     if (FD_ISSET(data_fd, &socks))
@@ -306,13 +295,13 @@ void buildCypher()
 {
     //    Mi-Light RGB+W Bulbs
 
-    MiLightCypher[std::make_tuple(64, 0, 0)] = "Color";                                                   // HEX Values 40, 00, 00
-    MiLightCypher[std::make_tuple(64, 1, 0)] = "Color";                                                   // HEX Values 40, 01, 00
-    MiLightCypher[std::make_tuple(64, 2, 0)] = "Color";                                                   // HEX Values 40, 02, 00
-    MiLightCypher[std::make_tuple(64, 3, 0)] = "Color";                                                   // HEX Values 40, 03, 00
-    MiLightCypher[std::make_tuple(64, 4, 0)] = "Color";                                                   // HEX Values 40, 04, 00
-    MiLightCypher[std::make_tuple(64, 5, 0)] = "Color";                                                   // HEX Values 40, 05, 00
-    MiLightCypher[std::make_tuple(64, 6, 0)] = "Color";                                                   // HEX Values 40, 06, 00
+    MiLightCypher[std::make_tuple(64, 0, 0)] = "Color: 0";                                                   // HEX Values 40, 00, 00
+    MiLightCypher[std::make_tuple(64, 1, 0)] = "Color: 1";                                                   // HEX Values 40, 01, 00
+    MiLightCypher[std::make_tuple(64, 2, 0)] = "Color: 2";                                                   // HEX Values 40, 02, 00
+    MiLightCypher[std::make_tuple(64, 3, 0)] = "Color: 3";                                                   // HEX Values 40, 03, 00
+    MiLightCypher[std::make_tuple(64, 4, 0)] = "Color: 4";                                                   // HEX Values 40, 04, 00
+    MiLightCypher[std::make_tuple(64, 5, 0)] = "Color: 5";                                                   // HEX Values 40, 05, 00
+    MiLightCypher[std::make_tuple(64, 6, 0)] = "Color: 6";                                                   // HEX Values 40, 06, 00
     MiLightCypher[std::make_tuple(64, 7, 0)] = "Color";                                                   // HEX Values 40, 07, 00
     MiLightCypher[std::make_tuple(64, 8, 0)] = "Color";                                                   // HEX Values 40, 08, 00
     MiLightCypher[std::make_tuple(64, 9, 0)] = "Color";                                                   // HEX Values 40, 09, 00
