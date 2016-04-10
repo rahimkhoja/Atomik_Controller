@@ -246,27 +246,6 @@ int main(int argc, char** argv)
     receive();
   }
  
-  if(do_udp){
-    printf("UDP mode (raw), press Ctrl-C to end\n"); 
-    udp_raw();
-  } 
-
-  if(do_milight){
-    printf("UDP mode (milight), press Ctrl-C to end\n"); 
-    udp_milight(0x0044);
-  }
-
-  if(do_fade){
-    printf("Fade mode, press Ctrl-C to end\n");
-    fade(prefix, rem_p, remote, color, bright, resends);
-  }
-
-  if(do_strobe){
-    printf("Strobe mode, press Ctrl-C to end\n");
-    strobe(prefix, rem_p, remote, bright, resends);
-  } 
-
- 
   if(do_command){
     send(command);
   }
