@@ -1,21 +1,16 @@
-
 #include <cstdlib>
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-
 #include <unistd.h>
-
 #include <sys/time.h>
 #include <sys/select.h>
-
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <RF24/RF24.h>
 
 using namespace std;
-
-#include <RF24/RF24.h>
 
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
@@ -28,6 +23,15 @@ MiLightRadio mlr(prf);
 static int debug = 0;
 
 static int dupesPrinted = 0;
+
+static string 
+
+vector<string> commandListString();
+vector<int> commandListInt();
+commandListString.reserve(40);
+commandListInt.reserve(40);
+
+
 
 void receive()
 {
