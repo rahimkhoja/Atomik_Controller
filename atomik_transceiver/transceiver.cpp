@@ -28,12 +28,9 @@ static int debug = 0;
 
 static int dupesPrinted = 0;
 
-static string 
+static std::vector<std::string> commandListString;
+static std::vector<int> commandListInt;
 
-std::vector<std::string> commandListString;
-std::vector<int> commandListInt;
-commandListString.reserve(40);
-commandListInt.reserve(40);
 
 
 
@@ -170,7 +167,10 @@ int main(int argc, char** argv)
   int c;
 
   uint64_t tmp;
-
+  
+  commandListString.reserve(40);
+  commandListInt.reserve(40);
+  
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
   while((c = getopt(argc, argv, options)) != -1){
