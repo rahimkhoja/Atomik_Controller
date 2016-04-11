@@ -30,8 +30,8 @@ static int dupesPrinted = 0;
 
 static string 
 
-vector<string> commandListString();
-vector<int> commandListInt();
+std::vector<std::string> commandListString;
+std::vector<int> commandListInt;
 commandListString.reserve(40);
 commandListInt.reserve(40);
 
