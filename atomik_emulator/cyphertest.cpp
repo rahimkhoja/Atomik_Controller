@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-     atomikCypher cypher();
+     atomikCypher cypher;
      cout << cypher.getAtomikJSON(64, 134, 0) << endl;
      return 0;
 }
