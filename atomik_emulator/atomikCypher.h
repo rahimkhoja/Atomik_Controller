@@ -10,7 +10,7 @@ class atomikCypher
           //with default value
           atomikCypher();
           //	setter function
-          std:string getAtomikJSON(int h, int m, int s);
+          std::string getAtomikJSON(int h, int m, int s);
           // Print a description of object in " hh:mm:ss"
 };
  
