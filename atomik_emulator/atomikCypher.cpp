@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <tuple>
 #include <sstream>
-#include <string.h>
+#include <string>
 
 namespace Atomik    {
     typedef std::tuple<int, int, int> key_t;
@@ -25,7 +25,7 @@ namespace Atomik    {
                 }
         };
 
-    typedef std::unordered_map<const key_t,string,key_hash,key_equal> map_t;
+    typedef std::unordered_map<const key_t,std::string,key_hash,key_equal> map_t;
 
 };
 
