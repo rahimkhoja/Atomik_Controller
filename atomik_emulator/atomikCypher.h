@@ -5,9 +5,7 @@ class atomikCypher
 {
      private :
           void init();
-          int hour;
-          int minute;
-          int second;
+          Atomik::map_t MiLightCypher;
      public :
           //with default value
           atomikCypher();
