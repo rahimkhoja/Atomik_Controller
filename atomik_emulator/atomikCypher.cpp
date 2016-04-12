@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <tuple>
+#include <sstream>
 
 namespace Atomik    {
     typedef std::tuple<int, int, int> key_t;
@@ -341,7 +342,7 @@ void atomikCypher :: init()
     return;    
 }		
  
-std::string atomikCypher :: findCypher(int x, int y, int z)
+std::string atomikCypher :: getAtomikJSON(int x, int y, int z)
 {
     std::stringstream buffer;
     auto t = MiLightCypher.find(std::make_tuple(x, y, z));
