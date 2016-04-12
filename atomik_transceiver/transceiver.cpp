@@ -9,12 +9,14 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <RF24/RF24.h>
-//#include <vector>
+
 
 using namespace std;
 
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
+
+#include <vector>
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
@@ -142,10 +144,6 @@ void usage(const char *arg, const char *options){
 int main(int argc, char** argv)
 {
   int do_receive = 0;
-  int do_udp     = 0;
-  int do_milight = 0;
-  int do_strobe  = 0;
-  int do_fade    = 0;
   int do_command = 0;
 
   uint8_t prefix   = 0xB8;
