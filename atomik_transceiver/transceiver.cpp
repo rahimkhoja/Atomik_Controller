@@ -15,7 +15,7 @@
 
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
-#include <vector>
+
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
@@ -29,7 +29,9 @@ static int dupesPrinted = 0;
 
 void receive()
 {
+
   while(1){
+  printf("recieve loop start");
     if(mlr.available()) {
       printf("\n");
       uint8_t packet[7];
