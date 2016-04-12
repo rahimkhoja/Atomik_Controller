@@ -1,4 +1,3 @@
-#include "atomikCypher.h"
 #include <iostream>
 #include <unordered_map>
 #include <tuple>
@@ -29,6 +28,8 @@ namespace Atomik    {
     typedef std::unordered_map<const key_t,string,key_hash,key_equal> map_t;
 
 };
+
+#include "atomikCypher.h"
  
 atomikCypher :: atomikCypher() 
 {
