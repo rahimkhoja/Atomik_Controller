@@ -346,7 +346,7 @@ std::string atomikCypher :: getAtomikJSON(int x, int y, int z)
 {
     std::stringstream buffer;
     auto t = MiLightCypher.find(std::make_tuple(x, y, z));
-    if (t == MiLightCypher.end()) return string();
+    if (t == MiLightCypher.end()) return std::string();
         buffer << t->second;
     return buffer.str();
 }
