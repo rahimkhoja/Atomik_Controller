@@ -10,7 +10,6 @@
 #include <arpa/inet.h>
 #include <RF24/RF24.h>
 
-#include <pthread.h>
 #include <thread>
 
 //using namespace std;
@@ -102,15 +101,15 @@ void socketConnection ()
             cout << "Connection successful" << endl;
         }
         
-        pthread_create(&threadA[noThread], NULL, task1, NULL); 
+//        pthread_create(&threadA[noThread], NULL, task1, NULL); 
         
-        noThread++;
+ //       noThread++;
     }
     
-    for(int i = 0; i < 3; i++)
-    {
-        pthread_join(threadA[i], NULL);
-    }
+   // for(int i = 0; i < 3; i++)
+   // {
+   //     pthread_join(threadA[i], NULL);
+   // }
     
 
 
@@ -276,7 +275,7 @@ int main(int argc, char** argv)
   
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
- thread socketCommand(socketConnection);
+ std::thread socketCommand(socketConnection);
 
 
   while((c = getopt(argc, argv, options)) != -1){
