@@ -16,7 +16,6 @@ using namespace std;
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
 
-#include <vector>
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
@@ -26,9 +25,6 @@ MiLightRadio mlr(prf);
 static int debug = 0;
 
 static int dupesPrinted = 0;
-
-//static std::vector<std::string> commandListString;
-//static std::vector<int> commandListInt;
 
 
 void receive()
@@ -160,9 +156,6 @@ int main(int argc, char** argv)
   int c;
 
   uint64_t tmp;
-  
-//  commandListString.reserve(40);
-//  commandListInt.reserve(40);
   
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
