@@ -1,8 +1,33 @@
- 
-
-#include <iostream>
-#include <iomanip>
 #include "atomikCypher.h"
+#include <iostream>
+#include <unordered_map>
+#include <tuple>
+
+namespace Atomik    {
+    typedef std::tuple<int, int, int> key_t;
+    struct key_hash : public std::unary_function<key_t, std::size_t>
+        {
+            std::size_t operator()(const key_t& k) const
+                {
+                    return std::get<0>(k) ^ std::get<1>(k) ^ std::get<2>(k);
+                }
+        };
+
+    struct key_equal : public std::binary_function<key_t, key_t, bool>
+        {
+            bool operator()(const key_t& v0, const key_t& v1) const
+                {
+                    return (
+                               std::get<0>(v0) == std::get<0>(v1) &&
+                               std::get<1>(v0) == std::get<1>(v1) &&
+                               std::get<2>(v0) == std::get<2>(v1) );
+                }
+        };
+
+    typedef std::unordered_map<const key_t,string,key_hash,key_equal> map_t;
+
+};
+
 using namespace std;
  
 atomikCypher :: atomikCypher() 
@@ -316,20 +341,12 @@ void atomikCypher :: init()
     return;    
 }		
  
-void atomikCypher :: print() const
+std::string atomikCypher :: findCypher(int x, int y, int z)
 {
-     cout << setw(2) << setfill('0') << hour << ":"
-	<< setw(2) << setfill('0') << minute << ":"
- 	<< setw(2) << setfill('0') << second << "\n";	
- 
+    std::stringstream buffer;
+    auto t = MiLightCypher.find(std::make_tuple(x, y, z));
+    if (t == MiLightCypher.end()) return string();
+        buffer << t->second;
+    return buffer.str();
 }
- 
-bool atomikCypher :: equals(const Time &otherTime)
-{
-     if(hour == otherTime.hour 
-          && minute == otherTime.minute 
-          && second == otherTime.second)
-          return true;
-     else
-          return false;
 }
