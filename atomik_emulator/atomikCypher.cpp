@@ -29,8 +29,6 @@ namespace Atomik    {
     typedef std::unordered_map<const key_t,string,key_hash,key_equal> map_t;
 
 };
-
-using namespace std;
  
 atomikCypher :: atomikCypher() 
 {
@@ -350,5 +348,4 @@ std::string atomikCypher :: getAtomikJSON(int x, int y, int z)
     if (t == MiLightCypher.end()) return string();
         buffer << t->second;
     return buffer.str();
-}
 }
