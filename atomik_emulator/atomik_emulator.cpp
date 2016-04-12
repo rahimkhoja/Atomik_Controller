@@ -23,9 +23,7 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <sys/time.h>
-#include <tuple>
 #include <unistd.h>
-#include <unordered_map>
 #include <utility>
 
 
@@ -87,15 +85,6 @@ std::string toString(char in){
     return buffer.str();
 }
 
-
-std::string findCypher(int x, int y, int z)
-{
-    std::stringstream buffer;
-    auto t = MiLightCypher.find(std::make_tuple(x, y, z));
-    if (t == MiLightCypher.end()) return string();
-        buffer << t->second;
-    return buffer.str();
-}
 
 void listen()
 {
