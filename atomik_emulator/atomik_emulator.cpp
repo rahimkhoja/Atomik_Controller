@@ -55,6 +55,7 @@ std::string getTime(){
     timeval curTime;
     time_t now;
     now = (time_t) curTime.tv_sec;
+    time(&now);
     gettimeofday(&curTime, NULL);
     int milli = curTime.tv_usec / 1000;
 
