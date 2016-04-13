@@ -26,8 +26,6 @@
 #include <unistd.h>
 #include <utility>
 
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 #include "atomikCypher.h"
 
 using namespace std;
@@ -55,22 +53,25 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 // need a way to make this UTC time
 std::string getTime(){
 
-    //timeval curTime;
-    //gettimeofday(&curTime, NULL);
-    //int milli = curTime.tv_usec / 1000;
-
-    //char buffer [80];
-    //strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
-
-    //char currentTime[84] = "";
-    //sprintf(currentTime, "%s:%d", buffer, milli);
-    //return currentTime;
-   
-    std::stringstream buffer;
+    timeval curTime;
     
-    boost::posix_time::ptime t = boost::posix_time::microsec_clock::universal_time();
-    buffer << to_iso_extended_string(t) << "Z\n";
-    return buffer.str();
+    gettimeofday(&curTime, NULL);
+    int milli = curTime.tv_usec / 1000;
+
+    char buffer [80];
+    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+
+    char currentTime[84] = "";
+    sprintf(currentTime, "%FT%TZ", buffer, milli);
+    return currentTime;
+   
+    //time_t now;
+    //time(&now);
+    //char buf[sizeof "2011-10-08T07:07:09Z"];
+    //strftime(buf, sizeof buf, "%FT%TZ", gmtime(&now));
+    // this will work too, if your compiler doesn't support %F or %T:
+    //strftime(buf, sizeof buf, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
+    //std::cout << buf << "\n";
     
     
 }
