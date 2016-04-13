@@ -19,6 +19,8 @@
 
 #include <pthread.h>
 
+#include <atomic>
+
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
 PL1167_nRF24 prf(radio);
@@ -48,7 +50,7 @@ std::string getCommand()
     // returns the first command sting element in the list
     std::string str;
     pthread_mutex_lock(&commandList_mutex);
-    str = commandList.front()
+    str = commandList.front();
     pthread_mutex_unlock(&commandList_mutex);
     return str;
 }
