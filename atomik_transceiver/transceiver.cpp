@@ -34,10 +34,10 @@ void addCommand(std::string str)
     // add command string to bottom element of list
 }
 
-std::string str getCommand()
+std::string getCommand()
 {
     // returns the first command sting element in the list
-    return std:string();
+    return std::string();
 }
 
 void removeCommand()
