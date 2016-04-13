@@ -10,7 +10,10 @@
 #include <arpa/inet.h>
 #include <RF24/RF24.h>
 
-//#include <thread>
+using std::min;
+using std::max;
+
+#include <thread>
 
 //using namespace std;
 
@@ -33,7 +36,7 @@ void receive()
 {
 
   while(1){
-  printf("recieve loop start");
+// check if there are any new messages to send! 
     if(mlr.available()) {
       printf("\n");
       uint8_t packet[7];
@@ -141,6 +144,78 @@ void usage(const char *arg, const char *options){
   printf("\n");
 }
 
+void test()
+{
+    printf("thread\n");
+    return;
+}
+
+void socketCommand () 
+{
+
+    int listenfd = 0, connfd = 0;
+    struct sockaddr_in serv_addr; 
+
+    char sendBuff[1025];
+    char readBuff[256];    
+
+    time_t ticks; 
+
+    listenfd = socket(AF_INET, SOCK_STREAM, 0);
+    memset(&serv_addr, '0', sizeof(serv_addr));
+    memset(sendBuff, '0', sizeof(sendBuff)); 
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serv_addr.sin_port = htons(5000); 
+
+    bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)); 
+
+    listen(listenfd, 10); 
+
+    while(1)
+    {
+
+        connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
+	printf("time send\n");
+        ticks = time(NULL);
+        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
+        write(connfd, sendBuff, strlen(sendBuff)); 
+
+        while(1)
+        {    
+        
+            bzero(readBuff,257);       
+
+            read(connfd, readBuff, 256); 
+       
+            std::string tester (readBuff);
+            std::cout << tester << std::endl;
+       
+
+
+
+if(tester.find ("\r"))
+{
+    break;
+} 
+
+if(tester.find ("\n"))
+{
+    break;
+}
+
+
+ 
+            if(tester == "\n")
+                break;
+        }
+
+        close(connfd);
+
+    }
+}
+
 int main(int argc, char** argv)
 {
   int do_receive = 0;
@@ -163,11 +238,8 @@ int main(int argc, char** argv)
   
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
-  std::thread foo([]() { 
-        std::cout << "Hello World" << std::endl;
-    });
-    foo.join();
-
+  std::thread foo(socketCommand);
+  //foo.join();
 
   while((c = getopt(argc, argv, options)) != -1){
     switch(c){
