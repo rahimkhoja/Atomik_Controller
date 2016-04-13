@@ -54,18 +54,11 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 std::string getTime(){
 
     std::string output;
-    std::stringstream buffer;
     timeval curTime;
     
     gettimeofday(&curTime, NULL);
     int milli = curTime.tv_usec / 1000;
 
-    //char buffer [80];
-    //strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
-
-    //char currentTime[100] = "";
-    //sprintf(currentTime, "%s:%d", buffer, milli);
-    //return currentTime;
    
     time_t now;
     time(&now);
@@ -74,11 +67,9 @@ std::string getTime(){
     // this will work too, if your compiler doesn't support %F or %T:
     //  strftime(buf, sizeof buf, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
     
-    buffer << buf;
-    output = buffer.str().substr(0, buffer.str().size()-1);
-    char currentTime[100] = "";
-    sprintf(currentTime, "%s.%dZ", output.c_str(), milli);
-    return currentTime;
+   
+    sprintf(output, "%s.%dZ", buf, milli);
+    return buf;
     
 }
 
