@@ -51,7 +51,6 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 
 std::string getTime()
 {
-    std::string output;
     timeval curTime;
     time_t now;
     time(&now);
