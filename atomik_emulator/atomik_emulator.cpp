@@ -55,17 +55,17 @@ std::string getTime(){
 
     std::string output;
     
-    //timeval curTime;
+    timeval curTime;
     
-    //gettimeofday(&curTime, NULL);
-    //int milli = curTime.tv_usec / 1000;
+    gettimeofday(&curTime, NULL);
+    int milli = curTime.tv_usec / 1000;
 
     //char buffer [80];
     //strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
-    char currentTime[100] = "";
-    sprintf(currentTime, "%s:%d", buffer, milli);
-    return currentTime;
+    //char currentTime[100] = "";
+    //sprintf(currentTime, "%s:%d", buffer, milli);
+    //return currentTime;
    
     time_t now;
     time(&now);
