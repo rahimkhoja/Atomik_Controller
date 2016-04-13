@@ -62,7 +62,7 @@ std::string getTime(){
     strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
     char currentTime[84] = "";
-    sprintf(currentTime, "%FT%TZ", buffer, milli);
+    sprintf(currentTime, "%s:%d", buffer, milli);
     return currentTime;
    
     //time_t now;
