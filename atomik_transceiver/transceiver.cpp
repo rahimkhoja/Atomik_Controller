@@ -9,9 +9,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <RF24/RF24.h>
+#include <list>
 
-using std::min;
-using std::max;
+//using std::min;
+//using std::max;
 
 #include <thread>
 
@@ -30,7 +31,7 @@ static int debug = 0;
 
 static int dupesPrinted = 0;
 
-
+static std::list<std:string> commandList;
 
 void receive()
 {
