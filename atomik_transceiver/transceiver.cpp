@@ -17,6 +17,7 @@
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
 
+#include <pthread.h>
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
@@ -29,20 +30,36 @@ static int dupesPrinted = 0;
 
 static std::list<std::string> commandList;
 
+pthread_mutex_t commandList_mutex;
+
+std::atomic<bool> enableSocket;
+
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
+    pthread_mutex_lock(&commandList_mutex);
+    commandList.push_front (str);
+    pthread_mutex_unlock(&commandList_mutex);
+    return; 
 }
 
 std::string getCommand()
 {
     // returns the first command sting element in the list
-    return std::string();
+    std::string str;
+    pthread_mutex_lock(&commandList_mutex);
+    str = commandList.front()
+    pthread_mutex_unlock(&commandList_mutex);
+    return str;
 }
 
 void removeCommand()
 {
-    // removes the first command string element from the list
+    // removes the first command string element from the listlong long c;
+    pthread_mutex_lock(&commandList_mutex);
+    commandList.pop_front();
+    pthread_mutex_unlock(&commandList_mutex);
+	return;     
 }
 
 
