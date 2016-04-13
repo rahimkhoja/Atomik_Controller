@@ -53,6 +53,8 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 // need a way to make this UTC time
 std::string getTime(){
 
+    std::string output;
+    
     //timeval curTime;
     
     //gettimeofday(&curTime, NULL);
@@ -61,19 +63,22 @@ std::string getTime(){
     //char buffer [80];
     //strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
-    //char currentTime[84] = "";
-    //sprintf(currentTime, "%s:%d", buffer, milli);
-    //return currentTime;
+    char currentTime[100] = "";
+    sprintf(currentTime, "%s:%d", buffer, milli);
+    return currentTime;
    
     time_t now;
     time(&now);
     char buf[sizeof "2011-10-08T07:07:09Z"];
     strftime(buf, sizeof buf, "%FT%TZ", gmtime(&now));
     // this will work too, if your compiler doesn't support %F or %T:
-    strftime(buf, sizeof buf, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
+    //  strftime(buf, sizeof buf, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
     std::stringstream buffer;
     buffer << buf;
-    return buffer.str();
+    output = buffer.str().substr(0, myString.size()-1);
+    char currentTime[100] = "";
+    sprintf(currentTime, "%s.%dZ", output.c_str(), milli);
+    return currentTime;
     
 }
 
