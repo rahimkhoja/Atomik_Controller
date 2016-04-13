@@ -12,13 +12,7 @@
 #include <arpa/inet.h>
 #include <RF24/RF24.h>
 #include <list>
-
-//using std::min;
-//using std::max;
-
 #include <thread>
-
-//using namespace std;
 
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
@@ -34,6 +28,23 @@ static int debug = 0;
 static int dupesPrinted = 0;
 
 static std::list<std::string> commandList;
+
+void addCommand(std::string str)
+{
+    // add command string to bottom element of list
+}
+
+std::string str getCommand()
+{
+    // returns the first command sting element in the list
+    return std:string();
+}
+
+void removeCommand()
+{
+    // removes the first command string element from the list
+}
+
 
 void receive()
 {
@@ -118,22 +129,12 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
   send(data);
 }
 
-double getTime()
-{
-  struct timeval tv;
-  gettimeofday(&tv, NULL);
-  return tv.tv_sec + ((double)tv.tv_usec) * 1e-6;
-}
-
-
 void usage(const char *arg, const char *options){
   printf("\n");
   printf("Usage: sudo %s [%s]\n", arg, options);
   printf("\n");
   printf("   -h                       Show this help\n");
   printf("   -d                       Show debug output\n");
-  printf("   -f                       Fade mode\n");
-  printf("   -s                       Strobe mode\n");
   printf("   -l                       Listening (receiving) mode\n");
   printf("   -n NN<dec>               Resends of the same message\n");
   printf("   -p PP<hex>               Prefix value (Disco Mode)\n");
@@ -195,23 +196,10 @@ void socketCommand ()
             std::string tester (readBuff);
             std::cout << tester << std::endl;
        
-
-
-
-if(tester.find ("\r"))
-{
-    break;
-} 
-
-if(tester.find ("\n"))
-{
-    break;
-}
-
-
- 
-            if(tester == "\n")
+            if(tester.find ("\n"))
+            {
                 break;
+            }
         }
 
         close(connfd);
@@ -242,7 +230,7 @@ int main(int argc, char** argv)
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
   std::thread foo(socketCommand);
-  //foo.join();
+  
 
   while((c = getopt(argc, argv, options)) != -1){
     switch(c){
@@ -307,6 +295,7 @@ int main(int argc, char** argv)
         return 1;
       default:
         fprintf(stderr, "Error parsing options");
+        foo.join();
         return -1;
     }
   }
