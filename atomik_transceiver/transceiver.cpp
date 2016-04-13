@@ -173,7 +173,7 @@ void test()
     return;
 }
 
-void socketCommand ( atomic<bool> & quit )
+void socketCommand ( std::atomic<bool> & quit )
 {
 
     int listenfd = 0, connfd = 0;
