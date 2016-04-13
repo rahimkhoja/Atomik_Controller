@@ -49,20 +49,19 @@ static char *ethernet_mactoa(struct sockaddr *addr)
     return (buff);
 }
 
-std::string getTime(){
-
+std::string getTime()
+{
     std::string output;
     timeval curTime;
     time_t now;
-    now = (time_t) curTime.tv_sec;
     time(&now);
+    
     gettimeofday(&curTime, NULL);
     int milli = curTime.tv_usec / 1000;
 
     char buf[sizeof "2011-10-08T07:07:09"];
     strftime(buf, sizeof buf, "%FT%T", gmtime(&now));
-    // this will work too, if your compiler doesn't support %F or %T:
-    //  strftime(buf, sizeof buf, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
+    
     sprintf(buf, "%s.%dZ", buf, milli);
     return buf;
 }
