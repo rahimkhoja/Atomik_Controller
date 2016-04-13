@@ -1,9 +1,5 @@
-//Zone 1 OnConnection from 172.16.254.114
-//172.16.254.114 (172.16.254.114) -> 90:FD:61:BE:A3:E9
-//UDP --> Received hex value (45, 00, 00)
-//45
-//90:FD:61:BE:A3:E9
-//time: Thu Apr  7 10:15:45 2016
+
+// g++ -std=c++11 atomikCypher.cpp atomik_emulator.cpp -o emulator
 
 #include <arpa/inet.h>
 #include <chrono>
