@@ -68,7 +68,7 @@ std::string getTime(){
     //  strftime(buf, sizeof buf, "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
     
    
-    sprintf(output.c_str(), "%s.%dZ", buf, milli);
+    sprintf(buf, "%s.%dZ", buf, milli);
     return buf;
     
 }
