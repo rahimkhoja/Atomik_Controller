@@ -34,7 +34,7 @@ static std::list<std::string> commandList;
 
 pthread_mutex_t commandList_mutex;
 
-std::atomic<bool> enableSocket;
+std::atomic<bool> disableSocket;
 
 void addCommand(std::string str)
 {
@@ -173,7 +173,7 @@ void test()
     return;
 }
 
-void socketCommand () 
+void socketCommand ( atomic<bool> & quit )
 {
 
     int listenfd = 0, connfd = 0;
@@ -196,7 +196,7 @@ void socketCommand ()
 
     listen(listenfd, 10); 
 
-    while(1)
+    while(!Quit)
     {
 
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
@@ -248,8 +248,8 @@ int main(int argc, char** argv)
   
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
-  std::thread foo(socketCommand);
-  
+  disableSocket = false;
+  std::thread foo(socketCommand, std::ref(disableSocket));
 
   while((c = getopt(argc, argv, options)) != -1){
     switch(c){
@@ -314,6 +314,7 @@ int main(int argc, char** argv)
         return 1;
       default:
         fprintf(stderr, "Error parsing options");
+        disableSocket = true;
         foo.join();
         return -1;
     }
@@ -339,6 +340,7 @@ int main(int argc, char** argv)
   else{
     send(color, bright, key, remote, rem_p, prefix, seq, resends);
   }
-
+disableSocket = true;
+        foo.join();
   return 0;
 }
