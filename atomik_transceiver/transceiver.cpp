@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -33,7 +33,7 @@ static int debug = 0;
 
 static int dupesPrinted = 0;
 
-static std::list<std:string> commandList;
+static std::list<std::string> commandList;
 
 void receive()
 {
