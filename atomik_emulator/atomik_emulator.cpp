@@ -59,8 +59,8 @@ std::string getTime(){
     gettimeofday(&curTime, NULL);
     int milli = curTime.tv_usec / 1000;
 
-    time_t now;
-    time(&now);
+    
+    time(&(time_t)curTime.tv_sec);
     char buf[sizeof "2011-10-08T07:07:09"];
     strftime(buf, sizeof buf, "%FT%T", gmtime(&now));
     // this will work too, if your compiler doesn't support %F or %T:
