@@ -68,7 +68,7 @@ std::string getTime(){
    
     std::stringstream buffer;
     
-    boost::posix_time::ptime t = microsec_clock::universal_time();
+    boost::posix_time::ptime t = boost::posix_time::microsec_clock::universal_time();
     buffer << to_iso_extended_string(t) << "Z\n";
     return buffer.str();
     
