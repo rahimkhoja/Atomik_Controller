@@ -196,7 +196,7 @@ void socketCommand ( std::atomic<bool> & quit )
 
     listen(listenfd, 10); 
 
-    while(!Quit)
+    while(!quit)
     {
 
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
