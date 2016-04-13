@@ -1,3 +1,5 @@
+//  sudo g++ -std=c++11 -lrf24-bcm PL1167_nRF24.cpp MiLightRadio.cpp transceiver.cpp -o atomik_transceiver -pthread
+
 #include <cstdlib>
 #include <iostream>
 #include <string.h>
