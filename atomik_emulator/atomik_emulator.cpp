@@ -26,12 +26,11 @@
 #include <unistd.h>
 #include <utility>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "atomikCypher.h"
 
 using namespace std;
-
-
 
 static int debug = 1;
 static int dupesPrinted = 0;
@@ -56,16 +55,24 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 // need a way to make this UTC time
 std::string getTime(){
 
-    timeval curTime;
-    gettimeofday(&curTime, NULL);
-    int milli = curTime.tv_usec / 1000;
+    //timeval curTime;
+    //gettimeofday(&curTime, NULL);
+    //int milli = curTime.tv_usec / 1000;
 
-    char buffer [80];
-    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
+    //char buffer [80];
+    //strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", localtime(&curTime.tv_sec));
 
-    char currentTime[84] = "";
-    sprintf(currentTime, "%s:%d", buffer, milli);
-    return currentTime;
+    //char currentTime[84] = "";
+    //sprintf(currentTime, "%s:%d", buffer, milli);
+    //return currentTime;
+   
+    std::stringstream buffer;
+    
+    boost::posix_time::ptime t = microsec_clock::universal_time();
+    buffer << to_iso_extended_string(t) << "Z\n";
+    return buffer.str();
+    
+    
 }
 
 std::string createJSON(std::string mac, std::string ip, std::string data, std::string config)
