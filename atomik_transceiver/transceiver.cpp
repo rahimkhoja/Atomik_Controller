@@ -79,10 +79,8 @@ void receive()
       for(size_t i = 0; i < packet_length; i++) {
         printf("%02X ", packet[i]);
         fflush(stdout);
-        
-        printf(getCommand().c_str());
-      
-      
+      }
+      printf(getCommand().c_str());
     }
 
     int dupesReceived = mlr.dupesReceived();
