@@ -79,7 +79,14 @@ void receive()
       for(size_t i = 0; i < packet_length; i++) {
         printf("%02X ", packet[i]);
         fflush(stdout);
+        
+        std::list<int>::const_iterator it;
+
+      for (it = my_list.begin(); it != my_list.end(); ++it)
+        printf("%s\n", *it);
       }
+      
+      
     }
 
     int dupesReceived = mlr.dupesReceived();
