@@ -183,7 +183,7 @@ void socketCommand ( std::atomic<bool> & quit )
     fd_set readfds;
       
     //a message
-    std::string message = "ECHO Daemon v1.0 \r\n";
+    std::string message = "Atomik Tranceiver V0.5 alpha\r\n";
   
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++) 
@@ -329,6 +329,8 @@ void socketCommand ( std::atomic<bool> & quit )
                     addCommand(commandSTR);
                     if(commandSTR.find ("\n"))
                     {
+                      getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
+                      printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                       close( sd );
                       client_socket[i] = 0;
                     }
