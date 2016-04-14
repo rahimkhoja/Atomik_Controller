@@ -370,7 +370,7 @@ int main(int argc, char** argv)
   std::thread foo(socketCommand, std::ref(disableSocket));
     
   std::string first_arge;
-  std::vector<std::string> all_args;
+  std::vector<char*> all_args;
 
   if (argc > 1) {
 
