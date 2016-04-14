@@ -170,9 +170,10 @@ void usage(const char *arg, const char *options){
 void socketCommand ( std::atomic<bool> & quit )
 {
 
-    int opt = TRUE;
+    int opt = 1;
     int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd;
     int max_sd;
+    int PORT = 5000;
     struct sockaddr_in address;
       
     char buffer[1025];  //data buffer of 1K
