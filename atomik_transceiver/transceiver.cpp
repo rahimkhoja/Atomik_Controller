@@ -175,6 +175,7 @@ void socketCommand ( std::atomic<bool> & quit )
     int max_sd;
     int PORT = 5000;
     struct sockaddr_in address;
+    struct timeval tv;
       
     char buffer[1025];  //data buffer of 1K
       
@@ -230,6 +231,11 @@ void socketCommand ( std::atomic<bool> & quit )
      
     while(!quit) 
     {
+        // reset the time value for select timeout
+        tv.tv_sec = 0;
+        tv.tv_usec = to * 1000;
+   
+   
         //clear the socket set
         FD_ZERO(&readfds);
   
@@ -253,7 +259,7 @@ void socketCommand ( std::atomic<bool> & quit )
         }
   
         //wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
-        activity = select( max_sd + 1 , &readfds , NULL , NULL , NULL);
+        activity = select( max_sd + 1 , &readfds , NULL , NULL , &tv);
     
         if ((activity < 0) && (errno!=EINTR)) 
         {
