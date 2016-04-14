@@ -171,7 +171,7 @@ void socketCommand ( std::atomic<bool> & quit )
 {
 
     int opt = 1;
-    int master_socket , addrlen , new_socket , client_socket[30] , max_clients = 30 , activity, i , valread , sd;
+    int master_socket , addrlen , new_socket , client_socket[5] , max_clients = 5 , activity, i , valread , sd;
     int max_sd;
     int PORT = 5000;
     struct sockaddr_in address;
@@ -183,7 +183,7 @@ void socketCommand ( std::atomic<bool> & quit )
     fd_set readfds;
       
     //a message
-    char *message = "ECHO Daemon v1.0 \r\n";
+    std::string message = "ECHO Daemon v1.0 \r\n";
   
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++) 
@@ -279,7 +279,7 @@ void socketCommand ( std::atomic<bool> & quit )
             printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
         
             //send new connection greeting message
-            if( send(new_socket, message, strlen(message), 0) != strlen(message) ) 
+            if( send(new_socket, message.c_str(), strlen(message.c_str()), 0) != strlen(message) ) 
             {
                 perror("send");
             }
