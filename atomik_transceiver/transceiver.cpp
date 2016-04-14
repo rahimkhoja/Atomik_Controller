@@ -14,6 +14,8 @@
 #include <list>
 #include <thread>
 
+#include <vector>
+
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
 
