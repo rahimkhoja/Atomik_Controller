@@ -80,7 +80,7 @@ void receive()
         printf("%02X ", packet[i]);
         fflush(stdout);
       }
-      printf(getCommand().c_str());
+      
     }
 
     int dupesReceived = mlr.dupesReceived();
@@ -236,7 +236,6 @@ void socketCommand ( std::atomic<bool> & quit )
         tv.tv_sec = 0;
         tv.tv_usec = 1000 * 1000;
    
-   
         //clear the socket set
         FD_ZERO(&readfds);
   
@@ -367,8 +366,21 @@ int main(int argc, char** argv)
 
   disableSocket = false;
   std::thread foo(socketCommand, std::ref(disableSocket));
+    
+  std::string first_arge;
+  std::vector<std::string> all_args;
 
-  while((c = getopt(argc, argv, options)) != -1){
+  if (argc > 1) {
+
+    first_arge = argv[1];
+
+    all_args.assign(argv + 1, argv + argc);
+  }
+
+  
+
+  //while((c = getopt(argc, argv, options)) != -1){
+  while((c = getopt(&all_args, all_args.size(), options)) != -1){
     switch(c){
       case 'h':
         usage(argv[0], options);
