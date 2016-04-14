@@ -312,7 +312,7 @@ void socketCommand ( std::atomic<bool> & quit )
                 {
                     //Somebody disconnected , get his details and print
                     getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
-                    printf("Host disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                       
                     //Close the socket and mark as 0 in list for reuse
                     close( sd );
@@ -325,6 +325,14 @@ void socketCommand ( std::atomic<bool> & quit )
                     //set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';
                     send(sd , buffer , strlen(buffer) , 0 );
+                    std::string commandSTR (buffer);
+                    addCommand(commandSTR);
+                    if(commandSTR.find ("\n"))
+                    {
+                      close( sd );
+                      client_socket[i] = 0;
+                    }
+                    
                 }
             }
         }
