@@ -233,7 +233,7 @@ void socketCommand ( std::atomic<bool> & quit )
     {
         // reset the time value for select timeout
         tv.tv_sec = 0;
-        tv.tv_usec = to * 1000;
+        tv.tv_usec = 1000 * 1000;
    
    
         //clear the socket set
