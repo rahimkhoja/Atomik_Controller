@@ -382,7 +382,7 @@ int main(int argc, char** argv)
   
 
   //while((c = getopt(argc, argv, options)) != -1){
-  while((c = getopt(dynamic_cast<int>(*all_args), all_args.size(), options)) != -1){
+  while((c = getopt(dynamic_cast<int>(all_args), all_args.size(), options)) != -1){
     switch(c){
       case 'h':
         usage(argv[0], options);
