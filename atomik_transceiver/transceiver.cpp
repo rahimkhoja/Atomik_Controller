@@ -475,7 +475,7 @@ int main(int argc, char** argv)
   disableSocket = false;
   foo = std::thread(socketCommand, std::ref(disableSocket));
     
-  
+  std::vector<std::string> all_args;
   std::vector<char*> all_args;
   all_args = std::vector<std::string>(argv, argv + argc);
   
