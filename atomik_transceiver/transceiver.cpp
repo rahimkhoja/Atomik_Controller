@@ -38,6 +38,43 @@ pthread_mutex_t commandList_mutex;
 
 std::atomic<bool> disableSocket;
 
+int do_receive = 0;
+  int do_command = 0;
+
+  uint8_t prefix   = 0xB8;
+  uint8_t rem_p    = 0x00;
+  uint8_t remote   = 0x01;
+  uint8_t color    = 0x00;
+  uint8_t bright   = 0x00;
+  uint8_t key      = 0x01;
+  uint8_t seq      = 0x00;
+  uint8_t resends  =   10;
+
+  uint64_t command = 0x00;
+
+  int c;
+
+  uint64_t tmp;
+  
+  const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
+
+void resetVars()
+{
+int do_receive = 0;
+  do_command = 0;
+
+  prefix   = 0xB8;
+  rem_p    = 0x00;
+  remote   = 0x01;
+  color    = 0x00;
+  bright   = 0x00;
+  key      = 0x01;
+  seq      = 0x00;
+  resends  =   10;
+
+  command = 0x00;
+}
+
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
@@ -116,6 +153,7 @@ void send(uint8_t data[8])
   for(int i = 0; i < resends; i++){
     mlr.resend();
   }
+  resetVars();
 
 }
 
@@ -138,6 +176,7 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
           uint8_t remote = 0x01, uint8_t remote_prefix = 0x00,
 	  uint8_t prefix = 0xB8, uint8_t seq = 0x00, uint8_t resends = 10)
 {
+  
   uint8_t data[8];
   data[0] = prefix;
   data[1] = remote_prefix;
@@ -344,45 +383,101 @@ void socketCommand ( std::atomic<bool> & quit )
       
 }
 
+
+void getOptions(std::vector<std::string>& args)
+{
+    std::vector<const char *> argv(args.size());
+    std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
+        return str.c_str();});
+        
+    while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
+    switch(c){
+      case 'h':
+        usage(argv[0], options);
+        exit(0);
+        break;
+      case 'd':
+        debug = 1;
+        break;
+      case 'l':
+        do_receive = 1;
+       break;
+      case 'n':
+        tmp = strtoll(optarg, NULL, 10);
+        resends = (uint8_t)tmp;
+        break;
+      case 'p':
+        tmp = strtoll(optarg, NULL, 16);
+        prefix = (uint8_t)tmp;
+        break;
+      case 'q':
+        tmp = strtoll(optarg, NULL, 16);
+        rem_p = (uint8_t)tmp;
+        break;
+      case 'r':
+        tmp = strtoll(optarg, NULL, 16);
+        remote = (uint8_t)tmp;
+        break;
+      case 'c':
+        tmp = strtoll(optarg, NULL, 16);
+        color = (uint8_t)tmp;
+        break;
+      case 'b':
+        tmp = strtoll(optarg, NULL, 16);
+        bright = (uint8_t)tmp;
+        break;
+      case 'k':
+        tmp = strtoll(optarg, NULL, 16);
+        key = (uint8_t)tmp;
+        break;
+      case 'v':
+        tmp = strtoll(optarg, NULL, 16);
+        seq = (uint8_t)tmp;
+        break;
+      case 'w':
+        do_command = 1;
+        command = strtoll(optarg, NULL, 16);
+        break;
+      case '?':
+        if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
+           optopt == 'r' || optopt == 'c' || optopt == 'b' ||
+           optopt == 'k' || optopt == 'w'){
+          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+        }
+        else if(isprint(optopt)){
+          fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+        }
+        else{
+          fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+        }
+        return 1;
+      default:
+        fprintf(stderr, "Error parsing options");
+        disableSocket = true;
+        foo.join();
+        return -1;
+    }
+  }
+    
+    
+}
+
+
+
 int main(int argc, char** argv)
 {
-  int do_receive = 0;
-  int do_command = 0;
-
-  uint8_t prefix   = 0xB8;
-  uint8_t rem_p    = 0x00;
-  uint8_t remote   = 0x01;
-  uint8_t color    = 0x00;
-  uint8_t bright   = 0x00;
-  uint8_t key      = 0x01;
-  uint8_t seq      = 0x00;
-  uint8_t resends  =   10;
-
-  uint64_t command = 0x00;
-
-  int c;
-
-  uint64_t tmp;
   
-  const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
 
   disableSocket = false;
   std::thread foo(socketCommand, std::ref(disableSocket));
     
   std::string first_arge;
   std::vector<char*> all_args;
-
-  if (argc > 1) {
-
-    first_arge = argv[1];
-
-    all_args.assign(argv + 1, argv + argc);
-  }
-
-  char** arguments = &all_args;
-  //int* intargs = arguments;
+  all_args = std::vector<std::string>(argv, argv + argc);
+  getOptions(all+args);
+ 
   
-
+/**
   //while((c = getopt(argc, argv, options)) != -1){
   while((c = getopt(intargs, all_args.size(), options)) != -1){
     switch(c){
@@ -452,7 +547,7 @@ int main(int argc, char** argv)
         return -1;
     }
   }
-
+**/
   int ret = mlr.begin();
 
   if(ret < 0){
