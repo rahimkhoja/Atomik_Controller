@@ -380,10 +380,11 @@ int main(int argc, char** argv)
   }
 
   char* arguments = &all_args;
+  int* intargs = arguments;
   
 
   //while((c = getopt(argc, argv, options)) != -1){
-  while((c = getopt(arguments, all_args.size(), options)) != -1){
+  while((c = getopt(intargs, all_args.size(), options)) != -1){
     switch(c){
       case 'h':
         usage(argv[0], options);
