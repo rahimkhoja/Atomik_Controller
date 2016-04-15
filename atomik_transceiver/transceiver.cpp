@@ -23,6 +23,8 @@
 
 #include <atomic>
 
+#include <algorithm> 
+
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
 PL1167_nRF24 prf(radio);
@@ -57,6 +59,8 @@ int do_receive = 0;
   uint64_t tmp;
   
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
+  
+  std::thread foo;
 
 void resetVars()
 {
@@ -469,12 +473,12 @@ int main(int argc, char** argv)
   
 
   disableSocket = false;
-  std::thread foo(socketCommand, std::ref(disableSocket));
+  foo = thread(socketCommand, std::ref(disableSocket));
     
-  std::string first_arge;
+  
   std::vector<char*> all_args;
   all_args = std::vector<std::string>(argv, argv + argc);
-  getOptions(all+args);
+  getOptions(all_args);
  
   
 /**
