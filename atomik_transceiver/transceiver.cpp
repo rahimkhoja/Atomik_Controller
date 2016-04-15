@@ -379,8 +379,8 @@ int main(int argc, char** argv)
     all_args.assign(argv + 1, argv + argc);
   }
 
-  char* arguments = &all_args;
-  int* intargs = arguments;
+  char** arguments = &all_args;
+  //int* intargs = arguments;
   
 
   //while((c = getopt(argc, argv, options)) != -1){
