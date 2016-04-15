@@ -388,7 +388,7 @@ void socketCommand ( std::atomic<bool> & quit )
 }
 
 
-void getOptions(std::vector<std::string>& args)
+int getOptions(std::vector<std::string>& args)
 {
     std::vector<const char *> argv(args.size());
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
@@ -473,12 +473,12 @@ int main(int argc, char** argv)
   
 
   disableSocket = false;
-  foo = thread(socketCommand, std::ref(disableSocket));
+  foo = std::thread(socketCommand, std::ref(disableSocket));
     
   
   std::vector<char*> all_args;
   all_args = std::vector<std::string>(argv, argv + argc);
-  getOptions(all_args);
+  
  
   
 /**
@@ -552,6 +552,8 @@ int main(int argc, char** argv)
     }
   }
 **/
+  int test = getOptions(all_args);
+
   int ret = mlr.begin();
 
   if(ret < 0){
