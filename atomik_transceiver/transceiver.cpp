@@ -222,57 +222,37 @@ void usage(const char *arg, const char *options){
 
 int socketConnect(int type , std::string data)
 {
-    int sock;
-    struct sockaddr_in server;
-    char message[256] , server_reply[256];
-     
-    //Create socket
-    sock = socket(AF_INET , SOCK_STREAM , 0);
-    if (sock == -1)
-    {
-        printf("Could not create socket");
-    }
-    puts("Socket created");
-     
-    server.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server.sin_family = AF_INET;
-    server.sin_port = htons( socketPort );
+    
+    int sockfd,n;
+    char sendline[256];
+    char recvline[256];
+    struct sockaddr_in servaddr;
  
-    //Connect to remote server
-    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
-    {
-        perror("connect failed. Error");
-        return 1;
-    }
-     
-    puts("Connected\n");
-     
-    //keep communicating with server
+    sockfd=socket(AF_INET,SOCK_STREAM,0);
+    bzero(&servaddr,sizeof servaddr);
+ 
+    servaddr.sin_family=AF_INET;
+    servaddr.sin_port=htons(socketPort);
+ 
+    inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
+ 
+    connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
+ 
     while(1)
     {
-        //printf("Enter message : ");
-        //scanf("%s" , message);
-         
-        //Send some data
-       // if( send(sock , message , strlen(message) , 0) < 0)
-       // {
-       //     puts("Send failed");
-      //      return 1;
-       // }
-         
-        //Receive a reply from the server
-        if( recv(sock , server_reply , 256 , 0) < 0)
-        {
-            puts("recv failed");
-            break;
-        }
-         
-        puts("Server reply :");
-        printf(server_reply);
+        bzero( sendline, 256);
+        bzero( recvline, 256);
+        fgets(sendline,256,stdin); /*stdin = 0 , for standard input */
+ 
+        write(sockfd,sendline,strlen(sendline)+1);
+        read(sockfd,recvline,256);
+        printf("%s",recvline);
         printf("\n");
     }
-     
-    close(sock);
+ 
+    
+    
+    
     return 0;
 }
 
