@@ -61,7 +61,7 @@ uint8_t remote   = 0x01;
 
   uint64_t tmp;
   
-  const char *options = "hdfslumnz:p:q:r:c:b:k:v:w:";
+  const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
   
   std::thread foo;
   
@@ -268,7 +268,8 @@ int socketConnect(int type , std::string data)
         }
          
         puts("Server reply :");
-        puts(server_reply);
+        printf(server_reply);
+        printf("\n");
     }
      
     close(sock);
