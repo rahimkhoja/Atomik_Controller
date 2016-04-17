@@ -61,7 +61,7 @@ uint8_t remote   = 0x01;
 
   uint64_t tmp;
   
-  const char *options = "hdfslumn:p:q:r:c:b:k:v:w:z:";
+  const char *options = "hdfslumnz:p:q:r:c:b:k:v:w:";
   
   std::thread foo;
   
@@ -254,11 +254,11 @@ int socketConnect(int type , std::string data)
         //scanf("%s" , message);
          
         //Send some data
-        if( send(sock , message , strlen(message) , 0) < 0)
-        {
-            puts("Send failed");
-            return 1;
-        }
+       // if( send(sock , message , strlen(message) , 0) < 0)
+       // {
+       //     puts("Send failed");
+      //      return 1;
+       // }
          
         //Receive a reply from the server
         if( recv(sock , server_reply , 2000 , 0) < 0)
