@@ -42,7 +42,9 @@ std::atomic<bool> disableSocket;
 
 int do_receive = 0;
 int do_command = 0;
-int do_client = 0;
+int do_command_send = 0;
+int do_server_check = 0;
+int do_server = 0;
 
 uint8_t prefix   = 0xB8;
 uint8_t rem_p    = 0x00;
@@ -465,6 +467,7 @@ int getOptions(std::vector<std::string>& args)
         break;
       case 'l':
         do_receive = 1;
+        do_server = 1;
        break;
       case 'n':
         tmp = strtoll(optarg, NULL, 10);
@@ -503,7 +506,7 @@ int getOptions(std::vector<std::string>& args)
         command = strtoll(optarg, NULL, 16);
         break;
       case 'z':
-        do_client = 1;
+        do_server_check = 1;
         break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
@@ -533,34 +536,41 @@ int getOptions(std::vector<std::string>& args)
 
 int main(int argc, char** argv)
 {
+    std::vector<std::string> all_args;
+    all_args = std::vector<std::string>(argv, argv + argc);
+    int test = getOptions(all_args);
+    int ret = mlr.begin();
+  
   
 
-  disableSocket = false;
-  foo = std::thread(socketCommand, std::ref(disableSocket));
-    
-  std::vector<std::string> all_args;
-  all_args = std::vector<std::string>(argv, argv + argc);
+
+    if(ret < 0){
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(argv[0], options);
+        exit(-1);
+    }
   
- 
-  int test = getOptions(all_args);
-
-  int ret = mlr.begin();
-
-  if(ret < 0){
-    fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-    fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-    usage(argv[0], options);
-    exit(-1);
+  if(do_server_check) 
+  {
+       printf("Clinet Socket Mode\n");
+       socketConnect(0,"");
   }
-  if(do_client) {
-     printf("Clinet Mode\n");
-     socketConnect(0,"");
+  
+  if(do_server) 
+  {
+       disableSocket = false;
+       foo = std::thread(socketCommand, std::ref(disableSocket));
   }
-
-
+  
   if(do_receive){
     printf("Receiving mode, press Ctrl-C to end\n");
     receive();
+  }
+ 
+  if(do_command_send)
+  {
+       socketConnect(1,"put argumnents here");
   }
  
   if(do_command){
@@ -569,7 +579,8 @@ int main(int argc, char** argv)
   else{
     send(color, bright, key, remote, rem_p, prefix, seq, resends);
   }
-disableSocket = true;
-        foo.join();
-  return 0;
+  
+    disableSocket = true;
+    foo.join();
+    return 0;
 }
