@@ -292,7 +292,7 @@ void socketCommand ( std::atomic<bool> & quit )
     fd_set readfds;
       
     //a message
-    std::string message = "Atomik Tranceiver V0.5 alpha\n";
+    std::string welcomMessage = "Atomik Tranceiver V0.5 alpha";
   
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++) 
@@ -387,7 +387,7 @@ void socketCommand ( std::atomic<bool> & quit )
             printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
         
             //send new connection greeting message
-            if( send(new_socket, message.c_str(), strlen(message.c_str()), 0) != strlen(message.c_str()) ) 
+            if( send(new_socket, welcomMessage.c_str(), strlen(welcomMessage.c_str()), 0) != strlen(welcomMessage.c_str()) ) 
             {
                 perror("send");
             }
