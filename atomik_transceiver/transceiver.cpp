@@ -41,11 +41,12 @@ pthread_mutex_t commandList_mutex;
 std::atomic<bool> disableSocket;
 
 int do_receive = 0;
-  int do_command = 0;
+int do_command = 0;
+int do_client = 0;
 
-  uint8_t prefix   = 0xB8;
-  uint8_t rem_p    = 0x00;
-  uint8_t remote   = 0x01;
+uint8_t prefix   = 0xB8;
+uint8_t rem_p    = 0x00;
+uint8_t remote   = 0x01;
   uint8_t color    = 0x00;
   uint8_t bright   = 0x00;
   uint8_t key      = 0x01;
@@ -61,6 +62,8 @@ int do_receive = 0;
   const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
   
   std::thread foo;
+  
+  int socketPort = 5000;
 
 void resetVars()
 {
@@ -133,6 +136,12 @@ void receive()
     fflush(stdout);
   } 
 }
+
+
+
+
+
+
 
 void send(uint8_t data[8])
 {
@@ -213,13 +222,69 @@ void usage(const char *arg, const char *options){
   printf("\n");
 }
 
+
+int socketConnect(int type , std::string data)
+{
+    int sock;
+    struct sockaddr_in server;
+    char message[1000] , server_reply[2000];
+     
+    //Create socket
+    sock = socket(AF_INET , SOCK_STREAM , 0);
+    if (sock == -1)
+    {
+        printf("Could not create socket");
+    }
+    puts("Socket created");
+     
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.sin_family = AF_INET;
+    server.sin_port = htons( socketPort );
+ 
+    //Connect to remote server
+    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        perror("connect failed. Error");
+        return 1;
+    }
+     
+    puts("Connected\n");
+     
+    //keep communicating with server
+    while(1)
+    {
+        //printf("Enter message : ");
+        //scanf("%s" , message);
+         
+        //Send some data
+        if( send(sock , message , strlen(message) , 0) < 0)
+        {
+            puts("Send failed");
+            return 1;
+        }
+         
+        //Receive a reply from the server
+        if( recv(sock , server_reply , 2000 , 0) < 0)
+        {
+            puts("recv failed");
+            break;
+        }
+         
+        puts("Server reply :");
+        puts(server_reply);
+    }
+     
+    close(sock);
+    return 0;
+}
+
+
 void socketCommand ( std::atomic<bool> & quit )
 {
 
     int opt = 1;
     int master_socket , addrlen , new_socket , client_socket[5] , max_clients = 5 , activity, i , valread , sd;
     int max_sd;
-    int PORT = 5000;
     struct sockaddr_in address;
     struct timeval tv;
       
@@ -254,15 +319,15 @@ void socketCommand ( std::atomic<bool> & quit )
     //type of socket created
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons( PORT );
+    address.sin_port = htons( socketPort );
       
-    //bind the socket to localhost port 8888
+    //bind the socket to localhost 
     if (bind(master_socket, (struct sockaddr *)&address, sizeof(address))<0) 
     {
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
-    printf("Listener on port %d \n", PORT);
+    printf("Listener on port %d \n", socketPort);
      
     //try to specify maximum of 3 pending connections for the master socket
     if (listen(master_socket, 3) < 0)
@@ -442,10 +507,13 @@ int getOptions(std::vector<std::string>& args)
         do_command = 1;
         command = strtoll(optarg, NULL, 16);
         break;
+      case 'z':
+        do_client = 1;
+        break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
            optopt == 'r' || optopt == 'c' || optopt == 'b' ||
-           optopt == 'k' || optopt == 'w'){
+           optopt == 'k' || optopt == 'w'|| optopt == 'z'){
           fprintf(stderr, "Option -%c requires an argument.\n", optopt);
         }
         else if(isprint(optopt)){
@@ -561,6 +629,11 @@ int main(int argc, char** argv)
     usage(argv[0], options);
     exit(-1);
   }
+  if(do_client) {
+     printf("Clinet Mode\n");
+     socketConnect(0,"");
+  }
+
 
   if(do_receive){
     printf("Receiving mode, press Ctrl-C to end\n");
