@@ -59,7 +59,7 @@ uint8_t remote   = 0x01;
 
   uint64_t tmp;
   
-  const char *options = "hdfslumn:p:q:r:c:b:k:v:w:";
+  const char *options = "hdfslumn:p:q:r:c:b:k:v:w:z:";
   
   std::thread foo;
   
@@ -136,11 +136,6 @@ void receive()
     fflush(stdout);
   } 
 }
-
-
-
-
-
 
 
 void send(uint8_t data[8])
@@ -547,78 +542,6 @@ int main(int argc, char** argv)
   all_args = std::vector<std::string>(argv, argv + argc);
   
  
-  
-/**
-  //while((c = getopt(argc, argv, options)) != -1){
-  while((c = getopt(intargs, all_args.size(), options)) != -1){
-    switch(c){
-      case 'h':
-        usage(argv[0], options);
-        exit(0);
-        break;
-      case 'd':
-        debug = 1;
-        break;
-      case 'l':
-        do_receive = 1;
-       break;
-      case 'n':
-        tmp = strtoll(optarg, NULL, 10);
-        resends = (uint8_t)tmp;
-        break;
-      case 'p':
-        tmp = strtoll(optarg, NULL, 16);
-        prefix = (uint8_t)tmp;
-        break;
-      case 'q':
-        tmp = strtoll(optarg, NULL, 16);
-        rem_p = (uint8_t)tmp;
-        break;
-      case 'r':
-        tmp = strtoll(optarg, NULL, 16);
-        remote = (uint8_t)tmp;
-        break;
-      case 'c':
-        tmp = strtoll(optarg, NULL, 16);
-        color = (uint8_t)tmp;
-        break;
-      case 'b':
-        tmp = strtoll(optarg, NULL, 16);
-        bright = (uint8_t)tmp;
-        break;
-      case 'k':
-        tmp = strtoll(optarg, NULL, 16);
-        key = (uint8_t)tmp;
-        break;
-      case 'v':
-        tmp = strtoll(optarg, NULL, 16);
-        seq = (uint8_t)tmp;
-        break;
-      case 'w':
-        do_command = 1;
-        command = strtoll(optarg, NULL, 16);
-        break;
-      case '?':
-        if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
-           optopt == 'r' || optopt == 'c' || optopt == 'b' ||
-           optopt == 'k' || optopt == 'w'){
-          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-        }
-        else if(isprint(optopt)){
-          fprintf(stderr, "Unknown option `-%c'.\n", optopt);
-        }
-        else{
-          fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-        }
-        return 1;
-      default:
-        fprintf(stderr, "Error parsing options");
-        disableSocket = true;
-        foo.join();
-        return -1;
-    }
-  }
-**/
   int test = getOptions(all_args);
 
   int ret = mlr.begin();
