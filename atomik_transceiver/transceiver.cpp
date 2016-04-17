@@ -224,7 +224,7 @@ int socketConnect(int type , std::string data)
 {
     int sock;
     struct sockaddr_in server;
-    char message[1000] , server_reply[2000];
+    char message[256] , server_reply[256];
      
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
@@ -261,7 +261,7 @@ int socketConnect(int type , std::string data)
        // }
          
         //Receive a reply from the server
-        if( recv(sock , server_reply , 2000 , 0) < 0)
+        if( recv(sock , server_reply , 256 , 0) < 0)
         {
             puts("recv failed");
             break;
@@ -292,7 +292,7 @@ void socketCommand ( std::atomic<bool> & quit )
     fd_set readfds;
       
     //a message
-    std::string message = "Atomik Tranceiver V0.5 alpha\r\n";
+    std::string message = "Atomik Tranceiver V0.5 alpha\n";
   
     //initialise all client_socket[] to 0 so not checked
     for (i = 0; i < max_clients; i++) 
