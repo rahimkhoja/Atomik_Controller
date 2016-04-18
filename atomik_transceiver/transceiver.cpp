@@ -80,7 +80,7 @@ void addCommand(std::string str)
 {
     // add command string to bottom element of list
     pthread_mutex_lock(&commandList_mutex);
-    commandList.push_front (str);
+    commandList.push_back (str);
     pthread_mutex_unlock(&commandList_mutex);
     return; 
 }
@@ -467,6 +467,7 @@ void socketCommand ( std::atomic<bool> & quit )
                     addCommand(commandSTR);
                     if(commandSTR.find ("\n"))
                     {
+                      addCommand(commandSTR);
                       getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
                       printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
                       close( sd );
