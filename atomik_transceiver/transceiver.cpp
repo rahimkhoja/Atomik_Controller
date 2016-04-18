@@ -224,7 +224,7 @@ int socketConnect(int type , std::string data)
 {
     int sock;
     struct sockaddr_in server;
-    char message[256] , server_reply[256];
+    char server_reply[256];
      
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
@@ -236,7 +236,7 @@ int socketConnect(int type , std::string data)
      
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_family = AF_INET;
-    server.sin_port = htons( 8888 );
+    server.sin_port = htons( socketPort );
  
     //Connect to remote server
     if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
