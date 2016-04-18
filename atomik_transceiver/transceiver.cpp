@@ -137,28 +137,36 @@ std::vector<std::string> String2Vector (std::string vecstring)
 
 void receive()
 {
-printf("Receiving mode, press Ctrl-C to end\n");
-  while(1){
-// check if there are any new messages to send! 
-    if(mlr.available()) {
-      printf("\n");
-      uint8_t packet[7];
-      size_t packet_length = sizeof(packet);
-      mlr.read(packet, packet_length);
+    int ret = mlr.begin();
+  
+    if(ret < 0)
+    {
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(argv[0], options);
+        exit(-1);
+    }
+    printf("Receiving mode, press Ctrl-C to end\n");
+    while(1){
+        // check if there are any new messages to send! 
+        if(mlr.available()) {
+            printf("\n");
+            uint8_t packet[7];
+            size_t packet_length = sizeof(packet);
+            mlr.read(packet, packet_length);
 
-      for(size_t i = 0; i < packet_length; i++) {
-        printf("%02X ", packet[i]);
+            for(size_t i = 0; i < packet_length; i++) {
+                printf("%02X ", packet[i]);
+                fflush(stdout);
+            }
+        }
+
+        int dupesReceived = mlr.dupesReceived();
+        for (; dupesPrinted < dupesReceived; dupesPrinted++) {
+            printf(".");
+        }
         fflush(stdout);
-      }
-      
-    }
-
-    int dupesReceived = mlr.dupesReceived();
-    for (; dupesPrinted < dupesReceived; dupesPrinted++) {
-      printf(".");
-    }
-    fflush(stdout);
-  } 
+    } 
 }
 
 
@@ -612,18 +620,7 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
-        int ret = mlr.begin();
-  
-        if(ret < 0)
-        {
-            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-            usage(argv[0], options);
-            exit(-1);
-        }
-        
-        receiveThread = std::thread(receive);
-        //receive();
+        receive();
     }
  
     if(do_command)
@@ -651,12 +648,6 @@ int main(int argc, char** argv)
     {
         disableSocket = true;
         socketServerThread.join();
-    }
-    
-    if(do_receive) 
-    {
-        //disableReceive = true;
-        //receiveThread.join();
     }
     
     return 0;
