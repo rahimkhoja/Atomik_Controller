@@ -137,15 +137,6 @@ std::vector<std::string> String2Vector (std::string vecstring)
 
 void receive(char** av)
 {
-    int ret = mlr.begin();
-  
-    if(ret < 0)
-    {
-        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-        usage(av[0], options);
-        exit(-1);
-    }
     printf("Receiving mode, press Ctrl-C to end\n");
     while(1){
         // check if there are any new messages to send! 
@@ -620,6 +611,15 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
+        int ret = mlr.begin();
+  
+        if(ret < 0)
+        {
+            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+            usage(argv[0], options);
+            exit(-1);
+        }
         receive(argv);
     }
  
