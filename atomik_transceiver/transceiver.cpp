@@ -251,17 +251,20 @@ int socketConnect(int type , std::string data)
     //keep communicating with server
     while(1)
     {
-        bzero(serverData, 256);
+        bzero(serverData, 255);
         
         //Receive a reply from the server
-        if( recv(sock , serverData , 256 , 0) < 0)
+        if( recv(sock , serverData , 255 , 0) < 0)
         {
             puts("recv failed");
             break;
         }
-         
+        
+        serverData[256] = '\0';
+        
         puts("Server Message :");
         puts(serverData);
+        
         
         std::string sData(serverData);
         
