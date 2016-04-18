@@ -225,7 +225,7 @@ int socketConnect(int type , std::string data)
     int sock;
     struct sockaddr_in server;
     char serverData[256];
-    std::string sData;
+    
      
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
@@ -263,7 +263,7 @@ int socketConnect(int type , std::string data)
         puts("Server Message :");
         puts(serverData);
         
-        sData = std::string(serverData); 
+        std::string sData(serverData);
         
         if( sData.find("Atomik") )
         {
