@@ -13,19 +13,15 @@
 #include <RF24/RF24.h>
 #include <list>
 #include <thread>
-
 #include <vector>
+#include <pthread.h>
+#include <atomic>
+#include <algorithm> 
+#include <sstream>
 
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
 
-#include <pthread.h>
-
-#include <atomic>
-
-#include <algorithm> 
-
-#include <sstream>
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
@@ -33,19 +29,15 @@ PL1167_nRF24 prf(radio);
 MiLightRadio mlr(prf);
 
 static int debug = 0;
-
 static int dupesPrinted = 0;
-
 static std::list<std::string> commandList;
 
 pthread_mutex_t commandList_mutex;
-
 std::atomic<bool> disableSocket;
 
 int do_receive = 0;
 int do_command = 0;
 int do_server = 0;
-
 int alreadyRunning = 0;
 
 uint8_t prefix   = 0xB8;
@@ -57,8 +49,6 @@ uint8_t key      = 0x01;
 uint8_t seq      = 0x00;
 uint8_t resends  =   10;
 uint64_t command = 0x00;
-
-int c;
 
 uint64_t tmp;
   
