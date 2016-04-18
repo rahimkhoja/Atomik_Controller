@@ -295,7 +295,7 @@ void socketConnect(int type , std::string data)
        
         if (type == 1)
         {
-            if( send(sock , Vector2String(all_args).c_str() , strlen(stringVector2String(all_args).c_str()) , 0) < 0)
+            if( send(sock , Vector2String(all_args).c_str() , strlen(Vector2String(all_args).c_str()) , 0) < 0)
             {
                 perror("Send to Atomik Transceiver Failed.");
                 exit(1);
@@ -612,8 +612,8 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
-        //receiveThread = std::thread(receive);
-        receive();
+        receiveThread = std::thread(receive);
+        //receive();
     }
  
     if(do_command)
