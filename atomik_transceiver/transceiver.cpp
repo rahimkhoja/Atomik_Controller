@@ -223,7 +223,7 @@ void usage(const char *arg, const char *options){
 int socketConnect(int type , std::string data)
 {
     
-    int sockfd,n;
+    int sockfd,n,valread;
     char sendline[256];
     char recvline[256];
     struct sockaddr_in servaddr;
@@ -240,18 +240,24 @@ int socketConnect(int type , std::string data)
  
     while(1)
     {
-        bzero( sendline, 256);
+        
         bzero( recvline, 256);
-        fgets(sendline,256,stdin); /*stdin = 0 , for standard input */
- 
-        write(sockfd,sendline,strlen(sendline)+1);
-        read(sockfd,recvline,256);
-        printf("%s",recvline);
-        printf("\n");
+        
+        if ((valread = read( sockfd , recvline, 256)) == 0)
+        {
+            close( sockfd );
+        } else {
+            //set the string terminating NULL byte on the end of the data read
+            recvline[valread] = '\0';
+            send(sockfd , recvline , strlen(recvline) , 0 );
+            std::string commandSTR (recvline);
+            puts(commandSTR);
+            if(commandSTR.find ("\n"))
+            {
+               close( sockfd );
+            }
+        }
     }
- 
-    
-    
     
     return 0;
 }
