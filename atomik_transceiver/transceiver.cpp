@@ -84,6 +84,12 @@ int do_receive = 0;
   command = 0x00;
 }
 
+std::string toString(char in){
+    std::stringstream buffer;
+    buffer << in;
+    return buffer.str();
+}
+
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
@@ -265,8 +271,7 @@ int socketConnect(int type , std::string data)
         
         std::string sData;
         
-        sprintf(sData, "%s", serverData);
-        
+        sData = toString(serverData);
               
         if( sData.find("Atomik") )
         {
