@@ -271,15 +271,21 @@ int socketConnect(int type , std::string data)
         puts("Server Message :");
         puts(serverData);
         
+        puts("sData Initialization");
+        
         std::string sData;
         
+        puts("sData toString");
         sData = toString(serverData);
               
+        puts(sData);
+              
+         puts("find");     
         if( sData.find("Atomik") )
         {
             puts("Server Detected");
         }
-        
+        puts("Ype 1");
         if (type == 1)
         {
             puts("Type 1");
