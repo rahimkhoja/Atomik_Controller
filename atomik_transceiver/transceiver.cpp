@@ -104,7 +104,7 @@ void removeCommand()
 	return;     
 }
 
-std::string stringVector2String(std::vector<std::string> vec)
+std::string Vector2String(std::vector<std::string> vec)
 {
     std::stringstream ss;
     for(size_t i = 0; i < vec.size(); ++i)
@@ -114,6 +114,25 @@ std::string stringVector2String(std::vector<std::string> vec)
         ss << vec[i];
     }
     return ss.str();
+}
+
+std::vector<std::string> String2Vector (std::string vecstring)
+{
+    std::string str = vecstring;
+    std::string delimiter = ",";
+    std::vector<std::string> vec;
+    size_t pos = 0;
+    std::string token;
+
+    while ((pos = str.find(delimiter)) != std::string::npos) {
+        token = str.substr(0, pos);
+        vec.push_back( token );
+        std::cout << token << std::endl;
+        str.erase(0, pos + delimiter.length());
+    }
+    vec.push_back( str );
+    std::cout << s << std::endl;
+    return vec;    
 }
 
 void receive()
@@ -587,16 +606,6 @@ int main(int argc, char** argv)
            exit(1);
         }
        
-        int ret = mlr.begin();
-  
-        if(ret < 0)
-        {
-            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-            usage(argv[0], options);
-            exit(-1);
-        }
-       
         disableSocket = false;
         socketServerThread = std::thread(socketCommand, std::ref(disableSocket));
     }
@@ -613,16 +622,16 @@ int main(int argc, char** argv)
         if(alreadyRunning) { 
             socketConnect(1,"put argumnents here");
             exit(1);
-    } 
-    int ret = mlr.begin();
+        } 
+        int ret = mlr.begin();
   
-    if(ret < 0)
-    {
-        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-        usage(argv[0], options);
-        exit(-1);
-    }
+        if(ret < 0)
+        {
+            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+            usage(argv[0], options);
+            exit(-1);
+        }
         send(command);
     } else {
         send(color, bright, key, remote, rem_p, prefix, seq, resends);
