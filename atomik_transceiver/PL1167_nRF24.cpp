@@ -40,8 +40,9 @@ int PL1167_nRF24::open()
       return -1;
     }
     radioBegin = 1;
+    _radio.printDetails();
    }
-  _radio.printDetails();
+  
   return recalc_parameters();
 }
 
