@@ -272,6 +272,7 @@ int socketConnect(int type , std::string data)
         
         if (type == 1)
         {
+            puts("Type 1");
             //Send some data
             if( send(sock , data.c_str() , strlen(data.c_str()) , 0) < 0)
             {
