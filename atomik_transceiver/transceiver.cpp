@@ -225,7 +225,7 @@ int socketConnect(int type , std::string data)
     int sock;
     struct sockaddr_in server;
     char serverData[256];
-    std:string sData;
+    std::string sData;
      
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
@@ -251,7 +251,7 @@ int socketConnect(int type , std::string data)
     //keep communicating with server
     while(1)
     {
-        bzero(serverdata, 256);
+        bzero(serverData, 256);
         
         //Receive a reply from the server
         if( recv(sock , serverData , 256 , 0) < 0)
