@@ -612,8 +612,18 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
-        //receiveThread = std::thread(receive);
-        receive();
+        int ret = mlr.begin();
+  
+        if(ret < 0)
+        {
+            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+            usage(argv[0], options);
+            exit(-1);
+        }
+        
+        receiveThread = std::thread(receive);
+        //receive();
     }
  
     if(do_command)
