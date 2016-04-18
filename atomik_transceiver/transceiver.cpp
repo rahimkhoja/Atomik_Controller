@@ -84,7 +84,7 @@ int do_receive = 0;
   command = 0x00;
 }
 
-std::string toString(char in){
+std::string toString(char* in){
     std::stringstream buffer;
     buffer << in;
     return buffer.str();
