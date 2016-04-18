@@ -603,8 +603,8 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
-        receiveThread = std::thread(receive);
-        //receive();
+        //receiveThread = std::thread(receive);
+        receive();
     }
  
     if(do_command)
