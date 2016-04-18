@@ -222,43 +222,64 @@ void usage(const char *arg, const char *options){
 
 int socketConnect(int type , std::string data)
 {
-    
-    int sockfd,n,valread;
-    char sendline[256];
-    char recvline[256];
-    struct sockaddr_in servaddr;
+    int sock;
+    struct sockaddr_in server;
+    char message[256] , server_reply[256];
+     
+    //Create socket
+    sock = socket(AF_INET , SOCK_STREAM , 0);
+    if (sock == -1)
+    {
+        printf("Could not create socket");
+    }
+    puts("Socket created");
+     
+    server.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server.sin_family = AF_INET;
+    server.sin_port = htons( 8888 );
  
-    sockfd=socket(AF_INET,SOCK_STREAM,0);
-    bzero(&servaddr,sizeof servaddr);
- 
-    servaddr.sin_family=AF_INET;
-    servaddr.sin_port=htons(socketPort);
- 
-    inet_pton(AF_INET,"127.0.0.1",&(servaddr.sin_addr));
- 
-    connect(sockfd,(struct sockaddr *)&servaddr,sizeof(servaddr));
- 
+    //Connect to remote server
+    if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        perror("connect failed. Error");
+        return 1;
+    }
+     
+    puts("Connected\n");
+     
+    //keep communicating with server
     while(1)
     {
+        bzero(server_reply, 256);
         
-        bzero( recvline, 256);
-        
-        if ((valread = read( sockfd , recvline, 256)) == 0)
+        //Receive a reply from the server
+        if( recv(sock , server_reply , 256 , 0) < 0)
         {
-            close( sockfd );
-        } else {
-            //set the string terminating NULL byte on the end of the data read
-            recvline[valread] = '\0';
-            send(sockfd , recvline , strlen(recvline) , 0 );
-            std::string commandSTR (recvline);
-            printf(commandSTR.c_str());
-            if(commandSTR.find ("\n"))
+            puts("recv failed");
+            break;
+        }
+         
+        puts("Server Message :");
+        puts(server_reply);
+        
+        if(std::string(server_reply).find("Atomik"))
+        {
+            puts("Server Detected");
+        }
+        
+        if (type == 1)
+        {
+            //Send some data
+            if( send(sock , data.c_str() , strlen(data.c_str()) , 0) < 0)
             {
-               close( sockfd );
+                puts("Send failed");
+                return 1;
             }
         }
+        break;
     }
-    
+     
+    close(sock);
     return 0;
 }
 
