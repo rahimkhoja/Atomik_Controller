@@ -639,7 +639,6 @@ int main(int argc, char** argv)
    
     if(do_server) 
     {
-        receiveThread.join();
         disableSocket = true;
         socketServerThread.join();
     }
