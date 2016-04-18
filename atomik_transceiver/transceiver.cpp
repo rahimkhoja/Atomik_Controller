@@ -92,7 +92,7 @@ void setTotalCommands(int sze)
     return; 
 }
 
-void getTotalCommands(int sze)
+int getTotalCommands()
 {
     // add command string to bottom element of list
     int temp;
@@ -137,8 +137,8 @@ void removeCommand()
     // removes the first command string element from the listlong long c;
     pthread_mutex_lock(&commandList_mutex);
     commandList.pop_front();
-    pthread_mutex_unlock(&commandList_mutex);
     setTotalCommands(commandList.size());
+    pthread_mutex_unlock(&commandList_mutex);
 	return;     
 }
 
