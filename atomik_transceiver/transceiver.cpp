@@ -33,6 +33,7 @@ static int dupesPrinted = 0;
 static std::list<std::string> commandList;
 
 pthread_mutex_t commandList_mutex;
+pthread_mutex_t totalCommands_mutex;
 std::atomic<bool> disableSocket;
 
 int do_receive = 0;
@@ -59,6 +60,9 @@ int socketPort = 5000;
 
 std::vector<std::string> all_args;
 
+int totalCommands;
+
+
 void resetVars()
 {
   do_receive = 0;
@@ -76,12 +80,35 @@ void resetVars()
   command = 0x00;
 }
 
+
+
+
+void setTotalCommands(int sze)
+{
+    // add command string to bottom element of list
+    pthread_mutex_lock(&totalCommands_mutex);
+    totalCommands = sze;
+    pthread_mutex_unlock(&totalCommands_mutex);
+    return; 
+}
+
+void getTotalCommands(int sze)
+{
+    // add command string to bottom element of list
+    int temp;
+    pthread_mutex_lock(&totalCommands_mutex);
+    temp = totalCommands;
+    pthread_mutex_unlock(&totalCommands_mutex);
+    return temp; 
+}
+
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
     pthread_mutex_lock(&commandList_mutex);
     commandList.push_back (str);
     pthread_mutex_unlock(&commandList_mutex);
+    setTotalCommands(commandList.size());
     return; 
 }
 
@@ -95,12 +122,23 @@ std::string getCommand()
     return str;
 }
 
+int getCommandLength()
+{
+    // returns the first command sting element in the list
+    int sze;
+    pthread_mutex_lock(&commandList_mutex);
+    sze = commandList.size();
+    pthread_mutex_unlock(&commandList_mutex);
+    return sze;
+}
+
 void removeCommand()
 {
     // removes the first command string element from the listlong long c;
     pthread_mutex_lock(&commandList_mutex);
     commandList.pop_front();
     pthread_mutex_unlock(&commandList_mutex);
+    setTotalCommands(commandList.size());
 	return;     
 }
 
@@ -140,23 +178,31 @@ void receive()
     printf("Receiving mode, press Ctrl-C to end\n");
     while(1){
         // check if there are any new messages to send! 
-        if(mlr.available()) {
-            printf("\n");
-            uint8_t packet[7];
-            size_t packet_length = sizeof(packet);
-            mlr.read(packet, packet_length);
+        if(totalCommands==0) {
+            if(mlr.available()) {
+                printf("\n");
+                uint8_t packet[7];
+                size_t packet_length = sizeof(packet);
+                mlr.read(packet, packet_length);
 
-            for(size_t i = 0; i < packet_length; i++) {
-                printf("%02X ", packet[i]);
-                fflush(stdout);
+                for(size_t i = 0; i < packet_length; i++) {
+                    printf("%02X ", packet[i]);
+                    fflush(stdout);
+                }
             }
-        }
 
-        int dupesReceived = mlr.dupesReceived();
-        for (; dupesPrinted < dupesReceived; dupesPrinted++) {
-            printf(".");
+            int dupesReceived = mlr.dupesReceived();
+            for (; dupesPrinted < dupesReceived; dupesPrinted++) {
+                printf(".");
+            }
+           fflush(stdout);
+       } else {
+        
+        printf(getCommand().c_str());
+        printf("\n");
+        removeCommand();
+        
         }
-        fflush(stdout);
     } 
 }
 
