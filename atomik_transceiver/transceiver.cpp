@@ -117,6 +117,17 @@ void removeCommand()
 	return;     
 }
 
+std::string stringVector2String(std::vector<std::string> vec)
+{
+    std::stringstream ss;
+    for(size_t i = 0; i < vec.size(); ++i)
+    {
+        if(i != 0)
+            ss << ",";
+        ss << vec[i];
+    }
+    return ss.str();
+}
 
 void receive()
 {
@@ -279,11 +290,11 @@ void socketConnect(int type , std::string data)
         if (type == 1)
         {
             //Send some data
-            if( send(sock , carg , varg , 0) < 0)
-            {
-                perror("Send to Atomik Transceiver Failed.");
-                exit(1);
-            }
+            //if( send(sock , carg , varg , 0) < 0)
+            //{
+            //    perror("Send to Atomik Transceiver Failed.");
+            //    exit(1);
+            //}
         }
         break;
     }
@@ -571,6 +582,8 @@ int main(int argc, char** argv)
     carg = argc;
     varg = argv;
     std::vector<std::string> all_args;
+    printf(stringVector2String(all_args).c_str());
+    printf("\n");
     all_args = std::vector<std::string>(argv, argv + argc);
     do_receive = 1;
     do_server = 1;
