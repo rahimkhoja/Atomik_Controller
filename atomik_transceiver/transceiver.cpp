@@ -541,7 +541,7 @@ void getOptions(std::vector<std::string>& args)
         command = strtoll(optarg, NULL, 16);
         break;
       case 'z':
-        do_server_check = 1;
+        socketConnect();
         break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
