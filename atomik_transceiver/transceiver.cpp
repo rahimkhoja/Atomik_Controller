@@ -48,6 +48,9 @@ int do_server = 0;
 
 int alreadyRunning = 0;
 
+int carg;
+char** varg;
+
 uint8_t prefix   = 0xB8;
 uint8_t rem_p    = 0x00;
 uint8_t remote   = 0x01;
@@ -276,7 +279,7 @@ void socketConnect(int type , std::string data)
         if (type == 1)
         {
             //Send some data
-            if( send(sock , data.c_str() , strlen(data.c_str()) , 0) < 0)
+            if( send(sock , carg , varg , 0) < 0)
             {
                 perror("Send to Atomik Transceiver Failed.");
                 exit(1);
@@ -565,7 +568,8 @@ void getOptions(std::vector<std::string>& args)
 
 int main(int argc, char** argv)
 {
-
+    carg = argc;
+    varg = argv;
     std::vector<std::string> all_args;
     all_args = std::vector<std::string>(argv, argv + argc);
     do_receive = 1;
