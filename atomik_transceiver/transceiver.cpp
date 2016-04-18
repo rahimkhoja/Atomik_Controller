@@ -44,9 +44,9 @@ std::atomic<bool> disableSocket;
 
 int do_receive = 0;
 int do_command = 0;
-int do_command_send = 0;
-int do_server_check = 0;
 int do_server = 0;
+
+int alreadyRunning = 0;
 
 uint8_t prefix   = 0xB8;
 uint8_t rem_p    = 0x00;
@@ -65,7 +65,7 @@ uint8_t remote   = 0x01;
   
   const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
   
-  std::thread foo;
+  std::thread socketServerThread;
   
   int socketPort = 5000;
 
@@ -208,7 +208,6 @@ void usage(const char *arg, const char *options){
   printf("\n");
   printf("   -h                       Show this help\n");
   printf("   -d                       Show debug output\n");
-  printf("   -l                       Listening (receiving) mode\n");
   printf("   -n NN<dec>               Resends of the same message\n");
   printf("   -p PP<hex>               Prefix value (Disco Mode)\n");
   printf("   -q RR<hex>               First byte of the remote\n");
@@ -222,13 +221,12 @@ void usage(const char *arg, const char *options){
 }
 
 
-int socketConnect(int type , std::string data)
+void socketConnect(int type , std::string data)
 {
     int sock;
     struct sockaddr_in server;
     char serverData[256];
     
-     
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
     if (sock == -1)
@@ -245,7 +243,8 @@ int socketConnect(int type , std::string data)
     if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)
     {
         perror("connect failed. Error");
-        return 1;
+        alreadyRunning = 0;
+        return;
     }
      
     puts("Connected\n");
@@ -262,36 +261,31 @@ int socketConnect(int type , std::string data)
             break;
         }
                 
-        puts("Server Message :");
         puts(serverData);
-        
-        puts("sData Initialization");
-        
+       
         std::string sData(serverData);
-        
-        puts(sData.c_str());
-              
-         puts("find");     
+                    
         if( sData.find("Atomik") )
         {
-            puts("Server Detected");
+            alreadyRunning = 1;
+        } else {
+            perror("Atomik Transceiver Socket Busy.");
+            exit(1);
         }
-        puts("Ype 1");
+       
         if (type == 1)
         {
-            puts("Type 1");
             //Send some data
             if( send(sock , data.c_str() , strlen(data.c_str()) , 0) < 0)
             {
-                puts("Send failed");
-                return 1;
+                perror("Send to Atomik Transceiver Failed.");
+                exit(1);
             }
         }
         break;
     }
      
     close(sock);
-    return 0;
 }
 
 
@@ -469,7 +463,7 @@ void socketCommand ( std::atomic<bool> & quit )
 }
 
 
-int getOptions(std::vector<std::string>& args)
+void getOptions(std::vector<std::string>& args)
 {
     std::vector<const char *> argv(args.size());
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
@@ -484,43 +478,65 @@ int getOptions(std::vector<std::string>& args)
       case 'd':
         debug = 1;
         break;
-      case 'l':
-        do_receive = 1;
-        do_server = 1;
-       break;
       case 'n':
+        do_receive = 0;
+        do_server = 0;
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 10);
         resends = (uint8_t)tmp;
         break;
       case 'p':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         prefix = (uint8_t)tmp;
         break;
       case 'q':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         rem_p = (uint8_t)tmp;
         break;
       case 'r':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         remote = (uint8_t)tmp;
         break;
       case 'c':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         color = (uint8_t)tmp;
         break;
       case 'b':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         bright = (uint8_t)tmp;
         break;
       case 'k':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         key = (uint8_t)tmp;
         break;
       case 'v':
+        do_receive = 0;
+        do_server = 0;      
+        do_command = 1;
         tmp = strtoll(optarg, NULL, 16);
         seq = (uint8_t)tmp;
         break;
       case 'w':
+        do_receive = 0;
+        do_server = 0;
         do_command = 1;
         command = strtoll(optarg, NULL, 16);
         break;
@@ -539,45 +555,42 @@ int getOptions(std::vector<std::string>& args)
         else{
           fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
         }
-        return 1;
+        exit(1);
       default:
         fprintf(stderr, "Error parsing options");
-        return -1;
+        exit(-1);
     }
-  }
-    
-    
+  }     
 }
-
-
 
 int main(int argc, char** argv)
 {
+
     std::vector<std::string> all_args;
     all_args = std::vector<std::string>(argv, argv + argc);
-    int test = getOptions(all_args);
+    do_receive = 1;
+    do_server = 1;
+    
+    getOptions(all_args);
+    
     int ret = mlr.begin();
   
-  
-
-
-    if(ret < 0){
+   if(ret < 0){
         fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
         fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
         usage(argv[0], options);
         exit(-1);
     }
   
-  if(do_server_check) 
-  {
-       printf("Clinet Socket Mode\n");
+    if(do_server) 
+    {
        socketConnect(0,"");
-  }
-  
-  if(do_server) 
-  {
+       if(alreadyRunning) { 
+           perror("Atomik Transceiver Already Running!");
+           exit(1);
+       }
        disableSocket = false;
-       foo = std::thread(socketCommand, std::ref(disableSocket));
+       socketServerThread = std::thread(socketCommand, std::ref(disableSocket));
   }
   
   if(do_receive){
@@ -585,21 +598,22 @@ int main(int argc, char** argv)
     receive();
   }
  
-  if(do_command_send)
-  {
-       socketConnect(1,"put argumnents here");
-  }
- 
   if(do_command){
-    send(command);
+     socketConnect(0,"");
+     if(alreadyRunning) { 
+         socketConnect(1,"put argumnents here");
+         exit(1);
+     } 
+     send(command);
+  } else {
+      send(color, bright, key, remote, rem_p, prefix, seq, resends);
   }
-  else{
-    send(color, bright, key, remote, rem_p, prefix, seq, resends);
-  }
+   
+  
   if(do_server) 
   {
        disableSocket = true;
-    foo.join();
+       socketServerThread.join();
   }
     
     return 0;
