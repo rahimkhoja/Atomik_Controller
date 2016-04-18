@@ -582,9 +582,10 @@ int main(int argc, char** argv)
     carg = argc;
     varg = argv;
     std::vector<std::string> all_args;
+    all_args = std::vector<std::string>(argv, argv + argc);
+    
     printf(stringVector2String(all_args).c_str());
     printf("\n");
-    all_args = std::vector<std::string>(argv, argv + argc);
     do_receive = 1;
     do_server = 1;
     
