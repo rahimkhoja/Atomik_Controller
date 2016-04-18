@@ -48,33 +48,32 @@ int do_server = 0;
 
 int alreadyRunning = 0;
 
-int carg;
-char** varg;
-
 uint8_t prefix   = 0xB8;
 uint8_t rem_p    = 0x00;
 uint8_t remote   = 0x01;
-  uint8_t color    = 0x00;
-  uint8_t bright   = 0x00;
-  uint8_t key      = 0x01;
-  uint8_t seq      = 0x00;
-  uint8_t resends  =   10;
+uint8_t color    = 0x00;
+uint8_t bright   = 0x00;
+uint8_t key      = 0x01;
+uint8_t seq      = 0x00;
+uint8_t resends  =   10;
+uint64_t command = 0x00;
 
-  uint64_t command = 0x00;
+int c;
 
-  int c;
+uint64_t tmp;
+  
+const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
+  
+std::thread socketServerThread;
+std::thread receiveThread;
+  
+int socketPort = 5000;
 
-  uint64_t tmp;
-  
-  const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
-  
-  std::thread socketServerThread;
-  
-  int socketPort = 5000;
+std::vector<std::string> all_args;
 
 void resetVars()
 {
-int do_receive = 0;
+  do_receive = 0;
   do_command = 0;
 
   prefix   = 0xB8;
@@ -131,7 +130,7 @@ std::string stringVector2String(std::vector<std::string> vec)
 
 void receive()
 {
-
+printf("Receiving mode, press Ctrl-C to end\n");
   while(1){
 // check if there are any new messages to send! 
     if(mlr.available()) {
@@ -289,12 +288,12 @@ void socketConnect(int type , std::string data)
        
         if (type == 1)
         {
-            //Send some data
-            //if( send(sock , carg , varg , 0) < 0)
-            //{
-            //    perror("Send to Atomik Transceiver Failed.");
-            //    exit(1);
-            //}
+            Send some data
+            if( send(sock , stringVector2String(all_args).c_str() , strlen(stringVector2String(all_args).c_str()) , 0) < 0)
+            {
+                perror("Send to Atomik Transceiver Failed.");
+                exit(1);
+            }
         }
         break;
     }
@@ -579,13 +578,10 @@ void getOptions(std::vector<std::string>& args)
 
 int main(int argc, char** argv)
 {
-    carg = argc;
-    varg = argv;
-    std::vector<std::string> all_args;
+    
+    
     all_args = std::vector<std::string>(argv, argv + argc);
     
-    printf(stringVector2String(all_args).c_str());
-    printf("\n");
     do_receive = 1;
     do_server = 1;
     
@@ -612,8 +608,7 @@ int main(int argc, char** argv)
   }
   
   if(do_receive){
-    printf("Receiving mode, press Ctrl-C to end\n");
-    receive();
+    receiveThread = std::thread(receive);
   }
  
   if(do_command){
