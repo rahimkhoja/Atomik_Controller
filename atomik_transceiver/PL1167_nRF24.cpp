@@ -37,6 +37,7 @@ int PL1167_nRF24::open()
   if(_radio.begin() == false){
     return -1;
   }
+  _radio.printDetails();
   return recalc_parameters();
 }
 
