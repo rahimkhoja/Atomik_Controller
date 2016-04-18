@@ -278,7 +278,7 @@ int socketConnect(int type , std::string data)
         puts("sData toString");
         sData = toString(serverData);
               
-        puts(sData);
+        puts(sData.c_str());
               
          puts("find");     
         if( sData.find("Atomik") )
