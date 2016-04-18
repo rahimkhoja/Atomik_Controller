@@ -131,7 +131,7 @@ std::vector<std::string> String2Vector (std::string vecstring)
         str.erase(0, pos + delimiter.length());
     }
     vec.push_back( str );
-    std::cout << s << std::endl;
+    std::cout << str << std::endl;
     return vec;    
 }
 
