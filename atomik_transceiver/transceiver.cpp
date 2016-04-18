@@ -86,12 +86,6 @@ int do_receive = 0;
   command = 0x00;
 }
 
-std::string toString(char* in){
-    std::stringstream buffer;
-    buffer << in;
-    return buffer.str();
-}
-
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
@@ -273,11 +267,8 @@ int socketConnect(int type , std::string data)
         
         puts("sData Initialization");
         
-        std::string sData;
+        std::string sData(serverData);
         
-        puts("sData toString");
-        sData = toString(serverData);
-              
         puts(sData.c_str());
               
          puts("find");     
@@ -551,8 +542,6 @@ int getOptions(std::vector<std::string>& args)
         return 1;
       default:
         fprintf(stderr, "Error parsing options");
-        disableSocket = true;
-        foo.join();
         return -1;
     }
   }
@@ -607,8 +596,11 @@ int main(int argc, char** argv)
   else{
     send(color, bright, key, remote, rem_p, prefix, seq, resends);
   }
-  
-    disableSocket = true;
+  if(do_server) 
+  {
+       disableSocket = true;
     foo.join();
+  }
+    
     return 0;
 }
