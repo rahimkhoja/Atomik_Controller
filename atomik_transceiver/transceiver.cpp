@@ -50,8 +50,6 @@ uint8_t seq      = 0x00;
 uint8_t resends  =   10;
 uint64_t command = 0x00;
 
-
-  
 const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
   
 std::thread socketServerThread;
@@ -545,6 +543,9 @@ void getOptions(std::vector<std::string>& args)
         command = strtoll(optarg, NULL, 16);
         break;
       case 'z':
+      do_receive = 0;
+        do_server = 0;
+        do_command = 0;
         socketConnect(0,"");
         break;
       case '?':
@@ -570,7 +571,6 @@ void getOptions(std::vector<std::string>& args)
 int main(int argc, char** argv)
 {
     
-    
     all_args = std::vector<std::string>(argv, argv + argc);
     
     do_receive = 1;
@@ -578,58 +578,60 @@ int main(int argc, char** argv)
     
     getOptions(all_args);
     
-     
     if(do_server) 
     {
-       socketConnect(0,"");
-       if(alreadyRunning) { 
+        socketConnect(0,"");
+        if(alreadyRunning) 
+        { 
            perror("Atomik Transceiver Already Running!");
            exit(1);
-       }
+        }
        
-       int ret = mlr.begin();
+        int ret = mlr.begin();
   
-   if(ret < 0){
-        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-        usage(argv[0], options);
-        exit(-1);
+        if(ret < 0)
+        {
+            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+            usage(argv[0], options);
+            exit(-1);
+        }
+       
+        disableSocket = false;
+        socketServerThread = std::thread(socketCommand, std::ref(disableSocket));
     }
-       
-       disableSocket = false;
-       socketServerThread = std::thread(socketCommand, std::ref(disableSocket));
-  }
   
-  if(do_receive){
-    //receiveThread = std::thread(receive);
-    receive();
-  }
+    if(do_receive)
+    {
+        receiveThread = std::thread(receive);
+        //receive();
+    }
  
-  if(do_command){
-     socketConnect(0,"");
-     if(alreadyRunning) { 
-         socketConnect(1,"put argumnents here");
-         exit(1);
-     } 
-     int ret = mlr.begin();
+    if(do_command)
+    {
+        socketConnect(0,"");
+        if(alreadyRunning) { 
+            socketConnect(1,"put argumnents here");
+            exit(1);
+    } 
+    int ret = mlr.begin();
   
-   if(ret < 0){
+    if(ret < 0)
+    {
         fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
         fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
         usage(argv[0], options);
         exit(-1);
     }
-     send(command);
-  } else {
-      send(color, bright, key, remote, rem_p, prefix, seq, resends);
-  }
+        send(command);
+    } else {
+        send(color, bright, key, remote, rem_p, prefix, seq, resends);
+    }
    
-  
-  if(do_server) 
-  {
-       disableSocket = true;
-       socketServerThread.join();
-  }
-    
+    if(do_server) 
+    {
+        disableSocket = true;
+        socketServerThread.join();
+    }
     return 0;
 }
