@@ -224,7 +224,8 @@ int socketConnect(int type , std::string data)
 {
     int sock;
     struct sockaddr_in server;
-    char server_reply[256];
+    char serverData[256];
+    std:string sData;
      
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
@@ -250,19 +251,21 @@ int socketConnect(int type , std::string data)
     //keep communicating with server
     while(1)
     {
-        bzero(server_reply, 256);
+        bzero(serverdata, 256);
         
         //Receive a reply from the server
-        if( recv(sock , server_reply , 256 , 0) < 0)
+        if( recv(sock , serverData , 256 , 0) < 0)
         {
             puts("recv failed");
             break;
         }
          
         puts("Server Message :");
-        puts(server_reply);
+        puts(serverData);
         
-        if(std::string(server_reply).find("Atomik"))
+        sData = std::string(serverData); 
+        
+        if( sData.find("Atomik") )
         {
             puts("Server Detected");
         }
