@@ -25,6 +25,8 @@
 
 #include <algorithm> 
 
+#include <sstream>
+
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_1MHZ);
 
 PL1167_nRF24 prf(radio);
