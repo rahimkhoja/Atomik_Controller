@@ -135,7 +135,7 @@ std::vector<std::string> String2Vector (std::string vecstring)
     return vec;    
 }
 
-void receive(char** av)
+void receive()
 {
     printf("Receiving mode, press Ctrl-C to end\n");
     while(1){
@@ -620,7 +620,7 @@ int main(int argc, char** argv)
             usage(argv[0], options);
             exit(-1);
         }
-        receive(argv);
+        receive();
     }
  
     if(do_command)
