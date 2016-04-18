@@ -135,7 +135,7 @@ std::vector<std::string> String2Vector (std::string vecstring)
     return vec;    
 }
 
-void receive()
+void receive(char** av)
 {
     int ret = mlr.begin();
   
@@ -143,7 +143,7 @@ void receive()
     {
         fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
         fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-        usage(argv[0], options);
+        usage(av[0], options);
         exit(-1);
     }
     printf("Receiving mode, press Ctrl-C to end\n");
@@ -620,7 +620,7 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
-        receive();
+        receive(argv);
     }
  
     if(do_command)
