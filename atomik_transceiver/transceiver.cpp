@@ -586,15 +586,7 @@ int main(int argc, char** argv)
     
     getOptions(all_args);
     
-    int ret = mlr.begin();
-  
-   if(ret < 0){
-        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-        usage(argv[0], options);
-        exit(-1);
-    }
-  
+     
     if(do_server) 
     {
        socketConnect(0,"");
@@ -602,6 +594,16 @@ int main(int argc, char** argv)
            perror("Atomik Transceiver Already Running!");
            exit(1);
        }
+       
+       int ret = mlr.begin();
+  
+   if(ret < 0){
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(argv[0], options);
+        exit(-1);
+    }
+       
        disableSocket = false;
        socketServerThread = std::thread(socketCommand, std::ref(disableSocket));
   }
@@ -616,6 +618,14 @@ int main(int argc, char** argv)
          socketConnect(1,"put argumnents here");
          exit(1);
      } 
+     int ret = mlr.begin();
+  
+   if(ret < 0){
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(argv[0], options);
+        exit(-1);
+    }
      send(command);
   } else {
       send(color, bright, key, remote, rem_p, prefix, seq, resends);
