@@ -28,15 +28,19 @@ PL1167_nRF24::PL1167_nRF24(RF24 &radio) : _radio(radio)
   _receive_length = 0;
   _preamble = 0;
   _received = false;
+  radioBegin = 0;
 }
 
 static const uint8_t pipe[] = {0xd1, 0x28, 0x5e, 0x55, 0x55};
 
 int PL1167_nRF24::open()
 {
-  if(_radio.begin() == false){
-    return -1;
-  }
+   if(radioBegin == 0) {
+    if(_radio.begin() == false){
+      return -1;
+    }
+    radioBegin = 1;
+   }
   _radio.printDetails();
   return recalc_parameters();
 }
