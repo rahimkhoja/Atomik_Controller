@@ -50,7 +50,7 @@ uint8_t seq      = 0x00;
 uint8_t resends  =   10;
 uint64_t command = 0x00;
 
-uint64_t tmp;
+
   
 const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
   
@@ -467,10 +467,12 @@ void socketCommand ( std::atomic<bool> & quit )
 
 void getOptions(std::vector<std::string>& args)
 {
+    int c;
+    uint64_t tmp;
     std::vector<const char *> argv(args.size());
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
         return str.c_str();});
-        
+          
     while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
     switch(c){
       case 'h':
