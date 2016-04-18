@@ -251,7 +251,7 @@ int socketConnect(int type , std::string data)
             recvline[valread] = '\0';
             send(sockfd , recvline , strlen(recvline) , 0 );
             std::string commandSTR (recvline);
-            puts(commandSTR);
+            puts(commandSTR.c_str());
             if(commandSTR.find ("\n"))
             {
                close( sockfd );
