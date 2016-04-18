@@ -29,7 +29,8 @@ class PL1167_nRF24 : public AbstractPL1167 {
     int transmit(uint8_t channel);
     int receive(uint8_t channel);
     int readFIFO(uint8_t data[], size_t &data_length);
-
+    int radioBegin;
+    
   private:
     RF24 &_radio;
 
