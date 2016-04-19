@@ -508,7 +508,7 @@ void socketCommand ( std::atomic<bool> & quit )
                 {
                     //set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';
-                    send(sd , buffer , strlen(buffer) , 0 );
+                    //send(sd , buffer , strlen(buffer) , 0 );
                     std::string commandSTR (buffer);
                     addCommand(commandSTR);
                     printf(commandSTR.c_str());
