@@ -622,6 +622,10 @@ int main(int argc, char** argv)
     
     getOptions(all_args);
     
+    printf("\n Arg String: ");
+    printf(Vector2String(all_args).c_str());
+    printf("\n");
+    
     if(do_server) 
     {
         socketConnect(0,"");
