@@ -326,6 +326,8 @@ void socketConnect(int type , std::string data)
             printf("Type: 0\n");
         }
         
+        printf(sData.c_str());
+        
         if( sData.find("Atomik") )
         {
             printf("Atomik Server already Running!\n");
