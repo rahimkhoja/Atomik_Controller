@@ -266,6 +266,16 @@ void socketConnect(int type , std::string data)
     struct sockaddr_in server;
     char serverData[256];
     
+    int ty = type;
+    std::string st = data;
+    
+    printf("\nType: ");
+    printf(ty);
+    printf("\n: ");
+    printf("\nSocketConnect Data: ");
+    printf(st.c_str());
+    printf("\n: ");
+    
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
     if (sock == -1)
@@ -304,7 +314,7 @@ void socketConnect(int type , std::string data)
        
         std::string sData(serverData);
                     
-        if( sData.find("Atomik") )
+        if( sData.find("Atomik") && type == 0)
         {
             alreadyRunning = 1;
         } else {
@@ -655,11 +665,9 @@ int main(int argc, char** argv)
  
     if(do_command)
     {
-        socketConnect(0,"");
+        socketConnect(0, "");
         if(alreadyRunning) { 
-            socketConnect(1,Vector2String(all_args));
-            disableSocket = true;
-            socketServerThread.join();
+            socketConnect(1, Vector2String(all_args));
             exit(1);
         } 
         int ret = mlr.begin();
