@@ -269,9 +269,6 @@ void socketConnect(int type , std::string data)
     int ty = type;
     std::string st = data;
     
-    printf("\nType: ");
-    printf(ty);
-    printf("\n: ");
     printf("\nSocketConnect Data: ");
     printf(st.c_str());
     printf("\n: ");
