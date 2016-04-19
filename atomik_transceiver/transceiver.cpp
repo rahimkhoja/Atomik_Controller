@@ -658,6 +658,8 @@ int main(int argc, char** argv)
         socketConnect(0,"");
         if(alreadyRunning) { 
             socketConnect(1,Vector2String(all_args));
+            disableSocket = true;
+            socketServerThread.join();
             exit(1);
         } 
         int ret = mlr.begin();
