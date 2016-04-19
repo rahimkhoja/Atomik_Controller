@@ -311,13 +311,7 @@ void socketConnect(int type , std::string data)
        
         std::string sData(serverData);
                     
-        if( sData.find("Atomik") && type == 0)
-        {
-            alreadyRunning = 1;
-        } else {
-            perror("Atomik Transceiver Socket Busy.");
-            exit(1);
-        }
+        
        
         if (type == 1)
         {
@@ -330,6 +324,15 @@ void socketConnect(int type , std::string data)
                 exit(1);
             }
         }
+        
+        if( sData.find("Atomik") )
+        {
+            alreadyRunning = 1;
+        } else {
+            perror("Atomik Transceiver Socket Busy.");
+            exit(1);
+        }
+        
         break;
     }
      
