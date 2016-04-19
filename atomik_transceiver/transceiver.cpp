@@ -328,6 +328,7 @@ void socketConnect(int type , std::string data)
         
         if( sData.find("Atomik") )
         {
+            printf("Atomik Server already Running!\n");
             alreadyRunning = 1;
         } else {
             perror("Atomik Transceiver Socket Busy.");
