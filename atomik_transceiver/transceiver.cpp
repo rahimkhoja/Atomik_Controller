@@ -60,9 +60,6 @@ int socketPort = 5000;
 
 std::vector<std::string> all_args;
 
-int totalCommands;
-
-
 void resetVars()
 {
   do_receive = 0;
@@ -81,34 +78,12 @@ void resetVars()
 }
 
 
-
-
-void setTotalCommands(int sze)
-{
-    // add command string to bottom element of list
-    pthread_mutex_lock(&totalCommands_mutex);
-    totalCommands = sze;
-    pthread_mutex_unlock(&totalCommands_mutex);
-    return; 
-}
-
-int getTotalCommands()
-{
-    // add command string to bottom element of list
-    int temp;
-    pthread_mutex_lock(&totalCommands_mutex);
-    temp = totalCommands;
-    pthread_mutex_unlock(&totalCommands_mutex);
-    return temp; 
-}
-
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
     pthread_mutex_lock(&commandList_mutex);
     commandList.push_back (str);
     pthread_mutex_unlock(&commandList_mutex);
-    setTotalCommands(commandList.size());
     return; 
 }
 
@@ -137,7 +112,6 @@ void removeCommand()
     // removes the first command string element from the listlong long c;
     pthread_mutex_lock(&commandList_mutex);
     commandList.pop_front();
-    setTotalCommands(commandList.size());
     pthread_mutex_unlock(&commandList_mutex);
 	return;     
 }
@@ -178,7 +152,7 @@ void receive()
     printf("Receiving mode, press Ctrl-C to end\n");
     while(1){
         // check if there are any new messages to send! 
-        if(totalCommands==0) {
+        if(getCommandLength()==0) {
             if(mlr.available()) {
                 printf("\n");
                 uint8_t packet[7];
@@ -340,6 +314,8 @@ void socketConnect(int type , std::string data)
        
         if (type == 1)
         {
+            printf(Vector2String(all_args).c_str());
+            printf("\n");
             if( send(sock , Vector2String(all_args).c_str() , strlen(Vector2String(all_args).c_str()) , 0) < 0)
             {
                 perror("Send to Atomik Transceiver Failed.");
@@ -508,7 +484,7 @@ void socketCommand ( std::atomic<bool> & quit )
                 {
                     //set the string terminating NULL byte on the end of the data read
                     buffer[valread] = '\0';
-                    //send(sd , buffer , strlen(buffer) , 0 );
+                    send(sd , buffer , strlen(buffer) , 0 );
                     std::string commandSTR (buffer);
                     addCommand(commandSTR);
                     printf(commandSTR.c_str());
