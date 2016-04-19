@@ -308,12 +308,11 @@ void socketConnect(int type , std::string data)
         }
                 
         puts(serverData);
-       
         std::string sData(serverData);
                     
-        
-       
-        if (type == 1)
+                    
+                    
+        if (ty == 1)
         {
             printf("Sending Arg String: ");
             printf(Vector2String(all_args).c_str());
@@ -323,6 +322,8 @@ void socketConnect(int type , std::string data)
                 perror("Send to Atomik Transceiver Failed.");
                 exit(1);
             }
+        } else {
+            printf("Type: 0\n");
         }
         
         if( sData.find("Atomik") )
