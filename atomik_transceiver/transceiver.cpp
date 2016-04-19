@@ -171,7 +171,7 @@ void receive()
             }
            fflush(stdout);
        } else {
-        
+        printf("Command Processed: ");
         printf(getCommand().c_str());
         printf("\n");
         removeCommand();
