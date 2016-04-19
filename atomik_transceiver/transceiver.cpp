@@ -314,6 +314,7 @@ void socketConnect(int type , std::string data)
        
         if (type == 1)
         {
+            printf("Sending Arg String: ");
             printf(Vector2String(all_args).c_str());
             printf("\n");
             if( send(sock , Vector2String(all_args).c_str() , strlen(Vector2String(all_args).c_str()) , 0) < 0)
@@ -487,6 +488,7 @@ void socketCommand ( std::atomic<bool> & quit )
                     send(sd , buffer , strlen(buffer) , 0 );
                     std::string commandSTR (buffer);
                     addCommand(commandSTR);
+                    printf("Receiving Command String: ");
                     printf(commandSTR.c_str());
                     printf("\n");
                     if(commandSTR.find ("\n"))
