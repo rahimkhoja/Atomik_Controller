@@ -328,7 +328,7 @@ void socketConnect(int type , std::string data)
         
         printf(sData.c_str());
         
-        if( sData.find("Atomik") )
+        if( sData.find("Atomik") != std::string::npos )
         {
             printf("Atomik Server already Running!\n");
             alreadyRunning = 1;
