@@ -191,18 +191,20 @@ void receive()
                 }
     
             }
+            
             int dupesReceived = mlr.dupesReceived();
             for (; dupesPrinted < dupesReceived; dupesPrinted++) {
                 printf(".");
             }
             fflush(stdout);
-       } else {
+       
+        } else {
             printf("Command Processed: ");
             printf(getCommand().c_str());
             printf("\n");
             removeCommand();
-       }
-    
+        }
+    }
 }
 
 
