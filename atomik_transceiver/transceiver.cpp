@@ -185,7 +185,7 @@ void receive()
                 }
             
             }
-            printf(")] = "TestRadioCypher";\t\t\t\\\\ HEX Values: ");
+            printf(")] = \"TestRadioCypher\";\t\t\t\\\\ HEX Values: ");
             
             for(size_t i = 0; i < packet_length; i++) {
                     printf("%02X ", packet[i]);
