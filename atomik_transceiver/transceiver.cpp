@@ -181,28 +181,28 @@ void receive()
                     } else if ( i == 5 ) {
                         printf("%i", packet[i]);
                         fflush(stdout);
+                    }
                 }
-            
                 printf(")] = \"TestRadioCypher\";\t\t\t\\\\ HEX Values: ");
             
                 for(size_t i = 0; i < packet_length; i++) {
                     printf("%02X ", packet[i]);
                     fflush(stdout);
                 }
-           
+    
+            }
             int dupesReceived = mlr.dupesReceived();
             for (; dupesPrinted < dupesReceived; dupesPrinted++) {
                 printf(".");
             }
-           fflush(stdout);
+            fflush(stdout);
        } else {
-        printf("Command Processed: ");
-        printf(getCommand().c_str());
-        printf("\n");
-        removeCommand();
-        
-        }
-    } 
+            printf("Command Processed: ");
+            printf(getCommand().c_str());
+            printf("\n");
+            removeCommand();
+       }
+    
 }
 
 
