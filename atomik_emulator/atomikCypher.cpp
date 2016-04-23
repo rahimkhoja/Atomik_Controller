@@ -12,10 +12,10 @@ void atomikCypher :: init()
 {
     //    Mi-Light RGB+W Bulbs
 
-    MiLightCypher[std::make_tuple(64, 0, 0)] = "Color: 0";                                                   // HEX Values 40, 00, 00
-    MiLightCypher[std::make_tuple(64, 1, 0)] = "Color: 1";                                                   // HEX Values 40, 01, 00
-    MiLightCypher[std::make_tuple(64, 2, 0)] = "Color: 2";                                                   // HEX Values 40, 02, 00
-    MiLightCypher[std::make_tuple(64, 3, 0)] = "Color: 3";                                                   // HEX Values 40, 03, 00
+    MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 0, 0)] = "Color: 0";                                                   // HEX Values 40, 00, 00
+    MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 1, 0)] = "Color: 1";                                                   // HEX Values 40, 01, 00
+    MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 2, 0)] = "Color: 2";                                                   // HEX Values 40, 02, 00
+    MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 3, 0)] = "Color: 3";                                                   // HEX Values 40, 03, 00
     MiLightCypher[std::make_tuple(64, 4, 0)] = "Color: 4";                                                   // HEX Values 40, 04, 00
     MiLightCypher[std::make_tuple(64, 5, 0)] = "Color: 5";                                                   // HEX Values 40, 05, 00
     MiLightCypher[std::make_tuple(64, 6, 0)] = "Color: 6";                                                   // HEX Values 40, 06, 00
