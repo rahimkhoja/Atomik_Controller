@@ -163,6 +163,13 @@ void receive()
                     printf("%02X ", packet[i]);
                     fflush(stdout);
                 }
+                
+                
+                for(size_t i = 0; i < packet_length; i++) {
+                    printf("%i ", packet[i]);
+                    fflush(stdout);
+                }
+                
             }
 
             int dupesReceived = mlr.dupesReceived();
