@@ -164,7 +164,7 @@ void receive()
                     fflush(stdout);
                 }
                 
-                
+                printf("\n");
                 for(size_t i = 0; i < packet_length; i++) {
                     printf("%i ", packet[i]);
                     fflush(stdout);
