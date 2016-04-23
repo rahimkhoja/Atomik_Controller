@@ -189,7 +189,7 @@ void receive()
                     printf("%02X ", packet[i]);
                     fflush(stdout);
                 }
-            }
+           
             int dupesReceived = mlr.dupesReceived();
             for (; dupesPrinted < dupesReceived; dupesPrinted++) {
                 printf(".");
