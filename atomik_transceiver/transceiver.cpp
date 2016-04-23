@@ -159,6 +159,7 @@ void receive()
                 size_t packet_length = sizeof(packet);
                 mlr.read(packet, packet_length);
 
+/**
                 for(size_t i = 0; i < packet_length; i++) {
                     printf("%02X ", packet[i]);
                     fflush(stdout);
@@ -169,9 +170,27 @@ void receive()
                     printf("%i ", packet[i]);
                     fflush(stdout);
                 }
-                
+   **/
+   
+           // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";
+            printf("MiLightRadiotoJSONCypher[std::make_tuple(");
+            for(size_t i = 0; i < packet_length; i++) {
+                if ( i == 0 || i == 3 || i == 4 )
+                {
+                    printf("%i, ", packet[i]);
+                    fflush(stdout);
+                } else if ( i == 5 ) {
+                    printf("%i", packet[i]);
+                    fflush(stdout);
+                }
+            
             }
-
+            printf(")] = "TestRadioCypher";\t\t\t\\\\ HEX Values: ");
+            
+            for(size_t i = 0; i < packet_length; i++) {
+                    printf("%02X ", packet[i]);
+                    fflush(stdout);
+                }
             int dupesReceived = mlr.dupesReceived();
             for (; dupesPrinted < dupesReceived; dupesPrinted++) {
                 printf(".");
