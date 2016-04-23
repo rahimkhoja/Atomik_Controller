@@ -12,6 +12,8 @@ void atomikCypher :: init()
 {
     //    Mi-Light RGB+W Bulbs
 
+    MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0, 0, 0, 0)] = "TestRadioCypher";   
+
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 0, 0)] = "Color: 0";                                                   // HEX Values 40, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 1, 0)] = "Color: 1";                                                   // HEX Values 40, 01, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 2, 0)] = "Color: 2";                                                   // HEX Values 40, 02, 00
