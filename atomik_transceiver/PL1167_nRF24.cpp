@@ -118,7 +118,7 @@ printf("\n");
   _radio.setDataRate(RF24_1MBPS);
   _radio.disableCRC();
 
-  //_radio.setRetries(10,10);
+  _radio.setRetries(10,10);
 
   return 0;
 }
