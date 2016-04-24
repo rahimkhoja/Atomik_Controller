@@ -53,7 +53,7 @@ uint64_t command = 0x00;
 
 int radiomode = 0;
 
-const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:m:";
+const char *options = "hdfslumzm:n:p:q:r:c:b:k:v:w:";
   
 std::thread socketServerThread;
 std::thread receiveThread;
