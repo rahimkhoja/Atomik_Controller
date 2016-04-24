@@ -70,15 +70,15 @@ int MiLightRadio::begin()
 
 int MiLightRadio::getRadioMode()
 {
-    return radiomode;
+    return radioMode;
 }
 
 void MiLightRadio::setRadioMode(int mode)
 {
-    if (radiomode == mode) {
+    if (radioMode == mode) {
       return;
     } else {
-      radiomode = mode;
+      radioMode = mode;
       begin();
     }
 }
