@@ -558,6 +558,7 @@ void socketCommand ( std::atomic<bool> & quit )
 void getOptions(std::vector<std::string>& args)
 {
     int c;
+    int temp;
     uint64_t tmp;
     std::vector<const char *> argv(args.size());
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
@@ -636,9 +637,7 @@ void getOptions(std::vector<std::string>& args)
         break;
       case 'm':
         //radiomode = atoi(optarg);
-        int temp = atoi(optarg);
         radiomode = 1;
-        
         printf("Temp = %d\n",temp);
         printf("RadioMode = %d\n",radiomode);
         break;
