@@ -636,7 +636,10 @@ void getOptions(std::vector<std::string>& args)
         break;
       case 'm':
         //radiomode = atoi(optarg);
+        int temp = atoi(optarg);
         radiomode = 1;
+        
+        printf("Temp = %d\n",temp);
         printf("RadioMode = %d\n",radiomode);
         break;
       case '?':
