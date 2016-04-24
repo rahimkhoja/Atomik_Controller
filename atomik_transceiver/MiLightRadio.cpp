@@ -18,12 +18,6 @@ MiLightRadio::MiLightRadio(AbstractPL1167 &pl1167)
   _waiting = false;
 }
 
-int MiLightRadio::close()
-{
-  _pl1167.close();
-  return 1;
-}
-
 int MiLightRadio::begin()
 {
   int retval = _pl1167.open();
