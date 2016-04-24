@@ -233,7 +233,7 @@ void send(uint8_t data[8])
     mlr.resend();
   }
   resetVars();
-
+  mlr.close();
 }
 
 void send(uint64_t v)
