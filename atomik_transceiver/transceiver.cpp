@@ -624,7 +624,7 @@ void getOptions(std::vector<std::string>& args)
       case 'w':
         do_receive = 0;
         do_server = 0;
-        do_command = 1;
+        do_command = 2;
         command = strtoll(optarg, NULL, 16);
         break;
       case 'z':
@@ -694,28 +694,30 @@ int main(int argc, char** argv)
         receive();
     }
  
-    if(do_command)
+    if(do_command>0)
     {
-        if(do_command)
-        {   
-            socketConnect(0, "");
-            if(alreadyRunning) { 
-                socketConnect(1, Vector2String(all_args));
-                exit(1);
-            } 
-            int ret = mlr.begin();
+        socketConnect(0, "");
+        if(alreadyRunning) { 
+            socketConnect(1, Vector2String(all_args));
+             exit(1);
+        } 
+        int ret = mlr.begin();
   
-            if(ret < 0)
-            {
-                fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-                fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-                usage(argv[0], options);
-                exit(-1);
-            }
+        if(ret < 0)
+        {
+            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+            usage(argv[0], options);
+            exit(-1);
+        }
+        
+        if (do_command==2) 
+        {
             send(command);
         } else {
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
         }
+       
     }
    
     if(do_server) 
