@@ -229,7 +229,7 @@ void send(uint8_t data[8])
   mlr.write(data, 7);
     
   for(int i = 0; i < resends; i++){
-  nanosleep((const struct timespec[]){{0, 500000L}}, NULL);
+ // nanosleep((const struct timespec[]){{0, 500000L}}, NULL);
     mlr.resend();
   }
   resetVars();
