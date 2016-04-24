@@ -51,7 +51,9 @@ uint8_t seq      = 0x00;
 uint8_t resends  =   10;
 uint64_t command = 0x00;
 
-const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:";
+int radiomode = 0;
+
+const char *options = "hdfslumzn:p:q:r:c:b:k:v:w:m:";
   
 std::thread socketServerThread;
 std::thread receiveThread;
@@ -150,6 +152,7 @@ std::vector<std::string> String2Vector (std::string vecstring)
 void receive()
 {
     printf("Receiving mode, press Ctrl-C to end\n");
+    mlr.setRadioMode(radiomode);
     while(1){
         // check if there are any new messages to send! 
         if(getCommandLength()==0) {
@@ -210,6 +213,8 @@ void receive()
 
 void send(uint8_t data[8])
 {
+  mlr.setRadioMode(radiomode);
+  
   static uint8_t seq = 1;
 
   uint8_t resends = data[7];
@@ -218,7 +223,8 @@ void send(uint8_t data[8])
     seq++;
   }
 
-  if(debug){
+ 
+     if(debug){
     printf("2.4GHz --> Sending: ");
     for (int i = 0; i < 7; i++) {
       printf("%02X ", data[i]);
@@ -283,6 +289,7 @@ void usage(const char *arg, const char *options){
   printf("   -b BB<hex>               Brightness byte\n");
   printf("   -k KK<hex>               Key byte\n");
   printf("   -v SS<hex>               Sequence byte\n");
+  printf("   -m M <int>               Radio Mode ( RGB=1 White=2 )\n");
   printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
   printf("\n");
 }
@@ -628,16 +635,13 @@ void getOptions(std::vector<std::string>& args)
         do_command = 2;
         command = strtoll(optarg, NULL, 16);
         break;
-      case 'z':
-      do_receive = 0;
-        do_server = 0;
-        do_command = 0;
-        socketConnect(0,"");
+      case 'm':
+        radiomode = optarg;
         break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
            optopt == 'r' || optopt == 'c' || optopt == 'b' ||
-           optopt == 'k' || optopt == 'w'|| optopt == 'z'){
+           optopt == 'k' || optopt == 'w'|| optopt == 'm'){
           fprintf(stderr, "Option -%c requires an argument.\n", optopt);
         }
         else if(isprint(optopt)){
@@ -667,6 +671,16 @@ int main(int argc, char** argv)
     printf("\n Arg String: ");
     printf(Vector2String(all_args).c_str());
     printf("\n");
+    
+    int ret = mlr.begin();
+  
+    if(ret < 0)
+    {
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(argv[0], options);
+        exit(-1);
+    }
     
     if(do_server) 
     {
@@ -702,15 +716,6 @@ int main(int argc, char** argv)
             socketConnect(1, Vector2String(all_args));
              exit(1);
         } 
-        int ret = mlr.begin();
-  
-        if(ret < 0)
-        {
-            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-            usage(argv[0], options);
-            exit(-1);
-        }
         
         if (do_command==2) 
         {
