@@ -18,7 +18,7 @@
 class AbstractPL1167 {
   public:
     virtual int open() = 0;
-
+    virtual int close() = 0;
     virtual int setPreambleLength(uint8_t preambleLength) = 0;
     virtual int setSyncword(uint16_t syncword0, uint16_t syncword3) = 0;
     virtual int setTrailerLength(uint8_t trailerLength) = 0;
