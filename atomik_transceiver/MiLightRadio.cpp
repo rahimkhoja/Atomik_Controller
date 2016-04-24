@@ -9,7 +9,7 @@
 
 #define PACKET_ID(packet) ( ((packet[1] & 0xF0)<<24) | (packet[2]<<16) | (packet[3]<<8) | (packet[7]) )
 
-static const uint8_t CHANNELS[] = {4, 39, 74};
+static const uint8_t CHANNELS[] = {9, 40, 71};
 #define NUM_CHANNELS (sizeof(CHANNELS)/sizeof(CHANNELS[0]))
 
 MiLightRadio::MiLightRadio(AbstractPL1167 &pl1167)
