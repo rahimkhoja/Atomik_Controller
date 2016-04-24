@@ -239,7 +239,6 @@ void send(uint8_t data[8])
     mlr.resend();
   }
   resetVars();
-  mlr.close();
 }
 
 void send(uint64_t v)
@@ -636,7 +635,7 @@ void getOptions(std::vector<std::string>& args)
         command = strtoll(optarg, NULL, 16);
         break;
       case 'm':
-        radiomode = optarg;
+        radiomode = atoi(optarg);
         break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
