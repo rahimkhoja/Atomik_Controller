@@ -636,6 +636,8 @@ void getOptions(std::vector<std::string>& args)
         break;
       case 'm':
         radiomode = atoi(optarg);
+        cout >> radiomode;
+        printf("\n");
         break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
