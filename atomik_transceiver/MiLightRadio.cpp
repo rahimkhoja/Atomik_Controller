@@ -45,7 +45,7 @@ int MiLightRadio::begin()
   }
   
   if (radioMode == 1) {
-  CHANNELS[] = {9, 40, 71};  // RGBW Channels
+  CHANNELS = {9, 40, 71};  // RGBW Channels
 
     retval = _pl1167.setSyncword(0x147A, 0x258B);    // RGBW Syncword
     if (retval < 0) {
@@ -54,7 +54,7 @@ int MiLightRadio::begin()
   }
   
   if (radioMode == 2) {
-  CHANNELS[] =  {4, 39, 74};   // White Channels
+  CHANNELS =  {4, 39, 74};   // White Channels
     retval = _pl1167.setSyncword(0x050A, 0x55AA);      // White Syncword
     if (retval < 0) {
       return retval;
