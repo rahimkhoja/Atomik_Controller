@@ -27,7 +27,6 @@ class MiLightRadio {
     int dupesReceived();
     int write(uint8_t frame[], size_t frame_length);
     int resend();
-    int getRadioMode();
     void setRadioMode(int mode);
   private:
     AbstractPL1167 &_pl1167;
