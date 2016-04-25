@@ -32,7 +32,7 @@ void atomikCypher :: init()
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 4, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"4\"";                                      // HEX Values 40, 04, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 5, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"5\"";                                      // HEX Values 40, 05, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 6, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"6\"";                                      // HEX Values 40, 06, 00
--   MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 7, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"7\"";                                      // HEX Values 40, 07, 00
+    MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 7, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"7\"";                                      // HEX Values 40, 07, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 8, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"8\"";                                      // HEX Values 40, 08, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 9, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"9\"";                                      // HEX Values 40, 09, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 10, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"10\"";                                    // HEX Values 40, 0a, 00
