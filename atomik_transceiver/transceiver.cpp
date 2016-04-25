@@ -636,7 +636,7 @@ void getOptions(std::vector<std::string>& args)
         break;
       case 'm':
         tmp = strtoll(optarg, NULL, 10);
-        radiomode = (int)tmp;
+        radiomode = (uint8_t)tmp;
         printf("RadioMode = %d\n",radiomode);
         break;
       case '?':
