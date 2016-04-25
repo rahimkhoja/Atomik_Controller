@@ -9,7 +9,7 @@
 
 #define PACKET_ID(packet) ( ((packet[1] & 0xF0)<<24) | (packet[2]<<16) | (packet[3]<<8) | (packet[7]) )
 static int radioMode = 0;  //White = 2 , RGBW = 1;
-static uint8_t CHANNELS[]; 
+static uint8_t CHANNELS; 
 
 #define NUM_CHANNELS (sizeof(CHANNELS)/sizeof(CHANNELS[0]))
 
@@ -45,7 +45,7 @@ int MiLightRadio::begin()
   }
   
   if (radioMode == 1) {
-  CHANNELS[] = {9, 40, 71};  // RGBW Channels
+  CHANNELS = {9, 40, 71};  // RGBW Channels
 
     retval = _pl1167.setSyncword(0x147A, 0x258B);    // RGBW Syncword
     if (retval < 0) {
@@ -54,7 +54,7 @@ int MiLightRadio::begin()
   }
   
   if (radioMode == 2) {
-  CHANNELS[] =  {4, 39, 74};   // White Channels
+  CHANNELS =  {4, 39, 74};   // White Channels
     retval = _pl1167.setSyncword(0x050A, 0x55AA);      // White Syncword
     if (retval < 0) {
       return retval;
