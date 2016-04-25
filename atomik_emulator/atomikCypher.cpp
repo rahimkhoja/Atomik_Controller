@@ -12,11 +12,16 @@ void atomikCypher :: init()
 {
     //    Mi-Light RGB+W Bulbs
     
-    // Radio Cypher
-    MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-    MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-    MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-    MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
+    //  Radio Cypher for the 4 int tuple
+    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
+    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
+    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
+    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
+
+   // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0)]
+
+
+
 
     // Smart Phone Cypher
     // Status : On / Off
