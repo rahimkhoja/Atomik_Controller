@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <tuple>
 #include <string>
+#include <vector>
 
 namespace Atomik
 {
@@ -69,7 +70,9 @@ class atomikCypher
      private :
           void init();
           Atomik::map_t MiLightSmartPhonetoJSONCypher;
-          Atomik::map_t MiLightRadiotoJSONCypher;
+          //Atomik::map_t MiLightRadiotoJSONCypher;
+          vector < pair<int,int> > MiLightRadiotoJSONCypher;
+          
      public :
           //with default value
           atomikCypher();
