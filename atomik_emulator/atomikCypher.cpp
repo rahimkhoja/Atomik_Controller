@@ -308,7 +308,7 @@ void atomikCypher :: init()
     MiLightSmartPhonetoJSONCypher[std::make_tuple(75, 0, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\"";                                                                   // HEX Values 4b, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(76, 0, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"4\"";                                                                  // HEX Values 4c, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(203, 0, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values cb, 00, 00
-    MiLightSmartPhonetoJSONCypher[std::make_tuple(204, 0, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\:\n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";      // HEX Values cc, 00, 00
+    MiLightSmartPhonetoJSONCypher[std::make_tuple(204, 0, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";      // HEX Values cc, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(78, 0, 0)] = "\"Status\": \"On\"\n \"Brightness\": \"6\"";                                                                // HEX Values 4e, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(78, 1, 0)] = "\"Status\": \"On\"\n \"Brightness\": \"12\"";                                                               // HEX Values 4e, 01, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(78, 2, 0)] = "\"Status\": \"On\"\n \"Brightness\": \"19\"";                                                               // HEX Values 4e, 02, 00
