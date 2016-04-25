@@ -69,7 +69,7 @@ class atomikCypher
      private :
           void init();
           Atomik::map_t MiLightSmartPhonetoJSONCypher;
-          Atomik::map_t4 MiLightRadiotoJSONCypher;
+          Atomik::map_t MiLightRadiotoJSONCypher;
      public :
           //with default value
           atomikCypher();
