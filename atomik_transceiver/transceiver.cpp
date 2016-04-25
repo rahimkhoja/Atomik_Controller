@@ -51,7 +51,7 @@ uint8_t seq      = 0x00;
 uint8_t resends  =   10;
 uint64_t command = 0x00;
 
-int radiomode = 0;
+int radiomode = 1;
 
 const char *options = "hdfslumzm:n:p:q:r:c:b:k:v:w:";
   
