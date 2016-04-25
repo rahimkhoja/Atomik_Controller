@@ -53,7 +53,7 @@ uint64_t command = 0x00;
 
 int radiomode = 1;
 
-const char *options = "hdfslumzm:n:p:q:r:c:b:k:v:w:";
+const char *options = "hdfslumt:n:p:q:r:c:b:k:v:w:";
   
 std::thread socketServerThread;
 std::thread receiveThread;
@@ -634,14 +634,14 @@ void getOptions(std::vector<std::string>& args)
         do_command = 2;
         command = strtoll(optarg, NULL, 16);
         break;
-      case 'm':
+      case 't':
         tmp = strtoll(optarg, NULL, 10);
         radiomode = (uint8_t)tmp;
         break;
       case '?':
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
            optopt == 'r' || optopt == 'c' || optopt == 'b' ||
-           optopt == 'k' || optopt == 'w'|| optopt == 'm'){
+           optopt == 'k' || optopt == 'w'|| optopt == 't'){
           fprintf(stderr, "Option -%c requires an argument.\n", optopt);
         }
         else if(isprint(optopt)){
