@@ -9,7 +9,7 @@
 
 #define PACKET_ID(packet) ( ((packet[1] & 0xF0)<<24) | (packet[2]<<16) | (packet[3]<<8) | (packet[7]) )
 static int radioMode = 0;  //White = 2 , RGBW = 1;
-static uint8_t CHANNELS; 
+static uint8_t CHANNELS[3]; 
 
 #define NUM_CHANNELS (sizeof(CHANNELS)/sizeof(CHANNELS[0]))
 
