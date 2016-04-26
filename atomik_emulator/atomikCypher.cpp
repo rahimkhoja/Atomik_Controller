@@ -10,25 +10,305 @@ atomikCypher :: atomikCypher()
  
 void atomikCypher :: init() 
 {
-    //    Mi-Light RGB+W Bulbs
-    
-    //  Radio Cypher for the 4 int tuple
-    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-    // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0, 0)] = "TestRadioCypher";   
-
-   // MiLightRadiotoJSONCypher[std::make_tuple(64, 0, 0)]
-
-
-
-
+        
     // Smart Phone Cypher
     // Status : On / Off
     // Channel : 0 - * (0 == all channels) (Mi-Light Remotes have 5 Channels main and 4 zones )
     // Color : 0 - 255
     // Brightness : 1 - 100, Lowest, Highest, Nightlight
-    // ColorMode: RGB / White    
+    // ColorMode: RGB / White 
+    
+    //    Mi-Light RGB+W RF Remotes
+    
+    MiLightRadiotoJSONCypher[std::make_pair(15, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"0\"";                                      // HEX Values 40, 00
+    MiLightRadiotoJSONCypher[std::make_pair(15, 1)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"1\"";                                      // HEX Values 0F, 01
+    MiLightRadiotoJSONCypher[std::make_pair(15, 2)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"2\"";                                      // HEX Values 0F, 02
+    MiLightRadiotoJSONCypher[std::make_pair(15, 3)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"3\"";                                      // HEX Values 0F, 03
+    MiLightRadiotoJSONCypher[std::make_pair(15, 4)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"4\"";                                      // HEX Values 0F, 04
+    MiLightRadiotoJSONCypher[std::make_pair(15, 5)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"5\"";                                      // HEX Values 0F, 05
+    MiLightRadiotoJSONCypher[std::make_pair(15, 6)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"6\"";                                      // HEX Values 0F, 06
+    MiLightRadiotoJSONCypher[std::make_pair(15, 7)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"7\"";                                      // HEX Values 0F, 07
+    MiLightRadiotoJSONCypher[std::make_pair(15, 8)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"8\"";                                      // HEX Values 0F, 08
+    MiLightRadiotoJSONCypher[std::make_pair(15, 9)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"9\"";                                      // HEX Values 0F, 09
+    MiLightRadiotoJSONCypher[std::make_pair(15, 10)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"10\"";                                    // HEX Values 0F, 0a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 11)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"11\"";                                    // HEX Values 0F, 0b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 12)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"12\"";                                    // HEX Values 0F, 0c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 13)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"13\"";                                    // HEX Values 0F, 0d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 14)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"14\"";                                    // HEX Values 0F, 0e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 15)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"15\"";                                    // HEX Values 0F, 0f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 16)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"16\"";                                    // HEX Values 0F, 40
+    MiLightRadiotoJSONCypher[std::make_pair(15, 17)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"17\"";                                    // HEX Values 0F, 11
+    MiLightRadiotoJSONCypher[std::make_pair(15, 18)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"18\"";                                    // HEX Values 0F, 12
+    MiLightRadiotoJSONCypher[std::make_pair(15, 19)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"19\"";                                    // HEX Values 0F, 13
+    MiLightRadiotoJSONCypher[std::make_pair(15, 20)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"20\"";                                    // HEX Values 0F, 14
+    MiLightRadiotoJSONCypher[std::make_pair(15, 21)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"21\"";                                    // HEX Values 0F, 15
+    MiLightRadiotoJSONCypher[std::make_pair(15, 22)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"22\"";                                    // HEX Values 0F, 16
+    MiLightRadiotoJSONCypher[std::make_pair(15, 23)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"23\"";                                    // HEX Values 0F, 17
+    MiLightRadiotoJSONCypher[std::make_pair(15, 24)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"24\"";                                    // HEX Values 0F, 18
+    MiLightRadiotoJSONCypher[std::make_pair(15, 25)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"25\"";                                    // HEX Values 0F, 19
+    MiLightRadiotoJSONCypher[std::make_pair(15, 26)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"26\"";                                    // HEX Values 0F, 1a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 27)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"27\"";                                    // HEX Values 0F, 1b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 28)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"28\"";                                    // HEX Values 0F, 1c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 29)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"29\"";                                    // HEX Values 0F, 1d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 30)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"30\"";                                    // HEX Values 0F, 1e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 31)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"31\"";                                    // HEX Values 0F, 1f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 32)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"32\"";                                    // HEX Values 0F, 20
+    MiLightRadiotoJSONCypher[std::make_pair(15, 33)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"33\"";                                    // HEX Values 0F, 21
+    MiLightRadiotoJSONCypher[std::make_pair(15, 34)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"34\"";                                    // HEX Values 0F, 22
+    MiLightRadiotoJSONCypher[std::make_pair(15, 35)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"35\"";                                    // HEX Values 0F, 23
+    MiLightRadiotoJSONCypher[std::make_pair(15, 36)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"36\"";                                    // HEX Values 0F, 24
+    MiLightRadiotoJSONCypher[std::make_pair(15, 37)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"37\"";                                    // HEX Values 0F, 25
+    MiLightRadiotoJSONCypher[std::make_pair(15, 38)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"38\"";                                    // HEX Values 0F, 26
+    MiLightRadiotoJSONCypher[std::make_pair(15, 39)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"39\"";                                    // HEX Values 0F, 27
+    MiLightRadiotoJSONCypher[std::make_pair(15, 40)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"40\"";                                    // HEX Values 0F, 28
+    MiLightRadiotoJSONCypher[std::make_pair(15, 41)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"41\"";                                    // HEX Values 0F, 29
+    MiLightRadiotoJSONCypher[std::make_pair(15, 42)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"42\"";                                    // HEX Values 0F, 2a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 43)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"43\"";                                    // HEX Values 0F, 2b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 44)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"44\"";                                    // HEX Values 0F, 2c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 45)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"45\"";                                    // HEX Values 0F, 2d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 46)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"46\"";                                    // HEX Values 0F, 2e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 47)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"47\"";                                    // HEX Values 0F, 2f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 48)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"48\"";                                    // HEX Values 0F, 30
+    MiLightRadiotoJSONCypher[std::make_pair(15, 49)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"49\"";                                    // HEX Values 0F, 31
+    MiLightRadiotoJSONCypher[std::make_pair(15, 50)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"50\"";                                    // HEX Values 0F, 32
+    MiLightRadiotoJSONCypher[std::make_pair(15, 51)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"51\"";                                    // HEX Values 0F, 33
+    MiLightRadiotoJSONCypher[std::make_pair(15, 52)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"52\"";                                    // HEX Values 0F, 34
+    MiLightRadiotoJSONCypher[std::make_pair(15, 53)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"53\"";                                    // HEX Values 0F, 35
+    MiLightRadiotoJSONCypher[std::make_pair(15, 54)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"54\"";                                    // HEX Values 0F, 36
+    MiLightRadiotoJSONCypher[std::make_pair(15, 55)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"55\"";                                    // HEX Values 0F, 37
+    MiLightRadiotoJSONCypher[std::make_pair(15, 56)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"56\"";                                    // HEX Values 0F, 38
+    MiLightRadiotoJSONCypher[std::make_pair(15, 57)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"57\"";                                    // HEX Values 0F, 39
+    MiLightRadiotoJSONCypher[std::make_pair(15, 58)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"58\"";                                    // HEX Values 0F, 3a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 59)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"59\"";                                    // HEX Values 0F, 3b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 60)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"60\"";                                    // HEX Values 0F, 3c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 61)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"61\"";                                    // HEX Values 0F, 3d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 62)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"62\"";                                    // HEX Values 0F, 3e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 63)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"63\"";                                    // HEX Values 0F, 3f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 64)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"64\"";                                    // HEX Values 0F, 40
+    MiLightRadiotoJSONCypher[std::make_pair(15, 65)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"65\"";                                    // HEX Values 0F, 41
+    MiLightRadiotoJSONCypher[std::make_pair(15, 66)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"66\"";                                    // HEX Values 0F, 42
+    MiLightRadiotoJSONCypher[std::make_pair(15, 67)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"67\"";                                    // HEX Values 0F, 43
+    MiLightRadiotoJSONCypher[std::make_pair(15, 68)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"68\"";                                    // HEX Values 0F, 44
+    MiLightRadiotoJSONCypher[std::make_pair(15, 69)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"69\"";                                    // HEX Values 0F, 45
+    MiLightRadiotoJSONCypher[std::make_pair(15, 70)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"70\"";                                    // HEX Values 0F, 46
+    MiLightRadiotoJSONCypher[std::make_pair(15, 71)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"71\"";                                    // HEX Values 0F, 47
+    MiLightRadiotoJSONCypher[std::make_pair(15, 72)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"72\"";                                    // HEX Values 0F, 48
+    MiLightRadiotoJSONCypher[std::make_pair(15, 73)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"73\"";                                    // HEX Values 0F, 49
+    MiLightRadiotoJSONCypher[std::make_pair(15, 74)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"74\"";                                    // HEX Values 0F, 4a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 75)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"75\"";                                    // HEX Values 0F, 4b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 76)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"76\"";                                    // HEX Values 0F, 4c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 77)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"77\"";                                    // HEX Values 0F, 4d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 78)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"78\"";                                    // HEX Values 0F, 4e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 79)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"79\"";                                    // HEX Values 0F, 4f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 80)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"80\"";                                    // HEX Values 0F, 50
+    MiLightRadiotoJSONCypher[std::make_pair(15, 81)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"81\"";                                    // HEX Values 0F, 51
+    MiLightRadiotoJSONCypher[std::make_pair(15, 82)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"82\"";                                    // HEX Values 0F, 52
+    MiLightRadiotoJSONCypher[std::make_pair(15, 83)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"83\"";                                    // HEX Values 0F, 53
+    MiLightRadiotoJSONCypher[std::make_pair(15, 84)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"84\"";                                    // HEX Values 0F, 54
+    MiLightRadiotoJSONCypher[std::make_pair(15, 85)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"85\"";                                    // HEX Values 0F, 55
+    MiLightRadiotoJSONCypher[std::make_pair(15, 86)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"86\"";                                    // HEX Values 0F, 56
+    MiLightRadiotoJSONCypher[std::make_pair(15, 87)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"87\"";                                    // HEX Values 0F, 57
+    MiLightRadiotoJSONCypher[std::make_pair(15, 88)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"88\"";                                    // HEX Values 0F, 58
+    MiLightRadiotoJSONCypher[std::make_pair(15, 89)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"89\"";                                    // HEX Values 0F, 59
+    MiLightRadiotoJSONCypher[std::make_pair(15, 90)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"90\"";                                    // HEX Values 0F, 5a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 91)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"91\"";                                    // HEX Values 0F, 5b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 92)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"92\"";                                    // HEX Values 0F, 5c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 93)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"93\"";                                    // HEX Values 0F, 5d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 94)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"94\"";                                    // HEX Values 0F, 5e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 95)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"95\"";                                    // HEX Values 0F, 5f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 96)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"96\"";                                    // HEX Values 0F, 60
+    MiLightRadiotoJSONCypher[std::make_pair(15, 97)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"97\"";                                    // HEX Values 0F, 61
+    MiLightRadiotoJSONCypher[std::make_pair(15, 98)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"98\"";                                    // HEX Values 0F, 62
+    MiLightRadiotoJSONCypher[std::make_pair(15, 99)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"99\"";                                    // HEX Values 0F, 63
+    MiLightRadiotoJSONCypher[std::make_pair(15, 100)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"100\"";                                    // HEX Values 0F, 64
+    MiLightRadiotoJSONCypher[std::make_pair(15, 101)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"101\"";                                    // HEX Values 0F, 65
+    MiLightRadiotoJSONCypher[std::make_pair(15, 102)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"102\"";                                    // HEX Values 0F, 66
+    MiLightRadiotoJSONCypher[std::make_pair(15, 103)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"103\"";                                    // HEX Values 0F, 67
+    MiLightRadiotoJSONCypher[std::make_pair(15, 104)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"104\"";                                    // HEX Values 0F, 68
+    MiLightRadiotoJSONCypher[std::make_pair(15, 105)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"105\"";                                    // HEX Values 0F, 69
+    MiLightRadiotoJSONCypher[std::make_pair(15, 106)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"106\"";                                    // HEX Values 0F, 6a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 107)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"107\"";                                    // HEX Values 0F, 6b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 108)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"108\"";                                    // HEX Values 0F, 6c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 109)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"109\"";                                    // HEX Values 0F, 6d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 110)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"110\"";                                    // HEX Values 0F, 6e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 111)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"111\"";                                    // HEX Values 0F, 6f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 112)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"112\"";                                    // HEX Values 0F, 70
+    MiLightRadiotoJSONCypher[std::make_pair(15, 113)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"113\"";                                    // HEX Values 0F, 71
+    MiLightRadiotoJSONCypher[std::make_pair(15, 114)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"114\"";                                    // HEX Values 0F, 72
+    MiLightRadiotoJSONCypher[std::make_pair(15, 115)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"115\"";                                    // HEX Values 0F, 73
+    MiLightRadiotoJSONCypher[std::make_pair(15, 116)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"116\"";                                    // HEX Values 0F, 74
+    MiLightRadiotoJSONCypher[std::make_pair(15, 117)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"117\"";                                    // HEX Values 0F, 75
+    MiLightRadiotoJSONCypher[std::make_pair(15, 118)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"118\"";                                    // HEX Values 0F, 76
+    MiLightRadiotoJSONCypher[std::make_pair(15, 119)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"119\"";                                    // HEX Values 0F, 77
+    MiLightRadiotoJSONCypher[std::make_pair(15, 120)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"120\"";                                    // HEX Values 0F, 78
+    MiLightRadiotoJSONCypher[std::make_pair(15, 121)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"121\"";                                    // HEX Values 0F, 79
+    MiLightRadiotoJSONCypher[std::make_pair(15, 122)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"122\"";                                    // HEX Values 0F, 7a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 123)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"123\"";                                    // HEX Values 0F, 7b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 124)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"124\"";                                    // HEX Values 0F, 7c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 125)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"125\"";                                    // HEX Values 0F, 7d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 126)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"126\"";                                    // HEX Values 0F, 7e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 127)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"127\"";                                    // HEX Values 0F, 7f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 128)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"128\"";                                    // HEX Values 0F, 80
+    MiLightRadiotoJSONCypher[std::make_pair(15, 129)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"129\"";                                    // HEX Values 0F, 81
+    MiLightRadiotoJSONCypher[std::make_pair(15, 130)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"130\"";                                    // HEX Values 0F, 82
+    MiLightRadiotoJSONCypher[std::make_pair(15, 131)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"131\"";                                    // HEX Values 0F, 83
+    MiLightRadiotoJSONCypher[std::make_pair(15, 132)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"132\"";                                    // HEX Values 0F, 84
+    MiLightRadiotoJSONCypher[std::make_pair(15, 133)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"133\"";                                    // HEX Values 0F, 85
+    MiLightRadiotoJSONCypher[std::make_pair(15, 134)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"134\"";                                    // HEX Values 0F, 86
+    MiLightRadiotoJSONCypher[std::make_pair(15, 135)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"135\"";                                    // HEX Values 0F, 87
+    MiLightRadiotoJSONCypher[std::make_pair(15, 136)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"136\"";                                    // HEX Values 0F, 88
+    MiLightRadiotoJSONCypher[std::make_pair(15, 137)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"137\"";                                    // HEX Values 0F, 89
+    MiLightRadiotoJSONCypher[std::make_pair(15, 138)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"138\"";                                    // HEX Values 0F, 8a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 139)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"139\"";                                    // HEX Values 0F, 8b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 140)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"140\"";                                    // HEX Values 0F, 8c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 141)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"141\"";                                    // HEX Values 0F, 8d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 142)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"142\"";                                    // HEX Values 0F, 8e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 143)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"143\"";                                    // HEX Values 0F, 8f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 144)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"144\"";                                    // HEX Values 0F, 90
+    MiLightRadiotoJSONCypher[std::make_pair(15, 145)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"145\"";                                    // HEX Values 0F, 91
+    MiLightRadiotoJSONCypher[std::make_pair(15, 146)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"146\"";                                    // HEX Values 0F, 92
+    MiLightRadiotoJSONCypher[std::make_pair(15, 147)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"147\"";                                    // HEX Values 0F, 93
+    MiLightRadiotoJSONCypher[std::make_pair(15, 148)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"148\"";                                    // HEX Values 0F, 94
+    MiLightRadiotoJSONCypher[std::make_pair(15, 149)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"149\"";                                    // HEX Values 0F, 95
+    MiLightRadiotoJSONCypher[std::make_pair(15, 150)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"150\"";                                    // HEX Values 0F, 96
+    MiLightRadiotoJSONCypher[std::make_pair(15, 151)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"151\"";                                    // HEX Values 0F, 97
+    MiLightRadiotoJSONCypher[std::make_pair(15, 152)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"152\"";                                    // HEX Values 0F, 98
+    MiLightRadiotoJSONCypher[std::make_pair(15, 153)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"153\"";                                    // HEX Values 0F, 99
+    MiLightRadiotoJSONCypher[std::make_pair(15, 154)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"154\"";                                    // HEX Values 0F, 9a
+    MiLightRadiotoJSONCypher[std::make_pair(15, 155)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"155\"";                                    // HEX Values 0F, 9b
+    MiLightRadiotoJSONCypher[std::make_pair(15, 156)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"156\"";                                    // HEX Values 0F, 9c
+    MiLightRadiotoJSONCypher[std::make_pair(15, 157)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"157\"";                                    // HEX Values 0F, 9d
+    MiLightRadiotoJSONCypher[std::make_pair(15, 158)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"158\"";                                    // HEX Values 0F, 9e
+    MiLightRadiotoJSONCypher[std::make_pair(15, 159)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"159\"";                                    // HEX Values 0F, 9f
+    MiLightRadiotoJSONCypher[std::make_pair(15, 160)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"160\"";                                    // HEX Values 0F, a0
+    MiLightRadiotoJSONCypher[std::make_pair(15, 161)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"161\"";                                    // HEX Values 0F, a1
+    MiLightRadiotoJSONCypher[std::make_pair(15, 162)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"162\"";                                    // HEX Values 0F, a2
+    MiLightRadiotoJSONCypher[std::make_pair(15, 163)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"163\"";                                    // HEX Values 0F, a3
+    MiLightRadiotoJSONCypher[std::make_pair(15, 164)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"164\"";                                    // HEX Values 0F, a4
+    MiLightRadiotoJSONCypher[std::make_pair(15, 165)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"165\"";                                    // HEX Values 0F, a5
+    MiLightRadiotoJSONCypher[std::make_pair(15, 166)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"166\"";                                    // HEX Values 0F, a6
+    MiLightRadiotoJSONCypher[std::make_pair(15, 167)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"167\"";                                    // HEX Values 0F, a7
+    MiLightRadiotoJSONCypher[std::make_pair(15, 168)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"168\"";                                    // HEX Values 0F, a8
+    MiLightRadiotoJSONCypher[std::make_pair(15, 169)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"169\"";                                    // HEX Values 0F, a9
+    MiLightRadiotoJSONCypher[std::make_pair(15, 170)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"170\"";                                    // HEX Values 0F, aa
+    MiLightRadiotoJSONCypher[std::make_pair(15, 171)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"171\"";                                    // HEX Values 0F, ab
+    MiLightRadiotoJSONCypher[std::make_pair(15, 172)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"172\"";                                    // HEX Values 0F, ac
+    MiLightRadiotoJSONCypher[std::make_pair(15, 173)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"173\"";                                    // HEX Values 0F, ad
+    MiLightRadiotoJSONCypher[std::make_pair(15, 174)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"174\"";                                    // HEX Values 0F, ae
+    MiLightRadiotoJSONCypher[std::make_pair(15, 175)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"175\"";                                    // HEX Values 0F, af
+    MiLightRadiotoJSONCypher[std::make_pair(15, 176)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"176\"";                                    // HEX Values 0F, b0
+    MiLightRadiotoJSONCypher[std::make_pair(15, 177)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"177\"";                                    // HEX Values 0F, b1
+    MiLightRadiotoJSONCypher[std::make_pair(15, 178)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"178\"";                                    // HEX Values 0F, b2
+    MiLightRadiotoJSONCypher[std::make_pair(15, 179)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"179\"";                                    // HEX Values 0F, b3
+    MiLightRadiotoJSONCypher[std::make_pair(15, 180)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"180\"";                                    // HEX Values 0F, b4
+    MiLightRadiotoJSONCypher[std::make_pair(15, 181)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"181\"";                                    // HEX Values 0F, b5
+    MiLightRadiotoJSONCypher[std::make_pair(15, 182)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"182\"";                                    // HEX Values 0F, b6
+    MiLightRadiotoJSONCypher[std::make_pair(15, 183)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"183\"";                                    // HEX Values 0F, b7
+    MiLightRadiotoJSONCypher[std::make_pair(15, 184)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"184\"";                                    // HEX Values 0F, b8
+    MiLightRadiotoJSONCypher[std::make_pair(15, 185)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"185\"";                                    // HEX Values 0F, b9
+    MiLightRadiotoJSONCypher[std::make_pair(15, 186)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"186\"";                                    // HEX Values 0F, ba
+    MiLightRadiotoJSONCypher[std::make_pair(15, 187)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"187\"";                                    // HEX Values 0F, bb
+    MiLightRadiotoJSONCypher[std::make_pair(15, 188)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"188\"";                                    // HEX Values 0F, bc
+    MiLightRadiotoJSONCypher[std::make_pair(15, 189)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"189\"";                                    // HEX Values 0F, bd
+    MiLightRadiotoJSONCypher[std::make_pair(15, 190)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"190\"";                                    // HEX Values 0F, be
+    MiLightRadiotoJSONCypher[std::make_pair(15, 191)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"191\"";                                    // HEX Values 0F, bf
+    MiLightRadiotoJSONCypher[std::make_pair(15, 192)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"192\"";                                    // HEX Values 0F, c0
+    MiLightRadiotoJSONCypher[std::make_pair(15, 193)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"193\"";                                    // HEX Values 0F, c1
+    MiLightRadiotoJSONCypher[std::make_pair(15, 194)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"194\"";                                    // HEX Values 0F, c2
+    MiLightRadiotoJSONCypher[std::make_pair(15, 195)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"195\"";                                    // HEX Values 0F, c3
+    MiLightRadiotoJSONCypher[std::make_pair(15, 196)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"196\"";                                    // HEX Values 0F, c4
+    MiLightRadiotoJSONCypher[std::make_pair(15, 197)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"197\"";                                    // HEX Values 0F, c5
+    MiLightRadiotoJSONCypher[std::make_pair(15, 198)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"198\"";                                    // HEX Values 0F, c6
+    MiLightRadiotoJSONCypher[std::make_pair(15, 199)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"199\"";                                    // HEX Values 0F, c7
+    MiLightRadiotoJSONCypher[std::make_pair(15, 200)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"200\"";                                    // HEX Values 0F, c8
+    MiLightRadiotoJSONCypher[std::make_pair(15, 201)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"201\"";                                    // HEX Values 0F, c9
+    MiLightRadiotoJSONCypher[std::make_pair(15, 202)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"202\"";                                    // HEX Values 0F, ca
+    MiLightRadiotoJSONCypher[std::make_pair(15, 203)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"203\"";                                    // HEX Values 0F, cb
+    MiLightRadiotoJSONCypher[std::make_pair(15, 204)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"204\"";                                    // HEX Values 0F, cc
+    MiLightRadiotoJSONCypher[std::make_pair(15, 205)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"205\"";                                    // HEX Values 0F, cd
+    MiLightRadiotoJSONCypher[std::make_pair(15, 206)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"206\"";                                    // HEX Values 0F, ce
+    MiLightRadiotoJSONCypher[std::make_pair(15, 207)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"207\"";                                    // HEX Values 0F, cf
+    MiLightRadiotoJSONCypher[std::make_pair(15, 208)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"208\"";                                    // HEX Values 0F, d0
+    MiLightRadiotoJSONCypher[std::make_pair(15, 209)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"209\"";                                    // HEX Values 0F, d1
+    MiLightRadiotoJSONCypher[std::make_pair(15, 210)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"210\"";                                    // HEX Values 0F, d2
+    MiLightRadiotoJSONCypher[std::make_pair(15, 211)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"211\"";                                    // HEX Values 0F, d3
+    MiLightRadiotoJSONCypher[std::make_pair(15, 212)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"212\"";                                    // HEX Values 0F, d4
+    MiLightRadiotoJSONCypher[std::make_pair(15, 213)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"213\"";                                    // HEX Values 0F, d5
+    MiLightRadiotoJSONCypher[std::make_pair(15, 214)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"214\"";                                    // HEX Values 0F, d6
+    MiLightRadiotoJSONCypher[std::make_pair(15, 215)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"215\"";                                    // HEX Values 0F, d7
+    MiLightRadiotoJSONCypher[std::make_pair(15, 216)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"216\"";                                    // HEX Values 0F, d8
+    MiLightRadiotoJSONCypher[std::make_pair(15, 217)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"217\"";                                    // HEX Values 0F, d9
+    MiLightRadiotoJSONCypher[std::make_pair(15, 218)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"218\"";                                    // HEX Values 0F, da
+    MiLightRadiotoJSONCypher[std::make_pair(15, 219)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"219\"";                                    // HEX Values 0F, db
+    MiLightRadiotoJSONCypher[std::make_pair(15, 220)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"220\"";                                    // HEX Values 0F, dc
+    MiLightRadiotoJSONCypher[std::make_pair(15, 221)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"221\"";                                    // HEX Values 0F, dd
+    MiLightRadiotoJSONCypher[std::make_pair(15, 222)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"222\"";                                    // HEX Values 0F, de
+    MiLightRadiotoJSONCypher[std::make_pair(15, 223)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"223\"";                                    // HEX Values 0F, df
+    MiLightRadiotoJSONCypher[std::make_pair(15, 224)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"224\"";                                    // HEX Values 0F, e0
+    MiLightRadiotoJSONCypher[std::make_pair(15, 225)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"225\"";                                    // HEX Values 0F, e1
+    MiLightRadiotoJSONCypher[std::make_pair(15, 226)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"226\"";                                    // HEX Values 0F, e2
+    MiLightRadiotoJSONCypher[std::make_pair(15, 227)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"227\"";                                    // HEX Values 0F, e3
+    MiLightRadiotoJSONCypher[std::make_pair(15, 228)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"228\"";                                    // HEX Values 0F, e4
+    MiLightRadiotoJSONCypher[std::make_pair(15, 229)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"229\"";                                    // HEX Values 0F, e5
+    MiLightRadiotoJSONCypher[std::make_pair(15, 230)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"230\"";                                    // HEX Values 0F, e6
+    MiLightRadiotoJSONCypher[std::make_pair(15, 231)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"231\"";                                    // HEX Values 0F, e7
+    MiLightRadiotoJSONCypher[std::make_pair(15, 232)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"232\"";                                    // HEX Values 0F, e8
+    MiLightRadiotoJSONCypher[std::make_pair(15, 233)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"233\"";                                    // HEX Values 0F, e9
+    MiLightRadiotoJSONCypher[std::make_pair(15, 234)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"234\"";                                    // HEX Values 0F, ea
+    MiLightRadiotoJSONCypher[std::make_pair(15, 235)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"235\"";                                    // HEX Values 0F, eb
+    MiLightRadiotoJSONCypher[std::make_pair(15, 236)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"236\"";                                    // HEX Values 0F, ec
+    MiLightRadiotoJSONCypher[std::make_pair(15, 237)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"237\"";                                    // HEX Values 0F, ed
+    MiLightRadiotoJSONCypher[std::make_pair(15, 238)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"238\"";                                    // HEX Values 0F, ee
+    MiLightRadiotoJSONCypher[std::make_pair(15, 239)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"239\"";                                    // HEX Values 0F, ef
+    MiLightRadiotoJSONCypher[std::make_pair(15, 240)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"240\"";                                    // HEX Values 0F, f0
+    MiLightRadiotoJSONCypher[std::make_pair(15, 241)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"241\"";                                    // HEX Values 0F, f1
+    MiLightRadiotoJSONCypher[std::make_pair(15, 242)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"242\"";                                    // HEX Values 0F, f2
+    MiLightRadiotoJSONCypher[std::make_pair(15, 243)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"243\"";                                    // HEX Values 0F, f3
+    MiLightRadiotoJSONCypher[std::make_pair(15, 244)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"244\"";                                    // HEX Values 0F, f4
+    MiLightRadiotoJSONCypher[std::make_pair(15, 245)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"245\"";                                    // HEX Values 0F, f5
+    MiLightRadiotoJSONCypher[std::make_pair(15, 246)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"246\"";                                    // HEX Values 0F, f6
+    MiLightRadiotoJSONCypher[std::make_pair(15, 247)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"247\"";                                    // HEX Values 0F, f7
+    MiLightRadiotoJSONCypher[std::make_pair(15, 248)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"248\"";                                    // HEX Values 0F, f8
+    MiLightRadiotoJSONCypher[std::make_pair(15, 249)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"249\"";                                    // HEX Values 0F, f9
+    MiLightRadiotoJSONCypher[std::make_pair(15, 250)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"250\"";                                    // HEX Values 0F, fa
+    MiLightRadiotoJSONCypher[std::make_pair(15, 251)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"251\"";                                    // HEX Values 0F, fb
+    MiLightRadiotoJSONCypher[std::make_pair(15, 252)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"252\"";                                    // HEX Values 0F, fc
+    MiLightRadiotoJSONCypher[std::make_pair(15, 253)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"253\"";                                    // HEX Values 0F, fd
+    MiLightRadiotoJSONCypher[std::make_pair(15, 254)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"254\"";                                    // HEX Values 0F, fe
+    MiLightRadiotoJSONCypher[std::make_pair(15, 255)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"255\"";                                    // HEX Values 0F, ff
+    
+        
+	MiLightRadiotoJSONCypher[std::make_pair(2, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"0\"";                                                                  // HEX Values 02, 00,
+    MiLightRadiotoJSONCypher[std::make_pair(1, 0)] = "\"Status\": \"On\"\n \"Channel\": \"0\"";                                                                   // HEX Values 01, 00
+    MiLightRadiotoJSONCypher[std::make_pair(17, 0)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values 11, 00
+    MiLightRadiotoJSONCypher[std::make_pair(18, 0)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";     // HEX Values 12, 00
+    MiLightRadiotoJSONCypher[std::make_pair(13, 0)] = "\"temp\": \"Mode\"";                                                                                        // HEX Values 0d, 00
+    MiLightRadiotoJSONCypher[std::make_pair(29, 0)] = "\"temp\": \"Unknown (Hold Mode Button)\"";                                                                 // HEX Values cd, 00
+    MiLightRadiotoJSONCypher[std::make_pair(12, 0)] = "\"temp\": \"Decrease Speed\"";                                                                              // HEX Values 0c, 00
+    MiLightRadiotoJSONCypher[std::make_pair(11, 0)] = "\"temp\": \"Increase Speed\"";                                                                              // HEX Values 0b, 00
+    MiLightRadiotoJSONCypher[std::make_pair(28, 0)] = "\"temp\": \"Change Mode Down\"";                                                                           // HEX Values 1c, 00
+    MiLightRadiotoJSONCypher[std::make_pair(27, 0)] = "\"temp\": \"Change Mode Up\"";                                                                             // HEX Values 1b, 00
+    MiLightRadiotoJSONCypher[std::make_pair(3, 0)] = "\"Status\": \"On\"\n \"Channel\": \"1\"";                                                                   // HEX Values 03, 00
+    MiLightRadiotoJSONCypher[std::make_pair(4, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"1\"";                                                                  // HEX Values 04, 00
+    MiLightRadiotoJSONCypher[std::make_pair(19, 0)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values 13, 00
+    MiLightRadiotoJSONCypher[std::make_pair(20, 0)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";     // HEX Values 14, 00
+    MiLightRadiotoJSONCypher[std::make_pair(5, 0)] = "\"Status\": \"On\"\n \"Channel\": \"2\"";                                                                   // HEX Values 05, 00
+    MiLightRadiotoJSONCypher[std::make_pair(6, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"2\"";                                                                  // HEX Values 06, 00
+    MiLightRadiotoJSONCypher[std::make_pair(21, 0)] = "\"Status\": \"On\"\n \"Channel\": \"2\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values 15, 00
+    MiLightRadiotoJSONCypher[std::make_pair(22, 0)] = "\"Status\": \"On\"\n \"Channel\": \"2\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";     // HEX Values 16, 00
+    MiLightRadiotoJSONCypher[std::make_pair(7, 0)] = "\"Status\": \"On\"\n \"Channel\": \"3\"";                                                                   // HEX Values 07, 00
+    MiLightRadiotoJSONCypher[std::make_pair(8, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"3\"";                                                                  // HEX Values 08, 00
+    MiLightRadiotoJSONCypher[std::make_pair(23, 0)] = "\"Status\": \"On\"\n \"Channel\": \"3\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values 17, 00
+    MiLightRadiotoJSONCypher[std::make_pair(24, 0)] = "\"Status\": \"On\"\n \"Channel\": \"3\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";     // HEX Values 18, 00
+    MiLightRadiotoJSONCypher[std::make_pair(9, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\"";                                                                   // HEX Values 09, 00
+    MiLightRadiotoJSONCypher[std::make_pair(10, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"4\"";                                                                  // HEX Values 0a, 00
+    MiLightRadiotoJSONCypher[std::make_pair(25, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values 19, 00
+    MiLightRadiotoJSONCypher[std::make_pair(26, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";      // HEX Values 1a, 00
+	
+	
+    
+
+    // MiLight Smart Phone Remotes 
     
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 0, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"0\"";                                      // HEX Values 40, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 1, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"1\"";                                      // HEX Values 40, 01, 00
@@ -286,7 +566,6 @@ void atomikCypher :: init()
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 253, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"253\"";                                    // HEX Values 40, fd, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 254, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"254\"";                                    // HEX Values 40, fe, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(64, 255, 0)] = "\"Status\": \"On\"\n \"ColorMode\": \"RGB256\"\n \"Color\": \"255\"";                                    // HEX Values 40, ff, 00
-
 
     MiLightSmartPhonetoJSONCypher[std::make_tuple(65, 0, 0)] = "\"Status\": \"Off\"\n \"Channel\": \"0\"";                                                                  // HEX Values 41, 00, 00
     MiLightSmartPhonetoJSONCypher[std::make_tuple(66, 0, 0)] = "\"Status\": \"On\"\n \"Channel\": \"0\"";                                                                   // HEX Values 42, 00, 00
