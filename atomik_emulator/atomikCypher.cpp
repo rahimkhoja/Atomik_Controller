@@ -807,11 +807,20 @@ void atomikCypher :: init()
     return;    
 }		
  
-std::string atomikCypher :: getAtomikJSON(int x, int y, int z)
+std::string atomikCypher :: getSmartphoneAtomikJSON(int x, int y, int z)
 {
     std::stringstream buffer;
-    auto t = MiLightSmartPhonetoJSONCypher.find(std::make_tuple(x, y, z));
-    if (t == MiLightSmartPhonetoJSONCypher.end()) return std::string();
+    auto t = MiLightSmartphonetoJSONCypher.find(std::make_tuple(x, y, z));
+    if (t == MiLightSmartphonetoJSONCypher.end()) return std::string();
+        buffer << t->second;
+    return buffer.str();
+}
+
+std::string atomikCypher :: getRadioAtomikJSON(int x, int y)
+{
+    std::stringstream buffer;
+    auto t = MiLightRadiotoJSONCypher.find(std::make_pair(x, y));
+    if (t == MiLightRadiotoJSONCypher.end()) return std::string();
         buffer << t->second;
     return buffer.str();
 }
