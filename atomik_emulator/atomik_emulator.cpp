@@ -224,7 +224,7 @@ void listen()
                                     bint = bchar;
                                     cchar = mesg[2];
                                     cint = cchar;
-                                    cypherData = MiLightCypher.getSmartPhoneAtomikJSON(aint, bint, cint);
+                                    cypherData = MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], bint, cint);
                                     messagedata = sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                                     
                                     printf("\n");
@@ -247,7 +247,6 @@ void listen()
         } /* While (1) */
 
 }
-
 
 void usage(const char *arg, const char *options)
 {
