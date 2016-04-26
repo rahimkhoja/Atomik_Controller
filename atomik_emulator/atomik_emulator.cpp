@@ -136,8 +136,7 @@ void listen()
                     printf("UDP --> Received discovery request (%s) from %s\n", mesg, stri);
                 }
 
-                //if (!strncmp(mesg, "Link_Wi-Fi", 41))
-                if (!strncmp(mesg, "Link Wifi0", 41))
+                if (!strncmp(mesg, "Link_Wi-Fi", 41))
                 {
                     sendto(discover_fd, reply, strlen(reply), 0, (struct sockaddr*)&cliaddr, len);
                 }
