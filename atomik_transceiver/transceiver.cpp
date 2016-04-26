@@ -521,8 +521,11 @@ void socketCommand ( std::atomic<bool> & quit )
                 {
                     //Somebody disconnected , get his details and print
                     getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
-                    printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-                      
+                    if (debug) 
+                    {
+                        printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                    } 
+                    
                     //Close the socket and mark as 0 in list for reuse
                     close( sd );
                     client_socket[i] = 0;
@@ -536,13 +539,17 @@ void socketCommand ( std::atomic<bool> & quit )
                     send(sd , buffer , strlen(buffer) , 0 );
                     std::string commandSTR (buffer);
                     addCommand(commandSTR);
-                    printf("Receiving Command String: ");
-                    printf(commandSTR.c_str());
-                    printf("\n");
+                    if (debug) 
+                    {
+                        printf("Receiving Command String: %s\n", commandSTR);
+                    }
+                    
                     if(commandSTR.find ("\n"))
                     {
                       getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
-                      printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                      if (debug) {
+                          printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                      }
                       close( sd );
                       client_socket[i] = 0;
                     }
@@ -668,9 +675,12 @@ int main(int argc, char** argv)
     
     getOptions(all_args);
     
-    printf("\n Arg String: ");
-    printf(Vector2String(all_args).c_str());
-    printf("\n");
+    if (debug) 
+    {
+        printf("\n Arg String: ");
+        printf(Vector2String(all_args).c_str());
+        printf("\n");
+    }
     
     int ret = mlr.begin();
   
