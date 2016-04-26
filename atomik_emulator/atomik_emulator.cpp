@@ -1,4 +1,3 @@
-
 // g++ -std=c++11 atomikCypher.cpp atomik_emulator.cpp -o emulator
 
 #include <arpa/inet.h>
@@ -131,13 +130,14 @@ void listen()
 
                 if (debug)
                 {
-                    char str[INET_ADDRSTRLEN];
-                    long ip = cliaddr.sin_addr.s_addr;
-                    inet_ntop(AF_INET, &ip, str, INET_ADDRSTRLEN);
-                    printf("UDP --> Received discovery request (%s) from %s\n", mesg, str);
+                    char stri[INET_ADDRSTRLEN];
+                    long ipv4 = cliaddr.sin_addr.s_addr;
+                    inet_ntop(AF_INET, &ipv4, stri, INET_ADDRSTRLEN);
+                    printf("UDP --> Received discovery request (%s) from %s\n", mesg, stri);
                 }
 
-                if (!strncmp(mesg, "Link_Wi-Fi", 41))
+                //if (!strncmp(mesg, "Link_Wi-Fi", 41))
+                if (!strncmp(mesg, "Link Wifi0", 41))
                 {
                     sendto(discover_fd, reply, strlen(reply), 0, (struct sockaddr*)&cliaddr, len);
                 }
@@ -154,7 +154,11 @@ void listen()
                     long ip = cliaddr.sin_addr.s_addr;
                     inet_ntop(AF_INET, &ip, str, INET_ADDRSTRLEN);
                                     
-					// printf("Connection from %s\n", str);
+                    if (debug)
+                    {
+                        printf("Connection from %s\n", str);
+                        fflush(stdout);
+                    }
 
                     struct arpreq       areq;
                     struct sockaddr_in *sin;
