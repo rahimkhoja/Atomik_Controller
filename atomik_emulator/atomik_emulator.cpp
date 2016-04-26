@@ -174,17 +174,10 @@ void listen()
                                     struct sockaddr_in *sin;
                                     struct in_addr      ipaddr;
 
-                                    std:string cypherData;
-									string mac_address;
+                                    // std:string cypherData;
+									// string mac_address;
                                     int messagedata;
-                                    char achar;
-                                    int aint;
-                                    char bchar;
-                                    int bint;
-                                    char cchar;
-                                    int cint;
                                     char message [50];
-                                    
                                     
                                     /* Make the ARP request.
                                                          */
@@ -214,22 +207,17 @@ void listen()
                                     // printf("%s (%s) -> %s\n", str,
                                     // inet_ntoa(((struct sockaddr_in *) &areq.arp_pa)->sin_addr), ethernet_mactoa(&areq.arp_ha));
 
-                                    mac_address = ethernet_mactoa(&areq.arp_ha);
+                                    //mac_address = ethernet_mactoa(&areq.arp_ha);
 
                                     // printf("UDP --> Received hex value (%02x, %02x, %02x)\n", mesg[0], mesg[1], mesg[2]);
 
-                                    achar = mesg[0];
-                                    aint = achar;
-                                    bchar = mesg[1];
-                                    bint = bchar;
-                                    cchar = mesg[2];
-                                    cint = cchar;
-                                    cypherData = MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], bint, cint);
+                                    
+                                    //cypherData = MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2]);
                                     messagedata = sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                                     
                                     printf("\n");
                                     
-                                    printf(createJSON(mac_address.c_str(), str, message, cypherData).c_str());
+                                    printf(createJSON(ethernet_mactoa(&areq.arp_ha).c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2])).c_str());
 
                                     printf("\n");
                                     fflush(stdout);
