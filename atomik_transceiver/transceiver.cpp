@@ -21,7 +21,7 @@
 
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
-
+#include "../atomik_cypher/atomikCypher.h"
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
@@ -31,6 +31,7 @@ MiLightRadio mlr(prf);
 static int debug = 0;
 static int dupesPrinted = 0;
 static std::list<std::string> commandList;
+static atomikCypher MiLightCypher;
 
 pthread_mutex_t commandList_mutex;
 pthread_mutex_t totalCommands_mutex;
@@ -148,6 +149,34 @@ std::vector<std::string> String2Vector (std::string vecstring)
     std::cout << str << std::endl;
     return vec;    
 }
+
+std::string getTime()
+{
+    timeval curTime;
+    time_t now;
+    time(&now);
+    
+    gettimeofday(&curTime, NULL);
+    int milli = curTime.tv_usec / 1000;
+
+    char buf[sizeof "2011-10-08T07:07:09"];
+    strftime(buf, sizeof buf, "%FT%T", gmtime(&now));
+    
+    sprintf(buf, "%s.%dZ", buf, milli);
+    return buf;
+}
+
+std::string createJSON(std::string mac, std::string ip, std::string data, std::string config)
+{                                    
+    std::string output;
+    output = "{\n \"Command\": \"Issue\",\n \"DateTime\": \"" + getTime() + "\",\n ";
+    output = output + "\"MAC\": \"" + mac + "\",\n ";
+    output = output + "\"IP\": \"" + ip + "\",\n ";
+    output = output + "\"Data\": \"" + data + "\",\n ";
+    output = output + "\"Configuration\": {\n " + config + " }\n}";
+    return output;
+
+
 
 void receive()
 {
