@@ -164,7 +164,6 @@ void listen()
                     struct in_addr      ipaddr;
 
                     string mac_address;
-                    int messagedata;
                     char message [50];
                                     
                     /* Make the ARP request.
@@ -199,12 +198,10 @@ void listen()
                                         
                     mac_address = ethernet_mactoa(&areq.arp_ha);
                                   
-                    // messagedata = sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
+                    sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                                     
                     printf("\n");
-                                    
                     printf(createJSON(mac_address.c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2])).c_str());
-
                     printf("\n");
                     fflush(stdout);
                     
