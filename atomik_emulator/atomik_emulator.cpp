@@ -1,4 +1,4 @@
-// g++ -std=c++11 atomikCypher.cpp atomik_emulator.cpp -o emulator
+// g++ -std=c++11 atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
 
 #include <arpa/inet.h>
 #include <chrono>
@@ -199,7 +199,7 @@ void listen()
                                         
                     mac_address = ethernet_mactoa(&areq.arp_ha);
                                   
-                    messagedata = sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
+                    // messagedata = sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                                     
                     printf("\n");
                                     
@@ -257,7 +257,7 @@ int main(int argc, char** argv)
     }
     
     printf("Atomik MiLight Emulator - Version %.02f\n", ver);
-    printf("Listening to Mi-Light RGBW Band: ( press ctrl-c to end )\n");
+    printf("Listening for Mi-Light Smart Phone Commands: ( press ctrl-c to end )\n");
     listen();
 
     return 0;
