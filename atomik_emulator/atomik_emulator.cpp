@@ -257,7 +257,7 @@ int main(int argc, char** argv)
         }
     }
     
-    printf("Atomik MiLight Emulator - Version %d\n%.*f", 2, ver);
+    printf("Atomik MiLight Emulator - Version %.02f\n", ver);
     printf("Listening to Mi-Light RGBW Band: ( press ctrl-c to end )\n");
     listen();
 
