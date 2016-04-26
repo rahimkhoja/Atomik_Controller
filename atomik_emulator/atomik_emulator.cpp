@@ -25,7 +25,7 @@
 
 using namespace std;
 
-float ver 0.8;
+float ver = 0.8;
 static int debug = 1;
 static int dupesPrinted = 0;
 static atomikCypher MiLightCypher;
