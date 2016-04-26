@@ -204,7 +204,7 @@ void listen()
                                     
                     printf("\n");
                                     
-                    printf(createJSON(ethernet_mactoa(&areq.arp_ha).c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2])).c_str());
+                    printf(createJSON(mac_address.c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2])).c_str());
 
                     printf("\n");
                     fflush(stdout);
