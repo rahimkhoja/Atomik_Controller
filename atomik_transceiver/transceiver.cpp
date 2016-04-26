@@ -175,8 +175,7 @@ std::string createJSON(std::string mac, std::string ip, std::string data, std::s
     output = output + "\"Data\": \"" + data + "\",\n ";
     output = output + "\"Configuration\": {\n " + config + " }\n}";
     return output;
-
-
+}
 
 void receive()
 {
