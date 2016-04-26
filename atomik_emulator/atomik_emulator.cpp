@@ -26,7 +26,7 @@
 using namespace std;
 
 float ver = 0.8;
-static int debug = 1;
+static int debug = 0;
 static int dupesPrinted = 0;
 static atomikCypher MiLightCypher;
 
@@ -257,7 +257,7 @@ int main(int argc, char** argv)
         }
     }
     
-    printf("Atomik MiLight Emulator - Version %d\n%.*f", ver, 2);
+    printf("Atomik MiLight Emulator - Version %d\n%.*f", 2, ver);
     printf("Listening to Mi-Light RGBW Band: ( press ctrl-c to end )\n");
     listen();
 
