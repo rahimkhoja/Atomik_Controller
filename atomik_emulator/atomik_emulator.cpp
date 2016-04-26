@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <utility>
 
-#include "atomikCypher.h"
+#include "../atomik_cypher/atomikCypher.h"
 
 using namespace std;
 
