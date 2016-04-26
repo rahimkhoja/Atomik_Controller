@@ -72,7 +72,7 @@ class atomikCypher
           void init();
           Atomik::map_t MiLightSmartPhonetoJSONCypher;
           //Atomik::map_t MiLightRadiotoJSONCypher;
-          std::vector<pair<int,int>> MiLightRadiotoJSONCypher;
+          std::vector<std::pair<int,int>> MiLightRadiotoJSONCypher;
           
      public :
           //with default value
