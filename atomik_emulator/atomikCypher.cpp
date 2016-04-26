@@ -305,8 +305,79 @@ void atomikCypher :: init()
     MiLightRadiotoJSONCypher[std::make_pair(25, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Max\"";            // HEX Values 19, 00
     MiLightRadiotoJSONCypher[std::make_pair(26, 0)] = "\"Status\": \"On\"\n \"Channel\": \"4\" \n \"ColorMode\": \"White\"\n \"Brightness\": \"Nightlight\"";      // HEX Values 1a, 00
 	
-	
+	// MiLight RF Remore Channel 0 Brightness
     
+    MiLightRadiotoJSONCypher[std::make_pair(14, 136)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"3\"";                                                                // HEX Values 4e, 00
+    MiLightRadiotoJSONCypher[std::make_pair(14, 128)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"6\"";                                                                // HEX Values 4e, 01
+    MiLightRadiotoJSONCypher[std::make_pair(14, 120)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"9\"";                                                                // HEX Values 4e, 02
+    MiLightRadiotoJSONCypher[std::make_pair(14, 112)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"12\"";                                                               // HEX Values 4e, 03
+    MiLightRadiotoJSONCypher[std::make_pair(14, 104)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"15\"";                                                               // HEX Values 4e, 04
+    MiLightRadiotoJSONCypher[std::make_pair(14, 96)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"19\"";                                                               // HEX Values 4e, 05
+    MiLightRadiotoJSONCypher[std::make_pair(14, 88)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"22\"";                                                               // HEX Values 4e, 06
+    MiLightRadiotoJSONCypher[std::make_pair(14, 80)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"25\"";                                                               // HEX Values 4e, 07
+    MiLightRadiotoJSONCypher[std::make_pair(14, 72)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"28\"";                                                               // HEX Values 4e, 08
+    MiLightRadiotoJSONCypher[std::make_pair(14, 64)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"31\"";                                                               // HEX Values 4e, 09
+    MiLightRadiotoJSONCypher[std::make_pair(14, 56)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"34\"";                                                              // HEX Values 4e, 0a
+    MiLightRadiotoJSONCypher[std::make_pair(14, 48)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"37\"";                                                              // HEX Values 4e, 0b
+    MiLightRadiotoJSONCypher[std::make_pair(14, 40)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"40\"";                                                              // HEX Values 4e, 0c
+    MiLightRadiotoJSONCypher[std::make_pair(14, 32)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"44\"";                                                              // HEX Values 4e, 0d
+    MiLightRadiotoJSONCypher[std::make_pair(14, 24)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"47\"";                                                              // HEX Values 4e, 0e
+    MiLightRadiotoJSONCypher[std::make_pair(14, 16)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"50\"";                                                              // HEX Values 4e, 0f
+    MiLightRadiotoJSONCypher[std::make_pair(14, 08)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"53\"";                                                               // HEX Values 4e, 10
+    MiLightRadiotoJSONCypher[std::make_pair(14, 00)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"56\"";                                                               // HEX Values 4e, 11
+    MiLightRadiotoJSONCypher[std::make_pair(14, 248)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"59\"";                                                               // HEX Values 4e, 12
+    MiLightRadiotoJSONCypher[std::make_pair(14, 240)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"62\"";                                                               // HEX Values 4e, 13
+    MiLightRadiotoJSONCypher[std::make_pair(14, 232)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"65\"";                                                               // HEX Values 4e, 14
+    MiLightRadiotoJSONCypher[std::make_pair(14, 224)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"69\"";                                                               // HEX Values 4e, 15
+    MiLightRadiotoJSONCypher[std::make_pair(14, 216)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"72\"";                                                               // HEX Values 4e, 16
+    MiLightRadiotoJSONCypher[std::make_pair(14, 208)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"75\"";                                                               // HEX Values 4e, 17
+    MiLightRadiotoJSONCypher[std::make_pair(14, 200)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"78\"";                                                               // HEX Values 4e, 18
+    MiLightRadiotoJSONCypher[std::make_pair(14, 192)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"81\"";                                                               // HEX Values 4e, 19
+    MiLightRadiotoJSONCypher[std::make_pair(14, 184)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"84\"";                                                              // HEX Values 4e, 1a
+    MiLightRadiotoJSONCypher[std::make_pair(14, 176)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"87\"";                                                              // HEX Values 4e, 1b
+    MiLightRadiotoJSONCypher[std::make_pair(14, 168)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"90\"";                                                              // HEX Values 4e, 1c
+    MiLightRadiotoJSONCypher[std::make_pair(14, 160)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"94\"";                                                              // HEX Values 4e, 1d
+    MiLightRadiotoJSONCypher[std::make_pair(14, 152)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"97\"";                                                              // HEX Values 4e, 1e
+    MiLightRadiotoJSONCypher[std::make_pair(14, 144)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"100\"";                                                             // HEX Values 4e, 1f
+    MiLightRadiotoJSONCypher[std::make_pair(14, 144)] = "\"Status\": \"On\"\n \"Channel\": \"0\" \n \"Brightness\": \"100\"";
+    	
+	// MiLight RF Remore Channel 1 Brightness
+    
+    MiLightRadiotoJSONCypher[std::make_pair(14, 137)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"3\"";                                                                // HEX Values 4e, 00
+    MiLightRadiotoJSONCypher[std::make_pair(14, 129)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"6\"";                                                                // HEX Values 4e, 01
+    MiLightRadiotoJSONCypher[std::make_pair(14, 121)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"9\"";                                                                // HEX Values 4e, 02
+    MiLightRadiotoJSONCypher[std::make_pair(14, 113)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"12\"";                                                               // HEX Values 4e, 03
+    MiLightRadiotoJSONCypher[std::make_pair(14, 105)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"15\"";                                                               // HEX Values 4e, 04
+    MiLightRadiotoJSONCypher[std::make_pair(14, 97)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"19\"";                                                               // HEX Values 4e, 05
+    MiLightRadiotoJSONCypher[std::make_pair(14, 89)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"22\"";                                                               // HEX Values 4e, 06
+    MiLightRadiotoJSONCypher[std::make_pair(14, 81)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"25\"";                                                               // HEX Values 4e, 07
+    MiLightRadiotoJSONCypher[std::make_pair(14, 73)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"28\"";                                                               // HEX Values 4e, 08
+    MiLightRadiotoJSONCypher[std::make_pair(14, 65)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"31\"";                                                               // HEX Values 4e, 09
+    MiLightRadiotoJSONCypher[std::make_pair(14, 57)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"34\"";                                                              // HEX Values 4e, 0a
+    MiLightRadiotoJSONCypher[std::make_pair(14, 49)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"37\"";                                                              // HEX Values 4e, 0b
+    MiLightRadiotoJSONCypher[std::make_pair(14, 41)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"40\"";                                                              // HEX Values 4e, 0c
+    MiLightRadiotoJSONCypher[std::make_pair(14, 33)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"44\"";                                                              // HEX Values 4e, 0d
+    MiLightRadiotoJSONCypher[std::make_pair(14, 25)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"47\"";                                                              // HEX Values 4e, 0e
+    MiLightRadiotoJSONCypher[std::make_pair(14, 17)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"50\"";                                                              // HEX Values 4e, 0f
+    MiLightRadiotoJSONCypher[std::make_pair(14, 09)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"53\"";                                                               // HEX Values 4e, 10
+    MiLightRadiotoJSONCypher[std::make_pair(14, 01)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"56\"";                                                               // HEX Values 4e, 11
+    MiLightRadiotoJSONCypher[std::make_pair(14, 249)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"59\"";                                                               // HEX Values 4e, 12
+    MiLightRadiotoJSONCypher[std::make_pair(14, 241)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"62\"";                                                               // HEX Values 4e, 13
+    MiLightRadiotoJSONCypher[std::make_pair(14, 233)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"65\"";                                                               // HEX Values 4e, 14
+    MiLightRadiotoJSONCypher[std::make_pair(14, 225)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"69\"";                                                               // HEX Values 4e, 15
+    MiLightRadiotoJSONCypher[std::make_pair(14, 217)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"72\"";                                                               // HEX Values 4e, 16
+    MiLightRadiotoJSONCypher[std::make_pair(14, 209)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"75\"";                                                               // HEX Values 4e, 17
+    MiLightRadiotoJSONCypher[std::make_pair(14, 201)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"78\"";                                                               // HEX Values 4e, 18
+    MiLightRadiotoJSONCypher[std::make_pair(14, 193)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"81\"";                                                               // HEX Values 4e, 19
+    MiLightRadiotoJSONCypher[std::make_pair(14, 185)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"84\"";                                                              // HEX Values 4e, 1a
+    MiLightRadiotoJSONCypher[std::make_pair(14, 177)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"87\"";                                                              // HEX Values 4e, 1b
+    MiLightRadiotoJSONCypher[std::make_pair(14, 169)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"90\"";                                                              // HEX Values 4e, 1c
+    MiLightRadiotoJSONCypher[std::make_pair(14, 161)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"94\"";                                                              // HEX Values 4e, 1d
+    MiLightRadiotoJSONCypher[std::make_pair(14, 153)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"97\"";                                                              // HEX Values 4e, 1e
+    MiLightRadiotoJSONCypher[std::make_pair(14, 145)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"100\"";                                                             // HEX Values 4e, 1f
+    MiLightRadiotoJSONCypher[std::make_pair(14, 145)] = "\"Status\": \"On\"\n \"Channel\": \"1\" \n \"Brightness\": \"100\"";
+    
+
 
     // MiLight Smart Phone Remotes 
     
