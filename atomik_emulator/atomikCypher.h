@@ -6,6 +6,7 @@
 #include <tuple>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace Atomik
 {
@@ -71,7 +72,7 @@ class atomikCypher
           void init();
           Atomik::map_t MiLightSmartPhonetoJSONCypher;
           //Atomik::map_t MiLightRadiotoJSONCypher;
-          vector < pair<int,int> > MiLightRadiotoJSONCypher;
+          vector<pair<int,int>> MiLightRadiotoJSONCypher;
           
      public :
           //with default value
