@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <tuple>
 #include <string>
-#include <vector>
 #include <utility>
+
 
 namespace Atomik
 {
@@ -37,30 +37,28 @@ namespace Atomik
     
     
     
-    typedef std::tuple<int, int, int,int> key_t4;
-    struct key_hash4 : public std::unary_function<key_t4, std::size_t>
+    typedef std::pair<int, int> key_t2;
+    struct key_hash2 : public std::unary_function<key_t2, std::size_t>
     {
-        std::size_t operator()(const key_t4& k) const
+        std::size_t operator()(const key_t2& k) const
         {
-            return std::get<0>(k) ^ std::get<1>(k) ^ std::get<2>(k) ^ std::get<3>(k);
+            return std::get<0>(k) ^ std::get<1>(k);
         }
     };
 
-    struct key_equal4 : public std::binary_function<key_t4, key_t4, bool>
+    struct key_equal2 : public std::binary_function<key_t2, key_t2, bool>
     {
-        bool operator()(const key_t4& v0, const key_t4& v1) const
+        bool operator()(const key_t2& v0, const key_t2& v1) const
         {
              return 
              (
                   std::get<0>(v0) == std::get<0>(v1) &&
-                  std::get<1>(v0) == std::get<1>(v1) &&
-                  std::get<2>(v0) == std::get<2>(v1) &&
-                  std::get<3>(v0) == std::get<3>(v1)
+                  std::get<1>(v0) == std::get<1>(v1)
              );
         }
     };
 
-    typedef std::unordered_map<const key_t4,std::string,key_hash4,key_equal4> map_t4;
+    typedef std::unordered_map<const key_t2,std::string,key_hash2,key_equal2> map_t2;
     
     
 };
@@ -71,8 +69,7 @@ class atomikCypher
      private :
           void init();
           Atomik::map_t MiLightSmartPhonetoJSONCypher;
-          //Atomik::map_t MiLightRadiotoJSONCypher;
-          std::vector<std::pair<int,int>> MiLightRadiotoJSONCypher;
+          Atomik::map_t2 MiLightRadiotoJSONCypher;
           
      public :
           //with default value
