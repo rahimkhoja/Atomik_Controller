@@ -168,7 +168,7 @@ std::string getTime()
 
 std::string int2hex(int x)
 {
-    std::string out;
+    char[2] out;
     sprintf(out, "%02X ", x);
     return out;
 }
@@ -177,15 +177,15 @@ std::string int2int(int x)
 {
     std::stringstream ss;
     ss << x;
-    retrun ss.str();
+    return ss.str();
 }
 
 std::string createJSON(std::string add1, std::string add2, std::string data, std::string config)
 {                                    
     std::string output;
     output = "{\n \"Command\": \"Issue\",\n \"DateTime\": \"" + getTime() + "\",\n ";
-    output = output + "\"Address1\": \"" + mac + "\",\n ";
-    output = output + "\"Address2\": \"" + ip + "\",\n ";
+    output = output + "\"Address1\": \"" + add1 + "\",\n ";
+    output = output + "\"Address2\": \"" + add2 + "\",\n ";
     output = output + "\"Data\": \"" + data + "\",\n ";
     output = output + "\"Configuration\": {\n " + config + " }\n}";
     return output;
