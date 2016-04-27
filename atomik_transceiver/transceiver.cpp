@@ -201,18 +201,17 @@ void receive()
         if(getCommandLength()==0) {
         char data[50];
             if(mlr.available()) {
-                printf("\n");
                 uint8_t packet[7];
                 size_t packet_length = sizeof(packet);
                 mlr.read(packet, packet_length);
-
-                sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
-                
-                std::string config = "";
-                std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                
-                printf(output.c_str());
-                
+                if (packet[5] > 0) 
+                {
+                    sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
+                    std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
+                    
+                    printf("\n");
+                    printf(output.c_str());
+                }
             }
             
             int dupesReceived = mlr.dupesReceived();
