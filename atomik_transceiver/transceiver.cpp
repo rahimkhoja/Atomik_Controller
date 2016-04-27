@@ -218,9 +218,11 @@ void receive()
                     fflush(stdout);
                 }
    **/
-   sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
    
-   printf(createJSON(int2hex(packet[1]), int2hex(packet[2]), data, "").c_str);
+   sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
+   std::string config = "";
+   std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, config);
+   printf(output.c_str());
                 
             
                 for(size_t i = 0; i < packet_length; i++) {
