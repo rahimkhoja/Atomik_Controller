@@ -366,54 +366,6 @@ std::string createJSON(std::string add1, std::string add2, std::string data, std
     return output;
 }
 
-void receive()
-{
-    printf("Receiving mode, press Ctrl-C to end\n");
-    mlr.setRadioMode(radiomode);
-    while(1){
-    
-        // check if there are any new messages to send! 
-        if(getCommandLength()==0) {
-        char data[50];
-            if(mlr.available()) {
-                uint8_t packet[7];
-                size_t packet_length = sizeof(packet);
-                mlr.read(packet, packet_length);
-                if (packet[5] > 0) 
-                {
-                    sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
-                    std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                    
-                    printf("\n");
-                    printf(output.c_str());
-                } else {
-                    printf("0");
-                }
-            }
-            
-            int dupesReceived = mlr.dupesReceived();
-            for (; dupesPrinted < dupesReceived; dupesPrinted++) {
-                printf(".");
-            }
-            fflush(stdout);
-       
-        } else {
-            printf("Command Processed: ");
-            printf(getCommand().c_str());
-            printf("\n");
-            
-            socket_args = String2Vector(getCommand());
-            
-            getOptions(socket_args, 1);
-            resends = 30;
-            send(color, bright, key, remote, rem_p, prefix, seq, resends);
-            removeCommand();
-            resetVars();
-        }
-    }
-}
-
-
 void send(uint8_t data[8])
 {
   mlr.setRadioMode(radiomode);
@@ -476,6 +428,54 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 
   send(data);
 }
+
+
+void receive()
+{
+    printf("Receiving mode, press Ctrl-C to end\n");
+    mlr.setRadioMode(radiomode);
+    while(1){
+    
+        // check if there are any new messages to send! 
+        if(getCommandLength()==0) {
+        char data[50];
+            if(mlr.available()) {
+                uint8_t packet[7];
+                size_t packet_length = sizeof(packet);
+                mlr.read(packet, packet_length);
+                if (packet[5] > 0) 
+                {
+                    sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
+                    std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
+                    
+                    printf("\n");
+                    printf(output.c_str());
+                } else {
+                    printf("0");
+                }
+            }
+            
+            int dupesReceived = mlr.dupesReceived();
+            for (; dupesPrinted < dupesReceived; dupesPrinted++) {
+                printf(".");
+            }
+            fflush(stdout);
+       
+        } else {
+            printf("Command Processed: ");
+            printf(getCommand().c_str());
+            printf("\n");
+            
+            socket_args = String2Vector(getCommand());
+            
+            getOptions(socket_args, 1);
+            resends = 30;
+            send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            removeCommand();
+        }
+    }
+}
+
 
 void socketConnect(int type , std::string data)
 {
