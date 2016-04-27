@@ -218,7 +218,7 @@ void receive()
                     fflush(stdout);
                 }
    **/
-   sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6])
+   sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
    
    printf(createJSON(int2hex(packet[1]), int2hex(packet[2]), data, "").c_str);
                 
