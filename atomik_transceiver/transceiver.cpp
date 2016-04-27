@@ -62,6 +62,7 @@ std::thread receiveThread;
 int socketPort = 5000;
 
 std::vector<std::string> all_args;
+std::vector<std::string> socket_args;
 
 void resetVars()
 {
@@ -226,6 +227,13 @@ void receive()
             printf("Command Processed: ");
             printf(getCommand().c_str());
             printf("\n");
+            
+            socket_args = String2Vector(getCommand());
+            
+            getOptions(socket_args, 1)
+            send(uint8_t color, uint8_t bright, uint8_t key,
+          uint8_t remote = 0x01, uint8_t remote_prefix = 0x00,
+	  uint8_t prefix = 0xB8, uint8_t seq = 0x00, uint8_t resends = 10)
             removeCommand();
         }
     }
@@ -563,6 +571,7 @@ void socketCommand ( std::atomic<bool> & quit )
                         printf("Receiving Command String: ");
                         printf(commandSTR.c_str());
                         printf("\n");
+                        
                     }
                     
                     if(commandSTR.find ("\n"))
@@ -583,7 +592,7 @@ void socketCommand ( std::atomic<bool> & quit )
 }
 
 
-void getOptions(std::vector<std::string>& args)
+void getOptions(std::vector<std::string>& args, int type)
 {
     int c;
     uint64_t tmp;
@@ -598,69 +607,120 @@ void getOptions(std::vector<std::string>& args)
         exit(0);
         break;
       case 'd':
-        debug = 1;
+          if ( type == 0 )
+          {
+            debug = 1;
+          }
         break;
       case 'n':
-        do_receive = 0;
-        do_server = 0;
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 10);
-        resends = (uint8_t)tmp;
-        break;
+         if ( type == 0 )
+         {
+            do_receive = 0;
+            do_server = 0;
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 10);
+            resends = (uint8_t)tmp;
+         }
+         break;
       case 'p':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        prefix = (uint8_t)tmp;
+          if ( type == 0 )
+          {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            prefix = (uint8_t)tmp;
+          } else {
+            tmp = strtoll(optarg, NULL, 16);
+            prefix = (uint8_t)tmp;          
+          }
         break;
       case 'q':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        rem_p = (uint8_t)tmp;
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            rem_p = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            rem_p = (uint8_t)tmp;       
+        }
         break;
       case 'r':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        remote = (uint8_t)tmp;
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            remote = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            remote = (uint8_t)tmp;   
+        }
         break;
       case 'c':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        color = (uint8_t)tmp;
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            color = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            color = (uint8_t)tmp;
+        }
         break;
       case 'b':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        bright = (uint8_t)tmp;
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            bright = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            bright = (uint8_t)tmp;
+        }        
         break;
       case 'k':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        key = (uint8_t)tmp;
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            key = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            key = (uint8_t)tmp;
+        }
         break;
       case 'v':
-        do_receive = 0;
-        do_server = 0;      
-        do_command = 1;
-        tmp = strtoll(optarg, NULL, 16);
-        seq = (uint8_t)tmp;
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            seq = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            seq = (uint8_t)tmp;
+        }
         break;
       case 'w':
+      if ( type == 0 )
+        {
         do_receive = 0;
         do_server = 0;
         do_command = 2;
         command = strtoll(optarg, NULL, 16);
+        }
         break;
       case 't':
         tmp = strtoll(optarg, NULL, 10);
@@ -694,7 +754,7 @@ int main(int argc, char** argv)
     do_receive = 1;
     do_server = 1;
     
-    getOptions(all_args);
+    getOptions(all_args, 0);
     
     if (debug) 
     {
