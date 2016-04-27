@@ -816,10 +816,22 @@ std::string atomikCypher :: getSmartPhoneAtomikJSON(int h, int m, int s)
     return buffer.str();
 }
 
-std::string atomikCypher :: getRadioAtomikJSON(int h, int m)
+std::string atomikCypher :: getRadioAtomikJSON(int command, int color, int brightness)
 {
+    int cypherCommand, cypherValue;
     std::stringstream buffer;
-    auto t = MiLightRadiotoJSONCypher.find(std::make_pair(h, m));
+	cypherCommand = command;
+    if (cypherCommand == 14) {
+      // Brightness
+	  cypherValue = brightness;
+	} else if ( cypherCommand == 15 ) {
+	  // Color
+	  cypherValue = color;
+	} else {
+	  cypherValue = 0;
+	}
+	
+    auto t = MiLightRadiotoJSONCypher.find(std::make_pair(cypherCommand, cypherValue));
     if (t == MiLightRadiotoJSONCypher.end()) return std::string();
         buffer << t->second;
     return buffer.str();
