@@ -196,8 +196,10 @@ void receive()
     printf("Receiving mode, press Ctrl-C to end\n");
     mlr.setRadioMode(radiomode);
     while(1){
+    
         // check if there are any new messages to send! 
         if(getCommandLength()==0) {
+        char data[];
             if(mlr.available()) {
                 printf("\n");
                 uint8_t packet[7];
@@ -216,19 +218,10 @@ void receive()
                     fflush(stdout);
                 }
    **/
-      
-                printf("MiLightRadiotoJSONCypher[std::make_tuple(");
-                for(size_t i = 0; i < packet_length; i++) {
-                    if ( i == 0 || i == 3 || i == 4 )
-                    {
-                        printf("%i, ", packet[i]);
-                        fflush(stdout);
-                    } else if ( i == 5 ) {
-                        printf("%i", packet[i]);
-                        fflush(stdout);
-                    }
-                }
-                printf(")] = \"TestRadioCypher\";\t\t\t\\\\ HEX Values: ");
+   sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6])
+   
+   printf(createJSON(int2hex(packet[1]), int2hex(packet[2]), data, "").c_str);
+                
             
                 for(size_t i = 0; i < packet_length; i++) {
                     printf("%02X ", packet[i]);
