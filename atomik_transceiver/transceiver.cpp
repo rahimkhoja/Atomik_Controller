@@ -206,35 +206,13 @@ void receive()
                 size_t packet_length = sizeof(packet);
                 mlr.read(packet, packet_length);
 
-/**
-                for(size_t i = 0; i < packet_length; i++) {
-                    printf("%02X ", packet[i]);
-                    fflush(stdout);
-                }
+                sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                 
-                printf("\n");
-                for(size_t i = 0; i < packet_length; i++) {
-                    printf("%i ", packet[i]);
-                    fflush(stdout);
-                }
-   **/
-   
-   sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
-   std::string config = "";
-   std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, config);
-   printf(output.c_str());
+                std::string config = "";
+                std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, "");
                 
-            
-                for(size_t i = 0; i < packet_length; i++) {
-                    printf("%02X ", packet[i]);
-                    fflush(stdout);
-                    
-                    printf(int2hex(packet[2]).c_str());
-                }
+                printf(output.c_str());
                 
-                
-                
-    
             }
             
             int dupesReceived = mlr.dupesReceived();
