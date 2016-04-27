@@ -168,7 +168,7 @@ std::string getTime()
 
 std::string int2hex(int x)
 {
-    std:string out;
+    std::string out;
     sprintf(out, "%02X ", x);
     return out;
 }
@@ -234,7 +234,7 @@ void receive()
                     printf("%02X ", packet[i]);
                     fflush(stdout);
                     
-                    printf(int2hex(packet[2]);
+                    printf(int2hex(packet[2]));
                 }
                 
                 
