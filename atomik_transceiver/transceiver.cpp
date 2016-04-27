@@ -168,9 +168,9 @@ std::string getTime()
 
 std::string int2hex(int x)
 {
-    char[2] out;
+    char out[2];
     sprintf(out, "%02X ", x);
-    return out;
+    return std::string(out);
 }
 
 std::string int2int(int x)
@@ -387,12 +387,10 @@ void socketConnect(int type , std::string data)
             puts("recv failed");
             break;
         }
-                
+               
         puts(serverData);
         std::string sData(serverData);
-                    
-                    
-                    
+                                 
         if (ty == 1)
         {
             printf("Sending Arg String: ");
