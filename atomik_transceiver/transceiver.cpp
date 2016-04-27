@@ -169,7 +169,7 @@ std::string getTime()
 std::string int2hex(int x)
 {
     char out[2];
-    sprintf(out, "%02X ", x);
+    sprintf(out, "%02X", x);
     return std::string(out);
 }
 
