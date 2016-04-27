@@ -209,7 +209,7 @@ void receive()
                 sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                 
                 std::string config = "";
-                std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, "");
+                std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[4], packet[3]));
                 
                 printf(output.c_str());
                 
