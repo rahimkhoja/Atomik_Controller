@@ -36,7 +36,7 @@ static atomikCypher MiLightCypher;
 pthread_mutex_t commandList_mutex;
 pthread_mutex_t totalCommands_mutex;
 std::atomic<bool> disableSocket;
-std::atomic<bool> commadsWaiting = false;
+std::atomic<bool> commadsWaiting (false);
 
 int do_receive = 0;
 int do_command = 0;
