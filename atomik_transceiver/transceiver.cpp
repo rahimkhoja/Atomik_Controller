@@ -230,7 +230,7 @@ void receive()
             
             socket_args = String2Vector(getCommand());
             
-            getOptions(socket_args, 1)
+            getOptions(socket_args, 1);
             resends = 30;
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
             removeCommand();
