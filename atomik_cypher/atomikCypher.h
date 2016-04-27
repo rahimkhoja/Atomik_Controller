@@ -76,7 +76,7 @@ class atomikCypher
           atomikCypher();
           //	setter function
           std::string getSmartPhoneAtomikJSON(int h, int m, int s);
-          std::string getRadioAtomikJSON(int h, int m);
+          std::string getRadioAtomikJSON(int command, int color, int brightness);
           // Print a description of object in " hh:mm:ss"
 };
  
