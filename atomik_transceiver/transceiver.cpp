@@ -166,12 +166,26 @@ std::string getTime()
     return buf;
 }
 
-std::string createJSON(std::string mac, std::string ip, std::string data, std::string config)
+std::string int2hex(int x)
+{
+    std:string out;
+    sprintf(out, "%02X ", x);
+    return out;
+}
+
+std::string int2int(int x)
+{
+    std::stringstream ss;
+    ss << x;
+    retrun ss.str();
+}
+
+std::string createJSON(std::string add1, std::string add2, std::string data, std::string config)
 {                                    
     std::string output;
     output = "{\n \"Command\": \"Issue\",\n \"DateTime\": \"" + getTime() + "\",\n ";
-    output = output + "\"MAC\": \"" + mac + "\",\n ";
-    output = output + "\"IP\": \"" + ip + "\",\n ";
+    output = output + "\"Address1\": \"" + mac + "\",\n ";
+    output = output + "\"Address2\": \"" + ip + "\",\n ";
     output = output + "\"Data\": \"" + data + "\",\n ";
     output = output + "\"Configuration\": {\n " + config + " }\n}";
     return output;
@@ -219,7 +233,12 @@ void receive()
                 for(size_t i = 0; i < packet_length; i++) {
                     printf("%02X ", packet[i]);
                     fflush(stdout);
+                    
+                    printf(int2hex(packet[2]);
                 }
+                
+                
+                
     
             }
             
