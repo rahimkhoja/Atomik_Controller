@@ -211,6 +211,8 @@ void receive()
                     
                     printf("\n");
                     printf(output.c_str());
+                } else {
+                    printf("0");
                 }
             }
             
