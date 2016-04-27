@@ -234,6 +234,7 @@ void receive()
             resends = 30;
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
             removeCommand();
+            resetVars();
         }
     }
 }
