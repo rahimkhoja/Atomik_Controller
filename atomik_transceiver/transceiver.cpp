@@ -63,6 +63,24 @@ int socketPort = 5000;
 
 std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
+void usage(const char *arg, const char *options){
+  printf("\n");
+  printf("Usage: sudo %s [%s]\n", arg, options);
+  printf("\n");
+  printf("   -h                       Show this help\n");
+  printf("   -d                       Show debug output\n");
+  printf("   -n NN<dec>               Resends of the same message\n");
+  printf("   -p PP<hex>               Prefix value (Disco Mode)\n");
+  printf("   -q RR<hex>               First byte of the remote\n");
+  printf("   -r RR<hex>               Second byte of the remote\n");
+  printf("   -c CC<hex>               Color byte\n");
+  printf("   -b BB<hex>               Brightness byte\n");
+  printf("   -k KK<hex>               Key byte\n");
+  printf("   -v SS<hex>               Sequence byte\n");
+  printf("   -m M <int>               Radio Mode ( RGB=1 White=2 )\n");
+  printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
+  printf("\n");
+}
 
 
 void getOptions(std::vector<std::string>& args, int type)
@@ -458,26 +476,6 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 
   send(data);
 }
-
-void usage(const char *arg, const char *options){
-  printf("\n");
-  printf("Usage: sudo %s [%s]\n", arg, options);
-  printf("\n");
-  printf("   -h                       Show this help\n");
-  printf("   -d                       Show debug output\n");
-  printf("   -n NN<dec>               Resends of the same message\n");
-  printf("   -p PP<hex>               Prefix value (Disco Mode)\n");
-  printf("   -q RR<hex>               First byte of the remote\n");
-  printf("   -r RR<hex>               Second byte of the remote\n");
-  printf("   -c CC<hex>               Color byte\n");
-  printf("   -b BB<hex>               Brightness byte\n");
-  printf("   -k KK<hex>               Key byte\n");
-  printf("   -v SS<hex>               Sequence byte\n");
-  printf("   -m M <int>               Radio Mode ( RGB=1 White=2 )\n");
-  printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
-  printf("\n");
-}
-
 
 void socketConnect(int type , std::string data)
 {
