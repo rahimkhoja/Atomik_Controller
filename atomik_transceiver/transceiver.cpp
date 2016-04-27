@@ -234,7 +234,7 @@ void receive()
                     printf("%02X ", packet[i]);
                     fflush(stdout);
                     
-                    printf(int2hex(packet[2]));
+                    printf(int2hex(packet[2]).c_str());
                 }
                 
                 
