@@ -199,7 +199,7 @@ void receive()
     
         // check if there are any new messages to send! 
         if(getCommandLength()==0) {
-        char data[];
+        char data[50];
             if(mlr.available()) {
                 printf("\n");
                 uint8_t packet[7];
