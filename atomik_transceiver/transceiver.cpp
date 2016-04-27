@@ -36,6 +36,7 @@ static atomikCypher MiLightCypher;
 pthread_mutex_t commandList_mutex;
 pthread_mutex_t totalCommands_mutex;
 std::atomic<bool> disableSocket;
+std::atomic<bool> commadsWaiting = false;
 
 int do_receive = 0;
 int do_command = 0;
@@ -262,6 +263,7 @@ void addCommand(std::string str)
     pthread_mutex_lock(&commandList_mutex);
     commandList.push_back (str);
     pthread_mutex_unlock(&commandList_mutex);
+    commadsWaiting = true;
     return; 
 }
 
@@ -275,21 +277,15 @@ std::string getCommand()
     return str;
 }
 
-int getCommandLength()
-{
-    // returns the first command sting element in the list
-    int sze;
-    pthread_mutex_lock(&commandList_mutex);
-    sze = commandList.size();
-    pthread_mutex_unlock(&commandList_mutex);
-    return sze;
-}
 
 void removeCommand()
 {
     // removes the first command string element from the listlong long c;
     pthread_mutex_lock(&commandList_mutex);
     commandList.pop_front();
+    if (commandList.size() == 0 ) {
+      commadsWaiting = false;
+      }
     pthread_mutex_unlock(&commandList_mutex);
 	return;     
 }
@@ -437,7 +433,8 @@ void receive()
     while(1){
     
         // check if there are any new messages to send! 
-        if(getCommandLength()==0) {
+        if(!commadsWaiting) {
+        printf("no commands \n");
         char data[50];
             if(mlr.available()) {
                 uint8_t packet[7];
@@ -462,6 +459,7 @@ void receive()
             fflush(stdout);
        
         } else {
+        
             printf("Command Processed: ");
             printf(getCommand().c_str());
             printf("\n");
