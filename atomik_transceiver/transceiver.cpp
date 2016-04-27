@@ -231,9 +231,8 @@ void receive()
             socket_args = String2Vector(getCommand());
             
             getOptions(socket_args, 1)
-            send(uint8_t color, uint8_t bright, uint8_t key,
-          uint8_t remote = 0x01, uint8_t remote_prefix = 0x00,
-	  uint8_t prefix = 0xB8, uint8_t seq = 0x00, uint8_t resends = 10)
+            resends = 30;
+            send(color, bright, key, remote, rem_p, prefix, seq, resends);
             removeCommand();
         }
     }
