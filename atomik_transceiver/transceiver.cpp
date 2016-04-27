@@ -64,6 +64,162 @@ int socketPort = 5000;
 std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
 
+
+void getOptions(std::vector<std::string>& args, int type)
+{
+    int c;
+    uint64_t tmp;
+    std::vector<const char *> argv(args.size());
+    std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
+        return str.c_str();});
+          
+    while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
+    switch(c){
+      case 'h':
+        usage(argv[0], options);
+        exit(0);
+        break;
+      case 'd':
+          if ( type == 0 )
+          {
+            debug = 1;
+          }
+        break;
+      case 'n':
+         if ( type == 0 )
+         {
+            do_receive = 0;
+            do_server = 0;
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 10);
+            resends = (uint8_t)tmp;
+         }
+         break;
+      case 'p':
+          if ( type == 0 )
+          {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            prefix = (uint8_t)tmp;
+          } else {
+            tmp = strtoll(optarg, NULL, 16);
+            prefix = (uint8_t)tmp;          
+          }
+        break;
+      case 'q':
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            rem_p = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            rem_p = (uint8_t)tmp;       
+        }
+        break;
+      case 'r':
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            remote = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            remote = (uint8_t)tmp;   
+        }
+        break;
+      case 'c':
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            color = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            color = (uint8_t)tmp;
+        }
+        break;
+      case 'b':
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            bright = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            bright = (uint8_t)tmp;
+        }        
+        break;
+      case 'k':
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            key = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            key = (uint8_t)tmp;
+        }
+        break;
+      case 'v':
+        if ( type == 0 )
+        {
+            do_receive = 0;
+            do_server = 0;      
+            do_command = 1;
+            tmp = strtoll(optarg, NULL, 16);
+            seq = (uint8_t)tmp;
+        } else {
+            tmp = strtoll(optarg, NULL, 16);
+            seq = (uint8_t)tmp;
+        }
+        break;
+      case 'w':
+      if ( type == 0 )
+        {
+        do_receive = 0;
+        do_server = 0;
+        do_command = 2;
+        command = strtoll(optarg, NULL, 16);
+        }
+        break;
+      case 't':
+        tmp = strtoll(optarg, NULL, 10);
+        radiomode = (uint8_t)tmp;
+        break;
+      case '?':
+        if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
+           optopt == 'r' || optopt == 'c' || optopt == 'b' ||
+           optopt == 'k' || optopt == 'w'|| optopt == 't'){
+          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+        }
+        else if(isprint(optopt)){
+          fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+        }
+        else{
+          fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+        }
+        exit(1);
+      default:
+        fprintf(stderr, "Error parsing options");
+        exit(-1);
+    }
+  }     
+}
+
+
 void resetVars()
 {
   do_receive = 0;
@@ -589,161 +745,6 @@ void socketCommand ( std::atomic<bool> & quit )
         }
     }
       
-}
-
-
-void getOptions(std::vector<std::string>& args, int type)
-{
-    int c;
-    uint64_t tmp;
-    std::vector<const char *> argv(args.size());
-    std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
-        return str.c_str();});
-          
-    while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
-    switch(c){
-      case 'h':
-        usage(argv[0], options);
-        exit(0);
-        break;
-      case 'd':
-          if ( type == 0 )
-          {
-            debug = 1;
-          }
-        break;
-      case 'n':
-         if ( type == 0 )
-         {
-            do_receive = 0;
-            do_server = 0;
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 10);
-            resends = (uint8_t)tmp;
-         }
-         break;
-      case 'p':
-          if ( type == 0 )
-          {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            prefix = (uint8_t)tmp;
-          } else {
-            tmp = strtoll(optarg, NULL, 16);
-            prefix = (uint8_t)tmp;          
-          }
-        break;
-      case 'q':
-        if ( type == 0 )
-        {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            rem_p = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            rem_p = (uint8_t)tmp;       
-        }
-        break;
-      case 'r':
-        if ( type == 0 )
-        {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            remote = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            remote = (uint8_t)tmp;   
-        }
-        break;
-      case 'c':
-        if ( type == 0 )
-        {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            color = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            color = (uint8_t)tmp;
-        }
-        break;
-      case 'b':
-        if ( type == 0 )
-        {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            bright = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            bright = (uint8_t)tmp;
-        }        
-        break;
-      case 'k':
-        if ( type == 0 )
-        {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            key = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            key = (uint8_t)tmp;
-        }
-        break;
-      case 'v':
-        if ( type == 0 )
-        {
-            do_receive = 0;
-            do_server = 0;      
-            do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            seq = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            seq = (uint8_t)tmp;
-        }
-        break;
-      case 'w':
-      if ( type == 0 )
-        {
-        do_receive = 0;
-        do_server = 0;
-        do_command = 2;
-        command = strtoll(optarg, NULL, 16);
-        }
-        break;
-      case 't':
-        tmp = strtoll(optarg, NULL, 10);
-        radiomode = (uint8_t)tmp;
-        break;
-      case '?':
-        if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
-           optopt == 'r' || optopt == 'c' || optopt == 'b' ||
-           optopt == 'k' || optopt == 'w'|| optopt == 't'){
-          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
-        }
-        else if(isprint(optopt)){
-          fprintf(stderr, "Unknown option `-%c'.\n", optopt);
-        }
-        else{
-          fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
-        }
-        exit(1);
-      default:
-        fprintf(stderr, "Error parsing options");
-        exit(-1);
-    }
-  }     
 }
 
 int main(int argc, char** argv)
