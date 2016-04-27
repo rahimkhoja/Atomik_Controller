@@ -570,7 +570,7 @@ void socketCommand ( std::atomic<bool> & quit )
                     if (debug) 
                     {
                         printf("Receiving Command String: ");
-                        printf(commandSTR.c__str());
+                        printf(commandSTR.c_str());
                         printf("\n");
                     }
                     
