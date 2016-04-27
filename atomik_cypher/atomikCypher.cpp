@@ -830,7 +830,7 @@ std::string atomikCypher :: getRadioAtomikJSON(int command, int color, int brigh
 	} else {
 	  cypherValue = 0;
 	}
-	printf("Command: %d, Brightness: %d, Color: %d\n",command, color, brightness);
+	printf("Command: %d, Brightness: %d, Color: %d\n",command, brightness, color);
     printf("cypherCommand: %d, cypherValue: %d\n",cypherCommand, cypherValue);
     auto t = MiLightRadiotoJSONCypher.find(std::make_pair(cypherCommand, cypherValue));
     if (t == MiLightRadiotoJSONCypher.end()) return std::string();
