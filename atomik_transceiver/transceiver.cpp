@@ -81,7 +81,7 @@ std::string strConcat(std::string a, std::string b)
 void JSONfilewrite (std::string textjson) 
 {
   JSONfileMutex.lock();
-  ofstream json;
+  std::ofstream json;
   json.open ("AtomikRadioJSON.log");
   json << textjson.c_str();
   json << "\n";
