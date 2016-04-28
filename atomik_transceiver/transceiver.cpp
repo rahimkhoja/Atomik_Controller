@@ -263,28 +263,36 @@ void resetVars()
 int getCommandListSize()
 {
     int z;
+    printf("start command size\n");
     commandListMutex.lock();
     z = commandList.size();
     commandListMutex.unlock();
+    print("Size: %d\n", z);
+    printf("end command size\n");
     return z; 
 }
 
 void addCommand(std::string str)
 {
+    printf("start addcommand\n");
     // add command string to bottom element of list
     commandListMutex.lock();
     commandList.push_back (str);
     commandListMutex.unlock();
+    printf("end addcommand\n");
     return; 
 }
 
 std::string getCommand()
 {
     // returns the first command sting element in the list
+    
+    printf("start getcommand\n");
     std::string str;
     commandListMutex.lock();
     str = commandList.front();
     commandListMutex.unlock();
+    printf("end getcommand\n");
     return str;
 }
 
@@ -292,9 +300,13 @@ std::string getCommand()
 void removeCommand()
 {
     // removes the first command string element from the listlong long c;
+    
+    printf("start removecommand\n");
     commandListMutex.lock();
     commandList.pop_front();
     commandListMutex.unlock();
+    
+    printf("end removecommand\n");
 	return;     
 }
 
