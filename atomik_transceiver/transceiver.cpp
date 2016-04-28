@@ -227,6 +227,7 @@ void getOptions(std::vector<std::string>& args, int type)
         } else {
             tmp = strtoll(optarg, NULL, 16);
             key = (uint8_t)tmp;
+            consoleWrite(int2int(key));
         }
         break;
       case 'v':
@@ -526,6 +527,9 @@ void receive()
             getOptions(socket_args, 1);
             consoleWrite("Line 515");
             resends = 30;
+            
+            
+            
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
             consoleWrite("Line 518");
             removeCommand();
