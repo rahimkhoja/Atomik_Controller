@@ -79,11 +79,12 @@ int MiLightRadio::begin()
 
 int MiLightRadio::setRadioMode(int mode)
 {
+    int beg = 0;
     if (radioMode == mode) {
-      return;
+      return beg;
     } else {
       radioMode = mode;
-      int beg = begin();
+      beg = begin();
     }
     return beg;
 }
