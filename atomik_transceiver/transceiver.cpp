@@ -296,23 +296,22 @@ void resetVars()
 int getCommandListSize()
 {
     int z;
-    printf("start command size\n");
+    char c[50];
     commandListMutex.lock();
     z = commandList.size();
     commandListMutex.unlock();
-    printf("Size: %d\n", z);
-    printf("end command size\n");
+    sprintf(c, "Size: %d\n", z);
+    consoleWrite(c);
     return z; 
 }
 
 void addCommand(std::string str)
-{
-    printf("start addcommand\n");
+{;
     // add command string to bottom element of list
     commandListMutex.lock();
     commandList.push_back (str);
     commandListMutex.unlock();
-    printf("end addcommand\n");
+    consoleWrite("Add Command Complete!");
     return; 
 }
 
@@ -320,12 +319,11 @@ std::string getCommand()
 {
     // returns the first command sting element in the list
     
-    printf("start getcommand\n");
     std::string str;
     commandListMutex.lock();
     str = commandList.front();
     commandListMutex.unlock();
-    printf("end getcommand\n");
+    consoleWrite(strConcat("Get Command Complete: ", str));
     return str;
 }
 
@@ -333,13 +331,10 @@ std::string getCommand()
 void removeCommand()
 {
     // removes the first command string element from the listlong long c;
-    
-    printf("start removecommand\n");
     commandListMutex.lock();
     commandList.pop_front();
     commandListMutex.unlock();
-    
-    printf("end removecommand\n");
+    consoleWrite("Remove Command Complete!");
 	return;     
 }
 
@@ -484,10 +479,9 @@ void receive()
     printf("Receiving mode, press Ctrl-C to end\n");
     mlr.setRadioMode(radiomode);
     while(1){
-    printf("Outside Loop\n");
         // check if there are any new messages to send! 
         if(getCommandListSize() == 0) {
-        printf("no commands \n");
+        consoleWrite("No Commands");
         char data[50];
             if(mlr.available()) {
                 uint8_t packet[7];
@@ -502,15 +496,15 @@ void receive()
                     consoleWrite(output);
                     
                 } else {
-                    printf("0");
+                   // printf("0");
                 }
             }
             
             int dupesReceived = mlr.dupesReceived();
             for (; dupesPrinted < dupesReceived; dupesPrinted++) {
-                printf(".");
+               // printf(".");
             }
-            fflush(stdout);
+           // fflush(stdout);
        
         } else {
         
@@ -537,18 +531,16 @@ void socketConnect(int type , std::string data)
     int ty = type;
     std::string st = data;
     
-    printf("\nSocketConnect Data: ");
-    printf(st.c_str());
-    printf("\n: ");
+    consoleWrite(strConcat("SocketConnect Data: ", st));
     
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
     if (sock == -1)
     {
-        printf("Could not create socket");
+        
     }
-    puts("Socket created");
-     
+    consoleWrite("Socket Created"); 
+    
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_family = AF_INET;
     server.sin_port = htons( socketPort );
@@ -561,7 +553,8 @@ void socketConnect(int type , std::string data)
         return;
     }
      
-    puts("Connected\n");
+    
+    consoleWrite("Connected"); 
      
     //keep communicating with server
     while(1)
@@ -571,11 +564,11 @@ void socketConnect(int type , std::string data)
         //Receive a reply from the server
         if( recv(sock , serverData , 256 , 0) < 0)
         {
-            puts("recv failed");
+            consoleWrite("Receive Failed"); 
             break;
         }
                
-        puts(serverData);
+        consoleWrite(serverData); 
         std::string sData(serverData);
                                  
         if (ty == 1)
@@ -669,7 +662,8 @@ void socketCommand ( std::atomic<bool> & quit )
       
     //accept the incoming connection
     addrlen = sizeof(address);
-    puts("Waiting for connections ...");
+    
+    consoleWrite("Waiting for connections ...");
      
     while(!quit) 
     {
@@ -704,7 +698,7 @@ void socketCommand ( std::atomic<bool> & quit )
     
         if ((activity < 0) && (errno!=EINTR)) 
         {
-            printf("select error");
+            consoleWrite("Select Error");
         }
           
         //If something happened on the master socket , then its an incoming connection
@@ -715,18 +709,20 @@ void socketCommand ( std::atomic<bool> & quit )
                 perror("accept");
                 exit(EXIT_FAILURE);
             }
-          
+            
+            char outputchar[100];
             //inform user of socket number - used in send and receive commands
-            printf("New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
-        
+            sprintf(outputchar, "New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+            
+            consoleWrite(outputchar);
             //send new connection greeting message
             if( send(new_socket, welcomMessage.c_str(), strlen(welcomMessage.c_str()), 0) != strlen(welcomMessage.c_str()) ) 
             {
                 perror("send");
             }
               
-            puts("Welcome message sent successfully");
-              
+            consoleWrite("Welcome message sent successfully"); 
+             
             //add new socket to array of sockets
             for (i = 0; i < max_clients; i++) 
             {
@@ -773,9 +769,8 @@ void socketCommand ( std::atomic<bool> & quit )
                     addCommand(commandSTR);
                     if (debug) 
                     {
-                        printf("Receiving Command String: ");
-                        printf(commandSTR.c_str());
-                        printf("\n");
+                        
+                        consoleWrite(strConcat("Socet Server Receiving Command String: ", commandSTR));
                         
                     }
                     
