@@ -434,7 +434,6 @@ void send(uint8_t data[8])
   mlr.write(data, 7);
     
   for(int i = 0; i < resends; i++){
- // nanosleep((const struct timespec[]){{0, 500000L}}, NULL);
     mlr.resend();
   }
   resetVars();
@@ -481,7 +480,6 @@ void receive()
     while(1){
         // check if there are any new messages to send! 
         if(getCommandListSize() == 0) {
-        consoleWrite("No Commands");
         char data[50];
             if(mlr.available()) {
                 uint8_t packet[7];
@@ -512,11 +510,14 @@ void receive()
             consoleWrite(strConcat("Command Processed: ", comandSTR));
             
             socket_args = String2Vector(comandSTR);
-            
+            consoleWrite("Line 513");
             getOptions(socket_args, 1);
+            consoleWrite("Line 515");
             resends = 30;
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            consoleWrite("Line 518");
             removeCommand();
+            consoleWrite("Line 520 - Done");
         }
     }
 }
