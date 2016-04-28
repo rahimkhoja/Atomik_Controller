@@ -87,7 +87,7 @@ void JSONfilewrite (std::string textjson)
   json << "\n";
   json.close();
   JSONfileMutex.unlock();
-  return 0;
+  return;
 }
 
 void consoleWrite(std::string input)
