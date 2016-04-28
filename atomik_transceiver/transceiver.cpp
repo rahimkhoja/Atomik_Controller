@@ -296,12 +296,9 @@ void resetVars()
 int getCommandListSize()
 {
     int z;
-    char c[50];
     commandListMutex.lock();
     z = commandList.size();
     commandListMutex.unlock();
-    sprintf(c, "Size: %d\n", z);
-    consoleWrite(c);
     return z; 
 }
 
@@ -311,7 +308,6 @@ void addCommand(std::string str)
     commandListMutex.lock();
     commandList.push_back (str);
     commandListMutex.unlock();
-    consoleWrite("Add Command Complete!");
     return; 
 }
 
@@ -323,7 +319,6 @@ std::string getCommand()
     commandListMutex.lock();
     str = commandList.front();
     commandListMutex.unlock();
-    consoleWrite(strConcat("Get Command Complete: ", str));
     return str;
 }
 
@@ -334,7 +329,6 @@ void removeCommand()
     commandListMutex.lock();
     commandList.pop_front();
     commandListMutex.unlock();
-    consoleWrite("Remove Command Complete!");
 	return;     
 }
 
@@ -365,7 +359,7 @@ std::vector<std::string> String2Vector (std::string vecstring)
         str.erase(0, pos + delimiter.length());
     }
     vec.push_back( str );
-    std::cout << str << std::endl;
+    // std::cout << str << std::endl;
     return vec;    
 }
 
@@ -425,6 +419,8 @@ void send(uint8_t data[8])
   
   
   static uint8_t seq = 1;
+  char sendDATA[50];
+  char tdata[50];
 
   uint8_t resends = data[7];
   if(data[6] == 0x00){
@@ -432,13 +428,10 @@ void send(uint8_t data[8])
     seq++;
   }
 
- 
-     if(debug){
-    printf("2.4GHz --> Sending: ");
-    for (int i = 0; i < 7; i++) {
-      printf("%02X ", data[i]);
-    }
-    printf(" [x%d]\n", resends);
+  sprintf(sendDATA, "%02X %02X %02X %02X %02X %02X %02X ", data[0], data[1], data[2], data[3], data[4], data[5], data[6],);
+  consoleWrite(strConcat("2.4GHz --> Sending: ", sendDATA));
+  sprintf(tdata, " [x%d]\n", resends);
+  consoleWrite(tdata);
   }
 
   mlr.write(data, 7);
