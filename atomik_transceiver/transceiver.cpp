@@ -121,6 +121,20 @@ void usage(const char *arg, const char *options){
 }
 
 
+std::string int2hex(int x)
+{
+    char out[2];
+    sprintf(out, "%02X", x);
+    return std::string(out);
+}
+
+std::string int2int(int x)
+{
+    std::stringstream ss;
+    ss << x;
+    return ss.str();
+}
+
 void getOptions(std::vector<std::string>& args, int type)
 {
     int c;
@@ -380,19 +394,6 @@ std::string getTime()
     return buf;
 }
 
-std::string int2hex(int x)
-{
-    char out[2];
-    sprintf(out, "%02X", x);
-    return std::string(out);
-}
-
-std::string int2int(int x)
-{
-    std::stringstream ss;
-    ss << x;
-    return ss.str();
-}
 
 std::string createJSON(std::string add1, std::string add2, std::string data, std::string config)
 {                                    
