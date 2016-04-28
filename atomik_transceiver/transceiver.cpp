@@ -574,7 +574,7 @@ void socketConnect(int type , std::string data)
                                  
         if (ty == 1)
         {
-            consoleWrite(strConcat("Sending Arg String: ", Vector2String(all_args));
+            consoleWrite(strConcat("Sending Arg String: ", Vector2String(all_args)));
           
             if( send(sock , Vector2String(all_args).c_str() , strlen(Vector2String(all_args).c_str()) , 0) < 0)
             {
