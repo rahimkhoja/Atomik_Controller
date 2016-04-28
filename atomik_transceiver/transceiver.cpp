@@ -143,6 +143,7 @@ void getOptions(std::vector<std::string>& args, int type)
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
         return str.c_str();});
           
+          consoleWrite(strConcat("getOptions Sze: ", int2int(argv.size())));
     while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
     switch(c){
       case 'h':
