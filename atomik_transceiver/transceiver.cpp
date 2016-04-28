@@ -574,16 +574,15 @@ void socketConnect(int type , std::string data)
                                  
         if (ty == 1)
         {
-            printf("Sending Arg String: ");
-            printf(Vector2String(all_args).c_str());
-            printf("\n");
+            consoleWrite(strConcat("Sending Arg String: ", Vector2String(all_args));
+          
             if( send(sock , Vector2String(all_args).c_str() , strlen(Vector2String(all_args).c_str()) , 0) < 0)
             {
                 perror("Send to Atomik Transceiver Failed.");
                 exit(1);
             }
         } else {
-            printf("Type: 0\n");
+            consoleWrite("Type: 0");
         }
         
         printf(sData.c_str());
@@ -731,8 +730,9 @@ void socketCommand ( std::atomic<bool> & quit )
                 if( client_socket[i] == 0 )
                 {
                     client_socket[i] = new_socket;
-                    printf("Adding to list of sockets as %d\n" , i);
-                     
+                    char txtsocket[50];
+                    sprintf(txtsocket, "Adding to list of sockets as %d\n" , i);
+                     consoleWrite(txtsocket);
                     break;
                 }
             }
@@ -752,7 +752,9 @@ void socketCommand ( std::atomic<bool> & quit )
                     getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
                     if (debug) 
                     {
-                        printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                        char debugtxt[100];
+                         sprintf(debugtxt, "Host disconnected , ip %s , port %d " , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                         consoleWrite(debugtxt);
                     } 
                     
                     //Close the socket and mark as 0 in list for reuse
@@ -770,16 +772,16 @@ void socketCommand ( std::atomic<bool> & quit )
                     addCommand(commandSTR);
                     if (debug) 
                     {
-                        
                         consoleWrite(strConcat("Socet Server Receiving Command String: ", commandSTR));
-                        
                     }
                     
                     if(commandSTR.find ("\n"))
                     {
                       getpeername(sd , (struct sockaddr*)&address , (socklen_t*)&addrlen);
                       if (debug) {
-                          printf("\nHost disconnected , ip %s , port %d \n" , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                          char debugtxt[100];
+                          sprintf(debugtxt, "Host disconnected , ip %s , port %d " , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
+                          consoleWrite(debugtxt);
                       }
                       close( sd );
                       client_socket[i] = 0;
