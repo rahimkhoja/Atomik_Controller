@@ -428,7 +428,7 @@ void send(uint8_t data[8])
     seq++;
   }
 
-  sprintf(sendDATA, "%02X %02X %02X %02X %02X %02X %02X ", data[0], data[1], data[2], data[3], data[4], data[5], data[6],);
+  sprintf(sendDATA, "%02X %02X %02X %02X %02X %02X %02X ", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
   consoleWrite(strConcat("2.4GHz --> Sending: ", sendDATA));
   sprintf(tdata, " [x%d]\n", resends);
   consoleWrite(tdata);
