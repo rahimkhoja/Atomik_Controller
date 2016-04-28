@@ -18,7 +18,7 @@
 #include <atomic>
 #include <algorithm> 
 #include <sstream>
-
+#include <fstream>
 
 #include <mutex>
 
@@ -33,11 +33,12 @@ MiLightRadio mlr(prf);
 
 static int debug = 0;
 static int dupesPrinted = 0;
-static std::list<std::string> commandList;
-static atomikCypher MiLightCypher;
-
+std::list<std::string> commandList;
+atomikCypher MiLightCypher;
 
 std::mutex commandListMutex;
+std::mutex JSONfileMutex;
+std::mutex consoleMutex;
 
 std::atomic<bool> disableSocket;
 std::atomic<bool> commadsWaiting (false);
@@ -68,6 +69,38 @@ int socketPort = 5000;
 
 std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
+
+std::string strConcat(std::string a, std::string b)
+{
+  std::stringstream ss;
+  ss << a << b;
+  std::string s = ss.str();
+  return s;
+}
+
+void JSONfilewrite (std::string textjson) 
+{
+  JSONfileMutex.lock();
+  ofstream json;
+  json.open ("AtomikRadioJSON.log");
+  json << textjson.c_str();
+  json << "\n";
+  json.close();
+  JSONfileMutex.unlock();
+  return 0;
+}
+
+void consoleWrite(std::string input)
+{
+  consoleMutex.lock();
+  printf("\n");
+  printf(input.c_str());
+  printf("\n");
+  fflush(stdout);
+  consoleMutex.unlock()
+  return;
+}
+
 void usage(const char *arg, const char *options){
   printf("\n");
   printf("Usage: sudo %s [%s]\n", arg, options);
@@ -464,9 +497,10 @@ void receive()
                 {
                     sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
+                    JSONfilewrite(output);
                     
-                    printf("\n");
-                    printf(output.c_str());
+                    consoleWrite(output);
+                    
                 } else {
                     printf("0");
                 }
@@ -480,10 +514,8 @@ void receive()
        
         } else {
         
-            printf("Command Processed: ");
-            std::string comandSTR = getCommand();
-            printf(comandSTR.c_str());
-            printf("\n");
+            std::string comandSTR = getCommand();            
+            consoleWrite(strConcat("Command Processed: ", comandSTR));
             
             socket_args = String2Vector(comandSTR);
             
