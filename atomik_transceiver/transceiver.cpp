@@ -33,8 +33,9 @@ static int dupesPrinted = 0;
 static std::list<std::string> commandList;
 static atomikCypher MiLightCypher;
 
-pthread_mutex_t commandList_mutex;
-pthread_mutex_t totalCommands_mutex;
+
+std::mutex commandListMutex;
+
 std::atomic<bool> disableSocket;
 std::atomic<bool> commadsWaiting (false);
 
@@ -256,14 +257,21 @@ void resetVars()
   command = 0x00;
 }
 
+int getCommandListSize()
+{
+    int z;
+    commandListMutex.lock();
+    z = commandList.size();
+    commandListMutex.unlock();
+    return z; 
+}
 
 void addCommand(std::string str)
 {
     // add command string to bottom element of list
-    pthread_mutex_lock(&commandList_mutex);
+    commandListMutex.lock();
     commandList.push_back (str);
-    pthread_mutex_unlock(&commandList_mutex);
-    commadsWaiting = true;
+    commandListMutex.unlock();
     return; 
 }
 
@@ -271,9 +279,9 @@ std::string getCommand()
 {
     // returns the first command sting element in the list
     std::string str;
-    pthread_mutex_lock(&commandList_mutex);
+    commandListMutex.lock();
     str = commandList.front();
-    pthread_mutex_unlock(&commandList_mutex);
+    commandListMutex.unlock();
     return str;
 }
 
@@ -281,12 +289,9 @@ std::string getCommand()
 void removeCommand()
 {
     // removes the first command string element from the listlong long c;
-    pthread_mutex_lock(&commandList_mutex);
+    commandListMutex.lock();
     commandList.pop_front();
-    if (commandList.size() == 0 ) {
-      commadsWaiting = false;
-      }
-    pthread_mutex_unlock(&commandList_mutex);
+    commandListMutex.unlock();
 	return;     
 }
 
@@ -431,9 +436,9 @@ void receive()
     printf("Receiving mode, press Ctrl-C to end\n");
     mlr.setRadioMode(radiomode);
     while(1){
-    
+    printf("Outside Loop\n");
         // check if there are any new messages to send! 
-        if(!commadsWaiting) {
+        if(getCommandListSize() == 0) {
         printf("no commands \n");
         char data[50];
             if(mlr.available()) {
@@ -461,10 +466,11 @@ void receive()
         } else {
         
             printf("Command Processed: ");
-            printf(getCommand().c_str());
+            std::string comandSTR = getCommand();
+            printf(comandSTR.c_str());
             printf("\n");
             
-            socket_args = String2Vector(getCommand());
+            socket_args = String2Vector(comandSTR);
             
             getOptions(socket_args, 1);
             resends = 30;
