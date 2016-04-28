@@ -87,6 +87,17 @@ void MiLightRadio::setRadioMode(int mode)
     }
 }
 
+int MiLightRadio::setRadioMode(int mode)
+{
+    if (radioMode == mode) {
+      return;
+    } else {
+      radioMode = mode;
+      int beg = begin();
+    }
+    return beg;
+}
+
 bool MiLightRadio::available()
 {
   if (_waiting) {
