@@ -267,7 +267,7 @@ int getCommandListSize()
     commandListMutex.lock();
     z = commandList.size();
     commandListMutex.unlock();
-    print("Size: %d\n", z);
+    printf("Size: %d\n", z);
     printf("end command size\n");
     return z; 
 }
