@@ -412,6 +412,16 @@ std::string createJSON(std::string add1, std::string add2, std::string data, std
 
 void send(uint8_t data[8])
 {
+  int ret = mlr.begin();
+  
+    if(ret < 0)
+    {
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(all_args.front(), options);
+        exit(-1);
+    }
+  
   mlr.setRadioMode(radiomode);
   
   static uint8_t seq = 1;
@@ -475,6 +485,15 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 
 void receive()
 {
+    int ret = mlr.begin();
+  
+    if(ret < 0)
+    {
+        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+        usage(all_args.front(), options);
+        exit(-1);
+    }
     printf("Receiving mode, press Ctrl-C to end\n");
     mlr.setRadioMode(radiomode);
     while(1){
@@ -811,15 +830,7 @@ int main(int argc, char** argv)
         printf("\n");
     }
     
-    int ret = mlr.begin();
-  
-    if(ret < 0)
-    {
-        fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-        fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-        usage(argv[0], options);
-        exit(-1);
-    }
+    
     
     if(do_server) 
     {
@@ -836,15 +847,7 @@ int main(int argc, char** argv)
   
     if(do_receive)
     {
-        int ret = mlr.begin();
-  
-        if(ret < 0)
-        {
-            fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-            fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-            usage(argv[0], options);
-            exit(-1);
-        }
+        
         receive();
     }
  
