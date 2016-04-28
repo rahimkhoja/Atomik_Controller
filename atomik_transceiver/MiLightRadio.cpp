@@ -77,16 +77,6 @@ int MiLightRadio::begin()
   return 0;
 }
 
-void MiLightRadio::setRadioMode(int mode)
-{
-    if (radioMode == mode) {
-      return;
-    } else {
-      radioMode = mode;
-      begin();
-    }
-}
-
 int MiLightRadio::setRadioMode(int mode)
 {
     if (radioMode == mode) {
