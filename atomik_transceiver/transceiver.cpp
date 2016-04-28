@@ -97,7 +97,7 @@ void consoleWrite(std::string input)
   printf(input.c_str());
   printf("\n");
   fflush(stdout);
-  consoleMutex.unlock()
+  consoleMutex.unlock();
   return;
 }
 
