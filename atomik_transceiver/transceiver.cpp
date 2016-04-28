@@ -432,7 +432,7 @@ void send(uint8_t data[8])
   consoleWrite(strConcat("2.4GHz --> Sending: ", sendDATA));
   sprintf(tdata, " [x%d]\n", resends);
   consoleWrite(tdata);
-  }
+  
 
   mlr.write(data, 7);
     
