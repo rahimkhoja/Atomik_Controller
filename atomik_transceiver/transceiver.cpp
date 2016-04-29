@@ -141,7 +141,19 @@ void getOptions(std::vector<std::string> args, int type)
     uint64_t tmp;
     
     for(auto i : args) {
-    consoleWrite(i);
+        if ( i == "-c" )
+        {
+            consoleWrite(i);
+        }
+        
+        if ( i == "-c" )
+        {
+            consoleWrite(i);
+        }
+        
+        if (i.find("-k") != string::npos) {
+            consoleWrite(i);
+        } 
     } 
     
     
