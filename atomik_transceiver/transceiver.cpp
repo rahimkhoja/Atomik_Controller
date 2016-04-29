@@ -127,7 +127,7 @@ void JSONfilewrite (std::string textjson)
   json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
   if (!json ) 
   {
-        json.open(filename,  fstream::in | fstream::out | fstream::trunc);
+        json.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
         json << textjson.c_str();
         json.close();
   } else {
