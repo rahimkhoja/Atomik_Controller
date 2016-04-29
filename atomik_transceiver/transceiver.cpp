@@ -189,7 +189,7 @@ void getOptions(std::vector<std::string> args, int type)
           case k:
             printf("-k switch ");
             auto nx = std::next(it, 2);
-            std:string next( *nx );
+            std::string next( *nx );
             printf(" %s\n", next.c_str());
             
           case c:
