@@ -117,35 +117,6 @@ std::string strConcat(std::string a, std::string b)
   return s;
 }
 
-void setupFile(std::string )
-{
-    char filename[ ] = "Informacije.txt";
-    fstream appendFileToWorkWith;
-
-    appendFileToWorkWith.open(filen.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
-
-    // If file does not exist, Create new file
-    if (!appendFileToWorkWith ) 
-    {
-
-        appendFileToWorkWith.open(filen.c_str(),  fstream::in | fstream::out | fstream::trunc);
-        appendFileToWorkWith <<"\n";
-        appendFileToWorkWith.close();
-
-       } 
-      else   
-      {    // use existing file
-         cout<<"success "<<filen.c_str() <<" found. \n";
-         cout<<"\nAppending writing and working with existing file"<<"\n---\n";
-
-         appendFileToWorkWith << "Appending writing and working with existing file"<<"\n---\n";
-         appendFileToWorkWith.close();
-         cout<<"\n";
-
-
-}
-
-
 void JSONfilewrite (std::string textjson) 
 {
   JSONfileMutex.lock();
