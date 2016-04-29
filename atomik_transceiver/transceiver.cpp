@@ -300,9 +300,9 @@ void getOptions(std::vector<std::string> args, int type)
 			case '?':
 				if (type == 0 )
 				{
-					if (arguments[i].c_str() == 'n' || arguments[i].c_str() == 'p' || arguments[i].c_str() == 'q' ||
-						arguments[i].c_str() == 'r' || arguments[i].c_str() == 'c' || arguments[i].c_str() == 'b' ||
-						arguments[i].c_str() == 'k' || arguments[i].c_str() == 'w'|| arguments[i].c_str() == 't')
+					if (arguments[i].c_str() == "-n" || arguments[i].c_str() == "-p" || arguments[i].c_str() == "-q" ||
+						arguments[i].c_str() == "-r" || arguments[i].c_str() == "-c" || arguments[i].c_str() == "-b" ||
+						arguments[i].c_str() == "-k" || arguments[i].c_str() == "-w" || arguments[i].c_str() == "-t")
 					{
 						fprintf(stderr, "Option -%c requires an argument.\n", arguments[i+1].c_str());
 					} else if (isprint(arguments[i].c_str())) {
