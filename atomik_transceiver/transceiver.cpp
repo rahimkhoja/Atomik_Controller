@@ -146,7 +146,7 @@ void getOptions(std::vector<std::string>& args, int type)
           consoleWrite(strConcat("getOptions Sze: ", int2int(argv.size())));
     while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
     consoleWrite("Within While  Loop Get Options");
-    consoleWrite(optarg);
+    //consoleWrite(optarg);
     switch(c){
       case 'h':
         usage(argv[0], options);
