@@ -304,11 +304,11 @@ void getOptions(std::vector<std::string> args, int type)
 						arguments[i].c_str() == "-r" || arguments[i].c_str() == "-c" || arguments[i].c_str() == "-b" ||
 						arguments[i].c_str() == "-k" || arguments[i].c_str() == "-w" || arguments[i].c_str() == "-t")
 					{
-						fprintf(stderr, "Option -%c requires an argument.\n", arguments[i+1].c_str());
-					} else if (isprint(arguments[i].c_str())) {
-						fprintf(stderr, "Unknown option `-%c'.\n", arguments[i+1].c_str());
+						fprintf(stderr, "Option -%c requires an argument.\n", arguments[i+1].c_str()[1]);
+					} else if (isprint(arguments[i].c_str()[1])) {
+						fprintf(stderr, "Unknown option `-%c'.\n", arguments[i+1].c_str()[1]);
 					} else {
-						fprintf(stderr, "Unknown option character `\\x%x'.\n", arguments[i+1].c_str());
+						fprintf(stderr, "Unknown option character `\\x%x'.\n", arguments[i+1].c_str()[1]);
 					}
 					exit(1);
 				}
