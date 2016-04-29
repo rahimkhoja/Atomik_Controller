@@ -182,7 +182,7 @@ void getOptions(std::vector<std::string> args, int type)
     uint64_t tmp;
     std::vector<string>::iterator it;
     
-    for(it=args.begin() ; it < args.end(); it++,i++ ) 
+    for(it=args.begin() ; it < args.end(); it++ ) 
     {
         switch (hashit(it)) {
           case k:
