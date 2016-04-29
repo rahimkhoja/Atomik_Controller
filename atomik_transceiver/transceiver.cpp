@@ -129,6 +129,7 @@ void JSONfilewrite (std::string textjson)
   {
         json.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
         json << textjson.c_str();
+        json << "\n";
         json.close();
   } else {
   
@@ -237,19 +238,19 @@ void getOptions(std::vector<std::string> args, int type)
     
     } else {
     
-    std::vector<const char *> argv(args.size());
-    std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
-        return str.c_str();});
+        std::vector<const char *> argv(args.size());
+        std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
+            return str.c_str();});
           
-          while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1)
-	{
-		switch(cint){
-      case 'h':
-        usage(argv[0], options);
-        exit(0);
-        break;
-      case 'd':
-          if ( type == 0 )
+        while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1)
+	    {
+		    switch(cint){
+              case 'h':
+                usage(argv[0], options);
+                exit(0);
+                break;
+              case 'd':
+                if ( type == 0 )
           {
             debug = 1;
           }
@@ -455,11 +456,9 @@ std::vector<std::string> String2Vector (std::string vecstring)
     while ((pos = str.find(delimiter)) != std::string::npos) {
         token = str.substr(0, pos);
         vec.push_back( token );
-        std::cout << token << std::endl;
         str.erase(0, pos + delimiter.length());
     }
     vec.push_back( str );
-    // std::cout << str << std::endl;
     return vec;    
 }
 
@@ -515,7 +514,7 @@ void send(uint8_t data[8])
 
   sprintf(sendDATA, "%02X %02X %02X %02X %02X %02X %02X ", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
   consoleWrite(strConcat("2.4GHz --> Sending: ", sendDATA));
-  if(radiomode >= 1) {
+  if(radiomode == 1) {
 	sprintf(tdata, "Color Mode: Color - Resends: %d\n", resends);
   } else {
   sprintf(tdata, "Color Mode: White - Resends: %d\n", resends);
