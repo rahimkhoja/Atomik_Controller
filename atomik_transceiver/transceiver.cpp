@@ -141,7 +141,7 @@ void getOptions(std::vector<std::string> args, int type)
     uint64_t tmp;
     
     for(auto i : args) {
-        if ( i == "-c" )
+        if ( i == std::string("-c") )
         {
             consoleWrite(i);
         }
@@ -151,7 +151,7 @@ void getOptions(std::vector<std::string> args, int type)
             consoleWrite(i);
         }
         
-        if (i.find("-k") != std::string::npos) {
+        if (i.find(std::string("-k")) != std::string::npos) {
             consoleWrite(i);
         } 
     } 
