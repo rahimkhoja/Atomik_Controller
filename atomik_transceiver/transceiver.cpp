@@ -122,7 +122,7 @@ void JSONfilewrite (std::string textjson)
   JSONfileMutex.lock();
   
   char filename[] = "AtomikRadioJSON.log";
-  fstream json;
+  std::fstream json;
 
   json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
   if (!json ) 
