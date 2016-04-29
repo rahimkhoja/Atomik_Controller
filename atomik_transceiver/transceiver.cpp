@@ -181,7 +181,7 @@ void getOptions(std::vector<std::string> args, int type)
     int cint;
     uint64_t tmp;
     std::vector<std::string>::iterator it;
-    std:vector arguments = args;
+    std::vector<std::string> arguments = args;
     
     for(it=arguments.begin() ; it < arguments.end(); it++ ) 
     {
