@@ -188,7 +188,7 @@ void getOptions(std::vector<std::string> args, int type)
         switch (hashit(arguments[i])) {
             
       case 'h':
-        usage(arguments[0], options);
+        usage(arguments[0].c_str(), options);
         exit(0);
         break;
       case 'd':
@@ -203,8 +203,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;
             do_command = 1;
-            tmp = strtoll(arguments[i+1], NULL, 10);
+            tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
             resends = (uint8_t)tmp;
+            printf("%s == %s\n", arguments[i].c_str(), arguments[i+1].c_str());
          }
          break;
       case 'p':
@@ -214,7 +215,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
           } 
-          tmp = strtoll(arguments[i+1], NULL, 16);
+          tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
           prefix = (uint8_t)tmp;          
         break;
       case 'q':
@@ -224,7 +225,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
         }
-        tmp = strtoll(arguments[i+1], NULL, 16);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
         rem_p = (uint8_t)tmp;       
         break;
       case 'r':
@@ -234,7 +235,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
         } 
-        tmp = strtoll(arguments[i+1], NULL, 16);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
         remote = (uint8_t)tmp;   
         break;
       case 'c':
@@ -244,7 +245,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
         }
-        tmp = strtoll(arguments[i+1], NULL, 16);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
         color = (uint8_t)tmp;
         break;
       case 'b':
@@ -254,7 +255,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
         }
-        tmp = strtoll(arguments[i+1], NULL, 16);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
         bright = (uint8_t)tmp;
         break;
       case 'k':
@@ -264,7 +265,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
         }
-        tmp = strtoll(arguments[i+1], NULL, 16);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
         consoleWrite(int2int(tmp));
         key = (uint8_t)tmp;
         consoleWrite(int2int(key));
@@ -276,7 +277,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_server = 0;      
             do_command = 1;
         } 
-        tmp = strtoll(arguments[i+1], NULL, 16);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
         seq = (uint8_t)tmp;
         break;
       case 'w':
@@ -285,11 +286,11 @@ void getOptions(std::vector<std::string> args, int type)
         do_receive = 0;
         do_server = 0;
         do_command = 2;
-        command = strtoll(arguments[i+1], NULL, 16);
+        command = strtoll(arguments[i+1].c_str(), NULL, 16);
         }
         break;
       case 't':
-        tmp = strtoll(arguments[i+1], NULL, 10);
+        tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
         radiomode = (uint8_t)tmp;
         break;
       case '?':
