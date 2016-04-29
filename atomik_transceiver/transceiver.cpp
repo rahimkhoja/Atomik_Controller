@@ -91,7 +91,7 @@ enum option_code {
     w
 };
 
-option_code hashit (std::string const& inString) {
+option_code hashit (std::string inString) {
     if (inString == "-h") return h;
     if (inString == "-d") return d;
     if (inString == "-f") return f;
