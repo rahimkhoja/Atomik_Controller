@@ -183,19 +183,18 @@ void getOptions(std::vector<std::string> args, int type)
     std::vector<std::string>::iterator it;
     std::vector<std::string> arguments = args;
     
-    for(it=arguments.begin() ; it < arguments.end(); it++ ) 
-    {
-        switch (hashit(*it)) {
+    
+    for(int i=0; i < args.size(); i++){
+        switch (hashit(args[i])) {
           case k:
             printf("-k switch ");
-                      
+            printf("%s\n", args[i].c_str());          
           case c:
             printf("-c switch ");
         }
-            std::cout<< *it;  
+            std::cout<< args[i];  
         
     }
-    
     
     
     
@@ -210,7 +209,6 @@ void getOptions(std::vector<std::string> args, int type)
         if ( i == "-c" )
         {
             consoleWrite(i);
-            consoleWrite(i++);
         }
         
         if (i.find(std::string("-k")) != std::string::npos) {
