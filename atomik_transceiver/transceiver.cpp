@@ -145,6 +145,8 @@ void getOptions(std::vector<std::string>& args, int type)
           
           consoleWrite(strConcat("getOptions Sze: ", int2int(argv.size())));
     while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
+    consoleWrite("Within While  Loop Get Options");
+    consoleWrite(optarg);
     switch(c){
       case 'h':
         usage(argv[0], options);
@@ -422,8 +424,6 @@ void send(uint8_t data[8])
       exit(-1);
   }
   
-  
-  
   static uint8_t seq = 1;
   char sendDATA[50];
   char tdata[50];
@@ -439,13 +439,11 @@ void send(uint8_t data[8])
   sprintf(tdata, " [x%d]\n", resends);
   consoleWrite(tdata);
   
-
   mlr.write(data, 7);
     
   for(int i = 0; i < resends; i++){
     mlr.resend();
   }
-  resetVars();
 }
 
 void send(uint64_t v)
@@ -528,17 +526,14 @@ void receive()
             consoleWrite(strConcat("Command Processed: ", comandSTR));
             
             socket_args = String2Vector(comandSTR);
-            consoleWrite("Line 513");
             getOptions(socket_args, 1);
-            consoleWrite("Line 515");
             resends = 30;
             
             
             
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
-            consoleWrite("Line 518");
             removeCommand();
-            consoleWrite("Line 520 - Done");
+            resetVars();
         }
     }
 }
