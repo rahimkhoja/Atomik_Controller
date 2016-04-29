@@ -213,6 +213,7 @@ void getOptions(std::vector<std::string> args, int type)
         if ( i == "-c" )
         {
             consoleWrite(i);
+            consoleWrite(i + 1);
         }
         
         if (i.find(std::string("-k")) != std::string::npos) {
