@@ -928,7 +928,7 @@ int main(int argc, char** argv)
     if (debug) 
     {
         char argstrout[100];
-        sprinf(argstrout, "Arg String: %s", Vector2String(all_args).c_str());
+        sprintf(argstrout, "Arg String: %s", Vector2String(all_args).c_str());
         consoleWrite(argstrout);
     }
     
