@@ -183,53 +183,12 @@ void getOptions(std::vector<std::string> args, int type)
     std::vector<std::string>::iterator it;
     std::vector<std::string> arguments = args;
     
-    
-    for(int i=0; i < args.size(); i++){
-        switch (hashit(args[i])) {
-          case k:
-            printf("-k ");
-            printf("%s\n", args[i+1].c_str());          
-          case c:
-            printf("-c switch ");
-        }
-            std::cout<< args[i];  
-        
-    }
-    
-    
-    
-    for(auto i : args) {
-    
-    
-        if ( i == std::string("-c") )
-        {
-            consoleWrite(i);
-        }
-        
-        if ( i == "-c" )
-        {
-            consoleWrite(i);
-        }
-        
-        if (i.find(std::string("-k")) != std::string::npos) {
-            consoleWrite(i);
-        } 
-    } 
-    
-    
-    std::vector<const char *> argv(args.size());
-    std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
-        return str.c_str();});
-          
-          consoleWrite(strConcat("getOptions Sze: ", int2int(argv.size())));
-    while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
-    consoleWrite("Within While  Loop Get Options");
-    //consoleWrite(optarg);
-    switch(cint){
-    consoleWrite(optarg);
-    consoleWrite(int2int(optopt));
+    consoleWrite(strConcat("getOptions Size: ", int2int(arguments.size())));
+    for(int i=0; i < arguments.size(); i++){
+        switch (hashit(arguments[i])) {
+            
       case 'h':
-        usage(argv[0], options);
+        usage(arguments[0], options);
         exit(0);
         break;
       case 'd':
@@ -244,7 +203,7 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 10);
+            tmp = strtoll(arguments[i+1], NULL, 10);
             resends = (uint8_t)tmp;
          }
          break;
@@ -254,12 +213,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            prefix = (uint8_t)tmp;
-          } else {
-            tmp = strtoll(optarg, NULL, 16);
-            prefix = (uint8_t)tmp;          
-          }
+          } 
+          tmp = strtoll(arguments[i+1], NULL, 16);
+          prefix = (uint8_t)tmp;          
         break;
       case 'q':
         if ( type == 0 )
@@ -267,12 +223,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            rem_p = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            rem_p = (uint8_t)tmp;       
         }
+        tmp = strtoll(arguments[i+1], NULL, 16);
+        rem_p = (uint8_t)tmp;       
         break;
       case 'r':
         if ( type == 0 )
@@ -280,12 +233,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            remote = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            remote = (uint8_t)tmp;   
-        }
+        } 
+        tmp = strtoll(arguments[i+1], NULL, 16);
+        remote = (uint8_t)tmp;   
         break;
       case 'c':
         if ( type == 0 )
@@ -293,12 +243,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            color = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            color = (uint8_t)tmp;
         }
+        tmp = strtoll(arguments[i+1], NULL, 16);
+        color = (uint8_t)tmp;
         break;
       case 'b':
         if ( type == 0 )
@@ -306,12 +253,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            bright = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            bright = (uint8_t)tmp;
-        }        
+        }
+        tmp = strtoll(arguments[i+1], NULL, 16);
+        bright = (uint8_t)tmp;
         break;
       case 'k':
         if ( type == 0 )
@@ -319,15 +263,10 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            key = (uint8_t)tmp;
-        } else {
-            
-            tmp = strtoll(optarg, NULL, 16);
-            consoleWrite(optarg);
-            consoleWrite(int2int(tmp));
-            key = (uint8_t)tmp;
         }
+        tmp = strtoll(arguments[i+1], NULL, 16);
+        consoleWrite(int2int(tmp));
+        key = (uint8_t)tmp;
         consoleWrite(int2int(key));
         break;
       case 'v':
@@ -336,12 +275,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            seq = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            seq = (uint8_t)tmp;
-        }
+        } 
+        tmp = strtoll(arguments[i+1], NULL, 16);
+        seq = (uint8_t)tmp;
         break;
       case 'w':
       if ( type == 0 )
@@ -349,11 +285,11 @@ void getOptions(std::vector<std::string> args, int type)
         do_receive = 0;
         do_server = 0;
         do_command = 2;
-        command = strtoll(optarg, NULL, 16);
+        command = strtoll(arguments[i+1], NULL, 16);
         }
         break;
       case 't':
-        tmp = strtoll(optarg, NULL, 10);
+        tmp = strtoll(arguments[i+1], NULL, 10);
         radiomode = (uint8_t)tmp;
         break;
       case '?':
@@ -361,13 +297,13 @@ void getOptions(std::vector<std::string> args, int type)
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
            optopt == 'r' || optopt == 'c' || optopt == 'b' ||
            optopt == 'k' || optopt == 'w'|| optopt == 't'){
-          fprintf(stderr, "Option -%c requires an argument.\n", optopt);
+          fprintf(stderr, "Option -%c requires an argument.\n", arguments[i+1].c_str());
         }
         else if(isprint(optopt)){
-          fprintf(stderr, "Unknown option `-%c'.\n", optopt);
+          fprintf(stderr, "Unknown option `-%c'.\n", arguments[i+1].c_str());
         }
         else{
-          fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
+          fprintf(stderr, "Unknown option character `\\x%x'.\n", arguments[i+1].c_str());
         }
         exit(1);
         }
@@ -375,6 +311,12 @@ void getOptions(std::vector<std::string> args, int type)
         fprintf(stderr, "Error parsing options");
         exit(-1);
     }
+            
+            
+            
+        }  
+    }
+      
   }     
 }
 
