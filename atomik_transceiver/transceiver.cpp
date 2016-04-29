@@ -188,7 +188,6 @@ void getOptions(std::vector<std::string> args, int type)
 {
     int cint;
     uint64_t tmp;
-    std::vector<std::string>::iterator it;
     std::vector<std::string> arguments = args;
     
     if (type > 0 ) 
@@ -224,7 +223,6 @@ void getOptions(std::vector<std::string> args, int type)
                 case k:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  key = (uint8_t)tmp;
-                 consoleWrite(int2int(key));
                  break;
                 case v:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
@@ -272,12 +270,10 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            prefix = (uint8_t)tmp;
-          } else {
-            tmp = strtoll(optarg, NULL, 16);
-            prefix = (uint8_t)tmp;          
           }
+		  tmp = strtoll(optarg, NULL, 16);
+            prefix = (uint8_t)tmp;          
+          
         break;
       case 'q':
         if ( type == 0 )
@@ -285,12 +281,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            rem_p = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            rem_p = (uint8_t)tmp;       
-        }
+        } 
+        tmp = strtoll(optarg, NULL, 16);
+        rem_p = (uint8_t)tmp;       
         break;
       case 'r':
         if ( type == 0 )
@@ -298,12 +291,9 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            remote = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            remote = (uint8_t)tmp;   
         }
+		tmp = strtoll(optarg, NULL, 16);
+        remote = (uint8_t)tmp;   
         break;
       case 'c':
         if ( type == 0 )
@@ -311,12 +301,10 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            color = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            color = (uint8_t)tmp;
         }
+            tmp = strtoll(optarg, NULL, 16);
+            color = (uint8_t)tmp;
+        
         break;
       case 'b':
         if ( type == 0 )
@@ -324,12 +312,10 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
+        }
             tmp = strtoll(optarg, NULL, 16);
             bright = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            bright = (uint8_t)tmp;
-        }        
+                
         break;
       case 'k':
         if ( type == 0 )
@@ -337,13 +323,11 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
-            tmp = strtoll(optarg, NULL, 16);
-            key = (uint8_t)tmp;
-        } else {
+        }
             
             tmp = strtoll(optarg, NULL, 16);
             key = (uint8_t)tmp;
-        }
+        
         break;
       case 'v':
         if ( type == 0 )
@@ -351,12 +335,10 @@ void getOptions(std::vector<std::string> args, int type)
             do_receive = 0;
             do_server = 0;      
             do_command = 1;
+         }
             tmp = strtoll(optarg, NULL, 16);
             seq = (uint8_t)tmp;
-        } else {
-            tmp = strtoll(optarg, NULL, 16);
-            seq = (uint8_t)tmp;
-        }
+        
         break;
       case 'w':
       if ( type == 0 )
@@ -533,7 +515,12 @@ void send(uint8_t data[8])
 
   sprintf(sendDATA, "%02X %02X %02X %02X %02X %02X %02X ", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
   consoleWrite(strConcat("2.4GHz --> Sending: ", sendDATA));
-  sprintf(tdata, " [x%d]\n", resends);
+  if(radiomode >= 1) {
+	sprintf(tdata, "Color Mode: Color - Resends: %d\n", resends);
+  } else {
+  sprintf(tdata, "Color Mode: White - Resends: %d\n", resends);
+  }
+  
   consoleWrite(tdata);
   
   mlr.write(data, 7);
@@ -901,7 +888,7 @@ void socketCommand ( std::atomic<bool> & quit )
                     addCommand(commandSTR);
                     if (debug) 
                     {
-                        consoleWrite(strConcat("Socet Server Receiving Command String: ", commandSTR));
+                        consoleWrite(strConcat("Socket Server Receiving Command: ", commandSTR));
                     }
                     
                     if(commandSTR.find ("\n"))
