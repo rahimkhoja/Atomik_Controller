@@ -191,10 +191,8 @@ void getOptions(std::vector<std::string> args, int type)
           case c:
             printf("-c switch");
         }
-        
-        
             std::cout<< *it;  // prints d.
-        }
+        
     }
     
     
