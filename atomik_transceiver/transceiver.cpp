@@ -117,14 +117,54 @@ std::string strConcat(std::string a, std::string b)
   return s;
 }
 
+void setupFile(std::string )
+{
+    char filename[ ] = "Informacije.txt";
+    fstream appendFileToWorkWith;
+
+    appendFileToWorkWith.open(filen.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+
+    // If file does not exist, Create new file
+    if (!appendFileToWorkWith ) 
+    {
+
+        appendFileToWorkWith.open(filen.c_str(),  fstream::in | fstream::out | fstream::trunc);
+        appendFileToWorkWith <<"\n";
+        appendFileToWorkWith.close();
+
+       } 
+      else   
+      {    // use existing file
+         cout<<"success "<<filen.c_str() <<" found. \n";
+         cout<<"\nAppending writing and working with existing file"<<"\n---\n";
+
+         appendFileToWorkWith << "Appending writing and working with existing file"<<"\n---\n";
+         appendFileToWorkWith.close();
+         cout<<"\n";
+
+
+}
+
+
 void JSONfilewrite (std::string textjson) 
 {
   JSONfileMutex.lock();
-  std::ofstream json;
-  json.open ("AtomikRadioJSON.log");
-  json << textjson.c_str();
-  json << "\n";
-  json.close();
+  
+  char filename[] = "AtomikRadioJSON.log";
+  fstream json;
+
+  json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+  if (!json ) 
+  {
+        json.open(filename,  fstream::in | fstream::out | fstream::trunc);
+        json << textjson.c_str();
+        json.close();
+  } else {
+  
+        json << textjson.c_str();
+        json.close();
+  }
+       
   JSONfileMutex.unlock();
   return;
 }
@@ -568,9 +608,7 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 
 void receive()
 {
-  
-   
-    
+    printf("Receiving mode, press Ctrl-C to end\n");
     while(1){
         // check if there are any new messages to send! 
         if(getCommandListSize() == 0)
@@ -586,7 +624,7 @@ void receive()
 				usage(all_args.front().c_str(), options);
 				exit(-1);
 			}
-             printf("Receiving mode, press Ctrl-C to end\n");
+             
 			if(mlr.available()) {
                 uint8_t packet[7];
                 size_t packet_length = sizeof(packet);
@@ -677,7 +715,6 @@ void socketConnect(int type , std::string data)
             break;
         }
                
-        consoleWrite(serverData); 
         std::string sData(serverData);
                                  
         if (ty == 1)
@@ -691,13 +728,13 @@ void socketConnect(int type , std::string data)
                 perror("Send to Atomik Transceiver Failed.");
                 exit(1);
             }
-        } else {
-            consoleWrite("Type: 0");
-        }
+        } 
+        
         if (debug) 
 		{
 			consoleWrite(sData);
         }
+        
         if( sData.find("Atomik") != std::string::npos )
         {
             if (debug) 
