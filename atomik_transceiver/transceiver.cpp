@@ -185,7 +185,7 @@ void getOptions(std::vector<std::string> args, int type)
     
     for(it=arguments.begin() ; it < arguments.end(); it++ ) 
     {
-        switch (hashit(it)) {
+        switch (hashit(*it)) {
           case k:
             printf("-k switch");
           case c:
