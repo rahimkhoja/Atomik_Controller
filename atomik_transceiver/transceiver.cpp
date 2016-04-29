@@ -312,9 +312,7 @@ void getOptions(std::vector<std::string> args, int type)
 					}
 					exit(1);
 				}
-			default:
-				fprintf(stderr, "Error parsing options");
-				exit(-1);
+			
 		}
 	}
 }
