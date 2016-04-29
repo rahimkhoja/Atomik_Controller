@@ -72,43 +72,43 @@ std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
 
 enum option_code {
-    -h,
-    -d,
-    -f,
-    -s,
-    -l,
-    -u,
-    -m,
-    -t,
-    -n,
-    -p,
-    -q,
-    -r,
-    -c,
-    -b,
-    -k,
-    -v,
-    -w
+    h,
+    d,
+    f,
+    s,
+    l,
+    u,
+    m,
+    t,
+    n,
+    p,
+    q,
+    r,
+    c,
+    b,
+    k,
+    v,
+    w
 };
 
 option_code hashit (std::string const& inString) {
-    if (inString == "-h") return -h;
-    if (inString == "-d") return -d;
-    if (inString == "-f") return -f;
-    if (inString == "-s") return -s;
-    if (inString == "-l") return -l;
-    if (inString == "-u") return -u;
-    if (inString == "-m") return -m;
-    if (inString == "-t") return -t;
-    if (inString == "-n") return -n;
-    if (inString == "-p") return -p;
-    if (inString == "-q") return -q;
-    if (inString == "-r") return -r;
-    if (inString == "-c") return -c;
-    if (inString == "-b") return -b;
-    if (inString == "-k") return -k;
-    if (inString == "-v") return -v;
-    if (inString == "-w") return -w;
+    if (inString == "-h") return h;
+    if (inString == "-d") return d;
+    if (inString == "-f") return f;
+    if (inString == "-s") return s;
+    if (inString == "-l") return l;
+    if (inString == "-u") return u;
+    if (inString == "-m") return m;
+    if (inString == "-t") return t;
+    if (inString == "-n") return n;
+    if (inString == "-p") return p;
+    if (inString == "-q") return q;
+    if (inString == "-r") return r;
+    if (inString == "-c") return c;
+    if (inString == "-b") return b;
+    if (inString == "-k") return k;
+    if (inString == "-v") return v;
+    if (inString == "-w") return w;
 }
 
 std::string strConcat(std::string a, std::string b)
@@ -185,9 +185,9 @@ void getOptions(std::vector<std::string> args, int type)
     for(it=args.begin() ; it < args.end(); it++,i++ ) 
     {
         switch (hashit(it)) {
-          case -k:
+          case k:
             printf("-k switch");
-          case -c:
+          case c:
             printf("-c switch");
         }
         
