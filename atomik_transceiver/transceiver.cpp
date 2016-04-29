@@ -188,7 +188,7 @@ void getOptions(std::vector<std::string> args, int type)
         switch (hashit(*it)) {
           case k:
             printf("-k switch ");
-            auto nx = std::next(*it, 2);
+            auto nx = std::next(it, 2);
             printf(" %s\n", *nx);
             
           case c:
