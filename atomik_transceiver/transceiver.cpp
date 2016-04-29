@@ -135,7 +135,7 @@ std::string int2int(int x)
     return ss.str();
 }
 
-void getOptions(std::vector<std::string>& args, int type)
+void getOptions(std::vector<std::string> args, int type)
 {
     int c;
     uint64_t tmp;
