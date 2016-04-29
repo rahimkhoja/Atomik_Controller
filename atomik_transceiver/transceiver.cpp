@@ -180,7 +180,7 @@ void getOptions(std::vector<std::string> args, int type)
 {
     int c;
     uint64_t tmp;
-    vector<string>::iterator it;
+    std::vector<string>::iterator it;
     
     for(it=args.begin() ; it < args.end(); it++,i++ ) 
     {
