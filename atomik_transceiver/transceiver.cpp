@@ -148,6 +148,8 @@ void getOptions(std::vector<std::string>& args, int type)
     consoleWrite("Within While  Loop Get Options");
     //consoleWrite(optarg);
     switch(c){
+    consoleWrite(optarg);
+    consoleWrite(optopt);
       case 'h':
         usage(argv[0], options);
         exit(0);
@@ -277,6 +279,7 @@ void getOptions(std::vector<std::string>& args, int type)
         radiomode = (uint8_t)tmp;
         break;
       case '?':
+        if (type == 0 ) {
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
            optopt == 'r' || optopt == 'c' || optopt == 'b' ||
            optopt == 'k' || optopt == 'w'|| optopt == 't'){
@@ -289,6 +292,7 @@ void getOptions(std::vector<std::string>& args, int type)
           fprintf(stderr, "Unknown option character `\\x%x'.\n", optopt);
         }
         exit(1);
+        }
       default:
         fprintf(stderr, "Error parsing options");
         exit(-1);
