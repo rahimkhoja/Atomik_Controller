@@ -181,8 +181,9 @@ void getOptions(std::vector<std::string> args, int type)
     int cint;
     uint64_t tmp;
     std::vector<std::string>::iterator it;
+    std:vector arguments = args;
     
-    for(it=args.begin() ; it < args.end(); it++ ) 
+    for(it=arguments.begin() ; it < arguments.end(); it++ ) 
     {
         switch (hashit(it)) {
           case k:
@@ -192,7 +193,7 @@ void getOptions(std::vector<std::string> args, int type)
         }
         
         
-            cout<< *it;  // prints d.
+            std::cout<< *it;  // prints d.
         }
     }
     
