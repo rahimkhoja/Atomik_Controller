@@ -149,7 +149,7 @@ void getOptions(std::vector<std::string>& args, int type)
     //consoleWrite(optarg);
     switch(c){
     consoleWrite(optarg);
-    consoleWrite(optopt);
+    consoleWrite(int2int(optopt));
       case 'h':
         usage(argv[0], options);
         exit(0);
