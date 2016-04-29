@@ -178,9 +178,9 @@ std::string int2int(int x)
 
 void getOptions(std::vector<std::string> args, int type)
 {
-    int c;
+    int cint;
     uint64_t tmp;
-    std::vector<string>::iterator it;
+    std::vector<std::string>::iterator it;
     
     for(it=args.begin() ; it < args.end(); it++ ) 
     {
@@ -224,10 +224,10 @@ void getOptions(std::vector<std::string> args, int type)
         return str.c_str();});
           
           consoleWrite(strConcat("getOptions Sze: ", int2int(argv.size())));
-    while((c = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
+    while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
     consoleWrite("Within While  Loop Get Options");
     //consoleWrite(optarg);
-    switch(c){
+    switch(cint){
     consoleWrite(optarg);
     consoleWrite(int2int(optopt));
       case 'h':
