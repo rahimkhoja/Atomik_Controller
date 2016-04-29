@@ -151,7 +151,7 @@ void getOptions(std::vector<std::string> args, int type)
             consoleWrite(i);
         }
         
-        if (i.find("-k") != string::npos) {
+        if (i.find("-k") != std::string::npos) {
             consoleWrite(i);
         } 
     } 
