@@ -139,6 +139,12 @@ void getOptions(std::vector<std::string> args, int type)
 {
     int c;
     uint64_t tmp;
+    
+    for(auto i : args) {
+    consoleWrite(i);
+    } 
+    
+    
     std::vector<const char *> argv(args.size());
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
         return str.c_str();});
