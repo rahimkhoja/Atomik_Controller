@@ -240,9 +240,10 @@ void getOptions(std::vector<std::string>& args, int type)
             tmp = strtoll(optarg, NULL, 16);
             key = (uint8_t)tmp;
         } else {
-        consoleWrite(int2int(tmp));
+            
             tmp = strtoll(optarg, NULL, 16);
             consoleWrite(strtoll(optarg, NULL, 16));
+            consoleWrite(int2int(tmp));
             key = (uint8_t)tmp;
         }
         consoleWrite(int2int(key));
