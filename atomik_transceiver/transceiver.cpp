@@ -132,7 +132,6 @@ void JSONfilewrite (std::string textjson)
 void consoleWrite(std::string input)
 {
   consoleMutex.lock();
-  printf("\n");
   printf(input.c_str());
   printf("\n");
   fflush(stdout);
@@ -928,7 +927,9 @@ int main(int argc, char** argv)
     
     if (debug) 
     {
-        consoleWrite("Arg String: %s", Vector2String(all_args).c_str());
+        char argstrout[100];
+        sprinf(argstrout, "Arg String: %s", Vector2String(all_args).c_str());
+        consoleWrite(argstrout);
     }
     
     
