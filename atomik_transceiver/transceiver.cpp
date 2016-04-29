@@ -189,40 +189,40 @@ void getOptions(std::vector<std::string> args, int type)
         {
             switch (hashit(arguments[i])) 
             {
-                case 'n':
+                case n:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
                  resends = (uint8_t)tmp;
                  break;
-                case 'p':
+                case p:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  prefix = (uint8_t)tmp;
                  break;
-                case 'q':
+                case q:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  rem_p = (uint8_t)tmp;       
                  break;
-                case 'r':
+                case r:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  remote = (uint8_t)tmp;   
                  break;
-                case 'c':
+                case c:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  color = (uint8_t)tmp;    
                  break;
-                case 'b':
+                case b:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  bright = (uint8_t)tmp;
                  break;
-                case 'k':
+                case k:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  key = (uint8_t)tmp;
                  consoleWrite(int2int(key));
                  break;
-                case 'v':
+                case v:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
                  seq = (uint8_t)tmp;
                  break;
-                case 't':
+                case t:
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
                  radiomode = (uint8_t)tmp;
                  break;
