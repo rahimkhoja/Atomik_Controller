@@ -183,39 +183,53 @@ void getOptions(std::vector<std::string> args, int type)
     std::vector<std::string>::iterator it;
     std::vector<std::string> arguments = args;
     
-    
-    for(int i=0; i < args.size(); i++){
-        switch (hashit(args[i])) {
-          case k:
-            printf("-k ");
-            printf("%s\n", args[i+1].c_str());          
-          case c:
-            printf("-c switch ");
-        }
-            std::cout<< args[i];  
-        
-    }
-    
-    
-    
-    for(auto i : args) {
-    
-    
-        if ( i == std::string("-c") )
+    if (type > 0 ) 
+    {
+        for(int i=0; i < arguments.size(); i++)
         {
-            consoleWrite(i);
+            switch (hashit(arguments[i])) 
+            {
+                case 'n':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
+                 resends = (uint8_t)tmp;
+                 break;
+                case 'p':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 prefix = (uint8_t)tmp;
+                 break;
+                case 'q':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 rem_p = (uint8_t)tmp;       
+                 break;
+                case 'r':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 remote = (uint8_t)tmp;   
+                 break;
+                case 'c':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 color = (uint8_t)tmp;    
+                 break;
+                case 'b':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 bright = (uint8_t)tmp;
+                 break;
+                case 'k':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 key = (uint8_t)tmp;
+                 consoleWrite(int2int(key));
+                 break;
+                case 'v':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 16);
+                 seq = (uint8_t)tmp;
+                 break;
+                case 't':
+                 tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
+                 radiomode = (uint8_t)tmp;
+                 break;
+            }
         }
-        
-        if ( i == "-c" )
-        {
-            consoleWrite(i);
-        }
-        
-        if (i.find(std::string("-k")) != std::string::npos) {
-            consoleWrite(i);
-        } 
-    } 
     
+    } else {
     
     std::vector<const char *> argv(args.size());
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
@@ -377,7 +391,7 @@ void getOptions(std::vector<std::string> args, int type)
     }
   }     
 }
-
+}
 
 void resetVars()
 {
