@@ -242,7 +242,7 @@ void getOptions(std::vector<std::string>& args, int type)
         } else {
             
             tmp = strtoll(optarg, NULL, 16);
-            consoleWrite(strtoll(optarg, NULL, 16));
+            consoleWrite(optarg);
             consoleWrite(int2int(tmp));
             key = (uint8_t)tmp;
         }
