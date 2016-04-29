@@ -187,8 +187,8 @@ void getOptions(std::vector<std::string> args, int type)
     for(int i=0; i < args.size(); i++){
         switch (hashit(args[i])) {
           case k:
-            printf("-k switch ");
-            printf("%s\n", args[i].c_str());          
+            printf("-k ");
+            printf("%s\n", args[i+1].c_str());          
           case c:
             printf("-c switch ");
         }
