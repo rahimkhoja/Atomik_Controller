@@ -514,6 +514,7 @@ void send(uint8_t data[8])
 
   sprintf(sendDATA, "%02X %02X %02X %02X %02X %02X %02X ", data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
   consoleWrite(strConcat("2.4GHz --> Sending: ", sendDATA));
+  JSONfilewrite(strConcat("2.4GHz --> Sending: ", sendDATA));
   if(radiomode == 1) {
 	sprintf(tdata, "Color Mode: Color - Resends: %d\n", resends);
   } else {
@@ -521,6 +522,7 @@ void send(uint8_t data[8])
   }
   
   consoleWrite(tdata);
+  JSONfilewrite(tdata);
   
   mlr.write(data, 7);
     
@@ -597,7 +599,7 @@ void receive()
                     // Run Command Temporary
                     char commandOUT[100];
                     sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n 99", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode);
-                     system(commandOUT.c_str());
+                     system(commandOUT);
                     
                 } else {
                    // printf("0");
