@@ -620,13 +620,8 @@ void receive()
         
             std::string comandSTR = getCommand();            
             consoleWrite(strConcat("Command Processed: ", comandSTR));
-            
             socket_args = String2Vector(comandSTR);
             getOptions(socket_args, 1);
-            resends = 30;
-            
-            
-            
             send(color, bright, key, remote, rem_p, prefix, seq, resends);
             removeCommand();
             resetVars();
