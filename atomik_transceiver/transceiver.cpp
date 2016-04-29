@@ -42,7 +42,6 @@ std::mutex JSONfileMutex;
 std::mutex consoleMutex;
 
 std::atomic<bool> disableSocket;
-std::atomic<bool> commadsWaiting (false);
 
 int do_receive = 0;
 int do_command = 0;
@@ -64,7 +63,6 @@ int radiomode = 1;
 const char *options = "hdfslumt:n:p:q:r:c:b:k:v:w:";
   
 std::thread socketServerThread;
-std::thread receiveThread;
   
 int socketPort = 5000;
 
@@ -235,13 +233,9 @@ void getOptions(std::vector<std::string> args, int type)
     std::transform(args.begin(), args.end(), argv.begin(), [](std::string& str){
         return str.c_str();});
           
-          consoleWrite(strConcat("getOptions Sze: ", int2int(argv.size())));
-    while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1){
-    consoleWrite("Within While  Loop Get Options");
-    //consoleWrite(optarg);
-    switch(cint){
-    consoleWrite(optarg);
-    consoleWrite(int2int(optopt));
+          while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1)
+	{
+		awitch(cint){
       case 'h':
         usage(argv[0], options);
         exit(0);
@@ -338,11 +332,8 @@ void getOptions(std::vector<std::string> args, int type)
         } else {
             
             tmp = strtoll(optarg, NULL, 16);
-            consoleWrite(optarg);
-            consoleWrite(int2int(tmp));
             key = (uint8_t)tmp;
         }
-        consoleWrite(int2int(key));
         break;
       case 'v':
         if ( type == 0 )
@@ -578,22 +569,26 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 
 void receive()
 {
-  int ret = mlr.setRadioMode(radiomode);
   
-  if(ret < 0)
-  {
-      fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
-      fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
-      usage(all_args.front().c_str(), options);
-      exit(-1);
-  }
-    printf("Receiving mode, press Ctrl-C to end\n");
+   
     
     while(1){
         // check if there are any new messages to send! 
-        if(getCommandListSize() == 0) {
-        char data[50];
-            if(mlr.available()) {
+        if(getCommandListSize() == 0)
+		{
+			char data[50];
+			radiomode = 1;
+			int ret = mlr.setRadioMode(radiomode);
+  
+			if(ret < 0)
+			{
+				fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
+				fprintf(stderr, "Make sure to run this program as root (sudo)\n\n");
+				usage(all_args.front().c_str(), options);
+				exit(-1);
+			}
+             printf("Receiving mode, press Ctrl-C to end\n");
+			if(mlr.available()) {
                 uint8_t packet[7];
                 size_t packet_length = sizeof(packet);
                 mlr.read(packet, packet_length);
@@ -618,12 +613,15 @@ void receive()
        
         } else {
         
-            std::string comandSTR = getCommand();            
-            consoleWrite(strConcat("Command Processed: ", comandSTR));
-            socket_args = String2Vector(comandSTR);
-            getOptions(socket_args, 1);
-            send(color, bright, key, remote, rem_p, prefix, seq, resends);
-            removeCommand();
+            std::string comandSTR = getCommand();     
+			if (debug) {			
+				consoleWrite(strConcat("Command Processed: ", comandSTR));
+			}
+            getOptions(String2Vector(comandSTR), 1);
+            
+			send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            
+			removeCommand();
             resetVars();
         }
     }
@@ -637,9 +635,10 @@ void socketConnect(int type , std::string data)
     char serverData[256];
     
     int ty = type;
-    std::string st = data;
-    
-    consoleWrite(strConcat("SocketConnect Data: ", st));
+    if (debug) 
+	{			
+		consoleWrite(strConcat("Socket Connect Data: ", data));
+	}
     
     //Create socket
     sock = socket(AF_INET , SOCK_STREAM , 0);
@@ -647,8 +646,10 @@ void socketConnect(int type , std::string data)
     {
         
     }
-    consoleWrite("Socket Created"); 
-    
+	if (debug) 
+	{
+		consoleWrite("Socket Created"); 
+    }
     server.sin_addr.s_addr = inet_addr("127.0.0.1");
     server.sin_family = AF_INET;
     server.sin_port = htons( socketPort );
@@ -660,9 +661,10 @@ void socketConnect(int type , std::string data)
         alreadyRunning = 0;
         return;
     }
-     
-    
-    consoleWrite("Connected"); 
+    if (debug) 
+	{
+		consoleWrite("Connected"); 
+	}
      
     //keep communicating with server
     while(1)
@@ -680,9 +682,11 @@ void socketConnect(int type , std::string data)
         std::string sData(serverData);
                                  
         if (ty == 1)
-        {
-            consoleWrite(strConcat("Sending Arg String: ", Vector2String(all_args)));
-          
+        {	
+			if (debug) 
+			{
+				consoleWrite(strConcat("Sending Arg String: ", Vector2String(all_args)));
+			}
             if( send(sock , Vector2String(all_args).c_str() , strlen(Vector2String(all_args).c_str()) , 0) < 0)
             {
                 perror("Send to Atomik Transceiver Failed.");
@@ -691,13 +695,17 @@ void socketConnect(int type , std::string data)
         } else {
             consoleWrite("Type: 0");
         }
-        
-        printf(sData.c_str());
-        
+        if (debug) 
+		{
+			consoleWrite(sData);
+        }
         if( sData.find("Atomik") != std::string::npos )
         {
-            printf("Atomik Server already Running!\n");
-            alreadyRunning = 1;
+            if (debug) 
+			{
+				consoleWrite("Atomik Server already Running!");
+            }
+			alreadyRunning = 1;
         } else {
             perror("Atomik Transceiver Socket Busy.");
             exit(1);
@@ -724,7 +732,6 @@ void socketCommand ( std::atomic<bool> & quit )
     //set of socket descriptors
     fd_set readfds;
       
-    //a message
     std::string welcomMessage = "Atomik Tranceiver V0.5 alpha";
   
     //initialise all client_socket[] to 0 so not checked
@@ -758,7 +765,12 @@ void socketCommand ( std::atomic<bool> & quit )
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
-    printf("Listener on port %d \n", socketPort);
+	if (debug) {
+		char listninSTR[50];
+		sprintf(listninSTR, "Listener on port %d \n", socketPort);
+		consoleWrite(listninSTR);
+    }
+    
      
     //try to specify maximum of 3 pending connections for the master socket
     if (listen(master_socket, 3) < 0)
@@ -769,9 +781,10 @@ void socketCommand ( std::atomic<bool> & quit )
       
     //accept the incoming connection
     addrlen = sizeof(address);
-    
-    consoleWrite("Waiting for connections ...");
-     
+    if (debug) {
+		consoleWrite("Waiting for connections ...");
+    }
+	
     while(!quit) 
     {
         // reset the time value for select timeout
@@ -821,14 +834,14 @@ void socketCommand ( std::atomic<bool> & quit )
             //inform user of socket number - used in send and receive commands
             sprintf(outputchar, "New connection , socket fd is %d , ip is : %s , port : %d \n" , new_socket , inet_ntoa(address.sin_addr) , ntohs(address.sin_port));
             
-            consoleWrite(outputchar);
-            //send new connection greeting message
+           //send new connection greeting message
             if( send(new_socket, welcomMessage.c_str(), strlen(welcomMessage.c_str()), 0) != strlen(welcomMessage.c_str()) ) 
             {
                 perror("send");
             }
-              
-            consoleWrite("Welcome message sent successfully"); 
+              if (debug) {
+				consoleWrite("Welcome message sent successfully");
+			  }
              
             //add new socket to array of sockets
             for (i = 0; i < max_clients; i++) 
@@ -839,8 +852,10 @@ void socketCommand ( std::atomic<bool> & quit )
                     client_socket[i] = new_socket;
                     char txtsocket[50];
                     sprintf(txtsocket, "Adding to list of sockets as %d\n" , i);
-                     consoleWrite(txtsocket);
-                    break;
+					if (debug) {                    
+						consoleWrite(txtsocket);
+					}
+					break;
                 }
             }
         }
@@ -913,9 +928,7 @@ int main(int argc, char** argv)
     
     if (debug) 
     {
-        printf("\n Arg String: ");
-        printf(Vector2String(all_args).c_str());
-        printf("\n");
+        consoleWrite("Arg String: %s", Vector2String(all_args).c_str());
     }
     
     
