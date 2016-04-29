@@ -594,6 +594,11 @@ void receive()
                     
                     consoleWrite(output);
                     
+                    // Run Command Temporary
+                    char commandOUT[100];
+                    sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n 99", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode);
+                     system(commandOUT.c_str());
+                    
                 } else {
                    // printf("0");
                 }
