@@ -235,7 +235,7 @@ void getOptions(std::vector<std::string> args, int type)
           
           while((cint = getopt(argv.size(), const_cast<char**>(argv.data()), options)) != -1)
 	{
-		awitch(cint){
+		switch(cint){
       case 'h':
         usage(argv[0], options);
         exit(0);
