@@ -55,7 +55,7 @@ uint8_t color    = 0x00;
 uint8_t bright   = 0x00;
 uint8_t key      = 0x01;
 uint8_t seq      = 0x00;
-uint8_t resends  =   10;
+uint8_t resends  =   20;
 uint64_t command = 0x00;
 
 int radiomode = 1;
@@ -598,7 +598,7 @@ void receive()
                     
                     // Run Command Temporary
                     char commandOUT[100];
-                    sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n 99", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode);
+                    sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n %d", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode, resends);
                      system(commandOUT);
                     
                 } else {
