@@ -55,7 +55,7 @@ uint8_t color    = 0x00;
 uint8_t bright   = 0x00;
 uint8_t key      = 0x01;
 uint8_t seq      = 0x00;
-uint8_t resends  =   30;
+uint8_t resends  =   60;
 uint64_t command = 0x00;
 
 int radiomode = 1;
@@ -389,7 +389,7 @@ void resetVars()
   bright   = 0x00;
   key      = 0x01;
   seq      = 0x00;
-  resends  =   30;
+  resends  =   60;
 
   command = 0x00;
 }
