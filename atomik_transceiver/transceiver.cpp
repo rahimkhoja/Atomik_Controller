@@ -20,6 +20,8 @@
 #include <sstream>
 #include <fstream>
 #include <iterator>
+#include <curl/curl.h>
+
 
 #include <mutex>
 
@@ -108,6 +110,37 @@ option_code hashit (std::string inString) {
     if (inString == "-v") return v;
     if (inString == "-w") return w;
 }
+void sendJSON(std::string jsonstr)
+{
+    CURL *curl;
+    CURLcode res;
+ 
+    curl_global_init(CURL_GLOBAL_ALL);
+ 
+    curl = curl_easy_init();
+    if(curl) 
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost/radio");
+        /* Now specify the POST data */ 
+        
+        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonstr.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonstr.length());
+        curl_easy_setopt(curl, CURLOPT_POST, 1);
+        /* Perform the request, res will get the return code */ 
+        res = curl_easy_perform(curl);
+ 
+        if(res != CURLE_OK)
+          fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+ 
+        curl_easy_cleanup(curl);
+    }
+    curl_global_cleanup();
+    return 0;
+}
+
+  
+
 
 std::string strConcat(std::string a, std::string b)
 {
@@ -593,7 +626,7 @@ void receive()
                     sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
                     JSONfilewrite(output);
-                    
+                    sendJSON(output);
                     consoleWrite(output);
                     
                     // Run Command Temporary
