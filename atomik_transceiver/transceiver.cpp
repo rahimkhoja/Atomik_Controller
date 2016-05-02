@@ -22,12 +22,6 @@
 #include <iterator>
 #include <curl/curl.h>
 
-
-#include <jsoncpp/json/json.h>
-#include <jsoncpp/json/reader.h>
-#include <jsoncpp/json/writer.h>
-#include <jsoncpp/json/value.h>
-
 #include <mutex>
 
 #include "PL1167_nRF24.h"
