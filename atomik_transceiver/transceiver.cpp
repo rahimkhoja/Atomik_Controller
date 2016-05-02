@@ -112,6 +112,11 @@ option_code hashit (std::string inString) {
 }
 void sendJSON(std::string jsonstr)
 {
+    struct curl_slist *headers = NULL;
+    curl_slist_append(headers, "Accept: application/json");
+    curl_slist_append(headers, "Content-Type: application/json");
+    curl_slist_append(headers, "charsets: utf-8");    
+    
     CURL *curl;
     CURLcode res;
  
@@ -123,9 +128,11 @@ void sendJSON(std::string jsonstr)
         curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:4200/transceiver");
         /* Now specify the POST data */ 
         
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); 
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonstr.c_str());
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonstr.length());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
         curl_easy_setopt(curl, CURLOPT_POST, 1);
         /* Perform the request, res will get the return code */ 
         res = curl_easy_perform(curl);
