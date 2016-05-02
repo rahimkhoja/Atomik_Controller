@@ -117,38 +117,36 @@ option_code hashit (std::string inString) {
 }
 void sendJSON(std::string jsonstr)
 {
-    struct curl_slist *headers = NULL;
-    curl_slist_append(headers, "Accept: application/json");
-    curl_slist_append(headers, "Content-Type: applicat POST -d");
-    curl_slist_append(headers, "charsets: utf-8");    
-    
-    CURL *curl;
-    CURLcode res;
- 
-    curl_global_init(CURL_GLOBAL_ALL);
- 
-    curl = curl_easy_init();
-    if(curl) 
-    {
-        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:4200/transceiver");
-        /* Now specify the POST data */ 
-        
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); 
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonstr.c_str());
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonstr.length());
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
-        /* Perform the request, res will get the return code */ 
-        res = curl_easy_perform(curl);
- 
-        if(res != CURLE_OK)
-          fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
- 
-        curl_easy_cleanup(curl);
-    }
-    curl_global_cleanup();
-    return;
-}
+   
+  CURLcode ret;
+  CURL *hnd;
+  struct curl_slist *slist1;
+
+  slist1 = NULL;
+  slist1 = curl_slist_append(slist1, "Accept: application/json");
+  slist1 = curl_slist_append(slist1, "Content-Type: application/json");
+
+  hnd = curl_easy_init();
+  curl_easy_setopt(hnd, CURLOPT_URL, "http://localhost:4200/transceiver");
+  curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
+  curl_easy_setopt(hnd, CURLOPT_HEADER, 1L);
+  curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, jsonstr.c_str() );
+  curl_easy_setopt(hnd, CURLOPT_POSTFIELDSIZE_LARGE, (curl_off_t)199);
+  curl_easy_setopt(hnd, CURLOPT_USERAGENT, "Atomik Controller");
+  curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, slist1);
+  curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
+  curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+  curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
+
+  ret = curl_easy_perform(hnd);
+
+  curl_easy_cleanup(hnd);
+  hnd = NULL;
+  curl_slist_free_all(slist1);
+  slist1 = NULL;
+return;
+
+ }
 
   
 
