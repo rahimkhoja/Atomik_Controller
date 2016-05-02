@@ -123,15 +123,12 @@ void sendJSON(std::string jsonstr)
   struct curl_slist *slist1;
 
   slist1 = NULL;
-  slist1 = curl_slist_append(slist1, "Accept: application/json");
   slist1 = curl_slist_append(slist1, "Content-Type: application/json");
 
   hnd = curl_easy_init();
   curl_easy_setopt(hnd, CURLOPT_URL, "http://localhost:4200/transceiver");
   curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
-  curl_easy_setopt(hnd, CURLOPT_HEADER, 1L);
-  curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, jsonstr.c_str() );
-  curl_easy_setopt(hnd, CURLOPT_POSTFIELDSIZE_LARGE, (curl_off_t)199);
+  curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, jsonstr.c_str());
   curl_easy_setopt(hnd, CURLOPT_USERAGENT, "Atomik Controller");
   curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, slist1);
   curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
@@ -524,11 +521,11 @@ std::string getTime()
 std::string createJSON(std::string add1, std::string add2, std::string data, std::string config)
 {                                    
     std::string output;
-    output = "{ \"json\": { \"Command\": \"Issue\", \"DateTime\": \"" + getTime() + "\", ";
-    output = output + "\"Address1\": \"" + add1 + "\", ";
-    output = output + "\"Address2\": \"" + add2 + "\", ";
-    output = output + "\"Data\": \"" + data + "\", ";
-    output = output + "\"Configuration\": { " + config + " } } }";
+    output = "{\"Command\":\"Issue\",\"DateTime\":\"" + getTime() + "\",";
+    output = output + "\"Address1\":\"" + add1 + "\",";
+    output = output + "\"Address2\":\"" + add2 + "\",";
+    output = output + "\"Data\":\"" + data + "\",";
+    output = output + "\"Configuration\":{" + config + "}}";
     return output;
 }
 
