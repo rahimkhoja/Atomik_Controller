@@ -20,6 +20,10 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <utility>
+#include <fstream>
+#include <curl/curl.h>
+
+#include <mutex>
 
 #include "../atomik_cypher/atomikCypher.h"
 
@@ -30,6 +34,7 @@ static int debug = 0;
 static int dupesPrinted = 0;
 static atomikCypher MiLightCypher;
 
+std::mutex JSONfileMutex;
 
 // this is new arp + mac
 static char *ethernet_mactoa(struct sockaddr *addr)
@@ -44,6 +49,61 @@ static char *ethernet_mactoa(struct sockaddr *addr)
 
     return (buff);
 }
+
+void sendJSON(std::string jsonstr)
+{
+  
+  CURLcode ret;
+  CURL *hnd;
+  struct curl_slist *slist1;
+
+  slist1 = NULL;
+  slist1 = curl_slist_append(slist1, "Content-Type: application/json");
+
+  hnd = curl_easy_init();
+  curl_easy_setopt(hnd, CURLOPT_URL, "http://localhost:4200/transceiver");
+  curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
+  curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, jsonstr.c_str());
+  curl_easy_setopt(hnd, CURLOPT_USERAGENT, "Atomik Controller");
+  curl_easy_setopt(hnd, CURLOPT_HTTPHEADER, slist1);
+  curl_easy_setopt(hnd, CURLOPT_MAXREDIRS, 50L);
+  curl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, "POST");
+  curl_easy_setopt(hnd, CURLOPT_TCP_KEEPALIVE, 1L);
+
+  ret = curl_easy_perform(hnd);
+
+  curl_easy_cleanup(hnd);
+  hnd = NULL;
+  curl_slist_free_all(slist1);
+  slist1 = NULL;
+return;
+void JSONfilewrite (std::string textjson) 
+{
+  JSONfileMutex.lock();
+  
+  char filename[] = "AtomikEmulatorJSON.log";
+  std::fstream json;
+
+  json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+  if (!json ) 
+  {
+        json.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
+        json << textjson.c_str();
+        json << "\n";
+        json.close();
+  } else {
+  
+        json << textjson.c_str();
+        json.close();
+  }
+       
+  JSONfileMutex.unlock();
+  return;
+}
+ }
+ 
+ 
+ 
 
 std::string getTime()
 {
@@ -64,11 +124,11 @@ std::string getTime()
 std::string createJSON(std::string mac, std::string ip, std::string data, std::string config)
 {                                    
     std::string output;
-    output = "{\n \"Command\": \"Issue\",\n \"DateTime\": \"" + getTime() + "\",\n ";
-    output = output + "\"MAC\": \"" + mac + "\",\n ";
-    output = output + "\"IP\": \"" + ip + "\",\n ";
-    output = output + "\"Data\": \"" + data + "\",\n ";
-    output = output + "\"Configuration\": {\n " + config + " }\n}";
+    output = "{\"Command\":\"Issue\",\"DateTime\":\"" + getTime() + "\",";
+    output = output + "\"MAC\":\"" + mac + "\",";
+    output = output + "\"IP\":\"" + ip + "\",";
+    output = output + "\"Data\":\"" + data + "\",";
+    output = output + "\"Configuration\":{" + config + "}}";
     return output;
 }
    
@@ -152,6 +212,7 @@ void listen()
                     char str[INET_ADDRSTRLEN];
                     long ip = cliaddr.sin_addr.s_addr;
                     inet_ntop(AF_INET, &ip, str, INET_ADDRSTRLEN);
+                    std::string jsontext;
                                     
                     if (debug)
                     {
@@ -199,10 +260,13 @@ void listen()
                     mac_address = ethernet_mactoa(&areq.arp_ha);
                                   
                     sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
-                                    
+                    jsontext = createJSON(mac_address.c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2]));
+                    
+                    JSONfilewrite(jsontext);
+                    sendJSON(jsontext);
+                    printf(jsontext.c_str());
                     printf("\n");
-                    printf(createJSON(mac_address.c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2])).c_str());
-                    printf("\n");
+                    
                     fflush(stdout);
                     
                 } else {
