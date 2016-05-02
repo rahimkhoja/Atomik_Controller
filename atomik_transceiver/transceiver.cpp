@@ -132,7 +132,6 @@ void sendJSON(std::string jsonstr)
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonstr.c_str());
         curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonstr.length());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
         curl_easy_setopt(curl, CURLOPT_POST, 1);
         /* Perform the request, res will get the return code */ 
         res = curl_easy_perform(curl);
