@@ -23,6 +23,11 @@
 #include <curl/curl.h>
 
 
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
+#include <jsoncpp/json/value.h>
+
 #include <mutex>
 
 #include "PL1167_nRF24.h"
@@ -114,7 +119,7 @@ void sendJSON(std::string jsonstr)
 {
     struct curl_slist *headers = NULL;
     curl_slist_append(headers, "Accept: application/json");
-    curl_slist_append(headers, "Content-Type: application/json");
+    curl_slist_append(headers, "Content-Type: applicat POST -d");
     curl_slist_append(headers, "charsets: utf-8");    
     
     CURL *curl;
@@ -521,11 +526,11 @@ std::string getTime()
 std::string createJSON(std::string add1, std::string add2, std::string data, std::string config)
 {                                    
     std::string output;
-    output = "\"Command\": \"Issue\", \"DateTime\": \"" + getTime() + "\", ";
+    output = "{\"json\":{ \"Command\": \"Issue\", \"DateTime\": \"" + getTime() + "\", ";
     output = output + "\"Address1\": \"" + add1 + "\", ";
     output = output + "\"Address2\": \"" + add2 + "\", ";
     output = output + "\"Data\": \"" + data + "\", ";
-    output = output + "\"Configuration\": { " + config + " }";
+    output = output + "\"Configuration\": { " + config + " } } }";
     return output;
 }
 
