@@ -1,4 +1,4 @@
-// g++ -std=c++11 atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
+// g++ -std=c++11 -lcurl atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
 
 #include <arpa/inet.h>
 #include <chrono>
@@ -77,6 +77,8 @@ void sendJSON(std::string jsonstr)
   curl_slist_free_all(slist1);
   slist1 = NULL;
 return;
+}
+
 void JSONfilewrite (std::string textjson) 
 {
   JSONfileMutex.lock();
@@ -100,10 +102,7 @@ void JSONfilewrite (std::string textjson)
   JSONfileMutex.unlock();
   return;
 }
- }
- 
- 
- 
+
 
 std::string getTime()
 {
@@ -224,7 +223,7 @@ void listen()
                     struct sockaddr_in *sin;
                     struct in_addr      ipaddr;
 
-                    string mac_address;
+                    std::string mac_address;
                     char message [50];
                                     
                     /* Make the ARP request.
