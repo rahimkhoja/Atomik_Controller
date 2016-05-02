@@ -61,7 +61,7 @@ void sendJSON(std::string jsonstr)
   slist1 = curl_slist_append(slist1, "Content-Type: application/json");
 
   hnd = curl_easy_init();
-  curl_easy_setopt(hnd, CURLOPT_URL, "http://localhost:4200/transceiver");
+  curl_easy_setopt(hnd, CURLOPT_URL, "http://localhost:4200/emulator");
   curl_easy_setopt(hnd, CURLOPT_NOPROGRESS, 1L);
   curl_easy_setopt(hnd, CURLOPT_POSTFIELDS, jsonstr.c_str());
   curl_easy_setopt(hnd, CURLOPT_USERAGENT, "Atomik Controller");
