@@ -112,6 +112,7 @@ option_code hashit (std::string inString) {
 }
 void sendJSON(std::string jsonstr)
 {
+    
     CURL *curl;
     CURLcode res;
  
@@ -120,13 +121,22 @@ void sendJSON(std::string jsonstr)
     curl = curl_easy_init();
     if(curl) 
     {
-        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:4200/transceiver");
-        /* Now specify the POST data */ 
-        
-        curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonstr.c_str());
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, jsonstr.length());
-        curl_easy_setopt(curl, CURLOPT_POST, 1);
+      struct curl_slist *headers = NULL;
+      curl_slist_append(headers, "Accept: application/json");
+      curl_slist_append(headers, "Content-Type: application/json");
+      curl_slist_append(headers, "charsets: utf-8");
+
+      curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:4200/transceiver");
+  
+      curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
+      curl_easy_setopt(curl, CURLOPT_POST, 1);
+    curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
+      curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers); 
+      curl_easy_setopt(curl, CURLOPT_POSTFIELDS, jsonstr.c_str());
+      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteMemoryCallback);
+      curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
+      curl_easy_setopt(curl, CURLOPT_USERAGENT, "libcrp/0.1");
+  
         /* Perform the request, res will get the return code */ 
         res = curl_easy_perform(curl);
  
