@@ -515,11 +515,11 @@ std::string getTime()
 std::string createJSON(std::string add1, std::string add2, std::string data, std::string config)
 {                                    
     std::string output;
-    output = "\"json\":{ \"Command\": \"Issue\", \"DateTime\": \"" + getTime() + "\", ";
+    output = "{ \"json\": { \"Command\": \"Issue\", \"DateTime\": \"" + getTime() + "\", ";
     output = output + "\"Address1\": \"" + add1 + "\", ";
     output = output + "\"Address2\": \"" + add2 + "\", ";
     output = output + "\"Data\": \"" + data + "\", ";
-    output = output + "\"Configuration\": { " + config + " } }";
+    output = output + "\"Configuration\": { " + config + " } } }";
     return output;
 }
 
