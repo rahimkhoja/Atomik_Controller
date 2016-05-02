@@ -1,4 +1,4 @@
-//  sudo g++ -std=c++11 -lrf24-bcm atomik_transceiver/PL1167_nRF24.cpp atomik_transceiver/MiLightRadio.cpp atomik_transceiver/transceiver.cpp atomik_cypher/atomikCypher.cpp -o transceiver -pthread
+//  sudo g++ -std=c++11 -lrf24-bcm -lcurl -pthread atomik_transceiver/PL1167_nRF24.cpp atomik_transceiver/MiLightRadio.cpp atomik_transceiver/transceiver.cpp atomik_cypher/atomikCypher.cpp -o transceiver
 
 #include <cstdlib>
 #include <iostream>
@@ -120,7 +120,7 @@ void sendJSON(std::string jsonstr)
     curl = curl_easy_init();
     if(curl) 
     {
-        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost/radio");
+        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:4200/transceiver");
         /* Now specify the POST data */ 
         
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0);  // for --insecure option
