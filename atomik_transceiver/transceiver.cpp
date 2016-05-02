@@ -117,7 +117,8 @@ option_code hashit (std::string inString) {
 }
 void sendJSON(std::string jsonstr)
 {
-   
+  
+  consoleWrite(jsonstr);
   CURLcode ret;
   CURL *hnd;
   struct curl_slist *slist1;
