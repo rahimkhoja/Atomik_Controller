@@ -31,6 +31,18 @@ The Atomik Controller manages automated and smart lights. Initially The Atomik C
  * Nginx
  * PHP
  * LibCurl
+ * MySQL ( but soon to be SQLite )
+
+
+ **Install Instructions:**
+
+ 
+```
+#!bash
+
+sudo apt-get update && sudo apt-get upgrade
+sudo 
+```
 
 
 ### Who do I talk to? ###
