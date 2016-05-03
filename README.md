@@ -41,7 +41,17 @@ The Atomik Controller manages automated and smart lights. Initially The Atomik C
 #!bash
 
 sudo apt-get update && sudo apt-get upgrade
-sudo 
+sudo apt-get install wget git libcurl4-openssl-dev g++ nginx php5-fpm
+sudo apt-get install mysql-server --fix-missing
+
+addgroup atomik
+adduser -g atomik -M atomik 
+
+sudo mkdir /var/log/atomik
+sudo chown atomik:atomik /var/log/atomik
+sudo mkdir /var/working
+sudo chown atomik:atomik /var/working
+
 ```
 
 
