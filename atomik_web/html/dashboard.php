@@ -15,7 +15,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="daskboard.php">Dashboard<span class="sr-only">(current)</span></a> </li>
+        <li class="active"><a href="dashboard.php">Dashboard<span class="sr-only">(current)</span></a> </li>
         <li><a href="settings.php">Settings</a> </li>
         <li><a href="devices.php">Devices</a> </li>
         <li><a href="remotes.php">Remotes</a> </li>
@@ -138,7 +138,9 @@
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td>192.168.1.100</td>
+        <td><?php $hostsipaddress = str_replace("\n","",shell_exec("ifconfig eth0 | grep 'inet addr' | awk -F':' {'print $2'} | awk -F' ' {'print $1'}"));
+		echo $hostsipaddress;
+?></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
@@ -154,7 +156,10 @@
       </tr>
       <tr>
         <td>Eth0 MAC Address: </td>
-        <td>0e:3b:61:f4:45:b6</td>
+        <td><?
+exec("/sbin/ifconfig | grep HWaddr", $output);
+print_r( $output);
+?></td>
       </tr>
     </tbody>
   </table><br>
@@ -177,7 +182,9 @@
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td>192.168.100.108</td>
+        <td><?php $hostsipaddress = str_replace("\n","",shell_exec("ifconfig wlan0 | grep 'inet addr' | awk -F':' {'print $2'} | awk -F' ' {'print $1'}"));
+		echo $hostsipaddress;
+?></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
@@ -193,7 +200,10 @@
       </tr>
       <tr>
         <td>Wifi0 MAC Address: </td>
-        <td>00:1b:63:84:45:e6</td>
+        <td><?
+exec("/sbin/ifconfig | grep HWaddr", $output);
+print_r( $output);
+?></td>
       </tr>
       </tbody>
   </table>
@@ -207,7 +217,7 @@
 </div>
 <hr>
   <div class="container text-center">
-<p><a href="dasboard.php" class="btn-primary btn">Refresh Details</a></p>
+<p><a href="dashboard.php" class="btn-primary btn">Refresh Details</a></p>
 </div>
 <hr>
 <div class="push"></div>
