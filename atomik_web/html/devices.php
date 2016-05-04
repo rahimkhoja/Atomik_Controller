@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Atomik_Web_Interface_V1_Header</title>
+<title>Atomik Controller - Devices</title>
 <link rel="stylesheet" href="css/atomik.css">
 </head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -15,15 +15,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Dashboard<span class="sr-only">(current)</span></a> </li>
-        <li><a href="#">Settings</a> </li>
-        <li class="active"><a href="#">Devices</a> </li>
-        <li><a href="#">Remotes</a> </li>
-        <li><a href="#">Zones</a> </li>
-        <li><a href="#">Scheduled Tasks</a> </li>
+        <li><a href="dashboard.php">Dashboard</a> </li>
+        <li><a href="settings.php">Settings</a> </li>
+        <li class="active"><a href="devices.php">Devices<span class="sr-only">(current)</span></a> </li>
+        <li><a href="remotes.php">Remotes</a> </li>
+        <li><a href="zones.php">Zones</a> </li>
+        <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Logout</a> </li>
+        <li><a href="logout.php">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -46,7 +46,7 @@
 <div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           <h4><p>Device List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Devices: 21</strong></p><p><a href="" class="btn-primary btn">Add New Device</a></p>  </div>
+           <h4><p>Device List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Devices: 21</strong></p><p><a href="add_device.php" class="btn-primary btn">Add New Device</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
            <div class="container center-block">
@@ -212,7 +212,7 @@
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           </div><div class="col-xs-4 text-right"><p><strong>Total Devices: 21</strong></p><p><a href="" class="btn-primary btn">Add New Device</a></p>  </div>
+           </div><div class="col-xs-4 text-right"><p><strong>Total Devices: 21</strong></p><p><a href="add_device.php" class="btn-primary btn">Add New Device</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
   <hr><div class="alert alert-success">

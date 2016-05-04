@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Atomik_Web_Interface_V1_Header</title>
+<title>Atomik Controller - Zone Details</title>
 <link rel="stylesheet" href="css/atomik.css">
 </head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -15,15 +15,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Dashboard<span class="sr-only">(current)</span></a> </li>
-        <li><a href="#">Settings</a> </li>
-        <li><a href="#">Devices</a> </li>
-        <li><a href="#">Remotes</a> </li>
-        <li class="active"><a href="#">Zones</a> </li>
-        <li><a href="#">Scheduled Tasks</a> </li>
+        <li><a href="dashboard.php">Dashboard</a> </li>
+        <li><a href="settings.php">Settings</a> </li>
+        <li><a href="devices.php">Devices</a> </li>
+        <li><a href="remotes.php">Remotes</a> </li>
+        <li><a href="zones.php">Zones<span class="sr-only">(current)</span></a> </li>
+        <li class="active"><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Logout</a> </li>
+        <li><a href="logout.php">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -257,7 +257,7 @@
   <div class="container center">
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-1"><a href=""  class="btn-warning btn">Cancel</a>
+  <div class="col-xs-1"><a href="zones.php"  class="btn-warning btn">Cancel</a>
   </div>
   <div class="col-xs-1"><a href="" class="btn-danger btn">Delete Device</a>
   </div>

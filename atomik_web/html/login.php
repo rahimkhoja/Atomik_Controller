@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Atomik_Web_Interface_V1_Header</title>
+<title>Atomik Controller - Login</title>
 <link rel="stylesheet" href="css/atomik.css">
 </head>
 <nav class="navbar navbar-default navbar-inverse">
