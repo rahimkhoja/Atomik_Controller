@@ -5,7 +5,7 @@
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
 <?php
-function getMacLinux($interface) {
+function getInterfaceMAC($interface) {
   exec('netstat -ie', $result);
   if(is_array($result)) {
     foreach($result as $key => $line) {
@@ -23,7 +23,17 @@ function getMacLinux($interface) {
   } else {
     return "notfound";
   }
-} ?></head>
+}
+function getInterfaceGateway($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -167,7 +177,7 @@ function getMacLinux($interface) {
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
-        <td>192.168.1.1</td>
+        <td><?php echo getInterfaceGateway('eth0'); ?></td>
       </tr>
       <tr>
         <td>Eth0 DNS: </td>
@@ -175,7 +185,7 @@ function getMacLinux($interface) {
       </tr>
       <tr>
         <td>Eth0 MAC Address: </td>
-        <td><?php echo getMacLinux('eth0'); ?></td>
+        <td><?php echo getInterfaceMAC('eth0'); ?></td>
       </tr>
     </tbody>
   </table><br>
@@ -208,7 +218,7 @@ function getMacLinux($interface) {
       </tr>
       <tr>
         <td>Wifi0 Gateway: </td>
-        <td>192.168.100.1</td>
+        <td><?php echo getInterfaceGateway('wlan0'); ?></td>
       </tr>
       <tr>
         <td>Wifi0 DNS: </td>
@@ -216,7 +226,7 @@ function getMacLinux($interface) {
       </tr>
       <tr>
         <td>Wifi0 MAC Address: </td>
-        <td><?php echo getMacLinux('wlan0'); ?></td>
+        <td><?php echo getInterfaceMAC('wlan0'); ?></td>
       </tr>
       </tbody>
   </table>
