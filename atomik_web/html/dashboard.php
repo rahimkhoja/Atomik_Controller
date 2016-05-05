@@ -33,6 +33,68 @@ function getInterfaceGateway($interface) {
     return "notfound";
   }
 }
+
+function getInterfaceAddress($interface) {
+  exec('netstat -ie', $result);
+  if(is_array($result)) {
+    foreach($result as $key => $line) {
+      if($key > 0) {
+        $tmp = str_replace(" ", "", substr($line, 0, 10));
+        if($tmp == $interface) {
+          $macpos = strpos($line, "inet addr:");
+          if($macpos !== false) {
+            $iface = strtolower(substr($line, $macpos+11, 15));
+          }
+        }
+      }
+    }
+    return $iface;
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceMask($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+
+function getInterfaceDNS($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceType($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceStatus($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -208,9 +270,7 @@ function getInterfaceGateway($interface) {
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td><?php $hostsipaddress = str_replace("\n","",shell_exec("ifconfig wlan0 | grep 'inet addr' | awk -F':' {'print $2'} | awk -F' ' {'print $1'}"));
-		echo $hostsipaddress;
-?></td>
+        <td><?php echo getInterfaceAddress($'wlan0'); ?></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
