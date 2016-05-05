@@ -157,7 +157,7 @@
       <tr>
         <td>Eth0 MAC Address: </td>
         <td><?php
-function getMacLinux() {
+function getMacLinux($interface) {
   exec('netstat -ie', $result);
   if(is_array($result)) {
     $iface = array();
@@ -165,10 +165,13 @@ function getMacLinux() {
       if($key > 0) {
         $tmp = str_replace(" ", "", substr($line, 0, 10));
         if($tmp <> "") {
+			$iface = strpos($line, $interface);
+          if($iface !== false) {
           $macpos = strpos($line, "HWaddr");
           if($macpos !== false) {
             $iface[] = array('iface' => $tmp, 'mac' => strtolower(substr($line, $macpos+7, 17)));
           }
+		  }
         }
       }
     }
@@ -177,7 +180,7 @@ function getMacLinux() {
     return "notfound";
   }
 }
-echo getMacLinux();
+echo getMacLinux('eth0');
 ?></td>
       </tr>
     </tbody>
