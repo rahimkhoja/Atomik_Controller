@@ -5,6 +5,7 @@
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
 <?php
+
 function getInterfaceMAC($interface) {
   exec('netstat -ie', $result);
   if(is_array($result)) {
@@ -270,7 +271,7 @@ function getInterfaceStatus($interface) {
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td><?php echo getInterfaceAddress($'wlan0'); ?></td>
+        <td><?php echo getInterfaceAddress('wlan0'); ?></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
