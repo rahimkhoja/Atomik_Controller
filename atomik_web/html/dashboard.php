@@ -4,7 +4,26 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
-</head>
+<?php
+function getMacLinux($interface) {
+  exec('netstat -ie', $result);
+  if(is_array($result)) {
+    foreach($result as $key => $line) {
+      if($key > 0) {
+        $tmp = str_replace(" ", "", substr($line, 0, 10));
+        if($tmp == $interface) {
+          $macpos = strpos($line, "HWaddr");
+          if($macpos !== false) {
+            $iface = strtolower(substr($line, $macpos+7, 17));
+          }
+        }
+      }
+    }
+    return $iface;
+  } else {
+    return "notfound";
+  }
+} ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -156,32 +175,7 @@
       </tr>
       <tr>
         <td>Eth0 MAC Address: </td>
-        <td><?php
-function getMacLinux($interface) {
-  exec('netstat -ie', $result);
-  if(is_array($result)) {
-    $iface = array();
-    foreach($result as $key => $line) {
-      if($key > 0) {
-        $tmp = str_replace(" ", "", substr($line, 0, 10));
-        if($tmp <> "") {
-			$iface = strpos($line, $interface);
-          if($iface !== false) {
-          $macpos = strpos($line, "HWaddr");
-          if($macpos !== false) {
-            $iface[] = array('iface' => $tmp, 'mac' => strtolower(substr($line, $macpos+7, 17)));
-          }
-		  }
-        }
-      }
-    }
-    return $iface[0]['mac'];
-  } else {
-    return "notfound";
-  }
-}
-echo getMacLinux('eth0');
-?></td>
+        <td><?php echo getMacLinux('eth0'); ?></td>
       </tr>
     </tbody>
   </table><br>
@@ -222,10 +216,7 @@ echo getMacLinux('eth0');
       </tr>
       <tr>
         <td>Wifi0 MAC Address: </td>
-        <td><?
-exec("/sbin/ifconfig | grep HWaddr", $output);
-print_r( $output);
-?></td>
+        <td><?php echo getMacLinux('wlan0'); ?></td>
       </tr>
       </tbody>
   </table>
