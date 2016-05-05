@@ -26,7 +26,7 @@ function getInterfaceMAC($interface) {
   }
 }
 function getInterfaceGateway($interface) {
-  $command = "ifconfig ".$interface." | grep 'inet addr' | awk {'print $2'}";
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -36,7 +36,7 @@ function getInterfaceGateway($interface) {
 }
 
 function getInterfaceAddress($interface) {
-  $command = "ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
+  $command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -46,7 +46,7 @@ function getInterfaceAddress($interface) {
 }
 
 function getInterfaceMask($interface) {
-  $command = "ifconfig eth0 | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
+  $command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
