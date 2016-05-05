@@ -26,7 +26,7 @@ function getInterfaceMAC($interface) {
   }
 }
 function getInterfaceGateway($interface) {
-  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  $command = "ifconfig ".$interface." | grep 'inet addr' | awk {'print $2'}";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -36,27 +36,17 @@ function getInterfaceGateway($interface) {
 }
 
 function getInterfaceAddress($interface) {
-  exec('netstat -ie', $result);
+  $command = "ifconfig eth0 | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
+  exec($command, $result);
   if(is_array($result)) {
-    foreach($result as $key => $line) {
-      if($key > 0) {
-        $tmp = str_replace(" ", "", substr($line, 0, 10));
-        if($tmp == $interface) {
-          $macpos = strpos($line, "inet addr:");
-          if($macpos !== false) {
-            $iface = strtolower(substr($line, $macpos+11, 15));
-          }
-        }
-      }
-    }
-    return $iface;
+    return $result[0];
   } else {
     return "notfound";
   }
 }
 
 function getInterfaceMask($interface) {
-  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  $command = "ifconfig eth0 | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -230,13 +220,11 @@ function getInterfaceStatus($interface) {
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><?php $hostsipaddress = str_replace("\n","",shell_exec("ifconfig eth0 | grep 'inet addr' | awk -F':' {'print $2'} | awk -F' ' {'print $1'}"));
-		echo $hostsipaddress;
-?></td>
+        <td><?php echo getInterfaceAddress('eth0'); ?></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
-        <td>255.255.255.0</td>
+        <td><?php echo getInterfaceMask('eth0'); ?></td>
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
@@ -275,7 +263,7 @@ function getInterfaceStatus($interface) {
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
-        <td>255.255.255.0</td>
+        <td><?php echo getInterfaceMask('wlan0'); ?></td>
       </tr>
       <tr>
         <td>Wifi0 Gateway: </td>
