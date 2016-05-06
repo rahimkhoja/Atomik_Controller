@@ -34,7 +34,7 @@ if (is_link('/etc/localtime')) {
 date_default_timezone_set($timezone);
 
 function getInterfaceMAC($interface) {
-	if (getInterfaceStatus($interface)) {
+	if (getInterfaceStatus($interface) == "Connected") {
 		exec('netstat -ie', $result);
   		if(is_array($result)) {
     		foreach($result as $key => $line) {
@@ -56,7 +56,7 @@ function getInterfaceMAC($interface) {
 }
 
 function getInterfaceGateway($interface) {
-	if (getInterfaceStatus($interface)) {
+	if (getInterfaceStatus($interface) == "Connected") {
 		$command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
   		exec($command, $result);
   		if(is_array($result)) {
@@ -68,7 +68,7 @@ function getInterfaceGateway($interface) {
 }
 
 function getInterfaceAddress($interface) {
-	if (getInterfaceStatus($interface)) { 
+	if (getInterfaceStatus($interface) == "Connected") { 
 		$command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
   		exec($command, $result);
   		if(is_array($result)) {
@@ -80,7 +80,7 @@ function getInterfaceAddress($interface) {
 }
 
 function getInterfaceMask($interface) {
-	if (getInterfaceStatus($interface)) {
+	if (getInterfaceStatus($interface) == "Connected") {
 		$command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
   		exec($command, $result);
   		if(is_array($result)) {
@@ -93,7 +93,7 @@ function getInterfaceMask($interface) {
 
 
 function getInterfaceDNS($interface) {
-	if (getInterfaceStatus($interface)) {
+	if (getInterfaceStatus($interface) == "Connected") {
 		$inter = getInterfaceType($interface);
   		if ( $inter == "DHCP" ) {
 	  		$command = "cat  /var/lib/dhcp/dhclient.leases | awk '/interface \"".$interface."\"/{getline; getline; getline; getline; getline; getline; print }' | grep dhcp-server-identifier | cut -d' ' -f5 | tr -d ';'";
@@ -116,7 +116,7 @@ function getInterfaceDNS($interface) {
 }
 
 function getInterfaceType($interface) {
-	if (getInterfaceStatus($interface)) {
+	if (getInterfaceStatus($interface) == "Connected") {
 		$command = "cat /etc/dhcpcd.conf | grep 'interface ".$interface."'";
 		exec($command, $result);
 		if(is_array($result)) {
