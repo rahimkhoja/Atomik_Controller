@@ -28,7 +28,6 @@ if (is_link('/etc/localtime')) {
         $timezone = $data['ZONE'];
     }
 }
- echo $timezone;
 date_default_timezone_set($timezone);
 
 function getInterfaceMAC($interface) {
@@ -155,7 +154,7 @@ function getCpuUsage() {
 }
 
 function getTimeZone() {
-    return date('T').' - '.date('e').' ( GMT '.date(-e).' ) ';
+    return date_default_timezone_get().' ( GMT '.date('T').' ) ';
   }
 
 ?></head>
