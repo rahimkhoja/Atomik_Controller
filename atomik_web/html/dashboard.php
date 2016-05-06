@@ -34,89 +34,101 @@ if (is_link('/etc/localtime')) {
 date_default_timezone_set($timezone);
 
 function getInterfaceMAC($interface) {
-  exec('netstat -ie', $result);
-  if(is_array($result)) {
-    foreach($result as $key => $line) {
-      if($key > 0) {
-        $tmp = str_replace(" ", "", substr($line, 0, 10));
-        if($tmp == $interface) {
-          $macpos = strpos($line, "HWaddr");
-          if($macpos !== false) {
-            $iface = strtolower(substr($line, $macpos+7, 17));
-          }
-        }
-      }
-    }
-    return $iface;
-  } else {
-    return "notfound";
-  }
+	if (getInterfaceStatus($interface)) {
+		exec('netstat -ie', $result);
+  		if(is_array($result)) {
+    		foreach($result as $key => $line) {
+      			if($key > 0) {
+        			$tmp = str_replace(" ", "", substr($line, 0, 10));
+        			if($tmp == $interface) {
+          				$macpos = strpos($line, "HWaddr");
+          				if($macpos !== false) {
+            				$iface = strtolower(substr($line, $macpos+7, 17));
+          				}
+        			}
+      			}
+    		}
+			return $iface;
+  		} else {
+    		return "notfound";
+  		}
+	}
 }
 
 function getInterfaceGateway($interface) {
-  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
-  exec($command, $result);
-  if(is_array($result)) {
-    return $result[0];
-  } else {
-    return "notfound";
-  }
+	if (getInterfaceStatus($interface)) {
+		$command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  		exec($command, $result);
+  		if(is_array($result)) {
+  		  return $result[0];
+  		} else {
+  		  return "notfound";
+  		}
+	}
 }
 
 function getInterfaceAddress($interface) {
-  $command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
-  exec($command, $result);
-  if(is_array($result)) {
-    return $result[0];
-  } else {
-    return "notfound";
-  }
+	if (getInterfaceStatus($interface)) { 
+		$command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
+  		exec($command, $result);
+  		if(is_array($result)) {
+    		return $result[0];
+  		} else {
+    		return "notfound";
+  		}
+	}
 }
 
 function getInterfaceMask($interface) {
-  $command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
-  exec($command, $result);
-  if(is_array($result)) {
-    return $result[0];
-  } else {
-    return "notfound";
-  }
+	if (getInterfaceStatus($interface)) {
+		$command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
+  		exec($command, $result);
+  		if(is_array($result)) {
+    		return $result[0];
+  		} else {
+    		return "notfound";
+  		}
+	}
 }
 
 
 function getInterfaceDNS($interface) {
-	$inter = getInterfaceType($interface);
-  if ( $inter == "DHCP" ) {
-	  $command = "cat  /var/lib/dhcp/dhclient.leases | awk '/interface \"".$interface."\"/{getline; getline; getline; getline; getline; getline; print }' | grep dhcp-server-identifier | cut -d' ' -f5";
-      exec($command, $result);
-      if(is_array($result)) {
-		  return $result[0];
-      } else {
-          return "notfound";
-      }  	
-  } else if ( $inter == "Static" ) {
-	  $command = "cat /etc/dhcpcd.conf | awk '/interface ".$interface."/{getline; getline; getline; print $2}' | grep domain_name_servers | cut -d= -f2";
-      exec($command, $result);
-      if(is_array($result)) {
-		  return $result[0];
-      } else {
-          return "notfound";
-      }
-  }
+	if (getInterfaceStatus($interface)) {
+		$inter = getInterfaceType($interface);
+  		if ( $inter == "DHCP" ) {
+	  		$command = "cat  /var/lib/dhcp/dhclient.leases | awk '/interface \"".$interface."\"/{getline; getline; getline; getline; getline; getline; print }' | grep dhcp-server-identifier | cut -d' ' -f5 | tr -d ';'";
+      		exec($command, $result);
+      		if(is_array($result)) {
+		  		return $result[0];
+      		} else {
+          		return "notfound";
+      		}  	
+  		} else if ( $inter == "Static" ) {
+	  		$command = "cat /etc/dhcpcd.conf | awk '/interface ".$interface."/{getline; getline; getline; print $2}' | grep domain_name_servers | cut -d= -f2";
+      		exec($command, $result);
+      		if(is_array($result)) {
+		  		return $result[0];
+      		} else {
+          		return "notfound";
+			}
+      	}
+  	}
 }
-//cat /etc/dhcpcd.conf | awk '/interface eth0/{getline; getline; getline; print $2}'
+
 function getInterfaceType($interface) {
-  $command = "cat /etc/dhcpcd.conf | grep 'interface ".$interface."'";
-  exec($command, $result);
-  if(is_array($result)) {
-	  if (strpos($result[0], "interface ".$interface) !== false) {
-		  return "Static";
-	  } else {
-		  return "DHCP";
-	  }
-  } else {
-	  return "Not Found";
-  }
+	if (getInterfaceStatus($interface)) {
+		$command = "cat /etc/dhcpcd.conf | grep 'interface ".$interface."'";
+		exec($command, $result);
+		if(is_array($result)) {
+			if (strpos($result[0], "interface ".$interface) !== false) {
+				return "Static";
+			} else {
+				return "DHCP";
+			}
+		} else {
+		return "Not Found";
+		}
+  	}
 }
 
 function getInterfaceStatus($interface) {
