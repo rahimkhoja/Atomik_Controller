@@ -85,6 +85,38 @@ function getInterfaceStatus($interface) {
     return "notfound";
   }
 }
+//
+
+function getCPU() {
+  $command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '{$1=$1};1'";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Found";
+  }
+}
+
+function getHostname() {
+  $command = "hostname -s";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Found";
+  }
+}
+
+function getUptime() {
+  $command = "uptime -p | sed 's/up //g' | awk '{$1=$1};1'";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Available";
+  }
+}
+
 
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -133,13 +165,13 @@ function getInterfaceStatus($interface) {
     <thead>
       <tr>
         <td>Hostname: </td>
-        <td>AtomikController</td>
+        <td><?php echo getHostname(); ?></td>
       </tr>
     </thead>
     <tbody>
     <tr>
         <td>CPU: </td>
-        <td>Atom 203</td>
+        <td><?php echo getCPU(); ?></td>
     </tr>
       <tr>
         <td>CPU Utilization: </td>
@@ -155,11 +187,11 @@ function getInterfaceStatus($interface) {
       </tr>
       <tr>
         <td>Current System Time: </td>
-        <td>Tue, 3 Apr 2016 22:11:19 -0700</td>
+        <td><?php echo date("F j, Y, g:i a"); ?></td>
       </tr>
       <tr>
         <td>System Uptime: </td>
-        <td>4 Days, 12 Hours, 54 Minutes, and 12 Seconds.</td>
+        <td><?php echo getUptime(); ?></td>
       </tr>
     </tbody>
   </table>
