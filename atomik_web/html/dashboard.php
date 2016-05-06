@@ -5,6 +5,9 @@
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
 <?php
+$page_error = false;
+$page_success = false;
+
 
 $timezone = 'UTC';
 if (is_link('/etc/localtime')) {
@@ -154,7 +157,7 @@ function getCpuUsage() {
 }
 
 function getTimeZone() {
-    return date_default_timezone_get().' ( GMT '.date('T').' ) ';
+    return date_default_timezone_get().' ( '.date('T').' ) ';
   }
 
 ?></head>
@@ -189,11 +192,11 @@ function getTimeZone() {
     <div class="row">
         <div class="PageNavTitle" ><h3>Dashboard</h3></div>
     </div>
-   </div><hr><div class="alert alert-success">
+   </div><?php if (page_success == true || page_error == true) { ?><hr><?php }; ?><?php if (page_success == true) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
+</div><?php }; ?><?php if (page_success == true) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
+</div><?php }; ?>
 <hr>
 
 <div class="container">
