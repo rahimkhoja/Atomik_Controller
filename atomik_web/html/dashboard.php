@@ -89,7 +89,7 @@ function getInterfaceStatus($interface) {
 
 
 function getCPU() {
-$command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 "; //| awk '{\$1=\$1};1'";
+$command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '".'{$1=$1};1'."'";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -111,6 +111,16 @@ function getUptime() {
 
 function getRam() {
   $command = "free -m |  grep 'Mem:' | awk {'print $2 \"MB /\", $4 \"MB\"'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Available";
+  }
+}
+
+function getCpuUsage() {
+  $command = "mpstat | grep -A 5 \"%idle\" | tail -n 1 | awk -F \" \" '{print 100 -  $13 \"%\"}'";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -166,17 +176,17 @@ function getRam() {
     <thead>
       <tr>
         <td>Hostname: </td>
-        <td></td>
+        <td><?php echo gethostname(); ?></td>
       </tr>
     </thead>
     <tbody>
     <tr>
         <td>CPU: </td>
-        <td><?php echo gethostname(); ?></td>
+        <td><?php echo getCPU(); ?></td>
     </tr>
       <tr>
         <td>CPU Utilization: </td>
-        <td>0.6%</td>
+        <td><?php echo getCpuUsage(); ?></td>
       </tr>
       <tr>
         <td>Total Ram / Free Ram: </td>
