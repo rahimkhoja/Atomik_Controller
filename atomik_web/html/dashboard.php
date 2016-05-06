@@ -355,12 +355,11 @@ function getTimeZone() {
   </table>
     </div>
 </div>
-</div>
-  <hr><div class="alert alert-success">
+</div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
+</div><?php } ?>
 <hr>
   <div class="container text-center">
 <p><a href="dashboard.php" class="btn-primary btn">Refresh Details</a></p>
