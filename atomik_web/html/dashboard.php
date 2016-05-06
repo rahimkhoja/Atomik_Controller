@@ -105,15 +105,18 @@ function getInterfaceType($interface) {
 }
 
 function getInterfaceStatus($interface) {
-  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  $command = "ifplugstatus ".$interface;
   exec($command, $result);
   if(is_array($result)) {
-    return $result[0];
+	  if (strpos($result[0], 'link beat detected') !== false) {
+		  return "Connected";
+	  } else {
+		  return "Disconnected";
+	  }
   } else {
-    return "notfound";
+	  return "Not Found";
   }
 }
-
 
 function getCPU() {
 $command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '".'{$1=$1};1'."'";
@@ -284,7 +287,7 @@ function getTimeZone() {
     <thead>
       <tr>
         <td>Eth0 Status: </td>
-        <td>Connected</td>
+        <td><?php echo getInterfaceStatus('eth0'); ?></td>
       </tr>
     </thead>
     <tbody>
@@ -319,7 +322,7 @@ function getTimeZone() {
     <thead>
       <tr>
         <td>Wifi0 Status: </td>
-        <td>Connected</td>
+        <td><?php echo getInterfaceStatus('wlan0'); ?></td>
       </tr>
     </thead>
     <tbody>
