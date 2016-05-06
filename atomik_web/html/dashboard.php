@@ -93,14 +93,18 @@ function getInterfaceDNS($interface) {
     return "notfound";
   }
 }
-
+//cat /etc/dhcpcd.conf | awk '/interface eth0/{getline; getline; getline; print $2}'
 function getInterfaceType($interface) {
-  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  $command = "cat /etc/dhcpcd.conf | grep 'interface ".$interface."'";
   exec($command, $result);
   if(is_array($result)) {
-    return $result[0];
+	  if (strpos($result[0], "interface ".$interface) !== false) {
+		  return "Static";
+	  } else {
+		  return "DHCP";
+	  }
   } else {
-    return "notfound";
+	  return "Not Found";
   }
 }
 
@@ -304,7 +308,7 @@ function getTimeZone() {
     <tbody>
     <tr>
         <td>Eth0 Type: </td>
-        <td>Static</td>
+        <td><?php echo getInterfaceType('eth0'); ?></td>
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
@@ -343,7 +347,7 @@ function getTimeZone() {
       </tr>
     <tr>
         <td>Wifi0 Type: </td>
-        <td>DHCP</td>
+        <td><?php echo getInterfaceType('wlan0'); ?></td>
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
