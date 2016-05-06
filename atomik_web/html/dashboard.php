@@ -223,7 +223,7 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Time Zone: </td>
-        <td>(GMT -8:00) Pacific Time (US &amp; Canada)</td>
+        <td><?php echo getTimeZone(); ?></td>
       </tr>
       <tr>
         <td>Current System Time: </td>
