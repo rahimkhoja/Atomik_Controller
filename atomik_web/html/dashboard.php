@@ -85,12 +85,23 @@ function getInterfaceMask($interface) {
 
 
 function getInterfaceDNS($interface) {
-  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
-  exec($command, $result);
-  if(is_array($result)) {
-    return $result[0];
-  } else {
-    return "notfound";
+	$inter = getInterfaceType($interface);
+  if ( $inter == "DHCP" ) {
+	  $command = "cat  /var/lib/dhcp/dhclient.leases | awk '/interface \"".$interface."\"/{getline; getline; getline; getline; getline; getline; print }' | grep dhcp-server-identifier | cut -d' ' -f5";
+      exec($command, $result);
+      if(is_array($result)) {
+		  return $result[0];
+      } else {
+          return "notfound";
+      }  	
+  } else if ( $inter == "Static" ) {
+	  $command = "cat /etc/dhcpcd.conf | awk '/interface ".$interface."/{getline; getline; getline; print $2}' | grep domain_name_servers | cut -d= -f2";
+      exec($command, $result);
+      if(is_array($result)) {
+		  return $result[0];
+      } else {
+          return "notfound";
+      }
   }
 }
 //cat /etc/dhcpcd.conf | awk '/interface eth0/{getline; getline; getline; print $2}'
@@ -324,7 +335,7 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Eth0 DNS: </td>
-        <td>8.8.8.8</td>
+        <td><?php echo getInterfaceDNS('eth0'); ?></td>
       </tr>
       <tr>
         <td>Eth0 MAC Address: </td>
@@ -363,7 +374,7 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Wifi0 DNS: </td>
-        <td>192.168.100.1</td>
+        <td><?php echo getInterfaceDNS('wlan0'); ?></td>
       </tr>
       <tr>
         <td>Wifi0 MAC Address: </td>
