@@ -192,11 +192,11 @@ function getTimeZone() {
     <div class="row">
         <div class="PageNavTitle" ><h3>Dashboard</h3></div>
     </div>
-   </div><?php if (page_success == true || page_error == true) { ?><hr><?php }; ?><?php if (page_success == true) { ?><div class="alert alert-success">
+   </div><?php if ( page_success || page_error ) { ?><hr><?php } ?><?php if ( page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><?php }; ?><?php if (page_success == true) { ?><div class="alert alert-danger">
+</div><?php } ?><?php if ( page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><?php }; ?>
+</div><?php } ?>
 <hr>
 
 <div class="container">
