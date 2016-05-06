@@ -118,6 +118,17 @@ function getInterfaceStatus($interface) {
   }
 }
 
+function getSSID() {
+  $command = "iwgetid -r";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+
 function getCPU() {
 $command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '".'{$1=$1};1'."'";
   exec($command, $result);
@@ -328,7 +339,7 @@ function getTimeZone() {
     <tbody>
     <tr>
         <td>Wifi0 SSID: </td>
-        <td>Home Router</td>
+        <td><?php echo getSSID(); ?></td>
       </tr>
     <tr>
         <td>Wifi0 Type: </td>
