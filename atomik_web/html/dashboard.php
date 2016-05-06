@@ -87,7 +87,7 @@ function getInterfaceStatus($interface) {
 }
 
 function getCPU() {
-$command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '{\$1=\$1};1'";
+$command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 "; //| awk '{\$1=\$1};1'";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
@@ -107,7 +107,7 @@ function getHostname() {
 }
 
 function getUptime() {
-  $command = "uptime -p | sed 's/up //g' | awk '{\$1=\$1};1'";
+  $command = "uptime -p | sed 's/up //g' "; //| awk '{\$1=\$1};1'";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
