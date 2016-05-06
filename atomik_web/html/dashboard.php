@@ -4,7 +4,114 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
-</head>
+<?php
+
+function getInterfaceMAC($interface) {
+  exec('netstat -ie', $result);
+  if(is_array($result)) {
+    foreach($result as $key => $line) {
+      if($key > 0) {
+        $tmp = str_replace(" ", "", substr($line, 0, 10));
+        if($tmp == $interface) {
+          $macpos = strpos($line, "HWaddr");
+          if($macpos !== false) {
+            $iface = strtolower(substr($line, $macpos+7, 17));
+          }
+        }
+      }
+    }
+    return $iface;
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceGateway($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceAddress($interface) {
+  $command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceMask($interface) {
+  $command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f4 | awk {'print $1'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+
+function getInterfaceDNS($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceType($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+function getInterfaceStatus($interface) {
+  $command = "netstat -nr | grep ".$interface." | grep UG | awk {'print $2'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "notfound";
+  }
+}
+
+
+function getCPU() {
+$command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 "; //| awk '{\$1=\$1};1'";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Found";
+  }
+}
+
+
+function getUptime() {
+  $command = "uptime -p | sed 's/up //g' "; //| awk '{\$1=\$1};1'";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Available";
+  }
+}
+
+
+
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -51,13 +158,13 @@
     <thead>
       <tr>
         <td>Hostname: </td>
-        <td><?php echo getHostname(); ?></td>
+        <td></td>
       </tr>
     </thead>
     <tbody>
     <tr>
         <td>CPU: </td>
-        <td><?php echo getCPU(); ?></td>
+        <td></td>
     </tr>
       <tr>
         <td>CPU Utilization: </td>
