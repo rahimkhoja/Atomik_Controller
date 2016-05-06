@@ -120,7 +120,7 @@ function getRam() {
 }
 
 function getCpuUsage() {
-  $command = "mpstat | grep -A 5 \"%idle\" | tail -n 1 | awk -F \" \" '{print 100 -  $13 \"%\"}'";
+  $command = "mpstat | grep -A 5 \"%idle\" | tail -n 1 | awk -F \" \" '{print 100 - $12 \"%\"}'";
   exec($command, $result);
   if(is_array($result)) {
     return $result[0];
