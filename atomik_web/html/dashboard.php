@@ -400,12 +400,9 @@ function getTimeZone() {
   <strong>Success!</strong> Indicates a successful or positive action.
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><?php } ?>
-<hr>
-  <div class="container text-center">
+</div><?php } ?><hr>  <div class="container text-center">
 <p><a href="dashboard.php" class="btn-primary btn">Refresh Details</a></p>
-</div>
-<hr>
+</div><hr>
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
