@@ -28,7 +28,7 @@ if (is_link('/etc/localtime')) {
         $timezone = $data['ZONE'];
     }
 }
- 
+ echo $timezone;
 date_default_timezone_set($timezone);
 
 function getInterfaceMAC($interface) {
