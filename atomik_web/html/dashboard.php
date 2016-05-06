@@ -109,7 +109,15 @@ function getUptime() {
   }
 }
 
-
+function getRam() {
+  $command = "free -m |  grep 'Mem:' | awk {'print $2 \"MB /\", $4 \"MB\"'}";
+  exec($command, $result);
+  if(is_array($result)) {
+    return $result[0];
+  } else {
+    return "Not Available";
+  }
+}
 
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -164,7 +172,7 @@ function getUptime() {
     <tbody>
     <tr>
         <td>CPU: </td>
-        <td></td>
+        <td><?php echo gethostname(); ?></td>
     </tr>
       <tr>
         <td>CPU Utilization: </td>
@@ -172,7 +180,7 @@ function getUptime() {
       </tr>
       <tr>
         <td>Total Ram / Free Ram: </td>
-        <td>512MB / 148MB</td>
+        <td><?php echo getRam(); ?></td>
       </tr>
       <tr>
         <td>Time Zone: </td>
