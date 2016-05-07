@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Settings</title>
 <link rel="stylesheet" href="css/atomik.css">
-</head>
+<?php
+$page_error = 0;
+$page_success = 0;
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -36,12 +39,11 @@
     <div class="row">
         <div class="PageNavTitle" ><h3>Settings</h3></div>
     </div>
-   </div><hr><div class="alert alert-success">
+   </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
-<hr />
+</div><?php } ?><hr>
 
 <div class="container">
     <div class="row">
@@ -293,13 +295,11 @@
   <br><br><hr>
     </div>
 </div>
-</div>
-  <hr><div class="alert alert-success">
+</div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
-<hr>
+</div><?php } ?><hr>
   <div class="container center">
   <div class="col-xs-2">
   </div>
@@ -309,7 +309,7 @@
   </div>
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-2"><p><a href="" class="btn-danger btn">Reboot System</a></p>
+  <div class="col-xs-2"><p><a href="reboot.php" class="btn-danger btn">Reboot System</a></p>
   </div>
   <div class="col-xs-2">
   </div>
