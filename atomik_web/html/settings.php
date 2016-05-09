@@ -10,13 +10,16 @@ $page_success = 0;
 
 $sql = "SELECT * FROM atomik_settings LIMIT 1";  // Select ONLY one, instead of all
 
-$row=$conn->query($sql);
+$rs=$conn->query($sql);
  
-if($row === false) {
+if($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
 } else {
-  $rows_returned = $row->num_rows;
+  $rows_returned = $rs->num_rows;
 }
+
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
 
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
