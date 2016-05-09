@@ -9,12 +9,14 @@ $page_error = 0;
 $page_success = 0;
 
 $sql = "SELECT * FROM atomik_settings LIMIT 1";  // Select ONLY one, instead of all
-$result = $db->query($sql);
-$row = $result->fetch_assoc();
-echo 'Game ID: '.$row['eth0_ip']; 
 
-
-
+$row=$conn->query($sql);
+ 
+if($row === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $rows_returned = $row->num_rows;
+}
 
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
