@@ -11,7 +11,7 @@ $page_success = 0;
 $sql = "SELECT * FROM atomik_settings LIMIT 1";  // Select ONLY one, instead of all
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
-echo 'Game ID: '.$row['id'];
+echo 'Game ID: '.$row['eth0_ip'];
 
 
 
