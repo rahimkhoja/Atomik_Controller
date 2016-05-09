@@ -77,11 +77,11 @@ $row = $rs->fetch_assoc();
       </tr>
       <tr>
         <td>Mi-Light Emulator Service: </td>
-        <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($row['atomik_emulator'] > 0 ) { ?>selected  <?php }; ?>></label></td>
+        <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($row['atomik_emulator'] > 0 ) { ?>checked  <?php }; ?>></label></td>
       </tr>
       <tr>
         <td>Mi-Light Transceiver Service: </td>
-        <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($row['atomik_transceiver'] > 0 ) { ?>selected  <?php }; ?>></label></td>
+        <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($row['atomik_transceiver'] > 0 ) { ?>checked  <?php }; ?>></label></td>
       </tr>
     </tbody>
   </table><hr>
@@ -176,11 +176,11 @@ $row = $rs->fetch_assoc();
       </tr>
       <tr>
         <td>NTP Time Server 1: </td>
-        <td><input type="text" class="form-control" id="timeservere1" value="192.5.41.40"></td>
+        <td><input type="text" class="form-control" id="timeservere1" value="<?php echo $row['ntp_server_1']; ?>"></td>
       </tr>
       <tr>
         <td>NTP Time Server 2: </td>
-        <td><input type="text" class="form-control" id="timeservere2" value="192.5.41.41"></td>
+        <td><input type="text" class="form-control" id="timeservere2" value="<?php echo $row['ntp_server_2']; ?>"></td>
       </tr>
     </tbody>
   </table>
@@ -241,8 +241,8 @@ $row = $rs->fetch_assoc();
       <tr >
         <td>Wifi0 Status: </td>
         <td><select id="wifi0status" class="form-control">
-  <option value="1">Enable</option>
-  <option value="0">Disable</option>
+  <option value="0" <?php if ($row['wlan0_status'] == 0 ) { ?>selected <?php }; ?>>Disable</option>
+  <option value="1" <?php if ($row['wlan0_status'] == 1 ) { ?>selected <?php }; ?>>Enable</option>
 </select></td>
       </tr>
     </thead>
@@ -279,25 +279,25 @@ $row = $rs->fetch_assoc();
       <tr>
         <td>Wifi0 Type: </td>
         <td><select  class="form-control">
-  <option value="Static">Static</option>
-  <option value="DHCP">DHCP</option>
+  <option value="0" <?php if ($row['eth0_type'] == 0 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="1" <?php if ($row['eth0_type'] == 1 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td><input type="text" class="form-control" id="wifi0ip" value="192.168.2.1"></td>
+        <td><input type="text" class="form-control" id="wifi0ip" value="<?php echo $row['wlan0_ip']; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="192.168.1.100"></td>
+        <td><input type="text" class="form-control" id="eth0ip" value="<?php echo $row['wlan0_mask']; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Gateway: </td>
-        <td><input type="text" class="form-control" id="wifi0gate" value="192.168.1.1"></td>
+        <td><input type="text" class="form-control" id="wifi0gate" value="<?php echo $row['wlan0_gateway']; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 DNS: </td>
-        <td><input type="text" class="form-control" id="Wifi0dns" value="8.8.6.6"></td>
+        <td><input type="text" class="form-control" id="Wifi0dns" value="<?php echo $row['wlan0_dns']; ?>"></td>
       </tr>
       </tbody>
   </table><hr>
