@@ -301,7 +301,7 @@ echo 'Game ID: '.$row['id'];
   <div class="col-xs-6 text-center"></div>
   <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save Wireless Settings</a></p></div>
   </div>
-  <br><br><hr>
+  <br><br><hr> 
     </div>
 </div>
 </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
