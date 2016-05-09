@@ -1,4 +1,4 @@
-<!doctype html>
+<?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -7,6 +7,15 @@
 <?php
 $page_error = 0;
 $page_success = 0;
+
+$sql = "SELECT * FROM atomik_settings LIMIT 1";  // Select ONLY one, instead of all
+$result = $db->query($sql);
+$row = $result->fetch_assoc();
+echo 'Game ID: '.$row['id'];
+
+
+
+
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -53,21 +62,21 @@ $page_success = 0;
     <thead>
       <tr>
         <td>Hostname: </td>
-        <td><input type="text" class="form-control" id="usr" value="AtomikController"></td>
+        <td><input type="text" class="form-control" id="usr" value="<?php echo $row['hostname']; ?>"></td>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>Atomik API Service: </td>
-        <td><input type="checkbox" id="atomikservice" class="form-control" ></label></td>
+        <td><input type="checkbox" class="form-control" id="atomikservice" <?php if ($row['atomik_api'] > 0 ) { ?>checked <?php }; ?>></label></td>
       </tr>
       <tr>
         <td>Mi-Light Emulator Service: </td>
-        <td><input type="checkbox" id="emulatorservice" class="form-control" ></label></td>
+        <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($row['atomik_emulator'] > 0 ) { ?>selected  <?php }; ?>></label></td>
       </tr>
       <tr>
         <td>Mi-Light Transceiver Service: </td>
-        <td><input type="checkbox" id="transceiverservice" class="form-control" ></label></td>
+        <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($row['atomik_transceiver'] > 0 ) { ?>selected  <?php }; ?>></label></td>
       </tr>
     </tbody>
   </table><hr>
@@ -81,17 +90,17 @@ $page_success = 0;
     <thead>
       <tr>
         <td>Current Password: </td>
-        <td><input type="password" class="form-control" id="currentpassword" value="password"></td>
+        <td><input type="password" class="form-control" id="currentpassword" value=""></td>
       </tr>
       </thead>
     <tbody>
     <tr>
         <td>New Password: </td>
-        <td><input type="password" class="form-control" id="newpassword" value="password"></td>
+        <td><input type="password" class="form-control" id="newpassword" value=""></td>
       </tr>
       <tr>
         <td>Repeat Password: </td>
-        <td><input type="password" class="form-control" id="newpassword2" value="password"></td>
+        <td><input type="password" class="form-control" id="newpassword2" value=""></td>
       </tr>
     </tbody>
   </table><hr>
@@ -184,8 +193,8 @@ $page_success = 0;
       <tr>
         <td>Eth0 Status: </td>
         <td><select id="eth0status" class="form-control">
-  <option value="1">Enable</option>
-  <option value="0">Disable</option>
+  <option value="1" <?php if ($row['eth0_status'] == 1 ) { ?>selected <?php }; ?>>Enable</option>
+  <option value="0" <?php if ($row['eth0_status'] == 0 ) { ?>selected <?php }; ?>>Disable</option>
 </select></td>
       </tr>
     </thead>
@@ -193,25 +202,25 @@ $page_success = 0;
     <tr>
         <td>Eth0 Type: </td>
         <td><select  class="form-control">
-  <option value="Static">Static</option>
-  <option value="DHCP">DHCP</option>
+  <option value="0" <?php if ($row['eth0_type'] == 0 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="1" <?php if ($row['eth0_type'] == 1 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="192.168.1.100"></td>
+        <td><input type="text" class="form-control" id="eth0ip" value="<?php echo $row['eth0_ip']; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0mask" value="255.255.255.0"></td>
+        <td><input type="text" class="form-control" id="eth0mask" value="<?php echo $row['eth0_mask']; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
-        <td><input type="text" class="form-control" id="eth0gate" value="192.168.1.1"></td>
+        <td><input type="text" class="form-control" id="eth0gate" value="<?php echo $row['eth0_gateway']; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 DNS: </td>
-        <td><input type="text" class="form-control" id="eth0dns" value="8.8.8.8"></td>
+        <td><input type="text" class="form-control" id="eth0dns" value="<?php echo $row['eth0_dns']; ?>"></td>
       </tr>
     </tbody>
   </table>
