@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Settings</title>
 <link rel="stylesheet" href="css/atomik.css">
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/jquery.redirect.min.js"></script>
 <?php
 
 $page_error = 0;
