@@ -28,25 +28,25 @@ $row = $rs->fetch_assoc();
 
 // System POST Data
 // System POST Data
-if ( $_POST["hostname"] != $row['hostname'] && $_POST["hostname"] != "" && $_POST["hostname"] <> "") {
+if ( $_POST["hostname"] != $row['hostname'] && isset($_POST["hostname"])) {
 	$_hostname = $_POST["hostname"];
 } else {
 	$_hostname = $row['hostname'];
 }
 
-if ( $_POST["atomik_api"] != $row['atomik_api'] && $_POST["atomik_api"] != "" && $_POST["atomik_api"] <> "") {
+if ( $_POST["atomik_api"] != $row['atomik_api'] && isset($_POST["atomik_api"])) {
 	$_atomik_api = $_POST["atomik_api"];
 } else {
 	$_atomik_api = $row['atomik_api'];
 }	
 
-if ( $_POST["atomik_emulator"] != $row['atomik_emulator'] && $_POST["atomik_emulator"] != "" && $_POST["atomik_emulator"] <> "") {
+if ( $_POST["atomik_emulator"] != $row['atomik_emulator'] && isset($_POST["atomik_emulator"])) {
 	$_atomik_emulator = $_POST["atomik_emulator"];
 } else {
 	$_atomik_emulator = $row['atomik_emulator'];
 }
 
-if ( $_POST["atomik_transceiver"] != $row['atomik_transceiver'] && $_POST["atomik_transceiver"] != "" && $_POST["atomik_transceiver"] <> "") {
+if ( $_POST["atomik_transceiver"] != $row['atomik_transceiver'] && isset($_POST["atomik_transceiver"]) ) {
 	$_atomik_transceiver = $_POST["atomik_transceiver"];
 } else {
 	$_atomik_transceiver = $row['atomik_transceiver'];
@@ -54,7 +54,7 @@ if ( $_POST["atomik_transceiver"] != $row['atomik_transceiver'] && $_POST["atomi
 
 // Password POST Data
 
-if ( $_POST["password"] != $row['password'] && $_POST["password"] != "" && $_POST["password"] <> "") {
+if ( $_POST["password"] != $row['password'] && isset($_POST["password"])) {
 	$_current_password = $_POST["password"];
 } else {
 	$_current_password = $row['password'];
@@ -62,31 +62,31 @@ if ( $_POST["password"] != $row['password'] && $_POST["password"] != "" && $_POS
 
 // Time POST Data
 
-if ( $_POST["timezone"] != $row['timezone'] && $_POST["timezone"] != "" && $_POST["timezone"] <> "") {
+if ( $_POST["timezone"] != $row['timezone'] && isset($_POST["timezone"])) {
 	$_timezone = $_POST["timezone"];
 } else {
 	$_timezone = $row['timezone'];
 }
 
-if ( $_POST["daylight_savings"] != $row['daylight_savings'] && $_POST["daylight_savings"] != "" && $_POST["daylight_savings"] <> "") {
+if ( $_POST["daylight_savings"] != $row['daylight_savings'] && isset($_POST["daylight_savings"])) {
 	$_daylight_savings = $_POST["daylight_savings"];
 } else {
 	$_daylight_savings = $row['daylight_savings'];
 }	
 
-if ( $_POST["time_update_interval"] != $row['time_update_interval'] && $_POST["time_update_interval"] != "" && $_POST["time_update_interval"] <> "") {
+if ( $_POST["time_update_interval"] != $row['time_update_interval'] && isset($_POST["time_update_interval"]) ) {
 	$_time_update_interval = $_POST["time_update_interval"];
 } else {
 	$_time_update_interval = $row['time_update_interval'];
 }
 
-if ( $_POST["ntp_server_1"] != $row['ntp_server_1'] && $_POST["ntp_server_1"] != "" && $_POST["ntp_server_1"] <> "") {
+if ( $_POST["ntp_server_1"] != $row['ntp_server_1'] && isset($_POST["ntp_server_1"]) ) {
 	$_ntp_server_1 = $_POST["ntp_server_1"];
 } else {
 	$_ntp_server_1 = $row['ntp_server_1'];
 }
 
-if ( $_POST["ntp_server_2"] != $row['ntp_server_2'] && $_POST["ntp_server_2"] != "" && $_POST["ntp_server_2"] <> "") {
+if ( $_POST["ntp_server_2"] != $row['ntp_server_2'] && isset($_POST["ntp_server_2"]) ) {
 	$_ntp_server_2 = $_POST["ntp_server_2"];
 } else {
 	$_ntp_server_2 = $row['ntp_server_2'];
@@ -94,37 +94,37 @@ if ( $_POST["ntp_server_2"] != $row['ntp_server_2'] && $_POST["ntp_server_2"] !=
 
 // Eth0 POST Data
 
-if ( $_POST["eth0_status"] != $row['eth0_status'] && $_POST["eth0_status"] != "" && $_POST["eth0_status"] <> "") {
+if ( $_POST["eth0_status"] != $row['eth0_status'] && isset($_POST["eth0_status"]) ) {
 	$_eth0_status = $_POST["eth0_status"];
 } else {
 	$_eth0_status = $row['eth0_status'];
 }
 
-if ( $_POST["eth0_type"] != $row['eth0_type'] && $_POST["eth0_type"] != "" && $_POST["eth0_type"] <> "") {
+if ( $_POST["eth0_type"] != $row['eth0_type'] && isset($_POST["eth0_type"]) ) {
 	$_eth0_type = $_POST["eth0_type"];
 } else {
 	$_eth0_type = $row['eth0_type'];
 }	
 
-if ( $_POST["eth0_ip"] != $row['eth0_ip'] && $_POST["eth0_ip"] != "" && $_POST["eth0_ip"] <> "") {
+if ( $_POST["eth0_ip"] != $row['eth0_ip'] && isset($_POST["eth0_ip"]) ) {
 	$_eth0_ip = $_POST["eth0_ip"];
 } else {
 	$_eth0_ip = $row['eth0_ip'];
 }
 
-if ( $_POST["eth0_mask"] != $row['eth0_mask'] && $_POST["eth0_mask"] != "" && $_POST["eth0_mask"] <> "") {
+if ( $_POST["eth0_mask"] != $row['eth0_mask'] && isset($_POST["eth0_mask"]) ) {
 	$_eth0_mask = $_POST["eth0_mask"];
 } else {
 	$_eth0_mask = $row['eth0_mask'];
 }
 
-if ( $_POST["eth0_gateway"] != $row['eth0_gateway'] && $_POST["eth0_gateway"] != "" && $_POST["eth0_gateway"] <> "") {
+if ( $_POST["eth0_gateway"] != $row['eth0_gateway'] && isset($_POST["eth0_gateway"]) ) {
 	$_eth0_gateway = $_POST["eth0_gateway"];
 } else {
 	$_eth0_gateway = $row['eth0_gateway'];
 }
 
-if ( $_POST["eth0_dns"] != $row['eth0_dns'] && $_POST["eth0_dns"] != "" && $_POST["eth0_dns"] <> "") {
+if ( $_POST["eth0_dns"] != $row['eth0_dns'] && isset($_POST["eth0_dns"]) ) {
 	$_eth0_dns = $_POST["eth0_dns"];
 } else {
 	$_eth0_dns = $row['eth0_dns'];
