@@ -156,6 +156,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 </nav>
 <body><script type="text/javascript">
 	$("#reboot").on('click', function() {
+		alert ("inside onclick");
    document.forms["settingsfrm"].command.value = "reboot";
    document.settingsfrm.submit();
 });
