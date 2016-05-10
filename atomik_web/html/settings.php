@@ -154,13 +154,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
   </div>
   <!-- /.container-fluid --> 
 </nav>
-<body><script type="text/javascript">
-	$("#reboot").on('click', function() {
-		alert ("inside onclick");
-   document.forms["settingsfrm"].command.value = "reboot";
-   document.settingsfrm.submit();
-});
-</script>
+<body>
 <div class="wrapper">
 <div class="PageTitle">
     <div class="row">
@@ -478,6 +472,12 @@ if ($command <> "" && $command !="" && $command == "reboot") {
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
+    </div><script type="text/javascript">
+	$("#reboot").on('click', function() {
+		alert ("inside onclick");
+   document.forms["settingsfrm"].command.value = "reboot";
+   document.settingsfrm.submit();
+});
+</script>
 </body>
 </html>
