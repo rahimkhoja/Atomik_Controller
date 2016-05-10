@@ -143,35 +143,42 @@ $db_wlan0_dns = $row['wlan0_dns'];
 </div><?php } ?><hr>
 
 <div class="container">
-    <div class="row">
+    <form action="settings.php" method="post"><input type="hidden" name="button" value="" ><div class="row">
         <div class="col-xs-6">
-           <h4><p>System Settings:</p></h4>   
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <td>Hostname: </td>
-        <td><input type="text" class="form-control" id="usr" value="<?php if ( $post_hostname != "" && $post_hostname <> "" && $post_hostname != $db_hostname ) {
+          <h4><p>System Settings:</p></h4>
+          <table class="table table-striped">
+           <thead>
+             <tr>
+               <td><table class="table table-striped">
+                 <thead>
+                   <tr>
+                     <td>Hostname: </td>
+                     <td><input type="text" class="form-control" id="usr" value="<?php if ( $post_hostname != "" && $post_hostname <> "" && $post_hostname != $db_hostname ) {
 	echo $post_hostname;
 } else {
 	echo $db_hostname;
 }; ?>"></td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Atomik API Service: </td>
-        <td><input type="checkbox" class="form-control" id="atomikservice" <?php if ($row['atomik_api'] > 0 ) { ?>checked <?php }; ?>></label></td>
-      </tr>
-      <tr>
-        <td>Mi-Light Emulator Service: </td>
-        <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($row['atomik_emulator'] > 0 ) { ?>checked  <?php }; ?>></label></td>
-      </tr>
-      <tr>
-        <td>Mi-Light Transceiver Service: </td>
-        <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($row['atomik_transceiver'] > 0 ) { ?>checked  <?php }; ?>></label></td>
-      </tr>
-    </tbody>
-  </table><hr>
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr>
+                     <td>Atomik API Service: </td>
+                     <td><input type="checkbox" class="form-control" id="atomikservice" <?php if ($row['atomik_api'] > 0 ) { ?>checked <?php }; ?>></td>
+                   </tr>
+                   <tr>
+                     <td>Mi-Light Emulator Service: </td>
+                     <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($row['atomik_emulator'] > 0 ) { ?>checked  <?php }; ?>></td>
+                   </tr>
+                   <tr>
+                     <td>Mi-Light Transceiver Service: </td>
+                     <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($row['atomik_transceiver'] > 0 ) { ?>checked  <?php }; ?>></td>
+                   </tr>
+                 </tbody>
+               </table></td>
+             </tr>
+           </thead>
+          </table>
+          <hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
   <div class="col-xs-6 text-center"><p><a href="" class="btn-success btn">Save System Settings</a></p></div>
@@ -411,7 +418,7 @@ $db_wlan0_dns = $row['wlan0_dns'];
   </div>
   <br><br><hr> 
     </div>
-</div>
+</div></form>
 </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
