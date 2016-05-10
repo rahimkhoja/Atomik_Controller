@@ -128,9 +128,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 
 
 
-?></head><script type="text/javascript">
-    $('a#reboot').click(function(){ document.forms["settingsfrm"].command.value = "reboot"; document.settingsfrm.submit(); })
-</script>
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -156,7 +154,12 @@ if ($command <> "" && $command !="" && $command == "reboot") {
   </div>
   <!-- /.container-fluid --> 
 </nav>
-<body>
+<body><script type="text/javascript">
+	$("#reboot").on('click', function() {
+   document.forms["settingsfrm"].command.value = "reboot";
+   document.settingsfrm.submit();
+});
+</script>
 <div class="wrapper">
 <div class="PageTitle">
     <div class="row">
@@ -459,7 +462,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
   </div>
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-2"><p><a id="reboot" class="btn-danger btn">Reboot System</a></p>
+  <div class="col-xs-2"><p><a href="#" id="reboot" class="btn-danger btn">Reboot System</a></p>
   </div>
   <div class="col-xs-2">
   </div>
