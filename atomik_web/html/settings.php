@@ -1,6 +1,7 @@
 <?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
+
 <meta charset="utf-8">
 <title>Atomik Controller - Settings</title>
 <link rel="stylesheet" href="css/atomik.css">
@@ -102,11 +103,34 @@ $db_wlan0_dns = $row['wlan0_dns'];
 
 
 
+// Processing Commands
+$command = $_POST["command"];
+// Reboot
+if ($command <> "" && $command !="" && $command == "reboot") {
+	$Handle = fopen("/tmp/atomikreboot", 'w');
+	fwrite($Handle, "doreboot");
+	fclose($Handle);
+	header("location:reboot.php");
+}
+
+
+// Save System Settings [Keep Post Data, Verify Form, DB, Start Service, Stop Service, Edit File, Reboot] (save_system)
+
+// Save Password [Keep Post Data, Verify Form, DB] (save_password)
+
+// Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
+
+// Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
+
+// Save Wifi Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
+
+// RefreshSSID []
 
 
 
-
-?></head>
+?></head><script type="text/javascript">
+    $('a#reboot').click(function(){ document.forms["settingsfrm"].command.value = "reboot"; document.settingsfrm.submit(); })
+</script>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -143,9 +167,9 @@ $db_wlan0_dns = $row['wlan0_dns'];
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div><?php } ?><hr>
-
+<form id="settingsfrm" name="settingsfrm" action="settings.php" method="post"><input type="hidden" name="command" value="" >
 <div class="container">
-    <form action="settings.php" method="post"><input type="hidden" name="button" value="" ><div class="row">
+    <div class="row">
         <div class="col-xs-6">
           <h4><p>System Settings:</p></h4>
           <table class="table table-striped">
@@ -420,8 +444,8 @@ $db_wlan0_dns = $row['wlan0_dns'];
   </div>
   <br><br><hr> 
     </div>
-</div></form>
-</div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+</div>
+</div></form><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
@@ -435,7 +459,7 @@ $db_wlan0_dns = $row['wlan0_dns'];
   </div>
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-2"><p><a href="reboot.php" class="btn-danger btn">Reboot System</a></p>
+  <div class="col-xs-2"><p><a id="reboot" href="settings.php" class="btn-danger btn">Reboot System</a></p>
   </div>
   <div class="col-xs-2">
   </div>
