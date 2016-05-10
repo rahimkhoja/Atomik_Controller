@@ -28,6 +28,7 @@ $row = $rs->fetch_assoc();
 
 // System POST Data
 // System POST Data
+echo $_POST["hostname"] ;
 if ( $_POST["hostname"] != $row['hostname'] && isset($_POST["hostname"])) {
 	$_hostname = $_POST["hostname"];
 } else {
