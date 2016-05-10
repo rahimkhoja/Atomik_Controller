@@ -459,7 +459,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
   </div>
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-2"><p><a id="reboot" href="settings.php" class="btn-danger btn">Reboot System</a></p>
+  <div class="col-xs-2"><p><a id="reboot" class="btn-danger btn">Reboot System</a></p>
   </div>
   <div class="col-xs-2">
   </div>
