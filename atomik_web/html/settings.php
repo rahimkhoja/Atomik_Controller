@@ -269,11 +269,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
                  <thead>
                    <tr>
                      <td>Hostname: </td>
-                     <td><input type="text" class="form-control" id="usr" value="<?php if ( $post_hostname != "" && $post_hostname <> "" && $post_hostname != $db_hostname ) {
-	echo $post_hostname;
-} else {
-	echo $db_hostname;
-}; ?>"></td>
+                     <td><input type="text" class="form-control" id="usr" value="<?php echo $_hostname; ?>"></td>
                    </tr>
                  </thead>
                  <tbody>
@@ -386,11 +382,11 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>NTP Time Server 1: </td>
-        <td><input type="text" class="form-control" id="ntp_server_1" value="<?php echo $_ntp_server1; ?>"></td>
+        <td><input type="text" class="form-control" id="ntp_server_1" value="<?php echo $_ntp_server_1; ?>"></td>
       </tr>
       <tr>
         <td>NTP Time Server 2: </td>
-        <td><input type="text" class="form-control" id="ntp_server_2" value="<?php echo $_ntp_server2; ?>"></td>
+        <td><input type="text" class="form-control" id="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
       </tr>
     </tbody>
   </table>
