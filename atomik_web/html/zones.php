@@ -19,8 +19,8 @@
         <li><a href="settings.php">Settings</a> </li>
         <li><a href="devices.php">Devices</a> </li>
         <li><a href="remotes.php">Remotes</a> </li>
-        <li><a href="zones.php">Zones<span class="sr-only">(current)</span></a> </li>
-        <li class="active"><a href="tasks.php">Scheduled Tasks</a> </li>
+        <li class="active"><a href="zones.php">Zones<span class="sr-only">(current)</span></a> </li>
+        <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="logout.php">Logout</a> </li>

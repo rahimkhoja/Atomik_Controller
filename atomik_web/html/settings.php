@@ -5,6 +5,7 @@
 <title>Atomik Controller - Settings</title>
 <link rel="stylesheet" href="css/atomik.css">
 <?php
+
 $page_error = 0;
 $page_success = 0;
 
@@ -15,11 +16,93 @@ $rs=$conn->query($sql);
 if($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
 } else {
-  $rows_returned = $rs->num_rows;
+  $db_records = $rs->num_rows;
 }
 
 $rs->data_seek(0);
 $row = $rs->fetch_assoc();
+
+
+
+
+
+// System POST Data
+$post_hostname = $_POST["hostname"];
+$post_atomik_api = $_POST["atomik_api"];
+$post_atomik_emulator = $_POST["atomik_emulator"];
+$post_atomik_transceiver = $_POST["atomik_transceiver"];
+
+// Password POST Data
+$post_current_password = $_POST["password"];
+
+// Time POST Data
+$post_timezone = $_POST["timezone"];
+$post_daylight_savings = $_POST["daylight_savings"];
+$post_update_time_interval = $_POST["time_update_interval"];
+$post_ntp_server1 = $_POST["ntp_server_1"];
+$post_ntp_server2 = $_POST["ntp_server_2"];
+
+// Eth0 POST Data
+$post_eth0_status = $_POST["eth0_status"];
+$post_eth0_type = $_POST["eth0_type"];
+$post_eth0_ip = $_POST["eth0_ip"];
+$post_eth0_mask = $_POST["eth0_mask"];
+$post_eth0_gateway = $_POST["eth0_gateway"];
+$post_eth0_dns = $_POST["eth0_dns"];
+
+// Wifi POST Data
+$post_wlan0_status = $_POST["wlan0_status"];
+$post_wlan0_ssid = $_POST["wlan0_ssid"];
+$post_wlan0_method = $_POST["wlan0_method"];
+$post_wlan0_algorithm = $_POST["wlan0_algorithm"];
+$post_wlan0_password = $_POST["wlan0_password"];
+$post_wlan0_type = $_POST["wlan0_type"];
+$post_wlan0_ip = $_POST["wlan0_ip"];
+$post_wlan0_mask = $_POST["wlan0_mask"];
+$post_wlan0_gateway = $_POST["wlan0_gateway"];
+$post_wlan0_dns = $_POST["wlan0_dns"];
+
+// System DB Data
+$db_hostname = $row['hostname'];
+$db_atomik_api = $row['atomik_api'];
+$db_atomik_emulator = $row['atomik_emulator'];
+$db_atomik_transceiver = $row['atomik_transceiver'];
+
+// Password DB Data
+$db_current_password = $row['password'];
+
+// Time DB Data
+$db_timezone = $row['timezone'];
+$db_daylight_savings = $row['daylight_savings'];
+$db_update_time_interval = $row['time_update_interval'];
+$db_ntp_server1 = $row['ntp_server_1'];
+$db_ntp_server2 = $row['ntp_server_2'];
+
+// Eth0 DB Data
+$db_eth0_status = $row['eth0_status'];
+$db_eth0_type = $row['eth0_type'];
+$db_eth0_ip = $row['eth0_ip'];
+$db_eth0_mask = $row['eth0_mask'];
+$db_eth0_gateway = $row['eth0_gateway'];
+$db_eth0_dns = $row['eth0_dns'];
+
+// Wifi DB Data
+$db_wlan0_status = $row['wlan0_status'];
+$db_wlan0_ssid = $row['wlan0_ssid'];
+$db_wlan0_method = $row['wlan0_method'];
+$db_wlan0_algorithm = $row['wlan0_algorithm'];
+$db_wlan0_password = $row['wlan0_password'];
+$db_wlan0_type = $row['wlan0_type'];
+$db_wlan0_ip = $row['wlan0_ip'];
+$db_wlan0_mask = $row['wlan0_mask'];
+$db_wlan0_gateway = $row['wlan0_gateway'];
+$db_wlan0_dns = $row['wlan0_dns'];
+
+
+
+
+
+
 
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -67,7 +150,11 @@ $row = $rs->fetch_assoc();
     <thead>
       <tr>
         <td>Hostname: </td>
-        <td><input type="text" class="form-control" id="usr" value="<?php echo $row['hostname']; ?>"></td>
+        <td><input type="text" class="form-control" id="usr" value="<?php if ( $post_hostname != "" && $post_hostname <> "" && $post_hostname != $db_hostname ) {
+	echo $post_hostname;
+} else {
+	echo $db_hostname;
+}; ?>"></td>
       </tr>
     </thead>
     <tbody>
@@ -176,11 +263,19 @@ $row = $rs->fetch_assoc();
       </tr>
       <tr>
         <td>NTP Time Server 1: </td>
-        <td><input type="text" class="form-control" id="timeservere1" value="<?php echo $row['ntp_server_1']; ?>"></td>
+        <td><input type="text" class="form-control" id="timeservere1" value="<?php if ( $post_ntp_server1 != "" && $post_ntp_server1 <> "" && $post_ntp_server1 != $db_ntp_server1 ) {
+	echo $post_ntp_server1;
+} else {
+	echo $db_ntp_server1;
+}; ?>"></td>
       </tr>
       <tr>
         <td>NTP Time Server 2: </td>
-        <td><input type="text" class="form-control" id="timeservere2" value="<?php echo $row['ntp_server_2']; ?>"></td>
+        <td><input type="text" class="form-control" id="timeservere2" value="<?php if ( $post_ntp_server2 != "" && $post_ntp_server2 <> "" && $post_ntp_server2 != $db_ntp_server2 ) {
+	echo $post_ntp_server2;
+} else {
+	echo $db_ntp_server2;
+}; ?>"></td>
       </tr>
     </tbody>
   </table>
@@ -213,7 +308,11 @@ $row = $rs->fetch_assoc();
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="<?php echo $row['eth0_ip']; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0ip" value="<?php if ( $post_eth0_ip != "" && $post_eth0_ip <> "" && $post_eth0_ip2 != $db_eth0_ip ) {
+	echo $post_eth0_ip;
+} else {
+	echo $db_eth0_ip;
+}; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
