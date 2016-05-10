@@ -258,7 +258,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div><?php } ?><hr>
-<form id="settingsfrm" name="settingsfrm" action="settings.php" method="post"><input type="hidden" name="command" value="" >
+<form id="settingsfrm" name="settingsfrm"  enctype="multipart/form-data" action="settings.php" method="post"><input type="hidden" name="command" value="" >
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
