@@ -26,81 +26,173 @@ $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 
 
-
-
-
 // System POST Data
-$post_hostname = $_POST["hostname"];
-$post_atomik_api = $_POST["atomik_api"];
-$post_atomik_emulator = $_POST["atomik_emulator"];
-$post_atomik_transceiver = $_POST["atomik_transceiver"];
+// System POST Data
+if ( $_POST["hostname"] != $row['hostname'] && $_POST["hostname"] != "" && $_POST["hostname"] <> "") {
+	$_hostname = $_POST["hostname"];
+} else {
+	$_hostname = $row['hostname'];
+}
+
+if ( $_POST["atomik_api"] != $row['atomik_api'] && $_POST["atomik_api"] != "" && $_POST["atomik_api"] <> "") {
+	$_atomik_api = $_POST["atomik_api"];
+} else {
+	$_atomik_api = $row['atomik_api'];
+}	
+
+if ( $_POST["atomik_emulator"] != $row['atomik_emulator'] && $_POST["atomik_emulator"] != "" && $_POST["atomik_emulator"] <> "") {
+	$_atomik_emulator = $_POST["atomik_emulator"];
+} else {
+	$_atomik_emulator = $row['atomik_emulator'];
+}
+
+if ( $_POST["atomik_transceiver"] != $row['atomik_transceiver'] && $_POST["atomik_transceiver"] != "" && $_POST["atomik_transceiver"] <> "") {
+	$_atomik_transceiver = $_POST["atomik_transceiver"];
+} else {
+	$_atomik_transceiver = $row['atomik_transceiver'];
+}
 
 // Password POST Data
-$post_current_password = $_POST["password"];
+
+if ( $_POST["password"] != $row['password'] && $_POST["password"] != "" && $_POST["password"] <> "") {
+	$_current_password = $_POST["password"];
+} else {
+	$_current_password = $row['password'];
+}
 
 // Time POST Data
-$post_timezone = $_POST["timezone"];
-$post_daylight_savings = $_POST["daylight_savings"];
-$post_update_time_interval = $_POST["time_update_interval"];
-$post_ntp_server1 = $_POST["ntp_server_1"];
-$post_ntp_server2 = $_POST["ntp_server_2"];
+
+if ( $_POST["timezone"] != $row['timezone'] && $_POST["timezone"] != "" && $_POST["timezone"] <> "") {
+	$_timezone = $_POST["timezone"];
+} else {
+	$_timezone = $row['timezone'];
+}
+
+if ( $_POST["daylight_savings"] != $row['daylight_savings'] && $_POST["daylight_savings"] != "" && $_POST["daylight_savings"] <> "") {
+	$_daylight_savings = $_POST["daylight_savings"];
+} else {
+	$_daylight_savings = $row['daylight_savings'];
+}	
+
+if ( $_POST["time_update_interval"] != $row['time_update_interval'] && $_POST["time_update_interval"] != "" && $_POST["time_update_interval"] <> "") {
+	$_time_update_interval = $_POST["time_update_interval"];
+} else {
+	$_time_update_interval = $row['time_update_interval'];
+}
+
+if ( $_POST["ntp_server_1"] != $row['ntp_server_1'] && $_POST["ntp_server_1"] != "" && $_POST["ntp_server_1"] <> "") {
+	$_ntp_server_1 = $_POST["ntp_server_1"];
+} else {
+	$_ntp_server_1 = $row['ntp_server_1'];
+}
+
+if ( $_POST["ntp_server_2"] != $row['ntp_server_2'] && $_POST["ntp_server_2"] != "" && $_POST["ntp_server_2"] <> "") {
+	$_ntp_server_2 = $_POST["ntp_server_2"];
+} else {
+	$_ntp_server_2 = $row['ntp_server_2'];
+}
 
 // Eth0 POST Data
-$post_eth0_status = $_POST["eth0_status"];
-$post_eth0_type = $_POST["eth0_type"];
-$post_eth0_ip = $_POST["eth0_ip"];
-$post_eth0_mask = $_POST["eth0_mask"];
-$post_eth0_gateway = $_POST["eth0_gateway"];
-$post_eth0_dns = $_POST["eth0_dns"];
+
+if ( $_POST["eth0_status"] != $row['eth0_status'] && $_POST["eth0_status"] != "" && $_POST["eth0_status"] <> "") {
+	$_eth0_status = $_POST["eth0_status"];
+} else {
+	$_eth0_status = $row['eth0_status'];
+}
+
+if ( $_POST["eth0_type"] != $row['eth0_type'] && $_POST["eth0_type"] != "" && $_POST["eth0_type"] <> "") {
+	$_eth0_type = $_POST["eth0_type"];
+} else {
+	$_eth0_type = $row['eth0_type'];
+}	
+
+if ( $_POST["eth0_ip"] != $row['eth0_ip'] && $_POST["eth0_ip"] != "" && $_POST["eth0_ip"] <> "") {
+	$_eth0_ip = $_POST["eth0_ip"];
+} else {
+	$_eth0_ip = $row['eth0_ip'];
+}
+
+if ( $_POST["eth0_mask"] != $row['eth0_mask'] && $_POST["eth0_mask"] != "" && $_POST["eth0_mask"] <> "") {
+	$_eth0_mask = $_POST["eth0_mask"];
+} else {
+	$_eth0_mask = $row['eth0_mask'];
+}
+
+if ( $_POST["eth0_gateway"] != $row['eth0_gateway'] && $_POST["eth0_gateway"] != "" && $_POST["eth0_gateway"] <> "") {
+	$_eth0_gateway = $_POST["eth0_gateway"];
+} else {
+	$_eth0_gateway = $row['eth0_gateway'];
+}
+
+if ( $_POST["eth0_dns"] != $row['eth0_dns'] && $_POST["eth0_dns"] != "" && $_POST["eth0_dns"] <> "") {
+	$_eth0_dns = $_POST["eth0_dns"];
+} else {
+	$_eth0_dns = $row['eth0_dns'];
+}
 
 // Wifi POST Data
-$post_wlan0_status = $_POST["wlan0_status"];
-$post_wlan0_ssid = $_POST["wlan0_ssid"];
-$post_wlan0_method = $_POST["wlan0_method"];
-$post_wlan0_algorithm = $_POST["wlan0_algorithm"];
-$post_wlan0_password = $_POST["wlan0_password"];
-$post_wlan0_type = $_POST["wlan0_type"];
-$post_wlan0_ip = $_POST["wlan0_ip"];
-$post_wlan0_mask = $_POST["wlan0_mask"];
-$post_wlan0_gateway = $_POST["wlan0_gateway"];
-$post_wlan0_dns = $_POST["wlan0_dns"];
 
-// System DB Data
-$db_hostname = $row['hostname'];
-$db_atomik_api = $row['atomik_api'];
-$db_atomik_emulator = $row['atomik_emulator'];
-$db_atomik_transceiver = $row['atomik_transceiver'];
+$_wlan0_password = $_POST["wlan0_password"];
 
-// Password DB Data
-$db_current_password = $row['password'];
+if ( $_POST["wlan0_ssid"] != $row['wlan0_ssid'] && $_POST["wlan0_ssid"] != "" && $_POST["wlan0_ssid"] <> "") {
+	$_wlan0_ssid = $_POST["wlan0_ssid"];
+} else {
+	$_wlan0_ssid = $row['wlan0_ssid'];
+}
 
-// Time DB Data
-$db_timezone = $row['timezone'];
-$db_daylight_savings = $row['daylight_savings'];
-$db_update_time_interval = $row['time_update_interval'];
-$db_ntp_server1 = $row['ntp_server_1'];
-$db_ntp_server2 = $row['ntp_server_2'];
+if ( $_POST["wlan0_method"] != $row['wlan0_method'] && $_POST["wlan0_method"] != "" && $_POST["wlan0_method"] <> "") {
+	$_wlan0_method = $_POST["wlan0_method"];
+} else {
+	$_wlan0_method = $row['wlan0_method'];
+}	
 
-// Eth0 DB Data
-$db_eth0_status = $row['eth0_status'];
-$db_eth0_type = $row['eth0_type'];
-$db_eth0_ip = $row['eth0_ip'];
-$db_eth0_mask = $row['eth0_mask'];
-$db_eth0_gateway = $row['eth0_gateway'];
-$db_eth0_dns = $row['eth0_dns'];
+if ( $_POST["wlan0_algorithm"] != $row['wlan0_algorithm'] && $_POST["wlan0_algorithm"] != "" && $_POST["wlan0_algorithm"] <> "") {
+	$_wlan0_algorithm = $_POST["wlan0_algorithm"];
+} else {
+	$_wlan0_algorithm = $row['wlan0_algorithm'];
+}
 
-// Wifi DB Data
-$db_wlan0_status = $row['wlan0_status'];
-$db_wlan0_ssid = $row['wlan0_ssid'];
-$db_wlan0_method = $row['wlan0_method'];
-$db_wlan0_algorithm = $row['wlan0_algorithm'];
-$db_wlan0_password = $row['wlan0_password'];
-$db_wlan0_type = $row['wlan0_type'];
-$db_wlan0_ip = $row['wlan0_ip'];
-$db_wlan0_mask = $row['wlan0_mask'];
-$db_wlan0_gateway = $row['wlan0_gateway'];
-$db_wlan0_dns = $row['wlan0_dns'];
+if ( $_POST["wlan0_password"] != $row['wlan0_password'] && $_POST["wlan0_password"] != "" && $_POST["wlan0_password"] <> "") {
+	$_wlan0_password = $_POST["wlan0_password"];
+} else {
+	$_wlan0_password = $row['wlan0_password'];
+}
 
+if ( $_POST["wlan0_status"] != $row['wlan0_status'] && $_POST["wlan0_status"] != "" && $_POST["wlan0_status"] <> "") {
+	$_wlan0_status = $_POST["wlan0_status"];
+} else {
+	$_wlan0_status = $row['wlan0_status'];
+}
+
+if ( $_POST["wlan0_type"] != $row['wlan0_type'] && $_POST["wlan0_type"] != "" && $_POST["wlan0_type"] <> "") {
+	$_wlan0_type = $_POST["wlan0_type"];
+} else {
+	$_wlan0_type = $row['wlan0_type'];
+}	
+
+if ( $_POST["wlan0_ip"] != $row['wlan0_ip'] && $_POST["wlan0_ip"] != "" && $_POST["wlan0_ip"] <> "") {
+	$_wlan0_ip = $_POST["wlan0_ip"];
+} else {
+	$_wlan0_ip = $row['wlan0_ip'];
+}
+
+if ( $_POST["wlan0_mask"] != $row['wlan0_mask'] && $_POST["wlan0_mask"] != "" && $_POST["wlan0_mask"] <> "") {
+	$_wlan0_mask = $_POST["wlan0_mask"];
+} else {
+	$_wlan0_mask = $row['wlan0_mask'];
+}
+
+if ( $_POST["wlan0_gateway"] != $row['wlan0_gateway'] && $_POST["wlan0_gateway"] != "" && $_POST["wlan0_gateway"] <> "") {
+	$_wlan0_gateway = $_POST["wlan0_gateway"];
+} else {
+	$_wlan0_gateway = $row['wlan0_gateway'];
+}
+
+if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && $_POST["wlan0_dns"] != "" && $_POST["wlan0_dns"] <> "") {
+	$_wlan0_dns = $_POST["wlan0_dns"];
+} else {
+	$_wlan0_dns = $row['wlan0_dns'];
+}
 
 
 // Processing Commands
@@ -187,15 +279,15 @@ if ($command <> "" && $command !="" && $command == "reboot") {
                  <tbody>
                    <tr>
                      <td>Atomik API Service: </td>
-                     <td><input type="checkbox" class="form-control" id="atomikservice" <?php if ($row['atomik_api'] > 0 ) { ?>checked <?php }; ?>></td>
+                     <td><input type="checkbox" class="form-control" id="atomikservice" <?php if ($_atomik_api > 0 ) { ?>checked <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Emulator Service: </td>
-                     <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($row['atomik_emulator'] > 0 ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="emulatorservice" class="form-control" <?php if ($_atomik_emulator > 0 ) { ?>checked  <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Transceiver Service: </td>
-                     <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($row['atomik_transceiver'] > 0 ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="transceiverservice" class="form-control" <?php if ($_atomik_transceiver > 0 ) { ?>checked  <?php }; ?>></td>
                    </tr>
                  </tbody>
                </table></td>
@@ -205,7 +297,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
           <hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a href="" class="btn-success btn">Save System Settings</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="savesystem" href="#" class="btn-success btn">Save System Settings</a></p></div>
   </div>
   <br><br>
   <hr><h4><p>Update Password:</p></h4>   
@@ -229,7 +321,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
   </table><hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a href="" class="btn-success btn">Save Password</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="savepassword" href="#" class="btn-success btn">Save Password</a></p></div>
   </div>
   <br><br>
   <hr>
@@ -244,7 +336,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tbody>
       <tr>
         <td>Time Zone: </td>
-        <td><select  class="form-control">
+        <td><select  class="form-control" id="timezone">
   <option value="-12.0">(GMT -12:00) Eniwetok, Kwajalein</option>
       <option value="-11.0">(GMT -11:00) Midway Island, Samoa</option>
       <option value="-10.0">(GMT -10:00) Hawaii</option>
@@ -284,7 +376,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>Time Update Interval: </td>
-        <td><select  class="form-control">
+        <td><select  class="form-control" id="time_update_interval">
   <option value="0">Never</option>
   <option value="24">Daily</option>
   <option value="2">Every 2 Hours</option>
@@ -294,26 +386,18 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>NTP Time Server 1: </td>
-        <td><input type="text" class="form-control" id="timeservere1" value="<?php if ( $post_ntp_server1 != "" && $post_ntp_server1 <> "" && $post_ntp_server1 != $db_ntp_server1 ) {
-	echo $post_ntp_server1;
-} else {
-	echo $db_ntp_server1;
-}; ?>"></td>
+        <td><input type="text" class="form-control" id="ntp_server_1" value="<?php echo $_ntp_server1; ?>"></td>
       </tr>
       <tr>
         <td>NTP Time Server 2: </td>
-        <td><input type="text" class="form-control" id="timeservere2" value="<?php if ( $post_ntp_server2 != "" && $post_ntp_server2 <> "" && $post_ntp_server2 != $db_ntp_server2 ) {
-	echo $post_ntp_server2;
-} else {
-	echo $db_ntp_server2;
-}; ?>"></td>
+        <td><input type="text" class="form-control" id="ntp_server_2" value="<?php echo $_ntp_server2; ?>"></td>
       </tr>
     </tbody>
   </table>
   <hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a href="" class="btn-success btn">Save Time Settings</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="savetime" href="#" class="btn-success btn">Save Time Settings</a></p></div>
   </div>
   <br><br><hr>
         </div>
@@ -324,8 +408,8 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       <tr>
         <td>Eth0 Status: </td>
         <td><select id="eth0status" class="form-control">
-  <option value="1" <?php if ($row['eth0_status'] == 1 ) { ?>selected <?php }; ?>>Enable</option>
-  <option value="0" <?php if ($row['eth0_status'] == 0 ) { ?>selected <?php }; ?>>Disable</option>
+  <option value="1" <?php if ($_eth0_status == 1 ) { ?>selected <?php }; ?>>Enable</option>
+  <option value="0" <?php if ($_eth0_status == 0 ) { ?>selected <?php }; ?>>Disable</option>
 </select></td>
       </tr>
     </thead>
@@ -333,40 +417,32 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tr>
         <td>Eth0 Type: </td>
         <td><select  class="form-control">
-  <option value="0" <?php if ($row['eth0_type'] == 0 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="1" <?php if ($row['eth0_type'] == 1 ) { ?>selected <?php }; ?>>DHCP</option>
+  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="<?php if ( $post_eth0_ip != "" && $post_eth0_ip <> "" && $post_eth0_ip != $db_eth0_ip ) {
-	echo $post_eth0_ip;
-} else {
-	echo $db_eth0_ip;
-}; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0ip" value="<?php echo $_eth0_ip; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0mask" value="<?php if ( $post_eth0_mask != "" && $post_eth0_mask <> "" && $post_eth0_mask != $db_eth0_mask ) {
-	echo '1. '.$post_eth0_mask;
-} else {
-	echo '2. '.$db_eth0_mask;
-}; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0mask" value="<?php echo $_eth0_mask; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
-        <td><input type="text" class="form-control" id="eth0gate" value="<?php echo $row['eth0_gateway']; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0gate" value="<?php echo $_eth0_gateway; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 DNS: </td>
-        <td><input type="text" class="form-control" id="eth0dns" value="<?php echo $row['eth0_dns']; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0dns" value="<?php echo $_eth0_dns; ?>"></td>
       </tr>
     </tbody>
   </table>
   <hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a href="" class="btn-success btn">Save Ethernet Settings</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="saveeth0" href="#" class="btn-success btn">Save Ethernet Settings</a></p></div>
   </div>
   <br><br><hr>
 <h4><p>Wifi Adapter Settings:</p></h4>   
@@ -374,22 +450,22 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <thead>
       <tr >
         <td>Wifi0 Status: </td>
-        <td><select id="wifi0status" class="form-control">
-  <option value="0" <?php if ($row['wlan0_status'] == 0 ) { ?>selected <?php }; ?>>Disable</option>
-  <option value="1" <?php if ($row['wlan0_status'] == 1 ) { ?>selected <?php }; ?>>Enable</option>
+        <td><select id="wlan0_status" class="form-control">
+  <option value="0" <?php if ($_wlan0_status == 0 ) { ?>selected <?php }; ?>>Disable</option>
+  <option value="1" <?php if ($_wlan0_status == 1 ) { ?>selected <?php }; ?>>Enable</option>
 </select></td>
       </tr>
     </thead>
     <tbody>
     <tr>
         <td>Wifi0 SSID: </td>
-        <td><select id="wifi0ssid" class="form-control">
+        <td><select id="wlan0_ssid" class="form-control">
   <option value="0">None</option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 Method: </td>
-        <td><select id="wifi0method" class="form-control">
+        <td><select id="wlan0_method" class="form-control">
   <option value="Disable">Disable</option>
   <option value="OpenWEP">OPENWEP</option>
   <option value="SHAREDWEP">SHAREDWEP</option>
@@ -399,7 +475,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>Wifi0 Encryption Algorithm: </td>
-        <td><select id="wifi0algorithm" class="form-control">
+        <td><select id="wlan0_algorithm" class="form-control">
   <option value="0">AES</option>		// only visible wpa and wpa2 methods
   <option value="0">TKIP</option>		// only visible wpa and wpa2 methods
   <option value="0">ASCII</option> 		// only visible OPENWEP and SHAREDWEP methods
@@ -408,37 +484,37 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>Wifi0 Password: </td>
-        <td><input type="password" class="form-control" id="wifi0password" value="password"></td>
+        <td><input type="password" class="form-control" id="wlan0_password" value="<?php echo $_wlan0_password; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Type: </td>
-        <td><select  class="form-control">
-  <option value="0" <?php if ($row['eth0_type'] == 0 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="1" <?php if ($row['eth0_type'] == 1 ) { ?>selected <?php }; ?>>DHCP</option>
+        <td><select  class="form-control" id="eth0_type" >
+  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td><input type="text" class="form-control" id="wifi0ip" value="<?php echo $row['wlan0_ip']; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_ip" value="<?php echo $_wlan0_ip; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="<?php echo $row['wlan0_mask']; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_mask" value="<?php echo $_wlan0_mask; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Gateway: </td>
-        <td><input type="text" class="form-control" id="wifi0gate" value="<?php echo $row['wlan0_gateway']; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_gateway" value="<?php echo $_wlan0_gateway; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 DNS: </td>
-        <td><input type="text" class="form-control" id="Wifi0dns" value="<?php echo $row['wlan0_dns']; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_dns" value="<?php echo $_wlan0_dns; ?>"></td>
       </tr>
       </tbody>
   </table><hr>
   <div class="container center col-xs-12">
-  <div class="col-xs-2 text-center"><p><a href="" class="btn-primary btn">Refresh SSID List</a></p></div>  
+  <div class="col-xs-2 text-center"><p><a id="refreshssid" href="#" class="btn-primary btn">Refresh SSID List</a></p></div>  
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save Wireless Settings</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savewlan0" href="#" class="btn-success btn">Save Wireless Settings</a></p></div>
   </div>
   <br><br><hr> 
     </div>
@@ -451,7 +527,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
   <div class="container center">
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-2"><p><a href="settings.php"  class="btn-warning btn">Cancel</a></p>
+  <div class="col-xs-2"><p><a href="settings.php" class="btn-warning btn">Cancel</a></p>
   </div>
   <div class="col-xs-2"><p></p>
   </div>
@@ -474,8 +550,27 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       <hr>
     </div><script type="text/javascript">
 	$("#reboot").on('click', function() {
-		alert ("inside onclick");
    document.forms["settingsfrm"].command.value = "reboot";
+   document.settingsfrm.submit();
+});
+$("#savewlan0").on('click', function() {
+   document.forms["settingsfrm"].command.value = "save_wlan0";
+   document.settingsfrm.submit();
+});
+$("#saveeth0").on('click', function() {
+   document.forms["settingsfrm"].command.value = "save_eth0";
+   document.settingsfrm.submit();
+});
+$("#savetime").on('click', function() {
+   document.forms["settingsfrm"].command.value = "save_time";
+   document.settingsfrm.submit();
+});
+$("#savepassword").on('click', function() {
+   document.forms["settingsfrm"].command.value = "save_password";
+   document.settingsfrm.submit();
+});
+$("#savesystem").on('click', function() {
+   document.forms["settingsfrm"].command.value = "save_system";
    document.settingsfrm.submit();
 });
 </script>
