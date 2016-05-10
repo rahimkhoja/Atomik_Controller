@@ -308,7 +308,7 @@ $db_wlan0_dns = $row['wlan0_dns'];
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="<?php if ( $post_eth0_ip != "" && $post_eth0_ip <> "" && $post_eth0_ip2 != $db_eth0_ip ) {
+        <td><input type="text" class="form-control" id="eth0ip" value="<?php if ( $post_eth0_ip != "" && $post_eth0_ip <> "" && $post_eth0_ip != $db_eth0_ip ) {
 	echo $post_eth0_ip;
 } else {
 	echo $db_eth0_ip;
@@ -316,7 +316,11 @@ $db_wlan0_dns = $row['wlan0_dns'];
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0mask" value="<?php echo $row['eth0_mask']; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0mask" value="<?php if ( $post_eth0_mask != "" && $post_eth0_mask <> "" && $post_eth0_mask != $db_eth0_mask ) {
+	echo '1. '.$post_eth0_mask;
+} else {
+	echo '2. '.$db_eth0_mask;
+}; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
