@@ -135,61 +135,61 @@ if ( $_POST["eth0_dns"] != $row['eth0_dns'] && isset($_POST["eth0_dns"]) ) {
 
 $_wlan0_password = $_POST["wlan0_password"];
 
-if ( $_POST["wlan0_ssid"] != $row['wlan0_ssid'] && $_POST["wlan0_ssid"] != "" && $_POST["wlan0_ssid"] <> "") {
+if ( $_POST["wlan0_ssid"] != $row['wlan0_ssid'] && isset($_POST["wlan0_ssid"]) ) {
 	$_wlan0_ssid = $_POST["wlan0_ssid"];
 } else {
 	$_wlan0_ssid = $row['wlan0_ssid'];
 }
 
-if ( $_POST["wlan0_method"] != $row['wlan0_method'] && $_POST["wlan0_method"] != "" && $_POST["wlan0_method"] <> "") {
+if ( $_POST["wlan0_method"] != $row['wlan0_method'] && isset($_POST["wlan0_method"]) ) {
 	$_wlan0_method = $_POST["wlan0_method"];
 } else {
 	$_wlan0_method = $row['wlan0_method'];
 }	
 
-if ( $_POST["wlan0_algorithm"] != $row['wlan0_algorithm'] && $_POST["wlan0_algorithm"] != "" && $_POST["wlan0_algorithm"] <> "") {
+if ( $_POST["wlan0_algorithm"] != $row['wlan0_algorithm'] && isset($_POST["wlan0_algorithm"]) ) {
 	$_wlan0_algorithm = $_POST["wlan0_algorithm"];
 } else {
 	$_wlan0_algorithm = $row['wlan0_algorithm'];
 }
 
-if ( $_POST["wlan0_password"] != $row['wlan0_password'] && $_POST["wlan0_password"] != "" && $_POST["wlan0_password"] <> "") {
+if ( $_POST["wlan0_password"] != $row['wlan0_password'] && isset($_POST["wlan0_password"]) ) {
 	$_wlan0_password = $_POST["wlan0_password"];
 } else {
 	$_wlan0_password = $row['wlan0_password'];
 }
 
-if ( $_POST["wlan0_status"] != $row['wlan0_status'] && $_POST["wlan0_status"] != "" && $_POST["wlan0_status"] <> "") {
+if ( $_POST["wlan0_status"] != $row['wlan0_status'] && isset($_POST["wlan0_status"]) ) {
 	$_wlan0_status = $_POST["wlan0_status"];
 } else {
 	$_wlan0_status = $row['wlan0_status'];
 }
 
-if ( $_POST["wlan0_type"] != $row['wlan0_type'] && $_POST["wlan0_type"] != "" && $_POST["wlan0_type"] <> "") {
+if ( $_POST["wlan0_type"] != $row['wlan0_type'] && isset($_POST["wlan0_type"]) ) {
 	$_wlan0_type = $_POST["wlan0_type"];
 } else {
 	$_wlan0_type = $row['wlan0_type'];
 }	
 
-if ( $_POST["wlan0_ip"] != $row['wlan0_ip'] && $_POST["wlan0_ip"] != "" && $_POST["wlan0_ip"] <> "") {
+if ( $_POST["wlan0_ip"] != $row['wlan0_ip'] && isset($_POST["wlan0_ip"]) ) {
 	$_wlan0_ip = $_POST["wlan0_ip"];
 } else {
 	$_wlan0_ip = $row['wlan0_ip'];
 }
 
-if ( $_POST["wlan0_mask"] != $row['wlan0_mask'] && $_POST["wlan0_mask"] != "" && $_POST["wlan0_mask"] <> "") {
+if ( $_POST["wlan0_mask"] != $row['wlan0_mask'] && isset($_POST["wlan0_mask"]) ) {
 	$_wlan0_mask = $_POST["wlan0_mask"];
 } else {
 	$_wlan0_mask = $row['wlan0_mask'];
 }
 
-if ( $_POST["wlan0_gateway"] != $row['wlan0_gateway'] && $_POST["wlan0_gateway"] != "" && $_POST["wlan0_gateway"] <> "") {
+if ( $_POST["wlan0_gateway"] != $row['wlan0_gateway'] && isset($_POST["wlan0_gateway"]) ) {
 	$_wlan0_gateway = $_POST["wlan0_gateway"];
 } else {
 	$_wlan0_gateway = $row['wlan0_gateway'];
 }
 
-if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && $_POST["wlan0_dns"] != "" && $_POST["wlan0_dns"] <> "") {
+if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 	$_wlan0_dns = $_POST["wlan0_dns"];
 } else {
 	$_wlan0_dns = $row['wlan0_dns'];
@@ -276,15 +276,15 @@ if ($command <> "" && $command !="" && $command == "reboot") {
                  <tbody>
                    <tr>
                      <td>Atomik API Service: </td>
-                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" <?php if ($_atomik_api > 0 ) { ?>checked <?php }; ?>></td>
+                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" <?php if ($_atomik_api == "on" ) { ?>checked <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Emulator Service: </td>
-                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" <?php if ($_atomik_emulator > 0 ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" <?php if ($_atomik_emulator == "on" ) { ?>checked  <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Transceiver Service: </td>
-                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" <?php if ($_atomik_transceiver > 0 ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" <?php if ($_atomik_transceiver == "on" ) { ?>checked  <?php }; ?>></td>
                    </tr>
                  </tbody>
                </table></td>
@@ -312,7 +312,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>Repeat Password: </td>
-        <td><input type="password" class="form-control" id="newpassword2" id="newpassword2" value=""></td>
+        <td><input type="password" class="form-control" id="newpassword2" name="newpassword2" value=""></td>
       </tr>
     </tbody>
   </table><hr>
@@ -404,7 +404,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <thead>
       <tr>
         <td>Eth0 Status: </td>
-        <td><select id="eth0status" class="form-control">
+        <td><select id="eth0_status" name="eth0_status" class="form-control">
   <option value="1" <?php if ($_eth0_status == 1 ) { ?>selected <?php }; ?>>Enable</option>
   <option value="0" <?php if ($_eth0_status == 0 ) { ?>selected <?php }; ?>>Disable</option>
 </select></td>
@@ -413,26 +413,26 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tbody>
     <tr>
         <td>Eth0 Type: </td>
-        <td><select  class="form-control">
+        <td><select id="eth0_type" name="eth0_type" class="form-control">
   <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
   <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><input type="text" class="form-control" id="eth0ip" value="<?php echo $_eth0_ip; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_ip" name="eth0_ip" value="<?php echo $_eth0_ip; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0mask" value="<?php echo $_eth0_mask; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_mask" name="eth0_mask" value="<?php echo $_eth0_mask; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
-        <td><input type="text" class="form-control" id="eth0gate" value="<?php echo $_eth0_gateway; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_gateway" name="eth0_gateway" value="<?php echo $_eth0_gateway; ?>"></td>
       </tr>
       <tr>
         <td>Eth0 DNS: </td>
-        <td><input type="text" class="form-control" id="eth0dns" value="<?php echo $_eth0_dns; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_dns" name="eth0_dns" value="<?php echo $_eth0_dns; ?>"></td>
       </tr>
     </tbody>
   </table>
@@ -447,7 +447,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <thead>
       <tr >
         <td>Wifi0 Status: </td>
-        <td><select id="wlan0_status" class="form-control">
+        <td><select id="wlan0_status" name="wlan0_status" class="form-control">
   <option value="0" <?php if ($_wlan0_status == 0 ) { ?>selected <?php }; ?>>Disable</option>
   <option value="1" <?php if ($_wlan0_status == 1 ) { ?>selected <?php }; ?>>Enable</option>
 </select></td>
@@ -456,13 +456,13 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tbody>
     <tr>
         <td>Wifi0 SSID: </td>
-        <td><select id="wlan0_ssid" class="form-control">
+        <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control">
   <option value="0">None</option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 Method: </td>
-        <td><select id="wlan0_method" class="form-control">
+        <td><select id="wlan0_method" name="wlan0_method" class="form-control">
   <option value="Disable">Disable</option>
   <option value="OpenWEP">OPENWEP</option>
   <option value="SHAREDWEP">SHAREDWEP</option>
@@ -472,7 +472,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>Wifi0 Encryption Algorithm: </td>
-        <td><select id="wlan0_algorithm" class="form-control">
+        <td><select id="wlan0_algorithm" name="wlan0_algorithm" class="form-control">
   <option value="0">AES</option>		// only visible wpa and wpa2 methods
   <option value="0">TKIP</option>		// only visible wpa and wpa2 methods
   <option value="0">ASCII</option> 		// only visible OPENWEP and SHAREDWEP methods
@@ -481,37 +481,37 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>Wifi0 Password: </td>
-        <td><input type="password" class="form-control" id="wlan0_password" value="<?php echo $_wlan0_password; ?>"></td>
+        <td><input type="password" class="form-control" id="wlan0_password" name="wlan0_password" value="<?php echo $_wlan0_password; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Type: </td>
-        <td><select  class="form-control" id="eth0_type" >
-  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
+        <td><select  class="form-control" id="wlan0_type" name="wlan0_type" >
+  <option value="0" <?php if ($_wlan0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="1" <?php if ($_wlan0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td><input type="text" class="form-control" id="wlan0_ip" value="<?php echo $_wlan0_ip; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_ip" name="wlan0_ip" value="<?php echo $_wlan0_ip; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="wlan0_mask" value="<?php echo $_wlan0_mask; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_mask" name="wlan0_mask" value="<?php echo $_wlan0_mask; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 Gateway: </td>
-        <td><input type="text" class="form-control" id="wlan0_gateway" value="<?php echo $_wlan0_gateway; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_gateway" name="wlan0_gateway" value="<?php echo $_wlan0_gateway; ?>"></td>
       </tr>
       <tr>
         <td>Wifi0 DNS: </td>
-        <td><input type="text" class="form-control" id="wlan0_dns" value="<?php echo $_wlan0_dns; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_dns" name="wlan0_dns" value="<?php echo $_wlan0_dns; ?>"></td>
       </tr>
       </tbody>
   </table><hr>
   <div class="container center col-xs-12">
   <div class="col-xs-2 text-center"><p><a id="refreshssid" href="#" class="btn-primary btn">Refresh SSID List</a></p></div>  
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="savewlan0" href="#" class="btn-success btn">Save Wireless Settings</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savewlan" href="#" class="btn-success btn">Save Wireless Settings</a></p></div>
   </div>
   <br><br><hr> 
     </div>
@@ -559,7 +559,8 @@ $("#saveeth0").on('click', function() {
    document.settingsfrm.submit();
 });
 $("#savetime").on('click', function() {
-   $( "#settingsfrm" )[0].submit();
+   document.forms["settingsfrm"].command.value = "save_time";
+   document.settingsfrm.submit();
 });
 $("#savepassword").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_password";
