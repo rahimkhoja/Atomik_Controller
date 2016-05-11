@@ -55,7 +55,7 @@ function validatePasswordUpdate($real, $cur, $p1, $p2)
 	if ($real != $cur) {
 		array_push($errors, "Invalid Current Password");
 	} 
-	if ($p1 != $p1) {
+	if ($p1 != $p2) {
 		array_push($errors, "New Passwords Do Not Match");
 	} 
 	return $errors;
