@@ -8,6 +8,29 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php
+$tzone = 'UTC';
+if (is_link('/etc/localtime')) {
+    // Mac OS X (and older Linuxes)    
+    // /etc/localtime is a symlink to the 
+    // timezone in /usr/share/zoneinfo.
+    $filename = readlink('/etc/localtime');
+    if (strpos($filename, '/usr/share/zoneinfo/') === 0) {
+        $tzone = substr($filename, 20);
+    }
+} elseif (file_exists('/etc/timezone')) {
+    // Ubuntu / Debian.
+    $data = file_get_contents('/etc/timezone');
+    if ($data) {
+        $tzone = $data;
+    }
+} elseif (file_exists('/etc/sysconfig/clock')) {
+    // RHEL / CentOS
+    $data = parse_ini_file('/etc/sysconfig/clock');
+    if (!empty($data['ZONE'])) {
+        $tzone = $data['ZONE'];
+    }
+}
+date_default_timezone_set($tzone);
 
 // Function
 function isValidIP($ip)
@@ -323,8 +346,6 @@ if ($command <> "" && $command !="" && $command == "save_system")
 		
 	} else {
 		
-			
-		
 		$sql = "UPDATE atomik_settings SET hostname='".$_hostname."', atomik_api='".$_atomik_api."', atomik_emulator='".$_atomik_emulator."', atomik_transceiver='".$_atomik_transceiver."';";
 		echo $sql;
 		if ($conn->query($sql) === TRUE) {
@@ -406,7 +427,10 @@ if ($command <> "" && $command !="" && $command == "save_time")
     		$page_error = 1;
 			$error_text = "Error Saving Time Settings To DB!";
 		}
+	$timecommand = "sudo -u atomik sudo timedatectl set-timezone ".$_timezone;
+	exec($timecommand);
 	}
+	
 }
 // Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
 
