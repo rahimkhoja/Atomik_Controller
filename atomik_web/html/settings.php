@@ -429,7 +429,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 		}
 	$timecommand = "sudo timedatectl set-timezone ".$_timezone;
 	exec($timecommand, $resp);
-	echo $resp;
+	echo implode(",", $resp);
 	}
 	
 }
