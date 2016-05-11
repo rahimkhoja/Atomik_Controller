@@ -290,6 +290,7 @@ if ($command <> "" && $command !="" && $command == "save_system")
 	$erro = validateSystemSettings($_hostname);
 	if (count($erro) > 0) 
 	{
+		$page_error = 1;
 		$error_text = $erro[0].'.';
 		
 	} else {
