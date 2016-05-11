@@ -312,8 +312,8 @@ if ($command <> "" && $command !="" && $command == "save_time")
 		
 	} else {
 		
-		$sql = "UPDATE settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', time_update_interval='".$_time_update_interval."'";
-echo $sql;
+		$sql = "UPDATE settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', time_update_interval='".$_time_update_interval."';";
+		echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Time Settings Updated!";
@@ -636,7 +636,7 @@ echo $sql;
 </div></form><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
-  <strong>Danger!</strong> <?php echo $error; ?>
+  <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
   <div class="container center">
   <div class="col-xs-2">
