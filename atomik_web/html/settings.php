@@ -427,7 +427,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
     		$page_error = 1;
 			$error_text = "Error Saving Time Settings To DB!";
 		}
-	$timecommand = "sudo -u atomik sudo timedatectl set-timezone ".$_timezone;
+	$timecommand = "sudo timedatectl set-timezone ".$_timezone;
 	$timecommandout = shell_exec($timecommand);
 	echo $timecommandout;
 	}
