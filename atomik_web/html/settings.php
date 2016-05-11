@@ -69,12 +69,6 @@ if ( $_POST["timezone"] != $row['timezone'] && isset($_POST["timezone"])) {
 	$_timezone = $row['timezone'];
 }
 
-if ( $_POST["daylight_savings"] != $row['daylight_savings'] && isset($_POST["daylight_savings"])) {
-	$_daylight_savings = $_POST["daylight_savings"];
-} else {
-	$_daylight_savings = $row['daylight_savings'];
-}	
-
 if ( $_POST["time_update_interval"] != $row['time_update_interval'] && isset($_POST["time_update_interval"]) ) {
 	$_time_update_interval = $_POST["time_update_interval"];
 } else {
@@ -308,7 +302,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tbody>
     <tr>
         <td>New Password: </td>
-        <td><input type="password" class="form-control" id="newpassword1" id="newpassword1" value=""></td>
+        <td><input type="password" class="form-control" id="newpassword1" name="newpassword1" value=""></td>
       </tr>
       <tr>
         <td>Repeat Password: </td>
@@ -334,30 +328,58 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       <tr>
         <td>Time Zone: </td>
         <td><select  class="form-control" id="timezone" name="timezone">
-        <?php $timezonelistcmd = shell_exec("timedatectl list-timezones | awk {'print $1'}");  
-		 foreach(preg_split("/((\r?\n)|(\r\n?))/", $timezonelistcmd) as $line){
-			 $selected = "";
-			 if ($line == $_timezone) {
-				 $selected = "selected";
-			 }
-    echo '<option value="'.$line.'" '.$selected.'>'.$line.'</option>'."\r\n";
-} 
-		
-		 ?>
-</select></td>
-      </tr>
-      <tr>
-        <td nowrap>Daylight Savings Time: </td>
-        <td><input type="checkbox" id="daylightsavings" name="daylightsavings" class="form-control" ></label></td>
+        <?php 
+		$timezonelistcmd = shell_exec("timedatectl list-timezones | awk {'print $1'}");  
+		foreach(preg_split("/((\r?\n)|(\r\n?))/", $timezonelistcmd) as $line) 
+		{
+			$selected = "";
+			
+			if ($line == $_timezone) 
+			{
+				$selected = "selected";
+			}
+			
+			if ($line != "" && $line <>"") 
+			{
+				echo '<option value="'.$line.'" '.$selected.'>'.$line.'</option>'."\r\n";
+			}
+		}?></select></td>
       </tr>
       <tr>
         <td>Time Update Interval: </td>
         <td><select  class="form-control" id="time_update_interval" name="time_update_interval">
-  <option value="0">Never</option>
-  <option value="24">Daily</option>
-  <option value="2">Every 2 Hours</option>
-  <option value="6">Every 6 Hours</option>
-  <option value="12">Every 12 Hours</option>
+        <?php 
+				
+		if ($_time_update_interval == 0) 
+		{
+			echo '<option value="0" selected>Never</option>'."\r\n";
+		} else {
+			echo '<option value="0">Never</option>'."\r\n";
+		}
+		if ($_time_update_interval == 24) 
+		{
+			echo '<option value="24" selected>Daily</option>'."\r\n";
+		} else {
+			echo '<option value="24">Daily</option>'."\r\n";
+		}
+		if ($_time_update_interval == 2) 
+		{
+			echo '<option value="2" selected>Every 2 Hours</option>'."\r\n";
+		} else {
+			echo '<option value="2">Every 2 Hours</option>'."\r\n";
+		}
+		if ($_time_update_interval == 6) 
+		{
+			echo '<option value="6" selected>Every 6 Hours</option>'."\r\n";
+		} else {
+			echo '<option value="6">Every 6 Hours</option>'."\r\n";
+		}
+		if ($_time_update_interval == 12) 
+		{
+			echo '<option value="12" selected>Every 12 Hours</option>'."\r\n";
+		} else {
+			echo '<option value="12">Every 12 Hours</option>'."\r\n";
+		} ?>
 </select></label></td>
       </tr>
       <tr>
