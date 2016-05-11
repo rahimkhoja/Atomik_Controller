@@ -9,27 +9,13 @@
 <script src="js/jquery.redirect.min.js"></script>
 <?php
 $tzone = 'UTC';
-if (is_link('/etc/localtime')) {
-    // Mac OS X (and older Linuxes)    
-    // /etc/localtime is a symlink to the 
-    // timezone in /usr/share/zoneinfo.
-    $filename = readlink('/etc/localtime');
-    if (strpos($filename, '/usr/share/zoneinfo/') === 0) {
-        $tzone = substr($filename, 20);
-    }
-} elseif (file_exists('/etc/timezone')) {
+if (file_exists('/etc/timezone')) {
     // Ubuntu / Debian.
     $data = file_get_contents('/etc/timezone');
     if ($data) {
         $tzone = $data;
     }
-} elseif (file_exists('/etc/sysconfig/clock')) {
-    // RHEL / CentOS
-    $data = parse_ini_file('/etc/sysconfig/clock');
-    if (!empty($data['ZONE'])) {
-        $tzone = $data['ZONE'];
-    }
-}
+} 
 date_default_timezone_set($tzone);
 
 // Function

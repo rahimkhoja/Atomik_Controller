@@ -16,13 +16,7 @@ if (file_exists('/etc/timezone')) {
     if ($data) {
         $timezone = $data;
     }
-} elseif (file_exists('/etc/sysconfig/clock')) {
-    // RHEL / CentOS
-    $data = parse_ini_file('/etc/sysconfig/clock');
-    if (!empty($data['ZONE'])) {
-        $timezone = $data['ZONE'];
-    }
-}
+} 
 date_default_timezone_set($timezone);
 
 function getInterfaceMAC($interface) {
