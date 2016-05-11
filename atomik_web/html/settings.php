@@ -407,15 +407,15 @@ if ($command <> "" && $command !="" && $command == "save_time")
                  <tbody>
                    <tr>
                      <td>Atomik API Service: </td>
-                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" value="1" <?php if ($_atomik_api == "on" ) { ?>checked <?php }; ?>></td>
+                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" value="1" <?php if ($_atomik_api == "1" ) { ?>checked <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Emulator Service: </td>
-                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" value="1" <?php if ($_atomik_emulator == "on" ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" value="1" <?php if ($_atomik_emulator == "1" ) { ?>checked  <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Transceiver Service: </td>
-                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" value="1" <?php if ($_atomik_transceiver == "on" ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" value="1" <?php if ($_atomik_transceiver == "1" ) { ?>checked  <?php }; ?>></td>
                    </tr>
                  </tbody>
                </table></td>
