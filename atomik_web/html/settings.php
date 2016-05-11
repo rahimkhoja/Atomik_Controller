@@ -276,15 +276,15 @@ if ($command <> "" && $command !="" && $command == "reboot") {
                  <tbody>
                    <tr>
                      <td>Atomik API Service: </td>
-                     <td><input type="checkbox" class="form-control" id="atomik_api" <?php if ($_atomik_api > 0 ) { ?>checked <?php }; ?>></td>
+                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" <?php if ($_atomik_api > 0 ) { ?>checked <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Emulator Service: </td>
-                     <td><input type="checkbox" id="atomik_emulator" class="form-control" <?php if ($_atomik_emulator > 0 ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" <?php if ($_atomik_emulator > 0 ) { ?>checked  <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Transceiver Service: </td>
-                     <td><input type="checkbox" id="atomik_transceiver" class="form-control" <?php if ($_atomik_transceiver > 0 ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" <?php if ($_atomik_transceiver > 0 ) { ?>checked  <?php }; ?>></td>
                    </tr>
                  </tbody>
                </table></td>
@@ -302,17 +302,17 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <thead>
       <tr>
         <td>Current Password: </td>
-        <td><input type="password" class="form-control" id="currentpassword" value=""></td>
+        <td><input type="password" class="form-control" id="currentpassword" name="currentpassword" value=""></td>
       </tr>
       </thead>
     <tbody>
     <tr>
         <td>New Password: </td>
-        <td><input type="password" class="form-control" id="newpassword" value=""></td>
+        <td><input type="password" class="form-control" id="newpassword1" id="newpassword1" value=""></td>
       </tr>
       <tr>
         <td>Repeat Password: </td>
-        <td><input type="password" class="form-control" id="newpassword2" value=""></td>
+        <td><input type="password" class="form-control" id="newpassword2" id="newpassword2" value=""></td>
       </tr>
     </tbody>
   </table><hr>
@@ -333,7 +333,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tbody>
       <tr>
         <td>Time Zone: </td>
-        <td><select  class="form-control" id="timezone">
+        <td><select  class="form-control" id="timezone" name="timezone">
   <option value="-12.0">(GMT -12:00) Eniwetok, Kwajalein</option>
       <option value="-11.0">(GMT -11:00) Midway Island, Samoa</option>
       <option value="-10.0">(GMT -10:00) Hawaii</option>
@@ -369,11 +369,11 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td nowrap>Daylight Savings Time: </td>
-        <td><input type="checkbox" id="daylightsavings" class="form-control" ></label></td>
+        <td><input type="checkbox" id="daylightsavings" name="daylightsavings" class="form-control" ></label></td>
       </tr>
       <tr>
         <td>Time Update Interval: </td>
-        <td><select  class="form-control" id="time_update_interval">
+        <td><select  class="form-control" id="time_update_interval" name="time_update_interval">
   <option value="0">Never</option>
   <option value="24">Daily</option>
   <option value="2">Every 2 Hours</option>
@@ -383,11 +383,11 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       </tr>
       <tr>
         <td>NTP Time Server 1: </td>
-        <td><input type="text" class="form-control" id="ntp_server_1" value="<?php echo $_ntp_server_1; ?>"></td>
+        <td><input type="text" class="form-control" id="ntp_server_1" name="ntp_server_1" value="<?php echo $_ntp_server_1; ?>"></td>
       </tr>
       <tr>
         <td>NTP Time Server 2: </td>
-        <td><input type="text" class="form-control" id="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
+        <td><input type="text" class="form-control" id="ntp_server_2" name="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
       </tr>
     </tbody>
   </table>
