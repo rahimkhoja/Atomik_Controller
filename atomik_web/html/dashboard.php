@@ -252,7 +252,7 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Time Zone: </td>
-        <td><?php echo getTimeZone(); ?></td>
+        <td><?php echo date_default_timezone_get(); ?></td>
       </tr>
       <tr>
         <td>Current System Time: </td>
