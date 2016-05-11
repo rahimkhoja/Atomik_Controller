@@ -9,8 +9,90 @@
 <script src="js/jquery.redirect.min.js"></script>
 <?php
 
+// Function
+function isValidIP($ip)
+{
+	if(filter_var($ip, FILTER_VALIDATE_IP) !== false) {
+		return true;
+    } else {
+		return false;
+	}
+}
+
+function isValidMask($mask)
+{
+	 return ($result = log((ip2long($mask)^-1)+1,2)) != 0 && $result-(int)$result == 0;
+}
+
+function validateTimeSettings( $ntp1, $ntp2)
+{
+	$errors = array();
+	if (!isValidIP($ntp1)) 
+	{
+		array_push($errors, "Invalid NTP Server 1 Address");
+	}
+	if (!isValidIP($ntp2)) 
+	{
+		array_push($errors, "Invalid NTP Server 1 Address");
+	}
+	
+	return $errors;
+}
+
+function validateSystemSettings($hn)
+{
+	$errors = array();
+	if (!preg_match("/^[A-Za-z0-9-]+$/", $hn)) {
+		array_push($errors, "Invalid Hostname");
+	} 
+	return $errors;
+}
+
+function validatePasswordUpdate($real, $cur, $p1, $p2)
+{
+	$errors = array();
+	if ($real != $cur) {
+		array_push($errors, "Invalid Current Password");
+	} 
+	if ($p1 != $p1) {
+		array_push($errors, "New Passwords Do Not Match");
+	} 
+	return $errors;
+}
+
+function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
+{
+	$errors = array();
+	if ($stat == 0) {
+		return $errors;
+	} else {
+		if($ty == 0) {
+			return $errors;
+		} else {
+			if (!isValidIP($eip)) 
+			{
+				array_push($errors, "Invalid Eth0 IP Address");
+			}
+			if (!isValidIP($egw)) 
+			{
+				array_push($errors, "Invalid Eth0 Gateway Address");
+			}
+			if (!isValidIP($edns)) 
+			{
+				array_push($errors, "Invalid Eth0 DNS Address");
+			}
+			if (!isValidMask($emask)) 
+			{
+				array_push($errors, "Invalid Eth0 Subnet Mask");
+			}
+		}
+	}
+}
+
 $page_error = 0;
 $page_success = 0;
+$success_text = "";
+$error = "";
 
 $sql = "SELECT * FROM atomik_settings LIMIT 1";  // Select ONLY one, instead of all
 
@@ -206,7 +288,33 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 // Save Password [Keep Post Data, Verify Form, DB] (save_password)
 
 // Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
-
+if ($command <> "" && $command !="" && $command == "save_time") 
+{
+	$erro = validateTimeSettings($_ntp_server_1, $_ntp_server_2);
+	$i = 0;
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$prefix = '';
+		$len = count($erro);
+		foreach ($erro as $er)
+		{
+    		$error_text .= $prefix . '"' . $er . '"';
+    		$prefix = ', ';
+			if ($i == $len - 2 && $len != 2) {
+        		$prefix = ', and ';
+    		} else if ($i == $len - 2 && $len == 2) {
+				$prefix = ' and ';
+			}
+			$i++;
+		}
+		$error_text .= '.';
+		
+	} else {
+		$page_success = 1;
+		$success_text = "Time Settings Updated!";
+	}
+}
 // Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
 
 // Save Wifi Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
@@ -248,9 +356,9 @@ if ($command <> "" && $command !="" && $command == "reboot") {
         <div class="PageNavTitle" ><h3>Settings</h3></div>
     </div>
    </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+  <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
 <form id="settingsfrm" name="settingsfrm"  enctype="multipart/form-data" action="settings.php" method="post"><input type="hidden" name="command" id="command" value="" >
 <div class="container">
@@ -415,8 +523,8 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     <tr>
         <td>Eth0 Type: </td>
         <td><select id="eth0_type" name="eth0_type" class="form-control">
-  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
+  <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
@@ -518,9 +626,9 @@ if ($command <> "" && $command !="" && $command == "reboot") {
     </div>
 </div>
 </div></form><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+  <strong>Danger!</strong> <?php echo $error; ?>
 </div><?php } ?><hr>
   <div class="container center">
   <div class="col-xs-2">
