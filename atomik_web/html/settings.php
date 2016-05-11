@@ -428,8 +428,8 @@ if ($command <> "" && $command !="" && $command == "save_time")
 			$error_text = "Error Saving Time Settings To DB!";
 		}
 	$timecommand = "sudo timedatectl set-timezone ".$_timezone;
-	$timecommandout = shell_exec($timecommand);
-	echo $timecommandout;
+	exec($timecommand, $resp);
+	echo $resp;
 	}
 	
 }
