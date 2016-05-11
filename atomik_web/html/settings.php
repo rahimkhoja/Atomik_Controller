@@ -340,7 +340,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 			 if ($line == $_timezone) {
 				 $selected = "selected";
 			 }
-    echo '<option value="'.$line.'" '.$selected.'>'.$line.'</option>\n';
+    echo '<option value="'.$line.'" '.$selected.'>'.$line.'</option>'."\r\n";
 } 
 		
 		 ?>
