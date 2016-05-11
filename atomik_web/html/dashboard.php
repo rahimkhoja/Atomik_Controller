@@ -13,6 +13,7 @@ $timezone = 'UTC';
 if (file_exists('/etc/timezone')) {
     // Ubuntu / Debian.
     $data = file_get_contents('/etc/timezone');
+	$data = trim($data);
 	if ($data) {
         $timezone = '"'.$data.'"';
     }

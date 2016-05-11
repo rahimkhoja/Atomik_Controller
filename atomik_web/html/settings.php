@@ -13,6 +13,7 @@ if (file_exists('/etc/timezone')) {
     // Ubuntu / Debian.
     $data = file_get_contents('/etc/timezone');
     if ($data) {
+	$data = trim($data);
         $tzone = '"'.$data.'"';
     }
 } 
