@@ -18,7 +18,7 @@ if (file_exists('/etc/timezone')) {
     }
 } 
 date_default_timezone_set($timezone);
-
+echo date_default_timezone_get();
 function getInterfaceMAC($interface) {
 	if (getInterfaceStatus($interface) == "Connected") {
 		exec('netstat -ie', $result);
