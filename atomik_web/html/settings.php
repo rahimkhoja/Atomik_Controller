@@ -560,7 +560,7 @@ $("#saveeth0").on('click', function() {
 });
 $("#savetime").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_time";
-   document.settingsfrm.submit();
+   $( "#settingsfrm" )[0].submit();
 });
 $("#savepassword").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_password";
