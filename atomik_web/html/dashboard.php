@@ -13,11 +13,11 @@ $timezone = 'UTC';
 if (file_exists('/etc/timezone')) {
     // Ubuntu / Debian.
     $data = file_get_contents('/etc/timezone');
-	echo $data;
-    if ($data) {
-        $timezone = $data;
+	if ($data) {
+        $timezone = "'".$data."'";
     }
 } 
+echo $timezone;
 date_default_timezone_set($timezone);
 echo date_default_timezone_get();
 function getInterfaceMAC($interface) {
