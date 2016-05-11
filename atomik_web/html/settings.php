@@ -334,7 +334,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
       <tr>
         <td>Time Zone: </td>
         <td><select  class="form-control" id="timezone" name="timezone">
-        <?php $timezonelistcmd = shell_exec('timedatectl list-timezones');  
+        <?php $timezonelistcmd = shell_exec("timedatectl list-timezones | awk {'print $1'}");  
 		 foreach(preg_split("/((\r?\n)|(\r\n?))/", $timezonelistcmd) as $line){
 			 $selected = "";
 			 if ($line == $_timezone) {
