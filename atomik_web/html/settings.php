@@ -284,7 +284,27 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 
 
 // Save System Settings [Keep Post Data, Verify Form, DB, Start Service, Stop Service, Edit File, Reboot] (save_system)
-
+if ($command <> "" && $command !="" && $command == "save_system") 
+{
+	$erro = validateSystemSettings($_hostname);
+	$i = 0;
+	if (count($erro) > 0) 
+	{
+		$error_text = $erro[0].'.';
+		
+	} else {
+		
+		$sql = "UPDATE atomik_settings SET hostname='".$hostname."', atomik_api='".$_atomik_api."', atomik_emulator='".$_atomik_emulator."', atomik_transceiver='".$_atomik_transceiver."';";
+		echo $sql;
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "System Settings Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving To DB!";
+		}
+	}
+}
 // Save Password [Keep Post Data, Verify Form, DB] (save_password)
 
 // Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
