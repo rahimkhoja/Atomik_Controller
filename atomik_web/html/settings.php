@@ -311,8 +311,16 @@ if ($command <> "" && $command !="" && $command == "save_time")
 		$error_text .= '.';
 		
 	} else {
-		$page_success = 1;
-		$success_text = "Time Settings Updated!";
+		
+		$sql = "UPDATE settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', time_update_interval='".$_time_update_interval."'";
+
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Time Settings Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving To DB!";
+		}
 	}
 }
 // Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
