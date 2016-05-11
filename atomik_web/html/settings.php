@@ -313,7 +313,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 	} else {
 		
 		$sql = "UPDATE settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', time_update_interval='".$_time_update_interval."'";
-
+echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Time Settings Updated!";
