@@ -90,11 +90,17 @@ function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
 	}
 }
 
+// Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
 
+// Set Command
+$command = "";
+$command = $_POST["command"];
+
+// Atomik Setting SQL
 $sql = "SELECT * FROM atomik_settings LIMIT 1";  // Select ONLY one, instead of all
 
 $rs=$conn->query($sql);
@@ -108,8 +114,6 @@ if($rs === false) {
 $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 
-
-// System POST Data
 // System POST Data
 print_r($_POST); 
 if ( $_POST["hostname"] != $row['hostname'] && isset($_POST["hostname"])) {
@@ -118,21 +122,32 @@ if ( $_POST["hostname"] != $row['hostname'] && isset($_POST["hostname"])) {
 	$_hostname = $row['hostname'];
 }
 
-if ( $_POST["atomik_api"] != $row['atomik_api'] && isset($_POST["atomik_api"])) {
-	$_atomik_api = $_POST["atomik_api"];
+if ( $command != "" && $command <> "") {
+	if ( isset($_POST["atomik_api"]) ) {
+		$_atomik_api = 1;
+	} else {
+		$_atomik_api = 0;
+	}
 } else {
-	$_atomik_api = $row['atomik_api'];
-}	
+	$_atomik_api = $row['atomik_api'];	
+}
 
-if ( $_POST["atomik_emulator"] != $row['atomik_emulator'] && isset($_POST["atomik_emulator"])) {
-	$_atomik_emulator = $_POST["atomik_emulator"];
+if ( $command != "" && $command <> "") {
+	if ( isset($_POST["atomik_emulator"]) ) {
+		$_atomik_emulator = 1;
+	} else {
+		$_atomik_emulator = 0;
+	}
 } else {
 	$_atomik_emulator = $row['atomik_emulator'];
 }
 
-if ( $_POST["atomik_transceiver"] != $row['atomik_transceiver'] && isset($_POST["atomik_transceiver"]) ) {
-	$_atomik_transceiver = $_POST["atomik_transceiver"];
-} else {
+if ( $command != "" && $command <> "") {
+	if ( isset($_POST["atomik_transceiver"]) ) {
+		$_atomik_transceiver = 1;
+	} else {
+		$_atomik_transceiver = 0;
+	}
 	$_atomik_transceiver = $row['atomik_transceiver'];
 }
 
@@ -272,9 +287,8 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 	$_wlan0_dns = $row['wlan0_dns'];
 }
 
+// Processing Command
 
-// Processing Commands
-$command = $_POST["command"];
 // Reboot
 if ($command <> "" && $command !="" && $command == "reboot") {
 	$Handle = fopen("/tmp/atomikreboot", 'w');
@@ -294,6 +308,8 @@ if ($command <> "" && $command !="" && $command == "save_system")
 		$error_text = $erro[0].'.';
 		
 	} else {
+		
+			
 		
 		$sql = "UPDATE atomik_settings SET hostname='".$_hostname."', atomik_api='".$_atomik_api."', atomik_emulator='".$_atomik_emulator."', atomik_transceiver='".$_atomik_transceiver."';";
 		echo $sql;
