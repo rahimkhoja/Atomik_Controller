@@ -42,9 +42,10 @@ function validateTimeSettings( $ntp1, $ntp2)
 function validateSystemSettings($hn)
 {
 	$errors = array();
-	if (preg_match("/^[A-Za-z0-9-]+$/", $hn) == 0) {
-		array_push($errors, "Invalid Hostname");
+	if (preg_match('/^[a-z0-9.\-]+$/i', $hn) {
+		return $errors;
 	} 
+	array_push($errors, "Invalid Hostname");
 	return $errors;
 }
 
@@ -405,15 +406,15 @@ if ($command <> "" && $command !="" && $command == "save_time")
                  <tbody>
                    <tr>
                      <td>Atomik API Service: </td>
-                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" <?php if ($_atomik_api == "on" ) { ?>checked <?php }; ?>></td>
+                     <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" value="1" <?php if ($_atomik_api == "on" ) { ?>checked <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Emulator Service: </td>
-                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" <?php if ($_atomik_emulator == "on" ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_emulator" name="atomik_emulator" class="form-control" value="1" <?php if ($_atomik_emulator == "on" ) { ?>checked  <?php }; ?>></td>
                    </tr>
                    <tr>
                      <td>Mi-Light Transceiver Service: </td>
-                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" <?php if ($_atomik_transceiver == "on" ) { ?>checked  <?php }; ?>></td>
+                     <td><input type="checkbox" id="atomik_transceiver" name="atomik_transceiver" class="form-control" value="1" <?php if ($_atomik_transceiver == "on" ) { ?>checked  <?php }; ?>></td>
                    </tr>
                  </tbody>
                </table></td>
