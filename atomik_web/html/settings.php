@@ -42,6 +42,7 @@ function validateTimeSettings( $ntp1, $ntp2)
 function validateSystemSettings($hn)
 {
 	$errors = array();
+	echo preg_match("/^[A-Za-z0-9-]+$/", $hn);
 	if (preg_match("/^[A-Za-z0-9-]+$/", $hn) == 1) {
 		array_push($errors, "Invalid Hostname");
 	} 
@@ -293,7 +294,7 @@ if ($command <> "" && $command !="" && $command == "save_system")
 		
 	} else {
 		
-		$sql = "UPDATE atomik_settings SET hostname='".$hostname."', atomik_api='".$_atomik_api."', atomik_emulator='".$_atomik_emulator."', atomik_transceiver='".$_atomik_transceiver."';";
+		$sql = "UPDATE atomik_settings SET hostname='".$_hostname."', atomik_api='".$_atomik_api."', atomik_emulator='".$_atomik_emulator."', atomik_transceiver='".$_atomik_transceiver."';";
 		echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
