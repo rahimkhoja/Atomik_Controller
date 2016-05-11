@@ -287,7 +287,6 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 if ($command <> "" && $command !="" && $command == "save_system") 
 {
 	$erro = validateSystemSettings($_hostname);
-	$i = 0;
 	if (count($erro) > 0) 
 	{
 		$error_text = $erro[0].'.';
