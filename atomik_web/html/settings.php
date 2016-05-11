@@ -559,7 +559,6 @@ $("#saveeth0").on('click', function() {
    document.settingsfrm.submit();
 });
 $("#savetime").on('click', function() {
-	$('#command').val("save_time");
    $( "#settingsfrm" )[0].submit();
 });
 $("#savepassword").on('click', function() {
