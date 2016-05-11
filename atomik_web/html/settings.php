@@ -154,12 +154,25 @@ if ( $command != "" && $command <> "") {
 
 // Password POST Data
 
-if ( $_POST["password"] != $row['password'] && isset($_POST["password"])) {
-	$_current_password = $_POST["password"];
+if ( isset($_POST["current_password"]) ) {
+	$_current_password = $_POST["current_password"];
 } else {
-	$_current_password = $row['password'];
+	$_current_password = "";
 }
 
+if ( isset($_POST["new_password_1"]) ) {
+	$_new_password_1 = $_POST["new_password_1"];
+} else {
+	$_new_password_1 = "";
+}
+
+if ( isset($_POST["new_password_2"]) ) {
+	$_new_password_2 = $_POST["new_password_2"];
+} else {
+	$_new_password_2 = "";
+}
+
+$_real_password = $row['password'];
 // Time POST Data
 
 if ( $_POST["timezone"] != $row['timezone'] && isset($_POST["timezone"])) {
@@ -319,12 +332,46 @@ if ($command <> "" && $command !="" && $command == "save_system")
 			$success_text = "System Settings Updated!";
 		} else {
     		$page_error = 1;
-			$error_text = "Error Saving To DB!";
+			$error_text = "Error Saving System Settings To DB!";
 		}
 	}
 }
 // Save Password [Keep Post Data, Verify Form, DB] (save_password)
-
+if ($command <> "" && $command !="" && $command == "save_password") 
+{
+	$erro = validatePasswordUpdate($_real_password, $_current_password, $_new_password_1, $_new_password_2);
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$prefix = '';
+		$len = count($erro);
+		foreach ($erro as $er)
+		{
+    		$error_text .= $prefix . '"' . $er . '"';
+    		$prefix = ', ';
+			if ($i == $len - 2 && $len != 2) {
+        		$prefix = ', and ';
+    		} else if ($i == $len - 2 && $len == 2) {
+				$prefix = ' and ';
+			}
+			$i++;
+		}
+		$error_text .= '.';
+		
+	} else {
+		
+		$sql = "UPDATE atomik_settings SET password='".$_new_password_1."';";
+		echo $sql;
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Password Settings Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Password To DB!";
+		}
+	}
+		
+}
 // Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
 if ($command <> "" && $command !="" && $command == "save_time") 
 {
@@ -357,7 +404,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 			$success_text = "Time Settings Updated!";
 		} else {
     		$page_error = 1;
-			$error_text = "Error Saving To DB!";
+			$error_text = "Error Saving Time Settings To DB!";
 		}
 	}
 }
@@ -450,17 +497,17 @@ if ($command <> "" && $command !="" && $command == "save_time")
     <thead>
       <tr>
         <td>Current Password: </td>
-        <td><input type="password" class="form-control" id="currentpassword" name="currentpassword" value=""></td>
+        <td><input type="password" class="form-control" id="current_password" name="current_password" value=""></td>
       </tr>
       </thead>
     <tbody>
     <tr>
         <td>New Password: </td>
-        <td><input type="password" class="form-control" id="newpassword1" name="newpassword1" value=""></td>
+        <td><input type="password" class="form-control" id="new_password_1" name="new_password_1" value=""></td>
       </tr>
       <tr>
         <td>Repeat Password: </td>
-        <td><input type="password" class="form-control" id="newpassword2" name="newpassword2" value=""></td>
+        <td><input type="password" class="form-control" id="new_password_2" name="new_password_2" value=""></td>
       </tr>
     </tbody>
   </table><hr>
