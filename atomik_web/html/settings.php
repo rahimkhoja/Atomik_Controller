@@ -17,6 +17,7 @@ if (file_exists('/etc/timezone')) {
         $tzone = '"'.$data.'"';
     }
 } 
+ini_set( 'date.timezone', $tzone );
 date_default_timezone_set($tzone);
 
 // Function
