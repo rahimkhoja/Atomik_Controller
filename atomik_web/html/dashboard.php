@@ -15,7 +15,7 @@ if (file_exists('/etc/timezone')) {
     $data = file_get_contents('/etc/timezone');
 	$data = trim($data);
 	if ($data) {
-        $timezone = '"'.$data.'"';
+        $timezone = "'".$data."'";
     }
 } 
 ini_set( 'date.timezone', $timezone );
