@@ -258,7 +258,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div><?php } ?><hr>
-<form id="settingsfrm" name="settingsfrm"  enctype="multipart/form-data" action="settings.php" method="post"><input type="hidden" name="command" value="" >
+<form id="settingsfrm" name="settingsfrm"  enctype="multipart/form-data" action="settings.php" method="post"><input type="hidden" name="command" id="command" value="" >
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
@@ -559,7 +559,7 @@ $("#saveeth0").on('click', function() {
    document.settingsfrm.submit();
 });
 $("#savetime").on('click', function() {
-   document.forms["settingsfrm"].command.value = "save_time";
+	$('#command').val("save_time");
    $( "#settingsfrm" )[0].submit();
 });
 $("#savepassword").on('click', function() {
