@@ -270,7 +270,7 @@ if ($command <> "" && $command !="" && $command == "reboot") {
                  <thead>
                    <tr>
                      <td>Hostname: </td>
-                     <td><input type="text" class="form-control" id="hostname" value="<?php echo $_hostname; ?>"></td>
+                     <td><input type="text" class="form-control" id="hostname" name="hostname" value="<?php echo $_hostname; ?>"></td>
                    </tr>
                  </thead>
                  <tbody>
