@@ -148,6 +148,7 @@ if ( $command != "" && $command <> "") {
 	} else {
 		$_atomik_transceiver = 0;
 	}
+} else {
 	$_atomik_transceiver = $row['atomik_transceiver'];
 }
 
