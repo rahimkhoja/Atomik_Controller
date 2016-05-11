@@ -42,7 +42,7 @@ function validateTimeSettings( $ntp1, $ntp2)
 function validateSystemSettings($hn)
 {
 	$errors = array();
-	if (preg_match('/^[a-z0-9.\-]+$/i', $hn) {
+	if (preg_match('/^[a-z0-9.\-]+$/i', $hn)) {
 		return $errors;
 	} 
 	array_push($errors, "Invalid Hostname");
