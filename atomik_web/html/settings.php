@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
 <title>Atomik Controller - Settings</title>
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
@@ -204,9 +205,9 @@ if ( $_POST["ntp_server_2"] != $row['ntp_server_2'] && isset($_POST["ntp_server_
 }
 
 if ( $_POST["ntp_server_3"] != $row['ntp_server_3'] && isset($_POST["ntp_server_3"]) ) {
-	$_ntp_server_2 = $_POST["ntp_server_3"];
+	$_ntp_server_3 = $_POST["ntp_server_3"];
 } else {
-	$_ntp_server_2 = $row['ntp_server_3'];
+	$_ntp_server_3 = $row['ntp_server_3'];
 }
 
 // Eth0 POST Data
@@ -568,7 +569,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
         <td><input type="text" class="form-control" id="ntp_server_2" name="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
       </tr>
       <tr>
-        <td>NTP Time Server 2: </td>
+        <td>NTP Time Server 3: </td>
         <td><input type="text" class="form-control" id="ntp_server_3" name="ntp_server_3" value="<?php echo $_ntp_server_3; ?>"></td>
       </tr>
     </tbody>
