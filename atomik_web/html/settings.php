@@ -640,26 +640,26 @@ if ($command <> "" && $command !="" && $command == "save_time")
     <tr>
         <td>Wifi0 SSID: </td>
         <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control">
-  <option value="0">None</option>
+  <option value="<?php echo $_wlan0_ssid; ?>"><?php echo $_wlan0_ssid; ?></option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 Method: </td>
         <td><select id="wlan0_method" name="wlan0_method" class="form-control">
-  <option value="Disable">Disable</option>
-  <option value="OpenWEP">OPENWEP</option>
-  <option value="SHAREDWEP">SHAREDWEP</option>
-  <option value="WPAPSK">WPAPSK</option>
-  <option value="WPA2PSK">WPA2PSK</option>
+  <option value="0" <?php if ($_wlan0_method == 0 ) { ?>selected <?php }; ?>>Disable</option>
+  <option value="1" <?php if ($_wlan0_method == 1 ) { ?>selected <?php }; ?>>OPENWEP</option>
+  <option value="2" <?php if ($_wlan0_method == 2 ) { ?>selected <?php }; ?>>SHAREDWEP</option>
+  <option value="3" <?php if ($_wlan0_method == 3 ) { ?>selected <?php }; ?>>WPAPSK</option>
+  <option value="4" <?php if ($_wlan0_method == 4 ) { ?>selected <?php }; ?>>WPA2PSK</option>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 Encryption Algorithm: </td>
         <td><select id="wlan0_algorithm" name="wlan0_algorithm" class="form-control">
-  <option value="0">AES</option>		// only visible wpa and wpa2 methods
-  <option value="0">TKIP</option>		// only visible wpa and wpa2 methods
-  <option value="0">ASCII</option> 		// only visible OPENWEP and SHAREDWEP methods
-  <option value="0">HEX</option>		// only visible OPENWEP and SHAREDWEP methods
+  <?php if ( $_wlan0_algorithm == 2 || $_wlan0_algorithm == 3) { ?><option value="3"<?php if ($_wlan0_algorithm == 3) { echo ' selected'; } ?>>AES</option><?php }; ?> // only visible wpa and wpa2 methods
+  <?php if ( $_wlan0_algorithm == 2 || $_wlan0_algorithm == 3) { ?><option value="2"<?php if ($_wlan0_algorithm == 2) { echo ' selected'; } ?>>TKIP</option><?php }; ?>// only visible wpa and wpa2 methods
+<?php if ( $_wlan0_algorithm == 0 || $_wlan0_algorithm == 1 ) { ?><option value="0"<?php if ($_wlan0_algorithm == 0) { echo ' selected'; } ?>>ASCII</option><?php }; ?> // only visible OPENWEP and SHAREDWEP methods 	
+<?php if ( $_wlan0_algorithm == 0 || $_wlan0_algorithm == 1 ) { ?><option value="1"<?php if ($_wlan0_algorithm == 1) { echo ' selected'; } ?>>HEX</option><?php }; ?> // only visible OPENWEP and SHAREDWEP methods 		
 </select></td>
       </tr>
       <tr>
@@ -669,8 +669,8 @@ if ($command <> "" && $command !="" && $command == "save_time")
       <tr>
         <td>Wifi0 Type: </td>
         <td><select  class="form-control" id="wlan0_type" name="wlan0_type" >
-  <option value="0" <?php if ($_wlan0_type == 0 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="1" <?php if ($_wlan0_type == 1 ) { ?>selected <?php }; ?>>DHCP</option>
+  <option value="0" <?php if ($_wlan0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="1" <?php if ($_wlan0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
@@ -795,6 +795,57 @@ $('#eth0_type').on('change', function() {
   }
 });
 
+
+$('#wlan0_status').on('change', function() {
+  if (this.value == 0) {
+	   
+	  $( "#wlan0_ssid" ).prop( "disabled", true );
+	  $( "#wlan0_ssid" ).children().remove();
+	   
+	  $( "#wlan0_algorithm" ).prop( "disabled", true );
+	  $( "#wlan0_algorithm" ).children().remove();
+	  
+	  $( "#wlan0_method" ).prop( "disabled", true );
+	  $( "#wlan0_method" ).children().remove();
+	  
+	  $( "#wlan0_password" ).prop( "disabled", true );
+	  $( "#wlan0_password" ).val('');
+	  
+	  $( "#wlan0_type" ).prop( "disabled", true );
+	  $( "#wlan0_type" ).children().remove();
+	  $( "#wlan0_ip" ).prop( "disabled", true );
+	  $( "#wlan0_ip" ).val('');
+	  $( "#wlan0_gateway" ).prop( "disabled", true );
+	  $( "#wlan0_gateway" ).val('');
+	  $( "#wlan0_dns" ).prop( "disabled", true );
+	  $( "#wlan0_dns" ).val('');
+	  $( "#wlan0_mask" ).prop( "disabled", true );
+	  $( "#wlan0_mask" ).val('');
+  } else {
+	  $( "#wlan0_ssid" ).prop( "disabled", false );
+	  
+	  $( "#wlan0_method" ).prop( "disabled", false );
+	  $( "#wlan0_method" ).append('<option value="0" selected>Disable</option>');
+	  $( "#wlan0_method" ).append('<option value="1" >OPENWEP</option>');
+	  $( "#wlan0_method" ).append('<option value="2" >SHAREDWEP</option>');
+	  $( "#wlan0_method" ).append('<option value="3" >WPAPSK</option>');
+	  $( "#wlan0_method" ).append('<option value="4" >WPA2PSK</option>');
+	  	  
+	  $( "#wlan0_type" ).prop( "disabled", false );
+	  $( "#wlan0_type" ).append('<option value="1" selected>Static</option>');
+	  $( "#wlan0_type" ).append('<option value="0" >DHCP</option>');
+	  $( "#wlan0_ip" ).prop( "disabled", false );
+	  $( "#wlan0_gateway" ).prop( "disabled", false );
+	  $( "#wlan0_dns" ).prop( "disabled", false );
+	  $( "#wlan0_mask" ).prop( "disabled", false );
+	  
+	  document.settingsfrm.submit();
+  }
+});
+
+
+
+
 $('#wlan0_type').on('change', function() {
   if (this.value == 0) {
 	  $( "#wlan0_ip" ).prop( "disabled", true );
@@ -810,6 +861,25 @@ $('#wlan0_type').on('change', function() {
 	  $( "#wlan0_gateway" ).prop( "disabled", false );
 	  $( "#wlan0_dns" ).prop( "disabled", false );
 	  $( "#wlan0_mask" ).prop( "disabled", false );
+  }
+});
+
+$('#wlan0_method').on('change', function() {
+  if (this.value == 0) {
+	  $( "#wlan0_algorithm" ).prop( "disabled", true );
+	  $( "#wlan0_algorithm" ).children().remove();
+	  $( "#wlan0_password" ).prop( "disabled", true );
+	  $( "#wlan0_password" ).val('');
+  } else if (this.value == 1 || this.value ==2) {
+	  $( "#wlan0_algorithm" ).prop( "disabled", false );
+	  $( "#wlan0_algorithm" ).append('<option value="0" selected>ASCII</option>');
+	  $( "#wlan0_algorithm" ).append('<option value="1">HEX</option>');
+	  $( "#wlan0_password" ).prop( "disabled", false );
+  } else if (this.value == 3 || this.value ==4) {
+	  $( "#wlan0_algorithm" ).prop( "disabled", false );
+	  $( "#wlan0_algorithm" ).append('<option value="2" selected>ASCII</option>');
+	  $( "#wlan0_algorithm" ).append('<option value="3">HEX</option>');
+	  $( "#wlan0_password" ).prop( "disabled", false );
   }
 });
 </script>
