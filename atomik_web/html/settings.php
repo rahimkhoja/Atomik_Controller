@@ -669,8 +669,8 @@ if ($command <> "" && $command !="" && $command == "save_time")
       <tr>
         <td>Wifi0 Type: </td>
         <td><select  class="form-control" id="wlan0_type" name="wlan0_type" >
-  <option value="0" <?php if ($_wlan0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="1" <?php if ($_wlan0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option>
+  <option value="1" <?php if ($_wlan0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="0" <?php if ($_wlan0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option>
 </select></td>
       </tr>
       <tr>
@@ -842,10 +842,7 @@ $('#wlan0_status').on('change', function() {
 	  document.settingsfrm.submit();
   }
 });
-
-
-
-
+    
 $('#wlan0_type').on('change', function() {
   if (this.value == 0) {
 	  $( "#wlan0_ip" ).prop( "disabled", true );
@@ -871,11 +868,13 @@ $('#wlan0_method').on('change', function() {
 	  $( "#wlan0_password" ).prop( "disabled", true );
 	  $( "#wlan0_password" ).val('');
   } else if (this.value == 1 || this.value ==2) {
+	  $( "#wlan0_algorithm" ).children().remove();
 	  $( "#wlan0_algorithm" ).prop( "disabled", false );
 	  $( "#wlan0_algorithm" ).append('<option value="0" selected>ASCII</option>');
 	  $( "#wlan0_algorithm" ).append('<option value="1">HEX</option>');
 	  $( "#wlan0_password" ).prop( "disabled", false );
   } else if (this.value == 3 || this.value ==4) {
+	  $( "#wlan0_algorithm" ).children().remove();
 	  $( "#wlan0_algorithm" ).prop( "disabled", false );
 	  $( "#wlan0_algorithm" ).append('<option value="2" selected>ASCII</option>');
 	  $( "#wlan0_algorithm" ).append('<option value="3">HEX</option>');
