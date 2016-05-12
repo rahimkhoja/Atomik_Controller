@@ -761,17 +761,22 @@ $('#eth0_status').on('change', function() {
 	  $( "#eth0_type" ).prop( "disabled", true );
 	  $( "#eth0_type" ).children().remove();
 	  $( "#eth0_ip" ).prop( "disabled", true );
-	  $( "#eth0_ip" ).value = "";
+	  $( "#eth0_ip" ).val('');
 	  $( "#eth0_gateway" ).prop( "disabled", true );
+	  $( "#eth0_gateway" ).val('');
 	  $( "#eth0_dns" ).prop( "disabled", true );
+	  $( "#eth0_dns" ).val('');
+	  $( "#eth0_mask" ).prop( "disabled", true );
+	  $( "#eth0_mask" ).val('');
   } else {
 	  $( "#eth0_type" ).prop( "disabled", false );
-	  $( "#eth0_type" ).append('<option value="1" >Static</option>');
+	  $( "#eth0_type" ).append('<option value="1" selected>Static</option>');
 	  $( "#eth0_type" ).append('<option value="0" >DHCP</option>');
 	  
 	  $( "#eth0_ip" ).prop( "disabled", false );
 	  $( "#eth0_gateway" ).prop( "disabled", false );
 	  $( "#eth0_dns" ).prop( "disabled", false );
+	  $( "#eth0_mask" ).prop( "disabled", false );
   
   }
   
