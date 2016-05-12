@@ -259,7 +259,7 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Current System Time: </td>
-        <td><?php echo date(DATE_RFC2822); ?></td>
+        <td><?php echo date("D M j G:i:s T Y",time() ); ?></td>
       </tr>
       <tr>
         <td>System Uptime: </td>

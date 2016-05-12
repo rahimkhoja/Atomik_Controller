@@ -536,7 +536,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
     <thead>
       <tr>
         <td>Current System Time: </td>
-        <td>Tue, 3 Apr 2016 22:11:19 -0700</td>
+        <td><?php echo date("D M j G:i:s T Y",time() ); ?></td>
       </tr>
     </thead>
     <tbody>
