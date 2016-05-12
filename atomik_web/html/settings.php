@@ -869,15 +869,13 @@ $('#wlan0_method').on('change', function() {
 	  $( "#wlan0_password" ).val('');
   } else if (this.value == 1 || this.value ==2) {
 	  $( "#wlan0_algorithm" ).children().remove();
-	  $( "#wlan0_algorithm" ).prop( "disabled", false );
 	  $( "#wlan0_algorithm" ).append('<option value="0" selected>ASCII</option>');
 	  $( "#wlan0_algorithm" ).append('<option value="1">HEX</option>');
 	  $( "#wlan0_password" ).prop( "disabled", false );
   } else if (this.value == 3 || this.value ==4) {
 	  $( "#wlan0_algorithm" ).children().remove();
-	  $( "#wlan0_algorithm" ).prop( "disabled", false );
-	  $( "#wlan0_algorithm" ).append('<option value="2" selected>ASCII</option>');
-	  $( "#wlan0_algorithm" ).append('<option value="3">HEX</option>');
+	  $( "#wlan0_algorithm" ).append('<option value="2" selected>TKIP</option>');
+	  $( "#wlan0_algorithm" ).append('<option value="3">AES</option>');
 	  $( "#wlan0_password" ).prop( "disabled", false );
   }
 });
