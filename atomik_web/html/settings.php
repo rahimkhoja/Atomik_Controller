@@ -758,9 +758,9 @@ $('#eth0_status').on('change', function() {
   
   alert( this.value ); 
   if (this.value == 0) {
-	  document.forms["settingsfrm"].eth0_type.prop("disabled", true);
+	  $( "#eth0_type" ).prop( "disabled", true );
   } else {
-	  document.forms["settingsfrm"].eth0_type.prop("disabled", false);
+	  $( "#eth0_type" ).prop( "disabled", false );
   }
   
   
