@@ -415,9 +415,9 @@ if ($command <> "" && $command !="" && $command == "save_time")
 			$error_text = "Error Saving Time Settings To DB!";
 		}
 	$timecommand = "sudo -S /usr/bin/timedatectl set-timezone ".$_timezone." 2>&1";
-	echo $timecommand;
-	exec($timecommand, $resp);
-	echo implode(",", $resp);
+	
+	ini_set( 'date.timezone', trim($_timezone) );
+	date_default_timezone_set( trim($_timezone) );
 	}
 	
 }
