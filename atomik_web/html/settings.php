@@ -832,8 +832,8 @@ $('#wlan0_status').on('change', function() {
 	  $( "#wlan0_method" ).append('<option value="4" >WPA2PSK</option>');
 	  	  
 	  $( "#wlan0_type" ).prop( "disabled", false );
-	  $( "#wlan0_type" ).append('<option value="1" selected>Static</option>');
-	  $( "#wlan0_type" ).append('<option value="0" >DHCP</option>');
+	  $( "#wlan0_type" ).append('<option value="1">Static</option>');
+	  $( "#wlan0_type" ).append('<option value="0" selected>DHCP</option>');
 	  $( "#wlan0_ip" ).prop( "disabled", false );
 	  $( "#wlan0_gateway" ).prop( "disabled", false );
 	  $( "#wlan0_dns" ).prop( "disabled", false );
