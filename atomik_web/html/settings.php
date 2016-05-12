@@ -753,6 +753,19 @@ $("#savesystem").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_system";
    document.settingsfrm.submit();
 });
+
+$('#eth0_status').on('change', function() {
+  
+  alert( this.value ); 
+  if (this.value == 0) {
+	  document.forms["settingsfrm"].eth0_type.prop("disabled", true);
+  } else {
+	  document.forms["settingsfrm"].eth0_type.prop("disabled", false);
+  }
+  
+  
+  // or $(this).val()
+});
 </script>
 </body>
 </html>
