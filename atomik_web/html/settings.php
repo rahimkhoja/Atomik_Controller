@@ -755,8 +755,6 @@ $("#savesystem").on('click', function() {
 });
 
 $('#eth0_status').on('change', function() {
-  
-  alert( this.value ); 
   if (this.value == 0) {
 	  $( "#eth0_type" ).prop( "disabled", true );
 	  $( "#eth0_type" ).children().remove();
@@ -772,16 +770,47 @@ $('#eth0_status').on('change', function() {
 	  $( "#eth0_type" ).prop( "disabled", false );
 	  $( "#eth0_type" ).append('<option value="1" selected>Static</option>');
 	  $( "#eth0_type" ).append('<option value="0" >DHCP</option>');
-	  
 	  $( "#eth0_ip" ).prop( "disabled", false );
 	  $( "#eth0_gateway" ).prop( "disabled", false );
 	  $( "#eth0_dns" ).prop( "disabled", false );
 	  $( "#eth0_mask" ).prop( "disabled", false );
-  
   }
-  
-  
-  // or $(this).val()
+});
+
+$('#eth0_type').on('change', function() {
+  if (this.value == 0) {
+	  $( "#eth0_ip" ).prop( "disabled", true );
+	  $( "#eth0_ip" ).val('');
+	  $( "#eth0_gateway" ).prop( "disabled", true );
+	  $( "#eth0_gateway" ).val('');
+	  $( "#eth0_dns" ).prop( "disabled", true );
+	  $( "#eth0_dns" ).val('');
+	  $( "#eth0_mask" ).prop( "disabled", true );
+	  $( "#eth0_mask" ).val('');
+  } else {
+	  $( "#eth0_ip" ).prop( "disabled", false );
+	  $( "#eth0_gateway" ).prop( "disabled", false );
+	  $( "#eth0_dns" ).prop( "disabled", false );
+	  $( "#eth0_mask" ).prop( "disabled", false );
+  }
+});
+
+$('#wlan0_type').on('change', function() {
+  if (this.value == 0) {
+	  $( "#wlan0_ip" ).prop( "disabled", true );
+	  $( "#wlan0_ip" ).val('');
+	  $( "#wlan0_gateway" ).prop( "disabled", true );
+	  $( "#wlan0_gateway" ).val('');
+	  $( "#wlan0_dns" ).prop( "disabled", true );
+	  $( "#wlan0_dns" ).val('');
+	  $( "#wlan0_mask" ).prop( "disabled", true );
+	  $( "#wlan0_mask" ).val('');
+  } else {
+	  $( "#wlan0_ip" ).prop( "disabled", false );
+	  $( "#wlan0_gateway" ).prop( "disabled", false );
+	  $( "#wlan0_dns" ).prop( "disabled", false );
+	  $( "#wlan0_mask" ).prop( "disabled", false );
+  }
 });
 </script>
 </body>
