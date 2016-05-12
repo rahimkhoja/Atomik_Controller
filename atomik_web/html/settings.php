@@ -759,8 +759,20 @@ $('#eth0_status').on('change', function() {
   alert( this.value ); 
   if (this.value == 0) {
 	  $( "#eth0_type" ).prop( "disabled", true );
+	  $( "#eth0_type" ).children().remove();
+	  $( "#eth0_ip" ).prop( "disabled", true );
+	  $( "#eth0_ip" ).value = "";
+	  $( "#eth0_gateway" ).prop( "disabled", true );
+	  $( "#eth0_dns" ).prop( "disabled", true );
   } else {
 	  $( "#eth0_type" ).prop( "disabled", false );
+	  $( "#eth0_type" ).append('<option value="1" >Static</option>');
+	  $( "#eth0_type" ).append('<option value="0" >DHCP</option>');
+	  
+	  $( "#eth0_ip" ).prop( "disabled", false );
+	  $( "#eth0_gateway" ).prop( "disabled", false );
+	  $( "#eth0_dns" ).prop( "disabled", false );
+  
   }
   
   
