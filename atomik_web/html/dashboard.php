@@ -259,7 +259,7 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Current System Time: </td>
-        <td><?php echo date("l, M jS Y, g:i:sA ( T )",time() ); ?></td>
+        <td><?php echo date("l, M jS Y, g:i:s A ( T )",time() ); ?></td>
       </tr>
       <tr>
         <td>System Uptime: </td>
