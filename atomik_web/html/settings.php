@@ -191,12 +191,6 @@ if ( $_POST["timezone"] != $row['timezone'] && isset($_POST["timezone"])) {
 	$_timezone = $row['timezone'];
 }
 
-if ( $_POST["time_update_interval"] != $row['time_update_interval'] && isset($_POST["time_update_interval"]) ) {
-	$_time_update_interval = $_POST["time_update_interval"];
-} else {
-	$_time_update_interval = $row['time_update_interval'];
-}
-
 if ( $_POST["ntp_server_1"] != $row['ntp_server_1'] && isset($_POST["ntp_server_1"]) ) {
 	$_ntp_server_1 = $_POST["ntp_server_1"];
 } else {
@@ -207,6 +201,12 @@ if ( $_POST["ntp_server_2"] != $row['ntp_server_2'] && isset($_POST["ntp_server_
 	$_ntp_server_2 = $_POST["ntp_server_2"];
 } else {
 	$_ntp_server_2 = $row['ntp_server_2'];
+}
+
+if ( $_POST["ntp_server_3"] != $row['ntp_server_3'] && isset($_POST["ntp_server_3"]) ) {
+	$_ntp_server_2 = $_POST["ntp_server_3"];
+} else {
+	$_ntp_server_2 = $row['ntp_server_3'];
 }
 
 // Eth0 POST Data
@@ -405,7 +405,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 		
 	} else {
 		
-		$sql = "UPDATE atomik_settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', time_update_interval='".$_time_update_interval."';";
+		$sql = "UPDATE atomik_settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', ntp_server_3='".$_ntp_server_3."';";
 		echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
@@ -560,49 +560,16 @@ if ($command <> "" && $command !="" && $command == "save_time")
 		}?></select></td>
       </tr>
       <tr>
-        <td>Time Update Interval: </td>
-        <td><select  class="form-control" id="time_update_interval" name="time_update_interval">
-        <?php 
-				
-		if ($_time_update_interval == 0) 
-		{
-			echo '<option value="0" selected>Never</option>'."\r\n";
-		} else {
-			echo '<option value="0">Never</option>'."\r\n";
-		}
-		if ($_time_update_interval == 24) 
-		{
-			echo '<option value="24" selected>Daily</option>'."\r\n";
-		} else {
-			echo '<option value="24">Daily</option>'."\r\n";
-		}
-		if ($_time_update_interval == 2) 
-		{
-			echo '<option value="2" selected>Every 2 Hours</option>'."\r\n";
-		} else {
-			echo '<option value="2">Every 2 Hours</option>'."\r\n";
-		}
-		if ($_time_update_interval == 6) 
-		{
-			echo '<option value="6" selected>Every 6 Hours</option>'."\r\n";
-		} else {
-			echo '<option value="6">Every 6 Hours</option>'."\r\n";
-		}
-		if ($_time_update_interval == 12) 
-		{
-			echo '<option value="12" selected>Every 12 Hours</option>'."\r\n";
-		} else {
-			echo '<option value="12">Every 12 Hours</option>'."\r\n";
-		} ?>
-</select></label></td>
-      </tr>
-      <tr>
         <td>NTP Time Server 1: </td>
         <td><input type="text" class="form-control" id="ntp_server_1" name="ntp_server_1" value="<?php echo $_ntp_server_1; ?>"></td>
       </tr>
       <tr>
         <td>NTP Time Server 2: </td>
         <td><input type="text" class="form-control" id="ntp_server_2" name="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
+      </tr>
+      <tr>
+        <td>NTP Time Server 2: </td>
+        <td><input type="text" class="form-control" id="ntp_server_3" name="ntp_server_3" value="<?php echo $_ntp_server_3; ?>"></td>
       </tr>
     </tbody>
   </table>
