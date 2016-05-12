@@ -1,7 +1,6 @@
 <?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
-
 <meta charset="utf-8">
 <title>Atomik Controller - Settings</title>
 <link rel="stylesheet" href="css/atomik.css">
@@ -14,7 +13,7 @@ if (file_exists('/etc/timezone')) {
     $data = file_get_contents('/etc/timezone');
     if ($data) {
 	$data = trim($data);
-        $tzone = "'".$data."'";
+        $tzone = $data;
     }
 } 
 ini_set( 'date.timezone', $tzone );
