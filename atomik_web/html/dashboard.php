@@ -9,7 +9,6 @@
 $page_error = 0;
 $page_success = 0;
 
-
 $timezone = 'UTC';
 if (file_exists('/etc/timezone')) {
     // Ubuntu / Debian.
@@ -20,9 +19,8 @@ if (file_exists('/etc/timezone')) {
     }
 } 
 ini_set( 'date.timezone', $timezone );
-echo $timezone;
 date_default_timezone_set($timezone);
-echo date_default_timezone_get();
+
 function getInterfaceMAC($interface) {
 	if (getInterfaceStatus($interface) == "Connected") {
 		exec('netstat -ie', $result);
@@ -80,7 +78,6 @@ function getInterfaceMask($interface) {
   		}
 	}
 }
-
 
 function getInterfaceDNS($interface) {
 	if (getInterfaceStatus($interface) == "Connected") {
@@ -190,7 +187,6 @@ function getCpuUsage() {
 function getTimeZone() {
     return date_default_timezone_get().' ( '.date('T').' ) ';
   }
-
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -229,7 +225,6 @@ function getTimeZone() {
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div><?php } ?>
 <hr>
-
 <div class="container">
     <div class="row">
         <div class="col-xs-6">
@@ -396,7 +391,6 @@ function getTimeZone() {
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
@@ -405,4 +399,3 @@ function getTimeZone() {
     </div>
 </body>
 </html>
-

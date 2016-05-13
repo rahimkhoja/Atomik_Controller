@@ -161,7 +161,8 @@ $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 
 // System POST Data
-print_r($_POST); 
+// print_r($_POST);
+ 
 if ( $_POST["hostname"] != $row['hostname'] && isset($_POST["hostname"])) {
 	$_hostname = $_POST["hostname"];
 } else {
@@ -370,7 +371,6 @@ if ($command <> "" && $command !="" && $command == "save_system")
 	} else {
 		
 		$sql = "UPDATE atomik_settings SET hostname='".$_hostname."', atomik_api='".$_atomik_api."', atomik_emulator='".$_atomik_emulator."', atomik_transceiver='".$_atomik_transceiver."';";
-		echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "System Settings Updated!";
@@ -407,7 +407,6 @@ if ($command <> "" && $command !="" && $command == "save_password")
 		$error_text .= '.';
 	} else {
 		$sql = "UPDATE atomik_settings SET password='".$_new_password_1."';";
-		echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Password Settings Updated!";
@@ -674,9 +673,9 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
     <tbody>
     <tr>
         <td>Eth0 Type: </td>
-        <td><select id="eth0_type" name="eth0_type" class="form-control">
-  <option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
-  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option>
+        <td><select id="eth0_type" name="eth0_type" class="form-control"<?php if ($_eth0_status == 0) { ?> disabled<?php }; ?>>
+  <?php if ($_eth0_status > 0 ) { ?><option value="1" <?php if ($_eth0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
+  <option value="0" <?php if ($_eth0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option><?php }; ?>
 </select></td>
       </tr>
       <tr>

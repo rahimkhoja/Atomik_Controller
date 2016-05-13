@@ -259,7 +259,7 @@
   </div>
   <div class="col-xs-1"><a href="zones.php"  class="btn-warning btn">Cancel</a>
   </div>
-  <div class="col-xs-1"><a href="" class="btn-danger btn">Delete Device</a>
+  <div class="col-xs-1"><a href="" class="btn-danger btn">Delete Zone</a>
   </div>
   <div class="col-xs-4">
   </div>
