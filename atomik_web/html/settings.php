@@ -408,7 +408,8 @@ if ($command <> "" && $command !="" && $command == "save_system")
 			$error_text = "Error Saving System Settings To DB!";
 		}
 		
-		// Set Hostname Here
+		
+	$hnameupdatecmd = shell_exec("sudo /var/atomik/scripts/updateHOSTNAME.sh 2>&1");
 		
 	}
 }
