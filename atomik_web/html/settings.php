@@ -35,7 +35,7 @@ function isValidMask($mask)
 	 return ($result = log((ip2long($mask)^-1)+1,2)) != 0 && $result-(int)$result == 0;
 }
 
-function validateTimeSettings( $ntp1, $ntp2)
+function validateTimeSettings( $ntp1, $ntp2, $ntp3)
 {
 	$errors = array();
 	if (!isValidIP($ntp1)) 
@@ -44,9 +44,12 @@ function validateTimeSettings( $ntp1, $ntp2)
 	}
 	if (!isValidIP($ntp2)) 
 	{
-		array_push($errors, "Invalid NTP Server 1 Address");
+		array_push($errors, "Invalid NTP Server 2 Address");
 	}
-	
+	if (!isValidIP($ntp3)) 
+	{
+		array_push($errors, "Invalid NTP Server 3 Address");
+	}
 	return $errors;
 }
 
@@ -96,6 +99,36 @@ function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
 			if (!isValidMask($emask)) 
 			{
 				array_push($errors, "Invalid Eth0 Subnet Mask");
+			}
+		}
+	}
+}
+
+
+function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo)
+{
+	$errors = array();
+	if ($stat == 0) {
+		return $errors;
+	} else {
+		if($ty == 0 || $stat == 0 ) {
+			return $errors;
+		} else {
+			if (!isValidIP($eip)) 
+			{
+				array_push($errors, "Invalid Wlan0 IP Address");
+			}
+			if (!isValidIP($egw)) 
+			{
+				array_push($errors, "Invalid Wlan0 Gateway Address");
+			}
+			if (!isValidIP($edns)) 
+			{
+				array_push($errors, "Invalid Wlan0 DNS Address");
+			}
+			if (!isValidMask($emask)) 
+			{
+				array_push($errors, "Invalid Wlan0 Subnet Mask");
 			}
 		}
 	}
@@ -343,6 +376,10 @@ if ($command <> "" && $command !="" && $command == "save_system")
     		$page_error = 1;
 			$error_text = "Error Saving System Settings To DB!";
 		}
+		
+		// Set Hostname Here
+		
+		
 	}
 }
 // Save Password [Keep Post Data, Verify Form, DB] (save_password)
@@ -366,9 +403,7 @@ if ($command <> "" && $command !="" && $command == "save_password")
 			$i++;
 		}
 		$error_text .= '.';
-		
 	} else {
-		
 		$sql = "UPDATE atomik_settings SET password='".$_new_password_1."';";
 		echo $sql;
 		if ($conn->query($sql) === TRUE) {
@@ -384,7 +419,7 @@ if ($command <> "" && $command !="" && $command == "save_password")
 // Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
 if ($command <> "" && $command !="" && $command == "save_time") 
 {
-	$erro = validateTimeSettings($_ntp_server_1, $_ntp_server_2);
+	$erro = validateTimeSettings($_ntp_server_1, $_ntp_server_2, $_ntp_server_3);
 	$i = 0;
 	if (count($erro) > 0) 
 	{
@@ -423,6 +458,47 @@ if ($command <> "" && $command !="" && $command == "save_time")
 	
 }
 // Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
+
+if ($command <> "" && $command !="" && $command == "save_time") // ($stat, $ty, $eip, $emask, $egw, $edns)
+{
+	$erro = validateEth0Settings($_eth0_status, $_eth0_type, $_eth0_ip, $_eth0_mask, $_eth0_gateway, $_eth0_dns);
+	$i = 0;
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$prefix = '';
+		$len = count($erro);
+		foreach ($erro as $er)
+		{
+    		$error_text .= $prefix . '"' . $er . '"';
+    		$prefix = ', ';
+			if ($i == $len - 2 && $len != 2) {
+        		$prefix = ', and ';
+    		} else if ($i == $len - 2 && $len == 2) {
+				$prefix = ' and ';
+			}
+			$i++;
+		}
+		$error_text .= '.';
+		
+	} else {
+		
+		$sql = "UPDATE atomik_settings SET eth0_type='".$_eth0_type."', eth0_status='".$_eth0_status."', eth0_ip='".$_eth0_ip."', eth0_mask='".$_eth0_mask."', eth0_gateway='".$_eth0_gateway."', eth0_dns='".$eth0_dns."';";
+		echo $sql;
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Eth0 Adaptor Information Saved!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Eth0 Adpator Information To DB!";
+		}
+	
+	}
+	
+}
+
+
+
 
 // Save Wifi Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
 
