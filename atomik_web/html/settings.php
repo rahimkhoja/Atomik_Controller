@@ -139,9 +139,8 @@ function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $e
 		echo $emethod;
 		if ( $emethod != 0 ) 
 		{
-			$message = "Emethod Not 0";
-echo "<script type='text/javascript'>alert('$message');</script>";
-			if ( $emethod <= 2 && $ealgo == 1 ) 
+			
+			if ( $emethod <= 2 && $ealgo == 0 ) 
 			{
 				$message = "Emethod <= 2 0";
 echo "<script type='text/javascript'>alert('$message');</script>";
@@ -154,7 +153,7 @@ echo "<script type='text/javascript'>alert('$message');</script>";
 				}
 			}
 			
-			if ( $emethod < 3 && $ealgo == 2 ) 
+			if ( $emethod <= 2 && $ealgo == 1 ) 
 			{
 				
 				if ( ! ( strlen($epass) == 10 || strlen($epass) == 26 ) )
@@ -547,8 +546,6 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
 
 if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
 {
-$message = "Before Function ( Wlan0_method = " . $_wlan0_method. ")";
-echo "<script type='text/javascript'>alert('$message');</script>";
 	$erro = validateWlan0Settings($_wlan0_status, $_wlan0_type, $_wlan0_ip, $_wlan0_mask, $_wlan0_gateway, $_wlan0_dns, $_wlan0_ssid, $_wlan0_method, $_wlan0_algorithm, $_wlan0_password);
 	$i = 0;
 	if (count($erro) > 0) 
