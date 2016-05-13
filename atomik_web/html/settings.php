@@ -858,7 +858,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
   <div class="container center col-xs-12">
   <div class="col-xs-2 text-center"><p><a id="refreshssid" href="#" class="btn-primary btn">Refresh SSID List</a></p></div>  
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="savewlan" href="#" class="btn-success btn">Save Wireless Settings</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savewlan0" href="#" class="btn-success btn">Save Wireless Settings</a></p></div>
   </div>
   <br><br><hr> 
     </div>
