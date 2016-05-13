@@ -459,7 +459,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 }
 // Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
 
-if ($command <> "" && $command !="" && $command == "save_time") // ($stat, $ty, $eip, $emask, $egw, $edns)
+if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, $eip, $emask, $egw, $edns)
 {
 	$erro = validateEth0Settings($_eth0_status, $_eth0_type, $_eth0_ip, $_eth0_mask, $_eth0_gateway, $_eth0_dns);
 	$i = 0;
