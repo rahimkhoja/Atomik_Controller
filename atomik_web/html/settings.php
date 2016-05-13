@@ -790,7 +790,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
         <td>Wifi0 SSID: </td>
         <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0) { ?>
    <?php 
-		$ssidcmd = shell_exec("sudo iwlist wlan0 scan | grep SSID: | cut -d: -f2 | tr '\"' ' ' | awk {'print $1'}");  
+		$ssidcmd = shell_exec("cat /var/atomik/www/ssid.txt");  
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $ssidcmd) as $line) 
 		{
 			$selected = "";
