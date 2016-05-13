@@ -794,7 +794,9 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $ssidcmd) as $line) 
 		{
 			$selected = "";
-			
+			$message = "$line = " . trim($line) . " - $_wlan_ssid = " . trim($_wlan0_ssid);
+
+echo "<script type='text/javascript'>alert('$message');</script>";
 			if (trim($line) == trim($_wlan0_ssid)) 
 			{
 				$selected = "selected";
