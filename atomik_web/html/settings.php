@@ -905,6 +905,10 @@ $("#saveeth0").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_eth0";
    document.settingsfrm.submit();
 });
+$("#savewlan0").on('click', function() {
+   document.forms["settingsfrm"].command.value = "save_wlan0";
+   document.settingsfrm.submit();
+});
 $("#savetime").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_time";
    document.settingsfrm.submit();
