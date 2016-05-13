@@ -107,67 +107,7 @@ function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
 }
 
 
-function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
-{
-	$errors = array();
-	if ($stat > 0 ) 
-	{
-		if ( $ty >0 ) 
-		{
-			if (!isValidIP($eip)) 
-			{
-				array_push($errors, "Invalid Wlan0 IP Address");
-			}
-			if (!isValidIP($egw)) 
-			{
-				array_push($errors, "Invalid Wlan0 Gateway Address");
-			}
-			if (!isValidIP($edns)) 
-			{
-				array_push($errors, "Invalid Wlan0 DNS Address");
-			}
-			if (!isValidMask($emask)) 
-			{
-				array_push($errors, "Invalid Wlan0 Subnet Mask");
-			}
-		}
-		if ($essid <> "" && $essid != "") 
-		{
-			array_push($errors, "Invalid SSID");
-		}
-		
-		if ( $emethod > 0 ) 
-		{
-			if (( $emethod == 1 || $emethod == 2 ) && $ealgo == 1 ) {
-				
-				if ( !( strlen($epass) = 5 || strlen($epass) = 13 ) ) {
-					array_push($errors, "Invalid Wlan0 Password. Password Length Must Be 5 Or 13 Characters Long");
-				}
-			}
-			
-			if (( $emethod == 1 || $emethod == 2 ) && $ealgo == 2 ) {
-				
-				if ( !( strlen($epass) = 10 || strlen($epass) = 26 ) ) {
-					array_push($errors, "Invalid Wlan0 Password. Hex Password Length Must Be 10 Or 26 Characters Long");
-				}
-				if ( !( ctype_xdigit($epass) ) ) {
-					array_push($errors, "Invalid Wlan0 Password. Password Is Not Hex");
-				}
-			}
-			
-			if ( $emethod == 3 || $emethod == 4 ) {
-				
-				if ( strlen($epass) < 8 || strlen($epass) > 63 ) {
-					array_push($errors, "Invalid Wlan0 Password. Password Length Must Be 8 to 63 Characters Long");
-				}
-			}
-			
-		}
-			 
-	}
-	return $errors;
-	
-}
+
 
 // Set Default Error & Success Settings
 $page_error = 0;
