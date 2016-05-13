@@ -330,8 +330,6 @@ if ( $_POST["wlan0_ssid"] != $row['wlan0_ssid'] && isset($_POST["wlan0_ssid"]) )
 	$_wlan0_ssid = $row['wlan0_ssid'];
 }
 
-echo 'wlan0ssid: '.$_wlan0_ssid;
-
 if ( $_POST["wlan0_method"] != $row['wlan0_method'] && isset($_POST["wlan0_method"]) ) {
 	$_wlan0_method = $_POST["wlan0_method"];
 } else {
@@ -575,6 +573,10 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 	
 	}
 	
+}
+if ($command <> "" && $command !="" && $command == "refresh_ssid") 
+{
+	$timecommand = "sudo -S /var/atomik/scripts/updateSSIDlist.sh 2>&1";
 }
 
 ?></head>
@@ -926,7 +928,7 @@ $("#savesystem").on('click', function() {
 });
 
 $("#refreshssid").on('click', function() {
-   document.forms["settingsfrm"].command.value = "";
+   document.forms["settingsfrm"].command.value = "refresh_ssid";
    document.settingsfrm.submit();
 });
 
