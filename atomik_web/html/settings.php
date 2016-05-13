@@ -165,6 +165,7 @@ function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $e
 		}
 			 
 	}
+	return $errors;
 	
 }
 
@@ -959,7 +960,6 @@ $('#eth0_type').on('change', function() {
 	  $( "#eth0_mask" ).prop( "disabled", false );
   }
 });
-
 
 $('#wlan0_status').on('change', function() {
   if (this.value == 0) {
