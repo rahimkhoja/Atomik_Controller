@@ -537,43 +537,7 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
 
 // Save Wifi Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_wlan0)
 
-if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
-{
-	$erro = validateWlan0Settings($_wlan0_status, $_wlan0_type, $_wlan0_ip, $_wlan0_mask, $_wlan0_gateway, $_wlan0_dns, $_wlan0_ssid, $_wlan0_method, $_wlan0_algorithm, $_wlan0_password);
-	$i = 0;
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$prefix = '';
-		$len = count($erro);
-		foreach ($erro as $er)
-		{
-    		$error_text .= $prefix . '"' . $er . '"';
-    		$prefix = ', ';
-			if ($i == $len - 2 && $len != 2) {
-        		$prefix = ', and ';
-    		} else if ($i == $len - 2 && $len == 2) {
-				$prefix = ' and ';
-			}
-			$i++;
-		}
-		$error_text .= '.';
-		
-	} else {
-		
-		$sql = "UPDATE atomik_settings SET wlan0_type='".$_wlan0_type."', wlan0_status='".$_wlan0_status."', wlan0_ip='".$_wlan0_ip."', wlan0_mask='".$_wlan0_mask."', wlan0_gateway='".$_wlan0_gateway."', wlan0_dns='".$_wlan0_dns."', wlan0_method='".$_wlan0_method."', wlan0_algorithm='".$_wlan0_algorithm."', wlan0_password='".$_wlan0_password."';";
-		
-		if ($conn->query($sql) === TRUE) {
-    		$page_success = 1;
-			$success_text = "Wlan0 Adaptor Information Saved!";
-		} else {
-    		$page_error = 1;
-			$error_text = "Error Saving Wlan0 Adpator Information To DB!";
-		}
-	
-	}
-	
-}
+
 
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
