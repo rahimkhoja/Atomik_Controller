@@ -795,14 +795,14 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 		{
 			$selected = "";
 			
-			if ($line == $_wlan0_ssid) 
+			if (trim($line) == trim($_wlan0_ssid)) 
 			{
 				$selected = "selected";
 			}
 			
 			if ($line != "" && $line <>"") 
 			{
-				echo '<option value="'.$line.'" '.$selected.'>'.$line.'</option>'."\r\n";
+				echo '<option value="'.trim($line).'" '.$selected.'>'.trim($line).'</option>'."\r\n";
 			}
 		}?>
 <?php }; ?></select></td>
