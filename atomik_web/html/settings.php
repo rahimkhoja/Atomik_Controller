@@ -135,10 +135,10 @@ function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $e
 		{
 			array_push($errors, "Invalid SSID");
 		}
-		
-		if ( $emethod > 0 ) 
+		echo $emethod;
+		if ( $emethod != 0 ) 
 		{
-			if ( $emethod < 3 && $ealgo == 1 ) 
+			if ( $emethod <= 2 && $ealgo == 1 ) 
 			{
 				if ( ! ( strlen($epass) == 5 || strlen($epass) == 13 ) ) 
 				{
