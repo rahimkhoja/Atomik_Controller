@@ -108,8 +108,7 @@ function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
 
 function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
 {
-	$message = "Before Function ( Wlan0_method = " . $emethod. ")";
-echo "<script type='text/javascript'>alert('$message');</script>";
+	
 	$errors = array();
 	if ( $stat > 0 ) 
 	{
@@ -140,10 +139,17 @@ echo "<script type='text/javascript'>alert('$message');</script>";
 		echo $emethod;
 		if ( $emethod != 0 ) 
 		{
+			$message = "Emethod Not 0";
+echo "<script type='text/javascript'>alert('$message');</script>";
 			if ( $emethod <= 2 && $ealgo == 1 ) 
 			{
+				$message = "Emethod <= 2 0";
+echo "<script type='text/javascript'>alert('$message');</script>";
+$message = strlen($epass);
+echo "<script type='text/javascript'>alert('$message');</script>";
 				if ( ! ( strlen($epass) == 5 || strlen($epass) == 13 ) ) 
 				{
+					
 					array_push($errors, "Invalid Wlan0 Password. Password Length Must Be 5 Or 13 Characters Long");
 				}
 			}
