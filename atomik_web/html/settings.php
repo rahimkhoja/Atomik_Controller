@@ -561,7 +561,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 		
 	} else {
 		
-		$sql = "UPDATE atomik_settings SET wlan0_type='".$_wlan0_type."', wlan0_status='".$_wlan0_status."', wlan0_ip='".$_wlan0_ip."', wlan0_mask='".$_wlan0_mask."', wlan0_gateway='".$_wlan0_gateway."', wlan0_dns='".$_wlan0_dns."', wlan0_method='".$_wlan0_method."', wlan0_algorithm='".$_wlan0_algorithm."', wlan0_password='".$_wlan0_password."';";
+		$sql = "UPDATE atomik_settings SET wlan0_type='".$_wlan0_type."', wlan0_status='".$_wlan0_status."', wlan0_ip='".$_wlan0_ip."', wlan0_mask='".$_wlan0_mask."', wlan0_gateway='".$_wlan0_gateway."', wlan0_dns='".$_wlan0_dns."', wlan0_method='".$_wlan0_method."', wlan0_algorithm='".$_wlan0_algorithm."', wlan0_ssid='".$_wlan0_ssid."', wlan0_password='".$_wlan0_password."';";
 		
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
@@ -790,13 +790,12 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
         <td>Wifi0 SSID: </td>
         <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0) { ?>
    <?php 
+   
 		$ssidcmd = shell_exec("cat /var/atomik/www/ssid.txt");  
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $ssidcmd) as $line) 
 		{
 			$selected = "";
-			$message = "$line = " . trim($line) . " - $_wlan_ssid = " . trim($_wlan0_ssid);
-
-echo "<script type='text/javascript'>alert('$message');</script>";
+			
 			if (trim($line) == trim($_wlan0_ssid)) 
 			{
 				$selected = "selected";
