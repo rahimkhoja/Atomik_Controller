@@ -100,9 +100,10 @@ function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
 			{
 				array_push($errors, "Invalid Eth0 Subnet Mask");
 			}
-			return $errors;
+			
 		}
 	}
+	return $errors;
 }
 
 
