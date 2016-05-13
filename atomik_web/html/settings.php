@@ -480,7 +480,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
     		$page_error = 1;
 			$error_text = "Error Saving Time Settings To DB!";
 		}
-	$timezoneupdatecmd = shell_exec("sudo -S /usr/bin/timedatectl set-timezone ".$_timezone." 2>&1";
+	$timezoneupdatecmd = shell_exec("sudo /usr/bin/timedatectl set-timezone ".$_timezone." 2>&1");
 	
 	ini_set( 'date.timezone', trim($_timezone) );
 	date_default_timezone_set( trim($_timezone) );
@@ -565,7 +565,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 }
 if ($command <> "" && $command !="" && $command == "refresh_ssid") 
 {
-	$ssidupdatecmd = shell_exec("sudo -S /var/atomik/scripts/updateSSIDlist.sh 2>&1");
+	$ssidupdatecmd = shell_exec("sudo /var/atomik/scripts/updateSSIDlist.sh 2>&1");
 }
 
 ?></head>
