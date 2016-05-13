@@ -444,7 +444,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 	} else {
 		
 		$sql = "UPDATE atomik_settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', ntp_server_3='".$_ntp_server_3."';";
-		echo $sql;
+		
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Time Settings Updated!";
@@ -485,8 +485,8 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
 		
 	} else {
 		
-		$sql = "UPDATE atomik_settings SET eth0_type='".$_eth0_type."', eth0_status='".$_eth0_status."', eth0_ip='".$_eth0_ip."', eth0_mask='".$_eth0_mask."', eth0_gateway='".$_eth0_gateway."', eth0_dns='".$eth0_dns."';";
-		echo $sql;
+		$sql = "UPDATE atomik_settings SET eth0_type='".$_eth0_type."', eth0_status='".$_eth0_status."', eth0_ip='".$_eth0_ip."', eth0_mask='".$_eth0_mask."', eth0_gateway='".$_eth0_gateway."', eth0_dns='".$_eth0_dns."';";
+		
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Eth0 Adaptor Information Saved!";
@@ -681,19 +681,19 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
       </tr>
       <tr>
         <td>Eth0 IP Address: </td>
-        <td><input type="text" class="form-control" id="eth0_ip" name="eth0_ip" value="<?php echo $_eth0_ip; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_ip" name="eth0_ip" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_ip; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Eth0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="eth0_mask" name="eth0_mask" value="<?php echo $_eth0_mask; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_mask" name="eth0_mask" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_mask; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Eth0 Gateway: </td>
-        <td><input type="text" class="form-control" id="eth0_gateway" name="eth0_gateway" value="<?php echo $_eth0_gateway; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_gateway" name="eth0_gateway" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_gateway; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Eth0 DNS: </td>
-        <td><input type="text" class="form-control" id="eth0_dns" name="eth0_dns" value="<?php echo $_eth0_dns; ?>"></td>
+        <td><input type="text" class="form-control" id="eth0_dns" name="eth0_dns" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_dns; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
     </tbody>
   </table>
