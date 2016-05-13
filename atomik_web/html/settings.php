@@ -330,6 +330,8 @@ if ( $_POST["wlan0_ssid"] != $row['wlan0_ssid'] && isset($_POST["wlan0_ssid"]) )
 	$_wlan0_ssid = $row['wlan0_ssid'];
 }
 
+echo 'wlan0ssid: '.$_wlan0_ssid;
+
 if ( $_POST["wlan0_method"] != $row['wlan0_method'] && isset($_POST["wlan0_method"]) ) {
 	$_wlan0_method = $_POST["wlan0_method"];
 } else {
