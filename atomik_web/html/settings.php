@@ -108,7 +108,6 @@ function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
 
 function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
 {
-	
 	$errors = array();
 	if ( $stat > 0 ) 
 	{
@@ -387,12 +386,6 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Processing Command
 
 // Reboot
-if ($command <> "" && $command !="" && $command == "reboot") {
-	$Handle = fopen("/tmp/atomikreboot", 'w');
-	fwrite($Handle, "doreboot");
-	fclose($Handle);
-	header("location:reboot.php");
-}
 
 
 // Save System Settings [Keep Post Data, Verify Form, DB, Start Service, Stop Service, Edit File, Reboot] (save_system)
@@ -416,7 +409,6 @@ if ($command <> "" && $command !="" && $command == "save_system")
 		}
 		
 		// Set Hostname Here
-		
 		
 	}
 }
@@ -453,6 +445,7 @@ if ($command <> "" && $command !="" && $command == "save_password")
 	}
 		
 }
+
 // Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
 if ($command <> "" && $command !="" && $command == "save_time") 
 {
@@ -487,7 +480,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
     		$page_error = 1;
 			$error_text = "Error Saving Time Settings To DB!";
 		}
-	$timecommand = "sudo -S /usr/bin/timedatectl set-timezone ".$_timezone." 2>&1";
+	$timezoneupdatecmd = shell_exec("sudo -S /usr/bin/timedatectl set-timezone ".$_timezone." 2>&1";
 	
 	ini_set( 'date.timezone', trim($_timezone) );
 	date_default_timezone_set( trim($_timezone) );
@@ -529,14 +522,10 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
     		$page_error = 1;
 			$error_text = "Error Saving Eth0 Adpator Information To DB!";
 		}
-	
-	}
-	
+	}	
 }
 
-
 // Save Wifi Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_wlan0)
-
 if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
 {
 	$erro = validateWlan0Settings($_wlan0_status, $_wlan0_type, $_wlan0_ip, $_wlan0_mask, $_wlan0_gateway, $_wlan0_dns, $_wlan0_ssid, $_wlan0_method, $_wlan0_algorithm, $_wlan0_password);
@@ -576,7 +565,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 }
 if ($command <> "" && $command !="" && $command == "refresh_ssid") 
 {
-	$timecommand = "sudo -S /var/atomik/scripts/updateSSIDlist.sh 2>&1";
+	$ssidupdatecmd = shell_exec("sudo -S /var/atomik/scripts/updateSSIDlist.sh 2>&1");
 }
 
 ?></head>
