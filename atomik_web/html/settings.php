@@ -140,7 +140,7 @@ function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $e
 		{
 			if ( $emethod < 3 && $ealgo == 1 ) 
 			{
-				if ( ! ( strlen($epass) = 5 || strlen($epass) = 13 ) ) 
+				if ( ! ( strlen($epass) == 5 || strlen($epass) == 13 ) ) 
 				{
 					array_push($errors, "Invalid Wlan0 Password. Password Length Must Be 5 Or 13 Characters Long");
 				}
@@ -149,7 +149,7 @@ function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $e
 			if ( $emethod < 3 && $ealgo == 2 ) 
 			{
 				
-				if ( ! ( strlen($epass) = 10 || strlen($epass) = 26 ) )
+				if ( ! ( strlen($epass) == 10 || strlen($epass) == 26 ) )
 				{
 					array_push($errors, "Invalid Wlan0 Password. Hex Password Length Must Be 10 Or 26 Characters Long");
 				}
