@@ -621,8 +621,12 @@ if ($command <> "" && $command !="" && $command == "save_time")
   </table>
   <hr>
   <div class="container center col-xs-12">
-  <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a id="saveeth0" href="#" class="btn-success btn">Save Ethernet Settings</a></p></div>
+    <div class="container center col-xs-12">
+      <div class="col-xs-6 text-center"></div>
+      <div class="col-xs-6 text-center">
+        <p><a id="saveeth0" href="#" class="btn-success btn">Save Ethernet Settings</a></p>
+      </div>
+    </div>
   </div>
   <br><br><hr>
 <h4><p>Wifi Adapter Settings:</p></h4>   
@@ -639,55 +643,55 @@ if ($command <> "" && $command !="" && $command == "save_time")
     <tbody>
     <tr>
         <td>Wifi0 SSID: </td>
-        <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control">
+        <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0) { ?>
   <option value="<?php echo $_wlan0_ssid; ?>"><?php echo $_wlan0_ssid; ?></option>
-</select></td>
+<?php }; ?></select></td>
       </tr>
       <tr>
         <td>Wifi0 Method: </td>
         <td><select id="wlan0_method" name="wlan0_method" class="form-control">
-  <option value="0" <?php if ($_wlan0_method == 0 ) { ?>selected <?php }; ?>>Disable</option>
+  <?php if ($_wlan0_status > 0) { ?><option value="0" <?php if ($_wlan0_method == 0 ) { ?>selected <?php }; ?><?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>>Disable</option>
   <option value="1" <?php if ($_wlan0_method == 1 ) { ?>selected <?php }; ?>>OPENWEP</option>
   <option value="2" <?php if ($_wlan0_method == 2 ) { ?>selected <?php }; ?>>SHAREDWEP</option>
   <option value="3" <?php if ($_wlan0_method == 3 ) { ?>selected <?php }; ?>>WPAPSK</option>
-  <option value="4" <?php if ($_wlan0_method == 4 ) { ?>selected <?php }; ?>>WPA2PSK</option>
+  <option value="4" <?php if ($_wlan0_method == 4 ) { ?>selected <?php }; ?>>WPA2PSK</option><?php }; ?>
 </select></td>
       </tr>
       <tr>
         <td>Wifi0 Encryption Algorithm: </td>
-        <td><select id="wlan0_algorithm" name="wlan0_algorithm" class="form-control">
+        <td><select id="wlan0_algorithm" name="wlan0_algorithm" class="form-control"<?php if ($_wlan0_status == 0 || $_wlan0_method == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0 && $_wlan0_method > 0 ) { ?>
   <?php if ( $_wlan0_algorithm == 2 || $_wlan0_algorithm == 3) { ?><option value="3"<?php if ($_wlan0_algorithm == 3) { echo ' selected'; } ?>>AES</option><?php }; ?> // only visible wpa and wpa2 methods
   <?php if ( $_wlan0_algorithm == 2 || $_wlan0_algorithm == 3) { ?><option value="2"<?php if ($_wlan0_algorithm == 2) { echo ' selected'; } ?>>TKIP</option><?php }; ?>// only visible wpa and wpa2 methods
 <?php if ( $_wlan0_algorithm == 0 || $_wlan0_algorithm == 1 ) { ?><option value="0"<?php if ($_wlan0_algorithm == 0) { echo ' selected'; } ?>>ASCII</option><?php }; ?> // only visible OPENWEP and SHAREDWEP methods 	
 <?php if ( $_wlan0_algorithm == 0 || $_wlan0_algorithm == 1 ) { ?><option value="1"<?php if ($_wlan0_algorithm == 1) { echo ' selected'; } ?>>HEX</option><?php }; ?> // only visible OPENWEP and SHAREDWEP methods 		
-</select></td>
+<?php }; ?></select></td>
       </tr>
       <tr>
         <td>Wifi0 Password: </td>
-        <td><input type="password" class="form-control" id="wlan0_password" name="wlan0_password" value="<?php echo $_wlan0_password; ?>"></td>
+        <td><input type="password" class="form-control" id="wlan0_password" name="wlan0_password" <?php if ($_wlan0_status > 0 && $_wlan0_method > 0 ) { ?>value="<?php echo $_wlan0_password; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_method == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Wifi0 Type: </td>
-        <td><select  class="form-control" id="wlan0_type" name="wlan0_type" >
+        <td><select  class="form-control" id="wlan0_type" name="wlan0_type"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0) { ?>
   <option value="1" <?php if ($_wlan0_type == 1 ) { ?>selected <?php }; ?>>Static</option>
   <option value="0" <?php if ($_wlan0_type == 0 ) { ?>selected <?php }; ?>>DHCP</option>
-</select></td>
+<?php }; ?></select></td>
       </tr>
       <tr>
         <td>Wifi0 IP Address: </td>
-        <td><input type="text" class="form-control" id="wlan0_ip" name="wlan0_ip" value="<?php echo $_wlan0_ip; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_ip" name="wlan0_ip" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_ip; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Wifi0 Subnet Mask: </td>
-        <td><input type="text" class="form-control" id="wlan0_mask" name="wlan0_mask" value="<?php echo $_wlan0_mask; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_mask" name="wlan0_mask" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_mask; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Wifi0 Gateway: </td>
-        <td><input type="text" class="form-control" id="wlan0_gateway" name="wlan0_gateway" value="<?php echo $_wlan0_gateway; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_gateway" name="wlan0_gateway" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_gateway; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
         <td>Wifi0 DNS: </td>
-        <td><input type="text" class="form-control" id="wlan0_dns" name="wlan0_dns" value="<?php echo $_wlan0_dns; ?>"></td>
+        <td><input type="text" class="form-control" id="wlan0_dns" name="wlan0_dns" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_dns; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       </tbody>
   </table><hr>
