@@ -131,7 +131,7 @@ function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $e
 			}
 		}
 		
-		if ($essid <> "" && $essid != "") 
+		if ( strlen($essid) < 1 || $essid == "" ) 
 		{
 			array_push($errors, "Invalid SSID");
 		}
