@@ -1,0 +1,24 @@
+# location: /etc/systemd/system/
+[Unit]
+Description = Example script that runs a shell script at boot
+After       = syslog.target
+
+[Service]
+# make sure the shell script is executable (chmod +x $1)
+# and it begins with a shebang (#!/bin/bash)
+ExecStart   = /var/atomik/scripts/updateSSIDlist.sh 
+
+# With notify Type, service manager will be notified
+# when the starting up has finished
+Type        = notify
+
+# Since Type is notify, notify only service updates
+# sent from the main process of the service
+NotifyAccess= main
+
+# see ExecStop and ExecReload
+
+[Install]
+# multi-user.target corresponds to run level 3
+# roughtly meaning wanted by system start
+WantedBy    = multi-user.target
