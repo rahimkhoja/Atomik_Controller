@@ -1,9 +1,9 @@
 <?php
 
-$atomik_heading = $_POST['heading'];
+$atomik_heading = $_POST["heading"];
 
 $atomik_description = "";
-$atomik_description = $_POST['description'];
+$atomik_description = $_POST["description"];
 
 ?><!doctype html>
 <html>

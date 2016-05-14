@@ -420,7 +420,7 @@ $ssidupdatecmd = shell_exec("sudo /sbin/reboot");
 //do_post_request($url, $data, $optional_headers = null)
 
 $postData = array( 
-  'header' => 'Rebooting Atomik Controller', 
+  'heading' => 'Rebooting Atomik Controller', 
   'description' => 'Please wait while the system reboots'
 );
 
