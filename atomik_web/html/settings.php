@@ -972,7 +972,7 @@ $("#refreshssid").on('click', function() {
 });
 
 $("#logout").on('click', function() {
-   document.forms["logoutfrm"].header.value = "Logout";
+   document.forms["logoutfrm"].heading.value = "Logout";
    document.logoutfrm.submit();
 });
 
