@@ -21,6 +21,32 @@ ini_set( 'date.timezone', $tzone );
 date_default_timezone_set($tzone);
 
 // Function
+
+
+
+// from http://wezfurlong.org/blog/2006/nov/http-post-from-php-without-curl
+function do_post_request($url, $data, $optional_headers = null)
+{
+  $params = array('http' => array(
+              'method' => 'POST',
+              'content' => $data
+            ));
+  if ($optional_headers !== null) {
+    $params['http']['header'] = $optional_headers;
+  }
+  $ctx = stream_context_create($params);
+  $fp = @fopen($url, 'rb', false, $ctx);
+  if (!$fp) {
+    throw new Exception("Problem with $url, $php_errormsg");
+  }
+  $response = @stream_get_contents($fp);
+  if ($response === false) {
+    throw new Exception("Problem reading data from $url, $php_errormsg");
+  }
+  return $response;
+}
+
+
 function isValidIP($ip)
 {
 	if(filter_var($ip, FILTER_VALIDATE_IP) !== false) {
@@ -386,6 +412,27 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Processing Command
 
 // Reboot
+if ($command <> "" && $command !="" && $command == "reboot") 
+{
+$ssidupdatecmd = shell_exec("sudo /sbin/reboot");
+	$page_success = 1;
+	$success_text = "Rebooting Atomik Controller!";
+//do_post_request($url, $data, $optional_headers = null)
+
+$postData = array( 
+  'header' => 'Rebooting Atomik Controller', 
+  'description' => 'Please wait while the system reboots'
+);
+
+$extraHeaders = array(
+  'User-Agent' => 'My HTTP Client/1.1'
+);
+
+var_dump(do_post_request('logout.php', $postData, $extraHeaders));
+
+
+}
+
 
 
 // Save System Settings [Keep Post Data, Verify Form, DB, Start Service, Stop Service, Edit File, Reboot] (save_system)
@@ -482,7 +529,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 			$error_text = "Error Saving Time Settings To DB!";
 		}
 	$timezoneupdatecmd = shell_exec("sudo /usr/bin/timedatectl set-timezone ".$_timezone." 2>&1");
-	
+	$timeserversupdatecmd = shell_exec("sudo /var/atomik/scripts/updateTIME.sh 2>&1");
 	ini_set( 'date.timezone', trim($_timezone) );
 	date_default_timezone_set( trim($_timezone) );
 	}
@@ -501,7 +548,7 @@ if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, 
 		$len = count($erro);
 		foreach ($erro as $er)
 		{
-    		$error_text .= $prefix . '"' . $er . '"';
+    		$error_text .= $prefix . $er;
     		$prefix = ', ';
 			if ($i == $len - 2 && $len != 2) {
         		$prefix = ', and ';
@@ -567,6 +614,8 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 if ($command <> "" && $command !="" && $command == "refresh_ssid") 
 {
 	$ssidupdatecmd = shell_exec("sudo /var/atomik/scripts/updateSSIDlist.sh 2>&1");
+	$page_success = 1;
+	$success_text = "SSID List Updated!";
 }
 
 ?></head>
@@ -588,7 +637,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
         <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Logout</a> </li>
+        <li><a href="logout.php" id="logout">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -886,7 +935,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
-      <hr>
+      <hr><form id="logoutfrm" name="logoutfrm"  enctype="multipart/form-data" action="logout.php" method="post"><input type="hidden" name="header" value=""><input type="hidden" name="description" value=""></form>
     </div><script type="text/javascript">
 	$("#reboot").on('click', function() {
    document.forms["settingsfrm"].command.value = "reboot";
@@ -920,6 +969,11 @@ $("#savesystem").on('click', function() {
 $("#refreshssid").on('click', function() {
    document.forms["settingsfrm"].command.value = "refresh_ssid";
    document.settingsfrm.submit();
+});
+
+$("#logout").on('click', function() {
+   document.forms["logoutfrm"].header.value = "Logout";
+   document.logoutfrm.submit();
 });
 
 $('#eth0_status').on('change', function() {
