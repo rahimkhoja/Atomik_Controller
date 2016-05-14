@@ -24,26 +24,25 @@ date_default_timezone_set($tzone);
 
 
 
-// from http://wezfurlong.org/blog/2006/nov/http-post-from-php-without-curl
-function do_post_request($url, $data, $optional_headers = null)
-{
-  $params = array('http' => array(
-              'method' => 'POST',
-              'content' => $data
-            ));
-  if ($optional_headers !== null) {
-    $params['http']['header'] = $optional_headers;
-  }
-  $ctx = stream_context_create($params);
-  $fp = @fopen($url, 'rb', false, $ctx);
-  if (!$fp) {
-    throw new Exception("Problem with $url, $php_errormsg");
-  }
-  $response = @stream_get_contents($fp);
-  if ($response === false) {
-    throw new Exception("Problem reading data from $url, $php_errormsg");
-  }
-  return $response;
+
+
+function do_post_request( $url, $fields, $optional_headers = null ){
+// http_build_query is preferred but doesn't seem to work!
+// $fields_string = http_build_query($fields, '', '&', PHP_QUERY_RFC3986);
+
+// Create URL parameter string
+foreach( $fields as $key => $value )
+$fields_string .= $key.'='.$value.'&';
+$fields_string = rtrim( $fields_string, '&' );
+
+$ch = curl_init();
+curl_setopt( $ch, CURLOPT_URL, $url);
+curl_setopt( $ch, CURLOPT_POST, count( $fields ) );
+curl_setopt( $ch, CURLOPT_POSTFIELDS, $fields_string );
+
+$result = curl_exec( $ch );
+
+curl_close( $ch );
 }
 
 
@@ -428,7 +427,7 @@ $extraHeaders = array(
   'User-Agent' => 'My HTTP Client/1.1'
 );
 
-var_dump(do_post_request('logout.php', $postData, $extraHeaders));
+do_post_request('logout.php', $postData, $extraHeaders);
 
 
 }
