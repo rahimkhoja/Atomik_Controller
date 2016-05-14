@@ -1,6 +1,6 @@
 <?php
 
-$atomik_heading = $_POST["heading"];
+$atomik_heading = $_POST["logout_title"];
 
 $atomik_description = "";
 $atomik_description = $_POST["description"];

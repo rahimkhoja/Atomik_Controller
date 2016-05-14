@@ -419,7 +419,7 @@ $ssidupdatecmd = shell_exec("sudo /sbin/reboot");
 //do_post_request($url, $data, $optional_headers = null)
 
 $postData = array( 
-  'heading' => 'Rebooting Atomik Controller', 
+  'logout_title' => 'Rebooting Atomik Controller', 
   'description' => 'Please wait while the system reboots'
 );
 
@@ -934,7 +934,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
-      <hr><form id="logoutfrm" name="logoutfrm"  enctype="multipart/form-data" action="logout.php" method="post"><input  id="heading" type="hidden" name="heading" value=""><input type="hidden" name="description" value=""></form>
+      <hr><form id="logoutfrm" name="logoutfrm"  enctype="multipart/form-data" action="logout.php" method="post"><input  id="logout_title" type="hidden" name="logout_title" value=""><input type="hidden" name="description" value=""></form>
     </div><script type="text/javascript">
 	$("#reboot").on('click', function() {
    document.forms["settingsfrm"].command.value = "reboot";
@@ -971,7 +971,7 @@ $("#refreshssid").on('click', function() {
 });
 
 $("#logout").on('click', function() {
-   document.forms["logoutfrm"].heading.value = "Logout";
+   document.forms["logoutfrm"].logout_title.value = "Logout";
    document.logoutfrm.submit();
 });
 
