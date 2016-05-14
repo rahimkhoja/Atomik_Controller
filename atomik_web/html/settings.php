@@ -934,10 +934,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
-      <hr><form id="logoutfrm" name="logoutfrm" action="logout.php" method="post">
-      <input type="hidden" name="logout_title" value="None">
-      <input type="hidden" name="description" value="None">
-      </form></div><script type="text/javascript">
+      <hr></div><script type="text/javascript">
 	$("#reboot").on('click', function() {
    document.forms["settingsfrm"].command.value = "reboot";
    document.settingsfrm.submit();
@@ -973,8 +970,7 @@ $("#refreshssid").on('click', function() {
 });
 
 $("#logout").on('click', function() {
-   document.forms["logoutfrm"].logout_title.value = "Logout";
-   document.logoutfrm.submit();
+   $('<form action="logout"><input type="hidden" name="logout_title" value="Logout"><input type="hidden" name="description" value=""></form>').appendTo('body').submit();
 });
 
 $('#eth0_status').on('change', function() {
