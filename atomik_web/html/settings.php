@@ -935,7 +935,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
-      <hr><form id="logoutfrm" name="logoutfrm"  enctype="multipart/form-data" action="logout.php" method="post"><input type="hidden" name="header" value=""><input type="hidden" name="description" value=""></form>
+      <hr><form id="logoutfrm" name="logoutfrm"  enctype="multipart/form-data" action="logout.php" method="post"><input type="hidden" name="heading" value=""><input type="hidden" name="description" value=""></form>
     </div><script type="text/javascript">
 	$("#reboot").on('click', function() {
    document.forms["settingsfrm"].command.value = "reboot";
