@@ -389,7 +389,7 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Reboot
 if ($command <> "" && $command !="" && $command == "reboot") 
 {
-$ssidupdatecmd = shell_exec("sudo /sbin/shutdown -r -t 5");
+$ssidupdatecmd = shell_exec("sudo /var/atomik/scripts/shutdownATOMIK.sh > /dev/null &");
 	$page_success = 1;
 	$success_text = "Rebooting Atomik Controller!";
 
