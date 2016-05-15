@@ -634,7 +634,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
                <td><table class="table table-striped">
                  <thead>
                    <tr>
-                     <td>Hostname: </td>
+                     <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Hostname: </td>
                      <td><input type="text" class="form-control" id="hostname" name="hostname" value="<?php echo $_hostname; ?>"></td>
                    </tr>
                  </thead>
@@ -666,17 +666,17 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
   <table class="table table-striped">
     <thead>
       <tr>
-        <td>Current Password: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Current Password: </td>
         <td><input type="password" class="form-control" id="current_password" name="current_password" value=""></td>
       </tr>
       </thead>
     <tbody>
     <tr>
-        <td>New Password: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>New Password: </td>
         <td><input type="password" class="form-control" id="new_password_1" name="new_password_1" value=""></td>
       </tr>
       <tr>
-        <td>Repeat Password: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Repeat Password: </td>
         <td><input type="password" class="form-control" id="new_password_2" name="new_password_2" value=""></td>
       </tr>
     </tbody>
@@ -717,14 +717,14 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 		}?></select></td>
       </tr>
       <tr>
-        <td>NTP Time Server 1: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>NTP Time Server 1: </td>
         <td><input type="text" class="form-control" id="ntp_server_1" name="ntp_server_1" value="<?php echo $_ntp_server_1; ?>"></td>
       </tr>
-      <tr>
+      <tr <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>
         <td>NTP Time Server 2: </td>
         <td><input type="text" class="form-control" id="ntp_server_2" name="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
       </tr>
-      <tr>
+      <tr <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>
         <td>NTP Time Server 3: </td>
         <td><input type="text" class="form-control" id="ntp_server_3" name="ntp_server_3" value="<?php echo $_ntp_server_3; ?>"></td>
       </tr>
@@ -758,19 +758,19 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 </select></td>
       </tr>
       <tr>
-        <td>Eth0 IP Address: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 IP Address: </td>
         <td><input type="text" class="form-control" id="eth0_ip" name="eth0_ip" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_ip; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td>Eth0 Subnet Mask: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Subnet Mask: </td>
         <td><input type="text" class="form-control" id="eth0_mask" name="eth0_mask" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_mask; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td>Eth0 Gateway: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Gateway: </td>
         <td><input type="text" class="form-control" id="eth0_gateway" name="eth0_gateway" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_gateway; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td>Eth0 DNS: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 DNS: </td>
         <td><input type="text" class="form-control" id="eth0_dns" name="eth0_dns" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_dns; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
     </tbody>
@@ -839,7 +839,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 <?php }; ?></select></td>
       </tr>
       <tr>
-        <td>Wifi0 Password: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Password: </td>
         <td><input type="password" class="form-control" id="wlan0_password" name="wlan0_password" <?php if ($_wlan0_status > 0 && $_wlan0_method > 0 ) { ?>value="<?php echo $_wlan0_password; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_method == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
@@ -850,19 +850,19 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 <?php }; ?></select></td>
       </tr>
       <tr>
-        <td>Wifi0 IP Address: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 IP Address: </td>
         <td><input type="text" class="form-control" id="wlan0_ip" name="wlan0_ip" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_ip; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td>Wifi0 Subnet Mask: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Subnet Mask: </td>
         <td><input type="text" class="form-control" id="wlan0_mask" name="wlan0_mask" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_mask; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td>Wifi0 Gateway: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Gateway: </td>
         <td><input type="text" class="form-control" id="wlan0_gateway" name="wlan0_gateway" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_gateway; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td>Wifi0 DNS: </td>
+        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 DNS: </td>
         <td><input type="text" class="form-control" id="wlan0_dns" name="wlan0_dns" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_dns; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       </tbody>

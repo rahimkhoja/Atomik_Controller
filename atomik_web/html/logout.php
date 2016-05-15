@@ -11,7 +11,7 @@ $atomik_description = $_POST["description"];
 <meta charset="utf-8">
 <title>Atomik Controller - <?php echo $atomik_heading; ?></title>
 <link rel="stylesheet" href="css/atomik.css">
-</head><?php print_r($_POST); ?>
+</head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
