@@ -970,7 +970,7 @@ $("#refreshssid").on('click', function() {
 });
 
 $("#logout").on('click', function() {
-   $('<form action="logout"><input type="text" name="logout_title" value="Logout" **/>**<input type="text" name="description" value="" **/>**></form>').appendTo('body').submit();
+	$().redirect('logout.php', {'logout_title': 'value1', 'description': 'value2'});
 });
 
 $('#eth0_status').on('change', function() {
