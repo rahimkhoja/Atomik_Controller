@@ -413,10 +413,9 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Reboot
 if ($command <> "" && $command !="" && $command == "reboot") 
 {
-$ssidupdatecmd = shell_exec("sudo /sbin/reboot");
+$ssidupdatecmd = shell_exec("sudo /sbin/shutdown -t 15");
 	$page_success = 1;
 	$success_text = "Rebooting Atomik Controller!";
-//do_post_request($url, $data, $optional_headers = null)
 
 $postData = array( 
   'logout_title' => 'Rebooting Atomik Controller', 
@@ -428,7 +427,6 @@ $extraHeaders = array(
 );
 
 do_post_request('logout.php', $postData, $extraHeaders);
-
 
 }
 
@@ -970,7 +968,7 @@ $("#refreshssid").on('click', function() {
 });
 
 $("#logoutbtn").on('click', function() {
-	$().redirect('logout.php', {'logout_title': 'value1', 'description': 'value2'});
+	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 
 $('#eth0_status').on('change', function() {
