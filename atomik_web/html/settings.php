@@ -636,7 +636,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
         <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php" id="logout">Logout</a> </li>
+        <li><a id="logoutbtn">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -969,7 +969,7 @@ $("#refreshssid").on('click', function() {
    document.settingsfrm.submit();
 });
 
-$("#logout").on('click', function() {
+$("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'value1', 'description': 'value2'});
 });
 
