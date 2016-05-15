@@ -22,30 +22,6 @@ date_default_timezone_set($tzone);
 
 // Function
 
-
-
-
-
-function do_post_request( $url, $fields, $optional_headers = null ){
-// http_build_query is preferred but doesn't seem to work!
-// $fields_string = http_build_query($fields, '', '&', PHP_QUERY_RFC3986);
-
-// Create URL parameter string
-foreach( $fields as $key => $value )
-$fields_string .= $key.'='.$value.'&';
-$fields_string = rtrim( $fields_string, '&' );
-
-$ch = curl_init();
-curl_setopt( $ch, CURLOPT_URL, $url);
-curl_setopt( $ch, CURLOPT_POST, count( $fields ) );
-curl_setopt( $ch, CURLOPT_POSTFIELDS, $fields_string );
-
-$result = curl_exec( $ch );
-
-curl_close( $ch );
-}
-
-
 function isValidIP($ip)
 {
 	if(filter_var($ip, FILTER_VALIDATE_IP) !== false) {
@@ -413,7 +389,7 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Reboot
 if ($command <> "" && $command !="" && $command == "reboot") 
 {
-$ssidupdatecmd = shell_exec("sudo /sbin/shutdown -t 5");
+$ssidupdatecmd = shell_exec("sudo /sbin/shutdown -r -t 5");
 	$page_success = 1;
 	$success_text = "Rebooting Atomik Controller!";
 
@@ -426,8 +402,6 @@ echo '<script type="text/javascript">';
 echo "$().redirect('logout.php', {'logout_title': 'Rebooting Atomik Controller', 'description': 'Please wait while the system reboots.'});</script>";
 
 }
-
-
 
 // Save System Settings [Keep Post Data, Verify Form, DB, Start Service, Stop Service, Edit File, Reboot] (save_system)
 if ($command <> "" && $command !="" && $command == "save_system") 
