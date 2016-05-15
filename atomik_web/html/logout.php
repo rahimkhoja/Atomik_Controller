@@ -32,7 +32,6 @@ $atomik_description = $_POST["description"];
 <div class="PageTitle">
     <div class="row">
         <div class="PageNavTitle" >
-          <h3>Atomik Controller</h3>
         </div>
     </div>
    </div>
@@ -42,8 +41,8 @@ $atomik_description = $_POST["description"];
         <div class="col-xs-5"><img src="img/Sun_Logo_Center_450px.gif" width="350" height="350" alt=""/></div>
         <div class="col-xs-1"><div style="border-left:1px solid #000;height:350px"></div></div>
         <div class="col-xs-6">
-            <h4><p><?php echo $atomik_heading; ?></p></h4>  <br> 
-  <?php echo $atomik_description; ?>
+            <h3><p><?php echo $atomik_heading; ?></p></h3>  <br> 
+  <h4><?php echo $atomik_description; ?></h4>
   </div>
   <br>
 </div>

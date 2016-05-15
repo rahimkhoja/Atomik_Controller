@@ -413,20 +413,17 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Reboot
 if ($command <> "" && $command !="" && $command == "reboot") 
 {
-$ssidupdatecmd = shell_exec("sudo /sbin/shutdown -t 15");
+$ssidupdatecmd = shell_exec("sudo /sbin/shutdown -t 5");
 	$page_success = 1;
 	$success_text = "Rebooting Atomik Controller!";
 
 $postData = array( 
-  'logout_title' => 'Rebooting Atomik Controller', 
-  'description' => 'Please wait while the system reboots'
+  'logout_title' => '', 
+  'description' => ''
 );
 
-$extraHeaders = array(
-  'User-Agent' => 'My HTTP Client/1.1'
-);
-
-do_post_request('logout.php', $postData, $extraHeaders);
+echo '<script type="text/javascript">';
+echo "$().redirect('logout.php', {'logout_title': 'Rebooting Atomik Controller', 'description': 'Please wait while the system reboots.'});</script>";
 
 }
 
