@@ -402,34 +402,36 @@ if ($command <> "" && $command !="" && $command == "save_time")
 if ($command <> "" && $command !="" && $command == "save_eth0") 
 {
 	$erro = array();
-	if ($_eth0_status == 0 && $row['wlan0_status'] == 0) {
+	
+	if ( $_eth0_status == 0 && $row['wlan0_status'] == 0 ) {
 		array_push($erro, "At Least One Network Interface Must Be Enabled!");
-		$_error_eth0_status = 1;
 		$_error_wlan0_status = 1;
-	} else 	{
-		if ($_eth0_status == 0 ) {
-			if($_eth0_type == 1) {
-				if (!isValidIP($_eth0_ip)) 
-				{
-					array_push($erro, "Invalid Eth0 IP Address");
-					$_error_eth0_ip = 1;
-				}
-				if (!isValidIP($_eth0_gateway)) 
-				{
-					array_push($erro, "Invalid Eth0 Gateway Address");
-					$_error_eth0_gateway = 1;
-				}
-				if (!isValidIP($_eth0_dns)) 
-				{
-					array_push($erro, "Invalid Eth0 DNS Address");
-					$_error_eth0_dns = 1;
-				}
-				if (!isValidMask($_eth0_mask)) 
-				{
-					array_push($erro, "Invalid Eth0 Subnet Mask");
-					$_error_eth0_mask = 1;
-				}
-			}			
+		$_error_eth0_status = 1;
+	}
+	if ( $_eth0_status > 0 ) 
+	{
+		if ( $_eth0_type >0 ) 
+		{
+			if (!isValidIP($_eth0_ip)) 
+			{
+				array_push($erro, "Invalid Eth0 IP Address");
+				$_error_eth0_ip = 1;
+			}
+			if (!isValidIP($_eth0_gateway)) 
+			{
+				array_push($erro, "Invalid Eth0 Gateway Address");
+				$_error_eth0_gateway = 1;
+			}
+			if (!isValidIP($_eth0_dns)) 
+			{
+				array_push($erro, "Invalid Eth0 DNS Address");
+				$_error_eth0_dns = 1;
+			}
+			if (!isValidMask($_eth0_mask)) 
+			{
+				array_push($erro, "Invalid Eth0 Subnet Mask");
+				$_error_eth0_mask = 1;
+			}
 		}
 	}
 		
