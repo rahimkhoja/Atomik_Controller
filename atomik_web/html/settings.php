@@ -408,7 +408,7 @@ if ($command <> "" && $command !="" && $command == "save_eth0")
 		$_error_wlan0_status = 1;
 	} else 	{
 		if ($_eth0_status == 0 ) {
-			if($_eth0_type > 0) {
+			if($_eth0_type == 1) {
 				if (!isValidIP($_eth0_ip)) 
 				{
 					array_push($erro, "Invalid Eth0 IP Address");
