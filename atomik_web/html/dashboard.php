@@ -83,7 +83,8 @@ function getInterfaceDNS($interface) {
 	if (getInterfaceStatus($interface) == "Connected") {
 		$inter = getInterfaceType($interface);
   		if ( $inter == "DHCP" ) {
-	  		$command = "cat  /var/lib/dhcp/dhclient.leases | awk '/interface \"".$interface."\"/{getline; getline; getline; getline; getline; getline; print }' | grep dhcp-server-identifier | cut -d' ' -f5 | tr -d ';'";
+			$command = "cat /var/lib/dhcp/dhclient.leases | awk '/".$interface."/,/}/' | grep domain-name-servers | tr ';' ' ' | cut -d' ' -f5  | awk {'print $1'}
+";
       		exec($command, $result);
       		if(is_array($result)) {
 		  		return $result[0];

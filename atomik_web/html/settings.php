@@ -457,7 +457,7 @@ if ($command <> "" && $command !="" && $command == "save_eth0")
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Eth0 Adaptor Information Saved, Rebooting System.";
-			$networkupdatecmd = shell_exec("sudo /var/atomik/scripts/updateNETWORK.sh 2>&1");
+			$networkupdatecmd = shell_exec("sudo /var/atomik/scripts/updateNETWORK.sh");
 			$rebootcmd = shell_exec("sudo /var/atomik/scripts/rebootATOMIK.sh > /dev/null &");
 			echo '<script type="text/javascript">';
 			echo "$().redirect('logout.php', {'logout_title': 'Update and Restart', 'description': 'Please wait while the Atomik Controller is reconfigured and restarted. '});</script>";			
