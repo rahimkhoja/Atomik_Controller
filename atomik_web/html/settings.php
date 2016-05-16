@@ -489,7 +489,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 			}
 		}
 		
-		if ( strlen($_wlan0_ssid) < 1 || $essid == "" ) 
+		if ( strlen($_wlan0_ssid) < 1 || $_wlan0_ssid == "" ) 
 		{
 			array_push($erro, "Invalid SSID");
 			$_error_wlan0_ssid = 1;
