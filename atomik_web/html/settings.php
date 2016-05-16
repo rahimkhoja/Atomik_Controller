@@ -809,8 +809,8 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
       </tr>
       <tr>
         <td>Wifi0 Method: </td>
-        <td><select id="wlan0_method" name="wlan0_method" class="form-control">
-  <?php if ($_wlan0_status > 0) { ?><option value="0" <?php if ($_wlan0_method == 0 ) { ?>selected <?php }; ?><?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>>Disable</option>
+        <td><select id="wlan0_method" name="wlan0_method" class="form-control"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>>
+ <?php if ($_wlan0_status > 0) { ?><option value="0" <?php if ($_wlan0_method == 0 ) { ?>selected <?php }; ?>>Disable</option>
   <option value="1" <?php if ($_wlan0_method == 1 ) { ?>selected <?php }; ?>>OPENWEP</option>
   <option value="2" <?php if ($_wlan0_method == 2 ) { ?>selected <?php }; ?>>SHAREDWEP</option>
   <option value="3" <?php if ($_wlan0_method == 3 ) { ?>selected <?php }; ?>>WPAPSK</option>
