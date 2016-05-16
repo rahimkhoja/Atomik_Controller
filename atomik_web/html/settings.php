@@ -468,79 +468,84 @@ if ($command <> "" && $command !="" && $command == "save_eth0")
 if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
 {
 	$erro = array();
-	if ( $_wlan0_status == 0 && $row['eth0_status'] == 0 ) {
-		array_push($erro, "At Least One Network Interface Must Be Enabled!");
-		$_error_wlan0_status = 1;
-		$_error_eth0_status = 1;
-	}
-	if ( $_wlan0_status > 0 ) 
-	{
-		if ( $_wlan0_type >0 ) 
-		{
-			if (!isValidIP($_wlan0_ip)) 
-			{
-				array_push($erro, "Invalid Wlan0 IP Address");
-				$_error_wlan0_ip = 1;
-			}
-			if (!isValidIP($_wlan0_gateway)) 
-			{
-				array_push($erro, "Invalid Wlan0 Gateway Address");
-				$_error_wlan0_gateway = 1;
-			}
-			if (!isValidIP($_wlan0_dns)) 
-			{
-				array_push($erro, "Invalid Wlan0 DNS Address");
-				$_error_wlan0_dns = 1;
-			}
-			if (!isValidMask($_wlan0_mask)) 
-			{
-				array_push($erro, "Invalid Wlan0 Subnet Mask");
-				$_error_wlan0_mask = 1;
-			}
-		}
-		
-		if ( strlen($_wlan0_ssid) < 1 || $_wlan0_ssid == "" ) 
-		{
-			array_push($erro, "Invalid SSID");
-			$_error_wlan0_ssid = 1;
-		}
-		
-		if ( $_wlan0_method != 0 ) 
-		{
-			if ( $_wlan0_method <= 2 && $_wlan0_algorithm == 0 ) 
-			{
-				if ( ! ( strlen($_wlan0_password) == 5 || strlen($_wlan0_password) == 13 ) ) 
-				{
-					array_push($erro, "Invalid Wlan0 Password. Password Length Must Be 5 Or 13 Characters Long");
-					$_error_wlan0_password = 1;
-				}
-			}
-			
-			if ( $_wlan0_method <= 2 && $_wlan0_algorithm == 1 ) 
-			{
-				if ( ! ( strlen($_wlan0_password) == 10 || strlen($_wlan0_password) == 26 ) )
-				{
-					array_push($erro, "Invalid Wlan0 Password. Hex Password Length Must Be 10 Or 26 Characters Long");
-					$_error_wlan0_password = 1;
-				}
-			
-				if ( !( ctype_xdigit($_wlan0_password) ) ) {
-					array_push($erro, "Invalid Wlan0 Password. Password Is Not Hex");
-					$_error_wlan0_password = 1;
-				}
-			}
-			
-			if ( $_wlan0_method == 3 || $_wlan0_method == 4 ) 
-			{
-				if ( strlen($_wlan0_password) < 8 || strlen($_wlan0_password) > 63 ) 
-				{
-					array_push($erro, "Invalid Wlan0 Password. Password Length Must Be 8 to 63 Characters Long");
-					$_error_wlan0_password = 1;
-				}
-			}		
-		}	 
-	}
 	
+	
+	if ($_wlan0_status == $row['wlan0_status'] && $_wlan0_type == $row['wlan0_type'] && $_wlan0_ip == $row['wlan0_ip'] && $_wlan0_gateway == $row['wlan0_gateway'] && $_wlan0_dns == $row['wlan0_dns'] && $_wlan0_mask == $row['wlan0_mask'] && $_wlan0_ssid == $row['wlan0_ssid'] && $_wlan0_method == $row['wlan0_method'] && $_wlan0_algorithm == $row['wlan0_algorithm'] && $_wlan0_password == $row['wlan0_password'] ) {
+		array_push($erro, "No Changes To Save");
+	} else {
+		if ( $_wlan0_status == 0 && $row['eth0_status'] == 0 ) {
+			array_push($erro, "At Least One Network Interface Must Be Enabled!");
+			$_error_wlan0_status = 1;
+			$_error_eth0_status = 1;
+		}
+		if ( $_wlan0_status > 0 ) 
+		{
+			if ( $_wlan0_type >0 ) 
+			{
+				if (!isValidIP($_wlan0_ip)) 
+				{
+					array_push($erro, "Invalid Wlan0 IP Address");
+					$_error_wlan0_ip = 1;
+				}
+				if (!isValidIP($_wlan0_gateway)) 
+				{
+					array_push($erro, "Invalid Wlan0 Gateway Address");
+					$_error_wlan0_gateway = 1;
+				}
+				if (!isValidIP($_wlan0_dns)) 
+				{
+					array_push($erro, "Invalid Wlan0 DNS Address");
+					$_error_wlan0_dns = 1;
+				}
+				if (!isValidMask($_wlan0_mask)) 
+				{
+					array_push($erro, "Invalid Wlan0 Subnet Mask");
+					$_error_wlan0_mask = 1;
+				}
+			}
+		
+			if ( strlen($_wlan0_ssid) < 1 || $_wlan0_ssid == "" ) 
+			{
+				array_push($erro, "Invalid SSID");
+				$_error_wlan0_ssid = 1;
+			}
+			
+			if ( $_wlan0_method != 0 ) 
+			{
+				if ( $_wlan0_method <= 2 && $_wlan0_algorithm == 0 ) 
+				{
+					if ( ! ( strlen($_wlan0_password) == 5 || strlen($_wlan0_password) == 13 ) ) 
+					{
+						array_push($erro, "Invalid Wlan0 Password. Password Length Must Be 5 Or 13 Characters Long");
+						$_error_wlan0_password = 1;
+					}
+				}
+			
+				if ( $_wlan0_method <= 2 && $_wlan0_algorithm == 1 ) 
+				{
+					if ( ! ( strlen($_wlan0_password) == 10 || strlen($_wlan0_password) == 26 ) )
+					{
+						array_push($erro, "Invalid Wlan0 Password. Hex Password Length Must Be 10 Or 26 Characters Long");
+						$_error_wlan0_password = 1;
+					}
+			
+					if ( !( ctype_xdigit($_wlan0_password) ) ) {
+						array_push($erro, "Invalid Wlan0 Password. Password Is Not Hex");
+						$_error_wlan0_password = 1;
+					}
+				}
+			
+				if ( $_wlan0_method == 3 || $_wlan0_method == 4 ) 
+				{
+					if ( strlen($_wlan0_password) < 8 || strlen($_wlan0_password) > 63 ) 
+					{
+						array_push($erro, "Invalid Wlan0 Password. Password Length Must Be 8 to 63 Characters Long");
+						$_error_wlan0_password = 1;
+					}
+				}		
+			}	 
+		}
+	}
 	
 	if (count($erro) > 0) 
 	{	
