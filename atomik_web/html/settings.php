@@ -275,17 +275,12 @@ if ( $_POST["wlan0_dns"] != $row['wlan0_dns'] && isset($_POST["wlan0_dns"]) ) {
 // Reboot
 if ($command <> "" && $command !="" && $command == "reboot") 
 {
-$ssidupdatecmd = shell_exec("sudo /var/atomik/scripts/rebootATOMIK.sh > /dev/null &");
+	$rebootcmd = shell_exec("sudo /var/atomik/scripts/rebootATOMIK.sh > /dev/null &");
 	$page_success = 1;
 	$success_text = "Rebooting Atomik Controller!";
 
-$postData = array( 
-  'logout_title' => '', 
-  'description' => ''
-);
-
-echo '<script type="text/javascript">';
-echo "$().redirect('logout.php', {'logout_title': 'Rebooting Atomik Controller', 'description': 'Please wait while the system reboots.'});</script>";
+	echo '<script type="text/javascript">';
+	echo "$().redirect('logout.php', {'logout_title': 'Rebooting Atomik Controller', 'description': 'Please wait while the system reboots.'});</script>";
 
 }
 
@@ -293,11 +288,15 @@ echo "$().redirect('logout.php', {'logout_title': 'Rebooting Atomik Controller',
 if ($command <> "" && $command !="" && $command == "save_system") 
 {
 	$erro = array();
-	if (!preg_match('/^[a-z0-9.\-]+$/i', $_hostname)) {
-		array_push($erro, "Invalid Hostname");
-		$_error_hostname = 1;
+	if ($_hostname == $row['hostname'] && $_atomik_emulator == $row['atomik_emulator'] && $_atomik_transceiver == $row['atomik_transceiver'] && $_atomik_api == $row['atomik_api'] ) {
+		array_push($erro, "No Changes To Save");
+	} else {
+		if (!preg_match('/^[a-z0-9.\-]+$/i', $_hostname)) {
+			array_push($erro, "Invalid Hostname");
+			$_error_hostname = 1;
+		}
 	}
-	
+		
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
@@ -326,15 +325,19 @@ if ($command <> "" && $command !="" && $command == "save_system")
 if ($command <> "" && $command !="" && $command == "save_password") 
 {	
 	$erro = array();
-	if ($_real_password != $_current_password) {
-		array_push($erro, "Invalid Current Password");
-		$_error_current_password = 1;
-	} 
-	if ($_new_password_1 != $_new_password_2) {
-		array_push($erro, "New Passwords Do Not Match");
-		$_error_new_password_2 = 1;
-		$_error_new_password_1 = 1;
-	} 
+	if ($_real_password == $_new_password_1 && $_real_password == $_new_password_2 ) {
+		array_push($erro, "No Changes To Save");
+	} else {
+		if ($_real_password != $_current_password) {
+			array_push($erro, "Invalid Current Password");
+			$_error_current_password = 1;
+		} 
+		if ($_new_password_1 != $_new_password_2) {
+			array_push($erro, "New Passwords Do Not Match");
+			$_error_new_password_2 = 1;
+			$_error_new_password_1 = 1;
+		}
+	}
 	
 	if (count($erro) > 0) 
 	{
@@ -358,27 +361,31 @@ if ($command <> "" && $command !="" && $command == "save_time")
 {
 	$erro = array();
 	
-	if (!isValidIP($_ntp_server_1)) 
-	{
-		array_push($erro, "Invalid NTP Server 1 Address");
-		$_error_ntp_server_1 = 1;
-	}
-	if (!isValidIP($_ntp_server_2)) 
-	{
-		array_push($erro, "Invalid NTP Server 2 Address");
-		$_error_ntp_server_2 = 1;
-	}
-	if (!isValidIP($_ntp_server_3)) 
-	{
-		array_push($erro, "Invalid NTP Server 3 Address");
-		$_error_ntp_server_3 = 1;
+	if ($_ntp_server_1 == $row['ntp_server_1'] && $_ntp_server_2 == $row['ntp_server_2'] && $_ntp_server_3 == $row['ntp_server_3'] && $_timezone == $row['timezone'] ) {
+		array_push($erro, "No Changes To Save");
+	} else {
+		if (!isValidIP($_ntp_server_1)) 
+		{
+			array_push($erro, "Invalid NTP Server 1 Address");
+			$_error_ntp_server_1 = 1;
+		}
+		if (!isValidIP($_ntp_server_2)) 
+		{
+			array_push($erro, "Invalid NTP Server 2 Address");
+			$_error_ntp_server_2 = 1;
+		}
+		if (!isValidIP($_ntp_server_3)) 
+		{
+			array_push($erro, "Invalid NTP Server 3 Address");
+			$_error_ntp_server_3 = 1;
+		}
 	}
 	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
 		$error_text = processErrors($erro);	
-		
+	
 	} else {
 		
 		$sql = "UPDATE atomik_settings SET timezone='".$_timezone."', ntp_server_1='".$_ntp_server_1."', ntp_server_2='".$_ntp_server_2."', ntp_server_3='".$_ntp_server_3."';";
@@ -402,39 +409,42 @@ if ($command <> "" && $command !="" && $command == "save_time")
 if ($command <> "" && $command !="" && $command == "save_eth0") 
 {
 	$erro = array();
-	
-	if ( $_eth0_status == 0 && $row['wlan0_status'] == 0 ) {
-		array_push($erro, "At Least One Network Interface Must Be Enabled!");
-		$_error_wlan0_status = 1;
-		$_error_eth0_status = 1;
-	}
-	if ( $_eth0_status > 0 ) 
-	{
-		if ( $_eth0_type >0 ) 
+	if ($_eth0_status == $row['eth0_status'] && $_eth0_type == $row['eth0_type'] && $_eth0_ip == $row['eth0_ip'] && $_eth0_gateway == $row['eth0_gateway'] && $_eth0_dns == $row['eth0_dns'] && $_eth0_mask == $row['eth0_mask'] ) {
+		array_push($erro, "No Changes To Save");
+	} else {
+		if ( $_eth0_status == 0 && $row['wlan0_status'] == 0 ) {
+			array_push($erro, "At Least One Network Interface Must Be Enabled!");
+			$_error_wlan0_status = 1;
+			$_error_eth0_status = 1;
+		}
+		if ( $_eth0_status > 0 ) 
 		{
-			if (!isValidIP($_eth0_ip)) 
+			if ( $_eth0_type >0 ) 
 			{
-				array_push($erro, "Invalid Eth0 IP Address");
-				$_error_eth0_ip = 1;
-			}
-			if (!isValidIP($_eth0_gateway)) 
-			{
-				array_push($erro, "Invalid Eth0 Gateway Address");
-				$_error_eth0_gateway = 1;
-			}
-			if (!isValidIP($_eth0_dns)) 
-			{
-				array_push($erro, "Invalid Eth0 DNS Address");
-				$_error_eth0_dns = 1;
-			}
-			if (!isValidMask($_eth0_mask)) 
-			{
-				array_push($erro, "Invalid Eth0 Subnet Mask");
-				$_error_eth0_mask = 1;
+				if (!isValidIP($_eth0_ip)) 
+				{
+					array_push($erro, "Invalid Eth0 IP Address");
+					$_error_eth0_ip = 1;
+				}
+				if (!isValidIP($_eth0_gateway)) 
+				{
+					array_push($erro, "Invalid Eth0 Gateway Address");
+					$_error_eth0_gateway = 1;
+				}
+				if (!isValidIP($_eth0_dns)) 
+				{
+					array_push($erro, "Invalid Eth0 DNS Address");
+					$_error_eth0_dns = 1;
+				}
+				if (!isValidMask($_eth0_mask)) 
+				{
+					array_push($erro, "Invalid Eth0 Subnet Mask");
+					$_error_eth0_mask = 1;
+				}
 			}
 		}
 	}
-		
+	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
