@@ -36,76 +36,6 @@ function isValidMask($mask)
 	 return ($result = log((ip2long($mask)^-1)+1,2)) != 0 && $result-(int)$result == 0;
 }
 
-function validateTimeSettings( $ntp1, $ntp2, $ntp3)
-{
-	$errors = array();
-	if (!isValidIP($ntp1)) 
-	{
-		array_push($errors, "Invalid NTP Server 1 Address");
-	}
-	if (!isValidIP($ntp2)) 
-	{
-		array_push($errors, "Invalid NTP Server 2 Address");
-	}
-	if (!isValidIP($ntp3)) 
-	{
-		array_push($errors, "Invalid NTP Server 3 Address");
-	}
-	return $errors;
-}
-
-function validateSystemSettings($hn)
-{
-	$errors = array();
-	if (preg_match('/^[a-z0-9.\-]+$/i', $hn)) {
-		return $errors;
-	} 
-	array_push($errors, "Invalid Hostname");
-	return $errors;
-}
-
-function validatePasswordUpdate($real, $cur, $p1, $p2)
-{
-	$errors = array();
-	if ($real != $cur) {
-		array_push($errors, "Invalid Current Password");
-	} 
-	if ($p1 != $p2) {
-		array_push($errors, "New Passwords Do Not Match");
-	} 
-	return $errors;
-}
-
-function validateEth0Settings($stat, $ty, $eip, $emask, $egw, $edns)
-{
-	$errors = array();
-	if ($stat == 0) {
-		return $errors;
-	} else {
-		if($ty == 0) {
-			return $errors;
-		} else {
-			if (!isValidIP($eip)) 
-			{
-				array_push($errors, "Invalid Eth0 IP Address");
-			}
-			if (!isValidIP($egw)) 
-			{
-				array_push($errors, "Invalid Eth0 Gateway Address");
-			}
-			if (!isValidIP($edns)) 
-			{
-				array_push($errors, "Invalid Eth0 DNS Address");
-			}
-			if (!isValidMask($emask)) 
-			{
-				array_push($errors, "Invalid Eth0 Subnet Mask");
-			}
-			
-		}
-	}
-	return $errors;
-}
 
 function validateWlan0Settings($stat, $ty, $eip, $emask, $egw, $edns, $essid, $emethod, $ealgo, $epass)
 {
@@ -406,7 +336,12 @@ echo "$().redirect('logout.php', {'logout_title': 'Rebooting Atomik Controller',
 // Save System Settings [Keep Post Data, Verify Form, DB, Start Service, Stop Service, Edit File, Reboot] (save_system)
 if ($command <> "" && $command !="" && $command == "save_system") 
 {
-	$erro = validateSystemSettings($_hostname);
+	$erro = array();
+	if (!preg_match('/^[a-z0-9.\-]+$/i', $_hostname)) {
+		array_push($erro, "Invalid Hostname");
+		$_error_hostname = 1;
+	}
+	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
@@ -425,13 +360,26 @@ if ($command <> "" && $command !="" && $command == "save_system")
 		
 		
 	$hnameupdatecmd = shell_exec("sudo /var/atomik/scripts/updateHOSTNAME.sh 2>&1");
+	
+			// Run Command To Start or Stop Services Here
+			// Run Command to set if services start on boot
 		
 	}
 }
 // Save Password [Keep Post Data, Verify Form, DB] (save_password)
 if ($command <> "" && $command !="" && $command == "save_password") 
-{
-	$erro = validatePasswordUpdate($_real_password, $_current_password, $_new_password_1, $_new_password_2);
+{	
+	$erro = array();
+	if ($_real_password != $_current_password) {
+		array_push($erro, "Invalid Current Password");
+		$_error_current_password = 1;
+	} 
+	if ($_new_password_1 != $_new_password_2) {
+		array_push($erro, "New Passwords Do Not Match");
+		$_error_new_password_2 = 1;
+		$_error_new_password_1 = 1;
+	} 
+	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
@@ -439,7 +387,7 @@ if ($command <> "" && $command !="" && $command == "save_password")
 		$len = count($erro);
 		foreach ($erro as $er)
 		{
-    		$error_text .= $prefix . '"' . $er . '"';
+    		$error_text .= $prefix . $er;
     		$prefix = ', ';
 			if ($i == $len - 2 && $len != 2) {
         		$prefix = ', and ';
@@ -465,8 +413,25 @@ if ($command <> "" && $command !="" && $command == "save_password")
 // Save Time Zone [Keep Post Data, Verify Form, DB, Edit Cron, Edit File] (save_time)
 if ($command <> "" && $command !="" && $command == "save_time") 
 {
-	$erro = validateTimeSettings($_ntp_server_1, $_ntp_server_2, $_ntp_server_3);
 	$i = 0;
+	$erro = array();
+	
+	if (!isValidIP($_ntp_server_1)) 
+	{
+		array_push($erro, "Invalid NTP Server 1 Address");
+		$_error_ntp_server_1 = 1;
+	}
+	if (!isValidIP($_ntp_server_2)) 
+	{
+		array_push($erro, "Invalid NTP Server 2 Address");
+		$_error_ntp_server_2 = 1;
+	}
+	if (!isValidIP($_ntp_server_3)) 
+	{
+		array_push($erro, "Invalid NTP Server 3 Address");
+		$_error_ntp_server_3 = 1;
+	}
+	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
@@ -474,7 +439,7 @@ if ($command <> "" && $command !="" && $command == "save_time")
 		$len = count($erro);
 		foreach ($erro as $er)
 		{
-    		$error_text .= $prefix . '"' . $er . '"';
+    		$error_text .= $prefix . $er;
     		$prefix = ', ';
 			if ($i == $len - 2 && $len != 2) {
         		$prefix = ', and ';
@@ -505,9 +470,40 @@ if ($command <> "" && $command !="" && $command == "save_time")
 }
 // Save Eth0 Settings [Keep Post Data, Verify Form, DB, Edit Files, Restart Service] (save_eth0)
 
-if ($command <> "" && $command !="" && $command == "save_eth0") // ($stat, $ty, $eip, $emask, $egw, $edns)
+if ($command <> "" && $command !="" && $command == "save_eth0") 
 {
-	$erro = validateEth0Settings($_eth0_status, $_eth0_type, $_eth0_ip, $_eth0_mask, $_eth0_gateway, $_eth0_dns);
+	$erro = array();
+	if ($_eth0_status == 0 && $row['wlan0_status'] == 0) {
+		array_push($erro, "At Least One Network Interface Must Be Enabled!");
+		$_error_eth0_status = 1;
+		$_error_wlan0_status = 1;
+	} else 	{
+		if ($_eth0_status == 0 ) {
+			if($_eth0_type > 0) {
+				if (!isValidIP($_eth0_ip)) 
+				{
+					array_push($erro, "Invalid Eth0 IP Address");
+					$_error_eth0_ip = 1;
+				}
+				if (!isValidIP($_eth0_gateway)) 
+				{
+					array_push($erro, "Invalid Eth0 Gateway Address");
+					$_error_eth0_gateway = 1;
+				}
+				if (!isValidIP($_eth0_dns)) 
+				{
+					array_push($erro, "Invalid Eth0 DNS Address");
+					$_error_eth0_dns = 1;
+				}
+				if (!isValidMask($_eth0_mask)) 
+				{
+					array_push($erro, "Invalid Eth0 Subnet Mask");
+					$_error_eth0_mask = 1;
+				}
+			}			
+		}
+	}
+		
 	$i = 0;
 	if (count($erro) > 0) 
 	{
@@ -553,7 +549,7 @@ if ($command <> "" && $command !="" && $command == "save_wlan0") // ($stat, $ty,
 		$len = count($erro);
 		foreach ($erro as $er)
 		{
-    		$error_text .= $prefix . '"' . $er . '"';
+    		$error_text .= $prefix . $er;
     		$prefix = ', ';
 			if ($i == $len - 2 && $len != 2) {
         		$prefix = ', and ';
@@ -666,17 +662,17 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
   <table class="table table-striped">
     <thead>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Current Password: </td>
+        <td <?php if ($_error_current_password == 1 ) { ?>class="text-danger"<?php }; ?>>Current Password: </td>
         <td><input type="password" class="form-control" id="current_password" name="current_password" value=""></td>
       </tr>
       </thead>
     <tbody>
     <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>New Password: </td>
+        <td <?php if ($_error_new_password_1 == 1 ) { ?>class="text-danger"<?php }; ?>>New Password: </td>
         <td><input type="password" class="form-control" id="new_password_1" name="new_password_1" value=""></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Repeat Password: </td>
+        <td <?php if ($_error_new_password_2 == 1 ) { ?>class="text-danger"<?php }; ?>>Repeat Password: </td>
         <td><input type="password" class="form-control" id="new_password_2" name="new_password_2" value=""></td>
       </tr>
     </tbody>
@@ -717,14 +713,14 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 		}?></select></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>NTP Time Server 1: </td>
+        <td <?php if ($_error_ntp_server_1 == 1 ) { ?>class="text-danger"<?php }; ?>>NTP Time Server 1: </td>
         <td><input type="text" class="form-control" id="ntp_server_1" name="ntp_server_1" value="<?php echo $_ntp_server_1; ?>"></td>
       </tr>
-      <tr <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>
+      <tr <?php if ($_error_ntp_server_2 == 1 ) { ?>class="text-danger"<?php }; ?>>
         <td>NTP Time Server 2: </td>
         <td><input type="text" class="form-control" id="ntp_server_2" name="ntp_server_2" value="<?php echo $_ntp_server_2; ?>"></td>
       </tr>
-      <tr <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>
+      <tr <?php if ($_error_ntp_server_3 == 1 ) { ?>class="text-danger"<?php }; ?>>
         <td>NTP Time Server 3: </td>
         <td><input type="text" class="form-control" id="ntp_server_3" name="ntp_server_3" value="<?php echo $_ntp_server_3; ?>"></td>
       </tr>
@@ -742,7 +738,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
   <table class="table table-striped">
     <thead>
       <tr>
-        <td>Eth0 Status: </td>
+        <td <?php if ($_error_eth0_status == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Status: </td>
         <td><select id="eth0_status" name="eth0_status" class="form-control">
   <option value="1" <?php if ($_eth0_status == 1 ) { ?>selected <?php }; ?>>Enable</option>
   <option value="0" <?php if ($_eth0_status == 0 ) { ?>selected <?php }; ?>>Disable</option>
@@ -758,19 +754,19 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 </select></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 IP Address: </td>
+        <td <?php if ($_error_eth0_ip == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 IP Address: </td>
         <td><input type="text" class="form-control" id="eth0_ip" name="eth0_ip" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_ip; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Subnet Mask: </td>
+        <td <?php if ($_error_eth0_mask == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Subnet Mask: </td>
         <td><input type="text" class="form-control" id="eth0_mask" name="eth0_mask" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_mask; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Gateway: </td>
+        <td <?php if ($_error_eth0_gateway == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 Gateway: </td>
         <td><input type="text" class="form-control" id="eth0_gateway" name="eth0_gateway" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_gateway; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 DNS: </td>
+        <td <?php if ($_error_eth0_dns == 1 ) { ?>class="text-danger"<?php }; ?>>Eth0 DNS: </td>
         <td><input type="text" class="form-control" id="eth0_dns" name="eth0_dns" <?php if ($_eth0_status > 0 && $_eth0_type > 0 ) { ?>value="<?php echo $_eth0_dns; ?>"<?php }; ?><?php if ($_eth0_status == 0 || $_eth0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
     </tbody>
@@ -789,7 +785,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
   <table class="table table-striped">
     <thead>
       <tr >
-        <td>Wifi0 Status: </td>
+        <td<?php if ($_error_wlan0_status == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Status: </td>
         <td><select id="wlan0_status" name="wlan0_status" class="form-control">
   <option value="0" <?php if ($_wlan0_status == 0 ) { ?>selected <?php }; ?>>Disable</option>
   <option value="1" <?php if ($_wlan0_status == 1 ) { ?>selected <?php }; ?>>Enable</option>
@@ -839,7 +835,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 <?php }; ?></select></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Password: </td>
+        <td <?php if ($_error_wlan0_password == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Password: </td>
         <td><input type="password" class="form-control" id="wlan0_password" name="wlan0_password" <?php if ($_wlan0_status > 0 && $_wlan0_method > 0 ) { ?>value="<?php echo $_wlan0_password; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_method == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
@@ -850,19 +846,19 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 <?php }; ?></select></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 IP Address: </td>
+        <td <?php if ($_error_wlan0_ip == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 IP Address: </td>
         <td><input type="text" class="form-control" id="wlan0_ip" name="wlan0_ip" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_ip; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Subnet Mask: </td>
+        <td <?php if ($_error_wlan0_mask == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Subnet Mask: </td>
         <td><input type="text" class="form-control" id="wlan0_mask" name="wlan0_mask" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_mask; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Gateway: </td>
+        <td <?php if ($_error_wlan0_gateway == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 Gateway: </td>
         <td><input type="text" class="form-control" id="wlan0_gateway" name="wlan0_gateway" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_gateway; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       <tr>
-        <td <?php if ($_error_hostname == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 DNS: </td>
+        <td <?php if ($_error_wlan0_dns == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 DNS: </td>
         <td><input type="text" class="form-control" id="wlan0_dns" name="wlan0_dns" <?php if ($_wlan0_status > 0 && $_wlan0_type > 0 ) { ?>value="<?php echo $_wlan0_dns; ?>"<?php }; ?><?php if ($_wlan0_status == 0 || $_wlan0_type == 0) { ?> disabled<?php }; ?>></td>
       </tr>
       </tbody>
