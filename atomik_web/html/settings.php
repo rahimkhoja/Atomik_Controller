@@ -456,7 +456,11 @@ if ($command <> "" && $command !="" && $command == "save_eth0")
 		
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
-			$success_text = "Eth0 Adaptor Information Saved!";
+			$success_text = "Eth0 Adaptor Information Saved, Rebooting System.";
+			$networkupdatecmd = shell_exec("sudo /var/atomik/scripts/updateNETWORK.sh 2>&1");
+			$rebootcmd = shell_exec("sudo /var/atomik/scripts/rebootATOMIK.sh > /dev/null &");
+			echo '<script type="text/javascript">';
+			echo "$().redirect('logout.php', {'logout_title': 'Update and Restart', 'description': 'Please wait while the Atomik Controller is reconfigured and restarted. '});</script>";			
 		} else {
     		$page_error = 1;
 			$error_text = "Error Saving Eth0 Adpator Information To DB!";
@@ -886,7 +890,6 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
@@ -973,19 +976,14 @@ $('#eth0_type').on('change', function() {
 
 $('#wlan0_status').on('change', function() {
   if (this.value == 0) {
-	   
 	  $( "#wlan0_ssid" ).prop( "disabled", true );
 	  $( "#wlan0_ssid" ).children().remove();
-	   
 	  $( "#wlan0_algorithm" ).prop( "disabled", true );
 	  $( "#wlan0_algorithm" ).children().remove();
-	  
 	  $( "#wlan0_method" ).prop( "disabled", true );
 	  $( "#wlan0_method" ).children().remove();
-	  
 	  $( "#wlan0_password" ).prop( "disabled", true );
 	  $( "#wlan0_password" ).val('');
-	  
 	  $( "#wlan0_type" ).prop( "disabled", true );
 	  $( "#wlan0_type" ).children().remove();
 	  $( "#wlan0_ip" ).prop( "disabled", true );
@@ -998,14 +996,12 @@ $('#wlan0_status').on('change', function() {
 	  $( "#wlan0_mask" ).val('');
   } else {
 	  $( "#wlan0_ssid" ).prop( "disabled", false );
-	  
 	  $( "#wlan0_method" ).prop( "disabled", false );
 	  $( "#wlan0_method" ).append('<option value="0" selected>Disable</option>');
 	  $( "#wlan0_method" ).append('<option value="1" >OPENWEP</option>');
 	  $( "#wlan0_method" ).append('<option value="2" >SHAREDWEP</option>');
 	  $( "#wlan0_method" ).append('<option value="3" >WPAPSK</option>');
 	  $( "#wlan0_method" ).append('<option value="4" >WPA2PSK</option>');
-	  	  
 	  $( "#wlan0_type" ).prop( "disabled", false );
 	  $( "#wlan0_type" ).append('<option value="1">Static</option>');
 	  $( "#wlan0_type" ).append('<option value="0" selected>DHCP</option>');
@@ -1013,7 +1009,6 @@ $('#wlan0_status').on('change', function() {
 	  $( "#wlan0_gateway" ).prop( "disabled", false );
 	  $( "#wlan0_dns" ).prop( "disabled", false );
 	  $( "#wlan0_mask" ).prop( "disabled", false );
-	  
 	  document.settingsfrm.submit();
   }
 });
