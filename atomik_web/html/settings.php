@@ -1042,5 +1042,8 @@ $('#wlan0_method').on('change', function() {
   }
 });
 </script>
-</body>
+</body><?php
+$rs->free();
+$conn->close();
+?>
 </html>
