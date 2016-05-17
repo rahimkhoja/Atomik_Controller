@@ -99,7 +99,7 @@ $rs->data_seek(0);
     
     <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
     <tr><?php
-	$sql = "SELECT atomik_zone_remotes.zone_remote_id FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_zone_id = ".$row['zone_id'];.";";  
+	$sql = "SELECT atomik_zone_remotes.zone_remote_id FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_zone_id = ".$row['zone_id'].";";  
 	$zrs=$conn->query($sql);
 	if($rrs === false) {
 		trigger_error('Wrong Remote Total SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
@@ -107,7 +107,7 @@ $rs->data_seek(0);
 		$total_remotes = $zrs->num_rows;
 	}
 	$zrs->free();
-	$sql = "SELECT atomik_zone_devices.zone_device_id FROM atomik_zone_devices WHERE atomik_zone_devices.zone_device_zone_id = ".$row['zone_id'];.";";  
+	$sql = "SELECT atomik_zone_devices.zone_device_id FROM atomik_zone_devices WHERE atomik_zone_devices.zone_device_zone_id = ".$row['zone_id'].";";  
 	$zrs=$conn->query($sql);
 	if($rrs === false) {
 		trigger_error('Wrong Remote Total SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
