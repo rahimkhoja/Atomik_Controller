@@ -18,7 +18,7 @@ $error = "";
 if ( isset($_POST["item"]) ) {
 	$_item = $_POST["item"];
 
-	$sql="DELETE FROM atomik_zones WHERE zonee_id=".$_item;
+	$sql="DELETE FROM atomik_zones WHERE zone_id=".$_item;
  
 	if($conn->query($sql) === false) {
 		$page_error = 1;
@@ -30,7 +30,7 @@ if ( isset($_POST["item"]) ) {
 }
 		
 // Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_devices.device_status, atomik_device_types.device_type_name FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id;";  
+$sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id, atomik_zones.zone_status FROM atomik_zones;";  
 
 $rs=$conn->query($sql);
  
