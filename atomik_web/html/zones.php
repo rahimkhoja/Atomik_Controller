@@ -96,91 +96,45 @@ $rs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td valign="bottom"><center><p>Bedroom 1 Lights</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center><p>1</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
+    
+    <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
+    <tr><?php
+	$sql = "SELECT atomik_zone_remotes.zone_remote_id FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_zone_id = ".$row['zone_id'];.";";  
+	$zrs=$conn->query($sql);
+	if($rrs === false) {
+		trigger_error('Wrong Remote Total SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+		$total_remotes = $zrs->num_rows;
+	}
+	$zrs->free();
+	$sql = "SELECT atomik_zone_devices.zone_device_id FROM atomik_zone_devices WHERE atomik_zone_devices.zone_device_zone_id = ".$row['zone_id'];.";";  
+	$zrs=$conn->query($sql);
+	if($rrs === false) {
+		trigger_error('Wrong Remote Total SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+		$total_devices = $zrs->num_rows;
+	}
+	$zrs->free();
+	?>
+        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $row['zone_name']; ?></p></center></td>
+        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $row['zone_status']; ?></p></center></td>
+        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $total_remotes; ?></p></center></td>
+        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $total_devices; ?></p></center></td>
+        <td><form id="zoneform<?php echo $row['zone_id']; ?>" name="remform<?php echo $row['zone_id']; ?>" action="zones.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['zone_id']; ?>" ><center><p><a id="delete<?php echo $row['zone_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
+        <script type="text/javascript">
+	$("#delete<?php echo $row['zone_id']; ?>").on('click', function() {
+   document.remform<?php echo $row['zone_id']; ?>.submit();
+});
+$("#zon<?php echo $row['zone_id']; ?>").on('click', function() {
+   $().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>'});
+});
+</script>
+      </tr><?php } } else { ?>
       <tr>
-        <td><center><p>Bedroom 1 Lamp</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center><p>1</p></center></td>        
-        <td><center><p>1</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Upstairs Hallway Lights</p></center></td>
-        <td><center><p>ON</p></center></td>
-        <td><center><p>3</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Upstairs Bathroom Lights</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center><p>3</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Bedroom 2 Lights</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center><p>2</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Downstairs Hallway Lights</p></center></td>
-        <td><center><p>ON</p></center></td>
-        <td><center><p>4</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Downstairs Bathroom Light</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center>
-          <p>4</p>
-        </center></td>        
-        <td><center><p>1</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Kitchen Lights</p></center></td>
-        <td><center><p>ON</p></center></td>
-        <td><center><p>4</p></center></td>        
-        <td><center><p>3</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Living Room Lights</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center><p>4</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Living Room Lamps</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center><p>4</p></center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Porch Lights</p></center></td>
-        <td><center><p>OFF</p></center></td>
-        <td><center>
-          <p>2</p>
-        </center></td>        
-        <td><center><p>2</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Zone</a></p></center></td>
-      </tr>
-    </tbody>
+      <td colspan="5" class="text-center"><h3>No Zones</h3></td>
+      </tr> <?php } ?>      
+      </tbody>
   </table>
-        
         </div><div class="col-xs-2"></div>
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
