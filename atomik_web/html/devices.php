@@ -82,7 +82,7 @@ $rs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <tbody>$rs->data_seek(0);
+    <tbody>
 <?php while($row = $rs->fetch_assoc()){ ?>
     <tr>
         <td valign="bottom"><center><p><?php echo $row['device_name']; ?></p></center></td>
