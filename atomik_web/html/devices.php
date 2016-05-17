@@ -40,7 +40,6 @@ if($rs === false) {
 } else {
   $db_records = $rs->num_rows;
 }
-
 $rs->data_seek(0);
 ?>
 <nav class="navbar navbar-default navbar-inverse">
@@ -79,7 +78,6 @@ $rs->data_seek(0);
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
-
 <div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
@@ -99,7 +97,7 @@ $rs->data_seek(0);
       </tr>
     </thead>
     <tbody>
-<?php while($row = $rs->fetch_assoc()){ ?>
+<?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
     <tr>
         <td valign="bottom" id="dev<?php echo $row['device_id']; ?>"><center><p><?php echo $row['device_name']; ?></p></center></td>
         <td id="dev<?php echo $row['device_id']; ?>"><center>
@@ -115,10 +113,12 @@ $("#dev<?php echo $row['device_id']; ?>").on('click', function() {
    $().redirect('device_details.php', {'device_id': '<?php echo $row['device_id']; ?>'});
 });
 </script>
-      </tr><?php }; ?> 
+      </tr><?php } } else { ?>
+      <tr>
+      <td colspan="4" class="text-center"><h3>No Devices</h3></td>
+      </tr> <?php } ?>
     </tbody>
   </table>
-        
         </div><div class="col-xs-2"></div>
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
@@ -134,7 +134,6 @@ $("#dev<?php echo $row['device_id']; ?>").on('click', function() {
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
