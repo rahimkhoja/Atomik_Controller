@@ -14,6 +14,22 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
+// Check for delete
+
+if ( isset($_POST["item"]) ) {
+	$_item = $_POST["item"];
+
+	$sql="DELETE FROM atomik_devices WHERE device_id=".$_item;
+ 
+	if($conn->query($sql) === false) {
+		$page_error = 1;
+		$error_text = "Error Saving Wlan0 Adpator Information To DB!";
+	} else {
+  		$page_success = 1;
+		$success_text = "Wlan0 Adaptor Information Saved!";
+	}
+}
+		
 // Atomik Setting SQL
 $sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_devices.device_status, atomik_device_types.device_type_name FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id;";  
 
@@ -90,7 +106,7 @@ $rs->data_seek(0);
           <p><?php echo $row['device_type_name']; ?></p>
         </center></td>
         <td id="dev<?php echo $row['device_id']; ?>"><center><p><?php if ($row['device_status'] == 1) { echo "ON"; } else { echo "OFF"; }; ?></p></center></td>
-        <td><form id="delete<?php echo $row['device_id']; ?>" name="delete<?php echo $row['device_id']; ?>" action="devices.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['device_id']; ?>" ><center><p><a id="delete<?php echo $row['device_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
+        <td><form id="delform<?php echo $row['device_id']; ?>" name="delform<?php echo $row['device_id']; ?>" action="devices.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['device_id']; ?>" ><center><p><a id="delete<?php echo $row['device_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['device_id']; ?>").on('click', function() {
    document.delform<?php echo $row['device_id']; ?>.submit();
@@ -129,5 +145,8 @@ $("#dev<?php echo $row['device_id']; ?>").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 </script>
-</body>
+</body><?php
+$rs->free();
+$conn->close();
+?>
 </html>
