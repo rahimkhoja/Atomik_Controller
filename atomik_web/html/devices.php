@@ -23,10 +23,10 @@ if ( isset($_POST["item"]) ) {
  
 	if($conn->query($sql) === false) {
 		$page_error = 1;
-		$error_text = "Error Saving Wlan0 Adpator Information To DB!";
+		$error_text = "Error Deleting Device From DB!";
 	} else {
   		$page_success = 1;
-		$success_text = "Wlan0 Adaptor Information Saved!";
+		$success_text = "Device Deleted!";
 	}
 }
 		
