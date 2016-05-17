@@ -108,7 +108,6 @@ $rs->data_seek(0);
 	}
 	$zrs->free();
 	$sql = "SELECT atomik_zone_devices.zone_device_id FROM atomik_zone_devices WHERE atomik_zone_devices.zone_device_zone_id = ".$row['zone_id'].";";  
-	echo $sql;
 	$zrs=$conn->query($sql);
 	if($zrs === false) {
 		trigger_error('Wrong Device Total SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
