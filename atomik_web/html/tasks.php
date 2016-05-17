@@ -30,7 +30,7 @@ if ( isset($_POST["item"]) ) {
 }
 		
 // Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_devices.device_status, atomik_device_types.device_type_name FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id;";  
+$sql = "SELECT atomik_tasks.task_name, atomik_tasks.task_id, atomik_zones.zone_name FROM atomik_tasks, atomik_zones WHERE atomik_zones.zone_id = atomik_tasks.task_zone_id;";  
 
 $rs=$conn->query($sql);
  
@@ -96,46 +96,29 @@ $rs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <tbody>
+   
+   
+   <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
     <tr>
-        <td valign="bottom"><center>
-          <p>Turn ON Porch Lights - Night</p>
+        <td valign="bottom" id="task<?php echo $row['task_id']; ?>"><center><p><?php echo $row['task_name']; ?></p></center></td>
+        <td id="task<?php echo $row['task_id']; ?>"><center>
+          <p><?php echo $row['zone_name']; ?></p>
         </center></td>
-        <td><center>
-          <p>Porch Lights</p>
-        </center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Task</a></p></center></td>
-      </tr>
+        <td><form id="taskform<?php echo $row['task_id']; ?>" name="taskform<?php echo $row['task_id']; ?>" action="tasks.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['task_id']; ?>" ><center><p><a id="delete<?php echo $row['task_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
+        <script type="text/javascript">
+	$("#delete<?php echo $row['task_id']; ?>").on('click', function() {
+   document.taskform<?php echo $row['task_id']; ?>.submit();
+});
+$("#task<?php echo $row['task_id']; ?>").on('click', function() {
+   $().redirect('task_details.php', {'task_id': '<?php echo $row['task_id']; ?>'});
+});
+</script>
+      </tr><?php } } else { ?>
       <tr>
-        <td><center>
-          <p>Turn OFF Porch Lights - Morning</p>
-        </center></td>
-        <td><center>
-          <p>Porch Lights</p>
-        </center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Task</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center>
-          <p>Turn ON Living Room Lamps - Evening</p>
-        </center></td>
-        <td><center>
-          <p>Living Room Lamps</p>
-        </center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Task</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center>
-          <p>Turn ON Kitchen Lights - Evening</p>
-        </center></td>
-        <td><center>
-          <p>Kitchen Lights</p>
-        </center></td>
-        <td><center><p><a href="" class="btn-danger btn">Delete Task</a></p></center></td>
-      </tr>
+      <td colspan="3" class="text-center"><h3>No Tasks</h3></td>
+      </tr> <?php } ?>      
       </tbody>
   </table>
-        
         </div><div class="col-xs-2"></div>
 </div><div class="container center-block">
     <div class="col-xs-2"></div>

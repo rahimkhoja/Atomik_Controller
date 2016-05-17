@@ -106,15 +106,13 @@ $rs->data_seek(0);
    document.remform<?php echo $row['remote_id']; ?>.submit();
 });
 $("#rem<?php echo $row['remote_id']; ?>").on('click', function() {
-   $().redirect('device_remote.php', {'device_id': '<?php echo $row['remote_id']; ?>'});
+   $().redirect('device_remote.php', {'remote_id': '<?php echo $row['remote_id']; ?>'});
 });
 </script>
       </tr><?php } } else { ?>
       <tr>
       <td colspan="3" class="text-center"><h3>No Remotes</h3></td>
-      </tr> <?php } ?>
-      
-      
+      </tr> <?php } ?>      
       </tbody>
   </table>
         
