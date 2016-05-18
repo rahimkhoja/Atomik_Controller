@@ -791,9 +791,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
     <tbody>
     <tr>
         <td <?php if ($_error_wlan0_ssid == 1 ) { ?>class="text-danger"<?php }; ?>>Wifi0 SSID: </td>
-        <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0) { ?>
-   <?php 
-   
+        <td><select id="wlan0_ssid" name="wlan0_ssid" class="form-control"<?php if ($_wlan0_status == 0) { ?> disabled<?php }; ?>><?php if ($_wlan0_status > 0) {   
 		$ssidcmd = shell_exec("cat /var/atomik/www/ssid.txt");  
 		foreach(preg_split("/((\r?\n)|(\r\n?))/", $ssidcmd) as $line) 
 		{
