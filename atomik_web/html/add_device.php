@@ -5,6 +5,8 @@
 <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
 <title>Atomik Controller - Add Device</title>
 <link rel="stylesheet" href="css/atomik.css">
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/jquery.redirect.min.js"></script>
 <?php 
 // Set Default Error & Success Settings
 $page_error = 0;
