@@ -100,7 +100,7 @@ $rs->data_seek(0);
   <div class="container center">
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-1"><a href="devices.php"  class="btn-warning btn">Cancel</a>
+  <div class="col-xs-1"><a href="devices.php" class="btn-warning btn">Cancel</a>
   </div>
   <div class="col-xs-1"></div>
   <div class="col-xs-4">
@@ -124,7 +124,7 @@ $rs->data_seek(0);
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 $("#newdevsave").on('click', function() {
-	document.choosedevfrm.submit();
+	document.forms["choosedevfrm"].submit();
 });
 </script>
 </body><?php
