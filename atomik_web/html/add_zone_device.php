@@ -1,9 +1,33 @@
-<!doctype html>
+<?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
 <title>Atomik Controller - Add Device to Zone</title>
 <link rel="stylesheet" href="css/atomik.css">
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/jquery.redirect.min.js"></script>
+<?php 
+// Set Default Error & Success Settings
+$page_error = 0;
+$page_success = 0;
+$success_text = "";
+$error = "";
+
+
+// Atomik Setting SQL
+$sql = "SELECT atomik_device_types.device_type_name, atomik_device_types.device_type_id FROM atomik_device_types;";  
+
+$rs=$conn->query($sql);
+ 
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+$rs->data_seek(0);
+
+?>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -23,7 +47,7 @@
         <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Logout</a> </li>
+        <li><a id="logoutbtn">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -38,17 +62,16 @@
           <h3>Add Device to Zone</h3>
         </div>
     </div>
-   </div><hr><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
-<hr>
+   </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success_text; ?>
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <br>
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-            
+        <form id="choosezdevfrm" name="choosezdevfrm" action="zone_details.php" method="post"><input name="new" id="new" type="hidden" value="1"> <input name="zrem" id="zremnew" type="hidden" value="1"><input name="zdev" id="zdev" type="hidden" value="1">  
   <table class="table table-striped">
   <thead>
     <tr>
@@ -60,52 +83,31 @@
   </thead>
     <tbody>
     <tr>
-        <td colspan="2"><p><select id="devicetype" name="devicetype" class="form-control">
-        <option value="16">Porch Light 2</option>
-        <option value="16">Porch Light 1</option>
-		<option value="16">Living Room Lamp 2</option>
-		<option value="16">Living Room Lamp 1</option>
-        <option value="16">Living Room Light 2</option>
-        <option value="16">Living Room Light 1</option>
-        <option value="15">Kitchen Light 3</option>
-        <option value="14">Kitchen Light 2</option>
-        <option value="13">Kitchen Light 1</option>
-        <option value="12">Downstairs Bathroom Light 1</option>
-        <option value="11">Downstairs Hallway Light 2</option>
-        <option value="10">Downstairs Hallway Light 1</option>
-        <option value="9">Bedroom 2 Light 2</option>
-        <option value="8">Bedroom 2 Light 1</option>
-        <option value="7">Upstairs Bathroom Light 2</option>
-        <option value="6">Upstairs Bathroom Light 1</option>
-        <option value="5">Upstairs Hallway Light 2</option>
-        <option value="4">Upstairs Hallway Light 1<</option>
-        <option value="3">Bedroom 1 Night Table Lamp</option>
-  <option value="2">Bedroom 1 Light 2</option>
-  <option value="1">Bedroom 1 Light 1</option>
+        <td colspan="2"><p><select id="zonedevice" name="zonedevice" class="form-control">
+ <?php while($row = $rs->fetch_assoc()){ ?> <option value="<?php echo $row['device_type_id']; ?>"><?php echo $row['device_type_name']; ?></option>
+ <?php }; ?>
 </select></p></td>
       </tr>
       <tr>
       <td><p>Set Device to Zone Settings: </p>
       </td>
-      <td> <p><input type="checkbox" id="zonedevicetype" name="zonedevtype" class="form-control"  width="80"></label></p> </td>
+      <td> <p><input type="checkbox" id="updatedevice" name="updatedevice" class="form-control"  width="80"></label></p> </td>
       </tr>
       </tbody>
-  </table>
+  </table></form>
 </div>
 <div class="col-xs-2"></div></div>
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
   <div class="col-xs-4 text-center"><p></p></div>
-  
   <div class="col-xs-2"></div>
   </div>
-
-  <br><hr><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><hr>
+  <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success_text; ?>
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <div class="container center">
   <div class="col-xs-2">
   </div>
@@ -114,7 +116,7 @@
   <div class="col-xs-1"></div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a href="" class="btn-success btn">Save</a>
+  <div class="col-xs-2 text-right"><a id="zonedevsubmitbtn" class="btn-success btn">Save</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -129,6 +131,16 @@
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
-</body>
+    </div><script type="text/javascript">
+    $("#logoutbtn").on('click', function() {
+	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});
+$("#zonedevsubmitbtn").on('click', function() {
+	document.forms["choosezdevfrm"].submit();
+});
+</script>
+</body><?php
+$rs->free();
+$conn->close();
+?>
 </html>
