@@ -34,7 +34,7 @@ if ( isset($_POST["device_type"]) ) {
 
 if ( $_new_device == 0 ) {
 // Atomik Setting SQL
-	$sql = "SELECT atomik_devices.device_id, atomik_devices.device_name, atomik_devices.device_description, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission, atomik_device_types.device_type_name FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && atomik_devices.device_id = ".$_device_id.";";  
+	$sql = "SELECT atomik_devices.device_id, atomik_devices.device_name, atomik_devices.device_description, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission, atomik_device_types.device_type_name, atomik_device_types.device_type_brightness, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && atomik_devices.device_id = ".$_device_id.";";  
 
 } else { 
 	$sql = "SELECT atomik_device_types.device_type_name FROM atomik_device_types WHERE atomik_device_types.device_type_id = ".$_device_type.";";
@@ -264,7 +264,7 @@ $_device_type_name = $row['device_type_name'];
     </tr>  
   </thead>
     <tbody>
-    <tr>
+    <?php if ( ( $row['device_type_rgb256'] == 1 && $row['device_type_warm_white'] == 1 ) || ( $row['device_type_rgb256'] == 1 && $row['device_type_cold_white'] == 1 ) ) { ?><tr>
         <td>
           <p>Device Color Mode: </p> - Multiple Colour Mode Bulbs
         </td>
@@ -272,32 +272,31 @@ $_device_type_name = $row['device_type_name'];
   <option value="1">White Mode</option>
   <option value="0">Color Mode</option>
 </select></p></td>
-    </tr> 
-    
-    <tr>
+    </tr> <?php }; ?>
+    <?php if ( $row['device_type_rgb256'] == 0 ) { ?><tr>
         <td>
-          <p>Device Color Mode: </p> - Single Mode Bulbs
+          <p>Device Color Mode: </p>
         </td>
-           
         <td><p><center><b>White Mode</b></center></p></td>
-    </tr> <tr>
+    </tr> <?php }; ?>
+    <?php if ( $row['device_type_brightness'] == 1 ) { ?><tr>
         <td>
           <p>Device Brightness (0-100): </p>
         </td>
         <td><p><input type="text" class="form-control" id="device_brightness" name="device_brightness" value="<?php echo $_device_brightness; ?>"></p></td>
-    </tr> 
-    <tr>
+    </tr> <?php }; ?>
+    <?php if ( $row['device_type_rgb256'] == 1 ) { ?><tr>
         <td>
-          <p>Device Color (0-255): </p>- Only Avaiable for RGB Bulbs
+          <p>Device Color (0-255): </p>
         </td>
         <td><p><input type="text" class="form-control" id="device_color" name="device_color" value="<?php echo $_device_color; ?>"></p></td>
-    </tr>
-    <tr>
+    </tr><?php }; ?>
+    <?php if ( $row['device_type_cold_white'] == 1 && $row['device_type_warm_white'] == 1 ) { ?><tr>
         <td>
-          <p>Device White Temperature (2700-6500):</p>- Only Available for Dual White Bulbs
+          <p>Device White Temperature (2700-6500):</p>
         </td>
         <td><p><input type="text" class="form-control" id="device_white_temprature" name="device_white_temprature" value="<?php echo $_device_white_temprature; ?>"></p></td>
-    </tr>
+    </tr><?php }; ?>
       </tbody>
   </table>
 </div>
@@ -335,7 +334,7 @@ $_device_type_name = $row['device_type_name'];
       </tr>
       <tr>
         <td><p>Sequence ID: </p></td>
-        <td><p><?php echo $_device_transmission; ?></p></td>
+        <td><p><b><?php echo $_device_transmission; ?></b></p></td>
       </tr>
       </tbody>
   </table>
