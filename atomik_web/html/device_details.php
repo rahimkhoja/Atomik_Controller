@@ -31,7 +31,7 @@ if ( isset($_POST["new_device"]) ) {
 	$_new_device = "0";
 }
 
-if ( isset($_POST["device_id"]) ) {
+if ( isset($_POST["device_id"]) && $_device_id > 0 ) {
 	$_device_id = $_POST["device_id"];
 } else {
 	$_device_id = "";
@@ -308,7 +308,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
       </tr>
       <tr>
         <td><p>Device Type: 
-          <input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>">
+          <input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>"><input type="hidden" name="device_id" id="device_id" value="<?php echo $_device_id; ?>">
         </p></td>
         <td><center><p><strong><?php echo $_device_type_name; ?></strong></p></center></td>
       </tr>
@@ -323,7 +323,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save General Device Details</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savegeneraldetailsbtn" class="btn-success btn">Save General Device Details</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -469,6 +469,10 @@ if ($command <> "" && $command !="" && $command == "save_general")
 });
 $("#newdevsave").on('click', function() {
 	document.forms["chooseremfrm"].submit();
+});
+$("#savegeneraldetailsbtn").on('click', function() {
+   document.forms["devicefrm"].command.value = "save_general";
+   document.devicefrm.submit();
 });
 </script>
 </body><?php
