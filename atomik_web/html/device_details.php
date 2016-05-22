@@ -227,7 +227,7 @@ $_device_type_name = $row['device_type_name'];
           <input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>">
         </p></td>
         <td><center>
-          <p><strong><?php echo $_device_name; ?></strong></p>
+          <p><strong><?php echo $_device_type_name; ?></strong></p>
         </center></td>
       </tr>
       </tbody>
@@ -257,9 +257,9 @@ $_device_type_name = $row['device_type_name'];
         <td>
           <p>Device Status: </p>
         </td>
-        <td><p><select id="devicestatus" class="form-control">
-  <option value="1">ON</option>
-  <option value="0">OFF</option>
+        <td><p><select id="device_status" name="device_status" class="form-control">
+  <option value="1" <?php if ($_device_status == 1) { echo ' selected'; }?>>ON</option>
+  <option value="0" <?php if ($_device_status == 0) { echo ' selected'; }?>>OFF</option>
 </select></p></td>
     </tr>  
   </thead>
@@ -268,7 +268,7 @@ $_device_type_name = $row['device_type_name'];
         <td>
           <p>Device Color Mode: </p> - Multiple Colour Mode Bulbs
         </td>
-        <td><p><select id="devicecolormode" class="form-control">
+        <td><p><select id="device_color_mode" class="form-control">
   <option value="1">White Mode</option>
   <option value="0">Color Mode</option>
 </select></p></td>
@@ -284,19 +284,19 @@ $_device_type_name = $row['device_type_name'];
         <td>
           <p>Device Brightness (0-100): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="devicebrightness" value="100"></p></td>
+        <td><p><input type="text" class="form-control" id="device_brightness" name="device_brightness" value="<?php echo $_device_brightness; ?>"></p></td>
     </tr> 
     <tr>
         <td>
           <p>Device Color (0-255): </p>- Only Avaiable for RGB Bulbs
         </td>
-        <td><p><input type="text" class="form-control" id="devicecolor" value="1"></p></td>
+        <td><p><input type="text" class="form-control" id="device_color" name="device_color" value="<?php echo $_device_color; ?>"></p></td>
     </tr>
     <tr>
         <td>
           <p>Device White Temperature (2700-6500):</p>- Only Available for Dual White Bulbs
         </td>
-        <td><p><input type="text" class="form-control" id="devicetemperature" value="1"></p></td>
+        <td><p><input type="text" class="form-control" id="device_white_temprature" name="device_white_temprature" value="<?php echo $_device_white_temprature; ?>"></p></td>
     </tr>
       </tbody>
   </table>
@@ -325,17 +325,17 @@ $_device_type_name = $row['device_type_name'];
         <td>
           <p>Address Byte 1: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="address1" value="126"></p></td>
+        <td><p><input type="text" class="form-control" id="device_address1" name="device_address1" value="<?php echo $_device_address1; ?>"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Address Byte 2: </p></td>
-        <td><p><input type="text" class="form-control" id="address2" value="45"></p></td>
+        <td><p><input type="text" class="form-control" id="device_address2" name="device_address2" value="<?php echo $_device_address2; ?>"></p></td>
       </tr>
       <tr>
-        <td><p>Sequence Byte: </p></td>
-        <td><p><?php echo $device; ?></p></td>
+        <td><p>Sequence ID: </p></td>
+        <td><p><?php echo $_device_transmission; ?></p></td>
       </tr>
       </tbody>
   </table>
