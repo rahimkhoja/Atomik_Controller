@@ -8,6 +8,17 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+
+function checkString($str)
+{
+	if (preg_match("/[^a-zA-Z0-9']/i", $string ))   
+	{
+	 	return 0;
+	} else {
+  		return 1;
+	}
+}
+
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
@@ -167,6 +178,74 @@ $_device_type_warm_white = $row['device_type_warm_white'];
 $_device_type_cold_white = $row['device_type_cold_white'];
 $_device_type_rgb256 = $row['device_type_rgb256'];
 
+
+// Save General Device Settings [Keep Post Data, Verify Form, DB] (save_general)
+if ($command <> "" && $command !="" && $command == "save_general") 
+{	
+	$erro = array();
+	if ($_new_device == 1 )
+	{
+		if ( checkString($_device_name) == 0 ) {
+			array_push($erro, "Device Name Contains Illegal Characters. Please Only Use Letters, Numbers, Spaces, and Apostrophes.");
+			$_error_device_name = 1;
+		}
+		
+		if ( checkString($_device_description) == 0 ) {
+			array_push($erro, "Device Description Contains Illegal Characters. Please Only Use Letters, Numbers, Spaces, and Apostrophes.");
+			$_error_device_description = 1;
+		}
+		
+	} else {
+		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] )
+		{
+			array_push($erro, "No Changes To Save");
+		} else {
+			if ( checkString($_device_name) == 0 ) {
+				array_push($erro, "Device Name Contains Illegal Characters. Please Only Use Letters, Numbers, Spaces, and Apostrophes.");
+				$_error_device_name = 1;
+			}
+		
+			if ( checkString($_device_description) == 0 ) {
+				array_push($erro, "Device Description Contains Illegal Characters. Please Only Use Letters, Numbers, Spaces, and Apostrophes.");
+				$_error_device_description = 1;
+			}
+		}
+	}
+	
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		if ( $_new_device == 1 ) {
+			$sql = "INSERT INTO tbl (device_name, device_description) VALUES ('".$_device_name."','".$_device_description."')";
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "General Device Details Updated!";
+				$_new_device = 0;
+				$_device_id = $conn->insert_id;
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving General Device Details To DB!";
+		}
+			
+			
+		} else {
+		$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."' WHERE device_id=".$_device_id.";";
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "General Device Details Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving General Device Details To DB!";
+		}
+		}
+	}
+		
+}
+
+
 ?>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -207,7 +286,7 @@ $_device_type_rgb256 = $row['device_type_rgb256'];
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
-  <br>
+  <br><form id="devicefrm" name="devicefrm"  enctype="multipart/form-data" action="device_details.php" method="post"><input type="hidden" name="command" id="command" value="" >
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -231,9 +310,7 @@ $_device_type_rgb256 = $row['device_type_rgb256'];
         <td><p>Device Type: 
           <input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>">
         </p></td>
-        <td><center>
-          <p><strong><?php echo $_device_type_name; ?></strong></p>
-        </center></td>
+        <td><center><p><strong><?php echo $_device_type_name; ?></strong></p></center></td>
       </tr>
       </tbody>
   </table>
@@ -357,7 +434,7 @@ $_device_type_rgb256 = $row['device_type_rgb256'];
   <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save MiLight Device Details</a></p></div>
   
   <div class="col-xs-2"></div>
-  </div>
+  </div></form>
 <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
