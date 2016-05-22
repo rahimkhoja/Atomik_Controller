@@ -69,7 +69,7 @@ $rs->data_seek(0);
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">    
-  <form id="choosedevfrm" name="choosedevfrm" action="device_details.php" method="post"><input name="new" id="new" type="hidden" value="1"><table class="table table-striped">
+  <form id="choosedevfrm" name="choosedevfrm" action="device_details.php" method="post"><input name="new_device" id="new_device" type="hidden" value="1"><table class="table table-striped">
   <thead>
     <tr>
         <td>
