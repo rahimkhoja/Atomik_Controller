@@ -31,7 +31,7 @@ if ( isset($_POST["new_device"]) ) {
 	$_new_device = "0";
 }
 
-if ( isset($_POST["device_id"]) && $_device_id > 0 ) {
+if ( isset($_POST["device_id"]) ) {
 	$_device_id = $_POST["device_id"];
 } else {
 	$_device_id = "";
