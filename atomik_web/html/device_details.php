@@ -25,6 +25,10 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
+// Set Command
+$command = "";
+$command = $_POST["command"];
+
 if ( isset($_POST["new_device"]) ) {
 	$_new_device = $_POST["new_device"];
 } else {
