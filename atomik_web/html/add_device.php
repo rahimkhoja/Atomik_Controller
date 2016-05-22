@@ -79,7 +79,7 @@ $rs->data_seek(0);
   </thead>
     <tbody>
     <tr>
-        <td><p><select id="devicetype" name="devicetype" class="form-control">
+        <td><p><select id="device_type" name="device_type" class="form-control">
  <?php while($row = $rs->fetch_assoc()){ ?> <option value="<?php echo $row['device_type_id']; ?>"><?php echo $row['device_type_name']; ?></option>
  <?php }; ?>
 </select></p></td>  

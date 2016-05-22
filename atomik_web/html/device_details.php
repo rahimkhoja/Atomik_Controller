@@ -1,9 +1,168 @@
-<!doctype html>
+<?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
 <title>Atomik Controller - Device Details</title>
 <link rel="stylesheet" href="css/atomik.css">
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/jquery.redirect.min.js"></script>
+<?php 
+// Set Default Error & Success Settings
+$page_error = 0;
+$page_success = 0;
+$success_text = "";
+$error = "";
+
+if ( isset($_POST["new_device"]) ) {
+	$_new_device = $_POST["new_device"];
+} else {
+	$_new_device = "0";
+}
+
+if ( isset($_POST["device_id"]) ) {
+	$_device_id = $_POST["device_id"];
+} else {
+	$_device_id = "";
+}
+
+if ( isset($_POST["device_type"]) ) {
+	$_device_type = $_POST["device_type"];
+} else {
+	$_device_type = "";
+}
+
+if ( $_new_device == 0 ) {
+// Atomik Setting SQL
+	$sql = "SELECT atomik_devices.device_id, atomik_devices.device_name, atomik_devices.device_description, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission, atomik_device_types.device_type_name FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id, atomik_devices.device_id = ".$_device_id.";";  
+
+} else { 
+	$sql = "SELECT atomik_device_types.device_type_name FROM atomik_device_types WHERE atomik_device_types.device_type_id = ".$_device_type.";";
+}
+$rs=$conn->query($sql);
+ 
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+
+if ( isset($_POST["device_name"])) {
+	$_device_name = $_POST["device_name"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_name = $row['device_name'];
+	} else {
+		$_device_name = "";
+	}
+}
+
+if ( isset($_POST["device_description"])) {
+	$_device_description = $_POST["device_description"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_description = $row['device_description'];
+	} else {
+		$_device_description = "";
+	}
+}
+
+if ( isset($_POST["device_status"])) {
+	$_device_status = $_POST["device_status"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_status = $row['device_status'];
+	} else {
+		$_device_status = "";
+	}
+}
+
+if ( isset($_POST["device_colormode"])) {
+	$_device_colormode = $_POST["device_colormode"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_colormode = $row['device_colormode'];
+	} else {
+		$_device_colormode = "";
+	}
+}
+
+if ( isset($_POST["device_brightness"])) {
+	$_device_brightness = $_POST["device_brightness"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_brightness = $row['device_brightness'];
+	} else {
+		$_device_brightness = "";
+	}
+}
+
+if ( isset($_POST["device_rgb"])) {
+	$_device_rgb = $_POST["device_rgb"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_rgb = $row['device_rgb'];
+	} else {
+		$_device_rgb = "";
+	}
+}
+
+if ( isset($_POST["device_white_temprature"])) {
+	$_device_white_temprature = $_POST["device_white_temprature"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_white_temprature = $row['device_white_temprature'];
+	} else {
+		$_device_white_temprature = "";
+	}
+}
+
+if ( isset($_POST["device_address1"])) {
+	$_device_address1 = $_POST["device_address1"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_address1 = $row['device_address1'];
+	} else {
+		$_device_address1 = "";
+	}
+}
+
+if ( isset($_POST["device_address2"])) {
+	$_device_address2 = $_POST["device_address2"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_address2 = $row['device_address2'];
+	} else {
+		$_device_address2 = "";
+	}
+}
+
+if ( isset($_POST["device_transmission"])) {
+	$_device_transmission = $_POST["device_transmission"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_transmission = $row['device_transmission'];
+	} else {
+		$_device_transmission = "";
+	}
+}
+
+if ( isset($_POST["device_type"])) {
+	$_device_type = $_POST["device_type"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_type = $row['device_type'];
+	} else {
+		$_device_type = "";
+	}
+}
+
+$_device_type_name = $row['device_type_name'];
+
+?>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -17,13 +176,13 @@
       <ul class="nav navbar-nav">
         <li><a href="dashboard.php">Dashboard</a> </li>
         <li><a href="settings.php">Settings</a> </li>
-        <li class="active"><a href="devices.php">Devices<<span class="sr-only">(current)</span></a> </li>
+        <li class="active"><a href="devices.php">Devices<span class="sr-only">(current)</span></a> </li>
         <li><a href="remotes.php">Remotes</a> </li>
         <li><a href="zones.php">Zones</a> </li>
         <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Logout</a> </li>
+        <li><a id="logoutbtn">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -38,12 +197,11 @@
           <h3>Device Details</h3>
         </div>
     </div>
-   </div><hr><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
-<hr>
+   </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success_text; ?>
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <br>
   <div class="container">
         <div class="col-xs-2"></div>
@@ -55,20 +213,21 @@
         <td>
           <p>Device Name: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="devicename" value="Living Room Lamp 1"></p></td>
+        <td><p><input type="text" class="form-control" id="device_name" name="device_name" value="<?php echo $_device_name; ?>"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Device Description: </p></td>
-        <td><p><textarea class="form-control" rows="4" cols="1">Livingroom Lamp . To the right of the TV.
-</textarea></p></td>
+        <td><p><textarea class="form-control" rows="4" cols="1" name="device_description" id="device_description"><?php echo $_device_description; ?></textarea></p></td>
         
       </tr>
       <tr>
-        <td><p>Device Type: </p></td>
+        <td><p>Device Type: 
+          <input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>">
+        </p></td>
         <td><center>
-          <p><strong>Milight RGB Warm White</strong></p>
+          <p><strong><?php echo $_device_name; ?></strong></p>
         </center></td>
       </tr>
       </tbody>
@@ -109,7 +268,7 @@
         <td>
           <p>Device Color Mode: </p> - Multiple Colour Mode Bulbs
         </td>
-        <td><p><select id="eth0status" class="form-control">
+        <td><p><select id="devicecolormode" class="form-control">
   <option value="1">White Mode</option>
   <option value="0">Color Mode</option>
 </select></p></td>
@@ -125,19 +284,19 @@
         <td>
           <p>Device Brightness (0-100): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="remoteusername" value="100"></p></td>
+        <td><p><input type="text" class="form-control" id="devicebrightness" value="100"></p></td>
     </tr> 
     <tr>
         <td>
           <p>Device Color (0-255): </p>- Only Avaiable for RGB Bulbs
         </td>
-        <td><p><input type="text" class="form-control" id="remoteusername" value="1"></p></td>
+        <td><p><input type="text" class="form-control" id="devicecolor" value="1"></p></td>
     </tr>
     <tr>
         <td>
           <p>Device White Temperature (2700-6500):</p>- Only Available for Dual White Bulbs
         </td>
-        <td><p><input type="text" class="form-control" id="remoteusername" value="1"></p></td>
+        <td><p><input type="text" class="form-control" id="devicetemperature" value="1"></p></td>
     </tr>
       </tbody>
   </table>
@@ -175,12 +334,8 @@
         <td><p><input type="text" class="form-control" id="address2" value="45"></p></td>
       </tr>
       <tr>
-        <td><p>Address Byte 3: </p></td>
-        <td><p><input type="text" class="form-control" id="address3" value="229"></p></td>
-      </tr>
-      <tr>
         <td><p>Sequence Byte: </p></td>
-        <td><p><input type="text" class="form-control" id="address3" value="74"></p></td>
+        <td><p><?php echo $device; ?></p></td>
       </tr>
       </tbody>
   </table>
@@ -199,12 +354,11 @@
   
   <div class="col-xs-2"></div>
   </div>
-<br>
-  <hr><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><hr>
+<?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success_text; ?>
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <div class="container center">
   <div class="col-xs-2">
   </div>
@@ -223,12 +377,21 @@
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
-</body>
+    </div><script type="text/javascript">
+    $("#logoutbtn").on('click', function() {
+	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});
+$("#newdevsave").on('click', function() {
+	document.forms["chooseremfrm"].submit();
+});
+</script>
+</body><?php
+$rs->free();
+$conn->close();
+?>
 </html>

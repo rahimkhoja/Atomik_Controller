@@ -18,7 +18,7 @@ $error = "";
 if ( isset($_POST["item"]) ) {
 	$_item = $_POST["item"];
 
-	$sql="DELETE FROM atomik_devices WHERE device_id=".$_item;
+	$sql="DELETE FROM atomik_tasks WHERE task_id=".$_item;
  
 	if($conn->query($sql) === false) {
 		$page_error = 1;
