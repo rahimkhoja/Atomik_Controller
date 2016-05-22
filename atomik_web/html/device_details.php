@@ -286,7 +286,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
-  <br><form id="devicefrm" name="devicefrm"  enctype="multipart/form-data" action="device_details.php" method="post"><input type="hidden" name="command" id="command" value="" >
+  <br><form id="devicefrm" name="devicefrm" enctype="multipart/form-data" action="device_details.php" method="post"><input type="hidden" name="command" id="command" value="" >
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -323,7 +323,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="savegeneraldetailsbtn" class="btn-success btn">Save General Device Details</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savegeneralbtn" class="btn-success btn">Save General Device Details</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -467,10 +467,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
     $("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
-$("#newdevsave").on('click', function() {
-	document.forms["chooseremfrm"].submit();
-});
-$("#savegeneraldetailsbtn").on('click', function() {
+$("#savegeneralbtn").on('click', function() {
    document.forms["devicefrm"].command.value = "save_general";
    document.devicefrm.submit();
 });
