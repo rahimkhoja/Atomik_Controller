@@ -11,9 +11,8 @@
 
 function checkString($str)
 {
-	if (preg_match("/[^a-zA-Z0-9']/i", $string ))   
-	{
-	 	return 0;
+	if(!preg_match("/^[a-zA-Z'-]+$/",$First)) { 
+		return 0;
 	} else {
   		return 1;
 	}
@@ -216,7 +215,6 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		}
 	}
 	
-	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
@@ -232,23 +230,19 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			} else {
     			$page_error = 1;
 				$error_text = "Error Inserting General Device Details To DB!";
-		}
-			
-			
+			}
 		} else {
-		$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."' WHERE device_id=".$_device_id.";";
-		if ($conn->query($sql) === TRUE) {
-    		$page_success = 1;
-			$success_text = "General Device Details Updated!";
-		} else {
-    		$page_error = 1;
-			$error_text = "Error Saving General Device Details To DB!";
+			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."' WHERE device_id=".$_device_id.";";
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "General Device Details Updated!";
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving General Device Details To DB!";
+			}
 		}
-		}
-	}
-		
+	}		
 }
-
 
 ?>
 </head>
