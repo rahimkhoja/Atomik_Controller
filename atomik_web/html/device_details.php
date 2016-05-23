@@ -30,7 +30,7 @@ function processErrors($ers)
 
 function checkString($str)
 {
-	if(!preg_match("/^[a-zA-Z'-]+$/",$str)) { 
+	if(!preg_match("/^[a-zA-Z0-9'-\s]+$/",$str)) { 
 		return 0;
 	} else {
   		return 1;
@@ -388,7 +388,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
         <td>
           <p>Device Color (0-255): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="device_color" name="device_color" value="<?php echo $_device_color; ?>"></p></td>
+        <td><p><input type="text" class="form-control" id="device_rgb" name="device_rgb" value="<?php echo $_device_rgb; ?>"></p></td>
     </tr><?php }; ?>
     <?php if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 ) { ?><tr>
         <td>
