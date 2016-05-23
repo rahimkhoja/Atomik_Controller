@@ -208,7 +208,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	$erro = array();
 	if ($_new_device == 1 )
 	{
-		if (!preg_match('/^[a-zA-Z0-9_-\s]+$/', $_device_name)) {
+		if (!preg_match('/^[a-zA-Z0-9_\-\s]+$/', $_device_name)) {
 			array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, and Apostrophes");
 			$_error_device_name = 1;
 		}
