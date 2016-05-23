@@ -8,6 +8,25 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+function processErrors($ers)
+{
+	$i = 0;
+	$prefix = '';
+	$len = count($ers);
+	foreach ($ers as $er)
+	{
+    	$error_text .= $prefix . $er;
+    	$prefix = ', ';
+		if ($i == $len - 2 && $len != 2) {
+       		$prefix = ', and ';
+    	} else if ($i == $len - 2 && $len == 2) {
+			$prefix = ' and ';
+		}
+		$i++;
+	}
+	$error_text .= '.';
+	return $error_text;
+}
 
 function checkString($str)
 {
@@ -348,9 +367,9 @@ if ($command <> "" && $command !="" && $command == "save_general")
         <td>
           <p>Device Color Mode: </p>
         </td>
-        <td><p><select id="device_color_mode" class="form-control">
-  <option value="1"<?php if ($_device_color_mode == 1) { echo ' selected'; }?>>White Mode</option>
-  <option value="0"<?php if ($_device_color_mode == 0) { echo ' selected'; }?>>Color Mode</option>
+        <td><p><select id="device_colormode" name="device_colormode" class="form-control">
+  <option value="1"<?php if ($_device_colormode == 1) { echo ' selected'; }?>>White Mode</option>
+  <option value="0"<?php if ($_device_colormode == 0) { echo ' selected'; }?>>Color Mode</option>
 </select></p></td>
     </tr> <?php }; ?>
     <?php if ( $_device_type_rgb256 == 0 ) { ?><tr>
