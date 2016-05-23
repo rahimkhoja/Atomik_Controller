@@ -11,7 +11,7 @@
 
 function checkString($str)
 {
-	if(!preg_match("/^[a-zA-Z'-]+$/",$First)) { 
+	if(!preg_match("/^[a-zA-Z'-]+$/",$str)) { 
 		return 0;
 	} else {
   		return 1;
