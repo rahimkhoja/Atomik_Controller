@@ -29,15 +29,6 @@ function processErrors($ers)
 	return $error_text;
 }
 
-function checkString($str)
-{
-	if( preg_match('/^[a-zA-Z0-9\'-\s]+$/', $str) ) { 
-		return 1;
-	} else {
-  		return 0;
-	}
-}
-
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
@@ -208,12 +199,12 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	$erro = array();
 	if ($_new_device == 1 )
 	{
-		if (!preg_match('/^[a-z0-9 .\-]+$/i', $_device_name)) {
+		if (!preg_match('/^[a-z0-9\040\.\-]+$/i', $_device_name)) {
 			array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, and Apostrophes");
 			$_error_device_name = 1;
 		}
 
-		if (!preg_match('/^[a-z0-9 .\-]+$/i', $_device_description)) {
+		if (!preg_match('/^[a-z0-9\040\.\-]+$/i', $_device_description)) {
 			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, and Apostrophes");
 			$_error_device_description = 1;
 		}
