@@ -205,7 +205,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		}
 
 		if (!preg_match("/^[a-zA-Z'. -]+$/", $_device_description)) {
-			array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_device_description = 1;
 		}
 		
@@ -219,8 +219,8 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$_error_device_name = 1;
 			}
 		
-			if (!preg_match("/^[a-zA-Z. -]+$/", $_device_name)) {
-				array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			if (!preg_match("/^[a-zA-Z. -]+$/", $_device_description)) {
+				array_push($erro, "Device Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 				$_error_device_description = 1;
 			}
 		}
