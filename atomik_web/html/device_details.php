@@ -31,7 +31,7 @@ function processErrors($ers)
 
 function checkString($str)
 {
-	if(preg_match("/^[a-zA-Z0-9'-\s]+$/",$str) == 1) { 
+	if( preg_match('/^[a-zA-Z0-9\'-\s]+$/', $str) == 1 ) { 
 		return 1;
 	} else {
   		return 0;
