@@ -10,6 +10,7 @@
 <?php 
 function processErrors($ers)
 {
+	$error_text = "";
 	$i = 0;
 	$prefix = '';
 	$len = count($ers);
@@ -30,10 +31,10 @@ function processErrors($ers)
 
 function checkString($str)
 {
-	if(!preg_match("/^[a-zA-Z0-9'-\s]+$/",$str)) { 
-		return 0;
+	if(preg_match("/^[a-zA-Z0-9'-\s]+$/",$str) == 1) { 
+		return 1;
 	} else {
-  		return 1;
+  		return 0;
 	}
 }
 
