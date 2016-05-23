@@ -223,7 +223,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		$error_text = processErrors($erro);	
 	} else {
 		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description) VALUES ('".$_device_name."','".$_device_description."')";
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.")";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Device Details Updated!";
