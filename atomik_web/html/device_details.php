@@ -214,12 +214,12 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		{
 			array_push($erro, "No Changes To Save");
 		} else {
-			if ( checkString($_device_name) == 0 ) {
+			if (!preg_match('/^[a-z0-9\040\.\-]+$/i', $_device_name)) {
 				array_push($erro, "Device Name Contains Illegal Characters. Please Only Use Letters, Numbers, Spaces, and Apostrophes.");
 				$_error_device_name = 1;
 			}
 		
-			if ( checkString($_device_description) == 0 ) {
+			if (!preg_match('/^[a-z0-9\040\.\-]+$/i', $_device_description)) {
 				array_push($erro, "Device Description Contains Illegal Characters. Please Only Use Letters, Numbers, Spaces, and Apostrophes.");
 				$_error_device_description = 1;
 			}
