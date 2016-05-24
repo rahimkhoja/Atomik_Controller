@@ -326,9 +326,11 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		
 	} else {
 
-		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] )
+		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] )
 		{
-			array_push($erro, "No Changes To Save");
+			if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+				array_push($erro, "No Changes To Save");
+			}
 		} else {
 
 			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
