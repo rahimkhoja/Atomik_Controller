@@ -236,7 +236,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			$_error_device_name = 1;
 		}
 		
-		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
+		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
 			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_device_description = 1;
 		}
@@ -251,7 +251,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$_error_device_name = 1;
 			}
 		
-			if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
+			if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
 				array_push($erro, "Device Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 				$_error_device_description = 1;
 			}
@@ -300,7 +300,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 
 		
 		
-		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
+		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
 			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_device_description = 1;
 		}
@@ -338,7 +338,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 
 			
 		
-		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
+		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
 				array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 				$_error_device_description = 1;
 			}
