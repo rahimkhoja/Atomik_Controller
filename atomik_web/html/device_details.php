@@ -286,6 +286,112 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	}		
 }
 
+// Save all Device Settings [Keep Post Data, Verify Form, DB] (save_aa)
+if ($command <> "" && $command !="" && $command == "save_all") 
+{	
+	$erro = array();
+	if ($_new_device == 1 )
+	{
+		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
+			array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_device_name = 1;
+		}
+
+		if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description)) {
+			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_device_description = 1;
+		}
+		
+		if ( $_device_type_brightness == 1 ) {
+			if (!Check0to100 ( $_device_brightness )) {
+				array_push($erro, "Device Brightness Must Be A Number Between 0 and 100");
+				$_error_device_brightness = 1;
+			}
+		}
+			
+		if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
+			if (!Check0to255 ( $_device_rgb)) {
+				array_push($erro, "Device Color Must Be A Number Between 0 and 255");
+				$_error_device_rgb = 1;
+			}
+		}
+			
+		if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 && $_device_colormode == 1 ) {
+			if (!Check2700to6500 ( $_device_white_temprature )) {
+				array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
+				$_error_device_white_temprature = 1;
+			}
+		}		
+		
+	} else {
+
+		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] )
+		{
+			array_push($erro, "No Changes To Save");
+		} else {
+
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
+				array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_device_name = 1;
+			}
+
+			if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description)) {
+				array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_device_description = 1;
+			}
+		
+			if ( $_device_type_brightness == 1 ) {
+				if (!Check0to100 ( $_device_brightness )) {
+					array_push($erro, "Device Brightness Must Be A Number Between 0 and 100");
+					$_error_device_brightness = 1;
+				}
+			}
+			
+			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
+				if (!Check0to255 ( $_device_rgb)) {
+					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
+					$_error_device_rgb = 1;
+				}
+			}
+			
+			if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 && $_device_colormode == 1 ) {
+				if (!Check2700to6500 ( $_device_white_temprature )) {
+					array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
+					$_error_device_white_temprature = 1;
+				}
+			}
+		}
+	}
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		if ( $_new_device == 1 ) {
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$_device_status.",".$_device_colormode.",".$_device_brightness.",".$_device_rgb.",".$_device_white_temprature.")";			
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "All Device Details Updated!";
+				$_new_device = 0;
+				$_device_id = $conn->insert_id;
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving All Device Details To DB!";
+			}
+		} else {
+			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description.", device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+			
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "All Device Details Updated!";
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving All Device Details To DB!";
+			}
+		}
+	}		
+}
 
 
 // Save General Device Settings [Keep Post Data, Verify Form, DB] (save_properties)
@@ -392,8 +498,9 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 			
 			$_device_address1 = $a1;
 			$_device_address2 = $a2;
+			$_device_transmission = 0;
 	
-			$sql = "UPDATE atomik_devices SET device_address1 = ".trim($_device_address1).", device_address2 = ".trim($_device_address2)." WHERE device_id=".$_device_id.";";
+			$sql = "UPDATE atomik_devices SET device_address1 = ".trim($_device_address1).", device_address2 = ".trim($_device_address2).", device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
 				$page_success = 1;
 				$success_text = "New Address Selected And Deviced Synced!";
@@ -401,19 +508,41 @@ if ($command <> "" && $command !="" && $command == "sync_device")
     			$page_error = 1;
 				$error_text = "Error Saving MiLight Properties To DB!";
 			}
-			
 			// Run Sync Device Command
 			
 		} else {
-			
 			// Run Sync Device Command 
 			$page_success = 1;
 			$success_text = "Device Synced!";
-		}
-		
-	}
-			
+		}	
+	}		
 }
+
+
+// De-Sync Bulb (desync_device)
+if ($command <> "" && $command !="" && $command == "desync_device") 
+{	
+	$erro = array();
+	
+	if ( ( $_device_address1 == "" || empty($_device_address1) ) || ( $_device_address2 == "" || empty($_device_address2) ) ) 
+	{
+		array_push($erro, "You Can Only DeSync A Device Once It Has Been Synced");
+	} 
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		// Run De-Sync Device Command 
+		$page_success = 1;
+		$success_text = "Device Synced!";
+	}
+}
+
+
+
+
 ?>
 </head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
@@ -558,7 +687,6 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
   <div class="col-xs-4 text-center"><p><a id="savepropertiesbtn" class="btn-success btn">Set Device Properties</a></p></div>
-  
   <div class="col-xs-2"></div>
   </div>
 <br>
