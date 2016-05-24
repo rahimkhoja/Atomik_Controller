@@ -345,7 +345,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 
 
 ?>
-</head>
+</head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -371,7 +371,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
   </div>
   <!-- /.container-fluid --> 
 </nav>
-<body><div id="overlay">
+<body>
 <div class="wrapper">
 <div class="PageTitle">
     <div class="row">
@@ -583,7 +583,7 @@ $("#deldevbtn").on('click', function() {
 	}
 });
 </script>
-</div></body><?php
+</body><?php
 $rs->free();
 $conn->close();
 ?>
