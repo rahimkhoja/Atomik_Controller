@@ -152,7 +152,7 @@ if ( isset($_POST["device_brightness"])) {
 	if ($_new_device == 0 ) {
 		$_device_brightness = $row['device_brightness'];
 	} else {
-		$_device_brightness = "";
+		$_device_brightness = 0;
 	}
 }
 
@@ -162,7 +162,7 @@ if ( isset($_POST["device_rgb"])) {
 	if ($_new_device == 0 ) {
 		$_device_rgb = $row['device_rgb'];
 	} else {
-		$_device_rgb = "";
+		$_device_rgb = 0;
 	}
 }
 
@@ -172,7 +172,7 @@ if ( isset($_POST["device_white_temprature"])) {
 	if ($_new_device == 0 ) {
 		$_device_white_temprature = $row['device_white_temprature'];
 	} else {
-		$_device_white_temprature = "";
+		$_device_white_temprature = 2700;
 	}
 }
 
@@ -371,6 +371,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 	} else {
 		if ( $_new_device == 1 ) {
 			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb).",".trim($_device_white_temprature).")";
+			echo $sql;			
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -382,6 +383,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			}
 		} else {
 			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+			echo $sql;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
