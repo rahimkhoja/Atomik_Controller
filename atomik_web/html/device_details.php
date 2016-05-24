@@ -502,13 +502,13 @@ if ($command <> "" && $command !="" && $command == "save_properties")
         <td>
           <p>Address Byte 1: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="device_address1" name="device_address1" value="<?php echo $_device_address1; ?>"></p></td>
+        <td><p><b><?php echo $_device_address1; ?></b></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Address Byte 2: </p></td>
-        <td><p><input type="text" class="form-control" id="device_address2" name="device_address2" value="<?php echo $_device_address2; ?>"></p></td>
+        <td><p><b><?php echo $_device_address2; ?></b></p></td>
       </tr>
       <tr>
         <td><p>Sequence ID: </p></td>
@@ -525,9 +525,8 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 </div>
 <div class="container">
 <div class="col-xs-2"></div>
-  <div class="col-xs-2 text-center"><a href=""  class="btn-warning btn">Sync Device</a></div>
-  <div class="col-xs-2 text-center"><a href=""  class="btn-warning btn">De-Sync Device</a></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save MiLight Device Details</a></p></div>
+  <div class="col-xs-4 text-center"><p><a href="" class="btn-warning btn">Sync Device</a></p></div>
+  <div class="col-xs-4 text-center"><p><a href="" class="btn-warning btn">De-Sync Device</a></p></div>
   
   <div class="col-xs-2"></div>
   </div></form>
