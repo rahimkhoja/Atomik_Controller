@@ -345,7 +345,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 
 
 ?>
-</head>
+</head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -576,6 +576,7 @@ $("#saveallbtn").on('click', function() {
 });
 $("#deldevbtn").on('click', function() {
 	if (window.confirm("Are you sure?")) {
+		$("#overlay").show();
         document.forms["devicefrm"].command.value = "delete_device";
    		document.devicefrm.submit();
 	}
