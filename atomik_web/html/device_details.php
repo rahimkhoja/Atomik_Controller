@@ -507,11 +507,11 @@ if ($command <> "" && $command !="" && $command == "save_properties")
   </thead>
     <tbody>
     <tr>
-        <td width="150"><p>Address Byte 2: </p></td>
+        <td width="350"><p>Address Byte 2: </p></td>
         <td><p><b><?php echo $_device_address2; ?></b></p></td>
       </tr>
       <tr>
-        <td><p>Sequence ID: </p></td>
+        <td><p>Transmission Number: </p></td>
         <td><p><b><?php echo $_device_transmission; ?></b></p></td>
       </tr>
       </tbody>
