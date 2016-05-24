@@ -21,7 +21,8 @@ function Check0to255( $input )
 
 function Check0to100( $input )
 {
-	if (!preg_match("/^[0-9]+$/", $input)) {
+	echo $input;
+	if (!preg_match("/^[0-9]+$/", trim($input))) {
 		if ( $input >= 0 && $input <= 100 ) {
 			return 1;
 		}
@@ -301,7 +302,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 			array_push($erro, "No Changes To Save");
 		} else {
 			if ( $_device_type_brightness == 1 ) {
-				if (!Check0to100 ( $_device_brightness)) {
+				if (!Check0to100 ( $_device_brightness )) {
 					array_push($erro, "Device Brightness Must Be A Number Between 0 and 100");
 					$_error_device_brightness = 1;
 				}
