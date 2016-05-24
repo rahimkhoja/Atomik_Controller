@@ -11,8 +11,7 @@
 
 function Check0to255( $input )
 {
-	if (!preg_match("/^[0-9]+$/", $input)) {
-		echo "here";
+	if (preg_match("/^[0-9]+$/", $input)) {
 		if (  ( $input >= 0 ) && ( $input <= 255 ) ) {
 			return 1;
 		}
@@ -22,8 +21,8 @@ function Check0to255( $input )
 
 function Check0to100( $input )
 {
-	if (!preg_match("/^[0-9]+$/", trim($input))) {
-		if ( $input >= 0 && $input <= 100 ) {
+	if (preg_match("/^[0-9]+$/", trim($input))) {
+		if ( ( $input >= 0 ) && ( $input <= 100 ) ) {
 			return 1;
 		}
 	}
@@ -32,8 +31,8 @@ function Check0to100( $input )
 
 function Check2700to6500( $input )
 {
-	if (!preg_match("/^[0-9]+$/", $input)) {
-		if ( $input >= 2700 && $input <= 6500 ) {
+	if (preg_match("/^[0-9]+$/", $input)) {
+		if ( ( $input >= 2700 ) && ( $input <= 6500 ) ) {
 			return 1;
 		}
 	}
