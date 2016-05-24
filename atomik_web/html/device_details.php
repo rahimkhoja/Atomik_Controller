@@ -541,10 +541,6 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 		$success_text = "Device Synced!";
 	}
 }
-
-
-
-
 ?>
 </head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
