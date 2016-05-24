@@ -525,8 +525,8 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 </div>
 <div class="container">
 <div class="col-xs-2"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-warning btn">Sync Device</a></p></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-warning btn">De-Sync Device</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="syncdevbtn" class="btn-warning btn">Sync Device</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="desyncdevbtn" class="btn-warning btn">De-Sync Device</a></p></div>
   
   <div class="col-xs-2"></div>
   </div></form>
@@ -581,6 +581,25 @@ $("#deldevbtn").on('click', function() {
         document.forms["devicefrm"].command.value = "delete_device";
    		document.devicefrm.submit();
 	}
+	$("#overlay").hide();
+});
+
+$("#syncdevbtn").on('click', function() {
+	$("#overlay").show();
+	if (window.confirm("To Sync a bulb you must turn it on within 2 seconds of pressing the OK button below. Are you ready?")) {
+        document.forms["devicefrm"].command.value = "sync_device";
+   		document.devicefrm.submit();
+	}
+	$("#overlay").hide();
+});
+
+$("#desyncdevbtn").on('click', function() {
+	$("#overlay").show();
+	if (window.confirm("To De-Sync a bulb you must turn it on within 2 seconds of pressing the OK button below. Are you ready?")) {
+        document.forms["devicefrm"].command.value = "desync_device";
+   		document.devicefrm.submit();
+	}
+	$("#overlay").hide();
 });
 </script>
 </body><?php
