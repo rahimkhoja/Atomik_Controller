@@ -375,7 +375,7 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 				
 				$addrs->free();
 			
-				$sql='SELECT atomik_remotes.remote_address1, atomik_remotes.device_address2 FROM atomik_remotes WHERE atomik_remotes.remote_address1 = '.$a1.' && atomik_remotes.remote_address2 = '.$a2.';' ;
+				$sql='SELECT atomik_remotes.remote_address1, atomik_remotes.remote_address2 FROM atomik_remotes WHERE atomik_remotes.remote_address1 = '.$a1.' && atomik_remotes.remote_address2 = '.$a2.';' ;
 				$addrs=$conn->query($sql);
 			
 				if($addrs === false) {
