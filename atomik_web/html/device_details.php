@@ -12,7 +12,7 @@
 function Check0to255( $input )
 {
 	if (!preg_match("/^[0-9]+$/", $input)) {
-		if ( $input >= 0 && $input <= 255 ) {
+		if (  ( $input >= 0 ) && ( $input <= 255 ) ) {
 			return 1;
 		}
 	}
