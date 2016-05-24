@@ -369,7 +369,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		$error_text = processErrors($erro);	
 	} else {
 		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$_device_status.",".$_device_colormode.",".$_device_brightness.",".$_device_rgb.",".$_device_white_temprature.")";			
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb).",".trim($_device_white_temprature).")";			
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -377,10 +377,10 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				$_device_id = $conn->insert_id;
 			} else {
     			$page_error = 1;
-				$error_text = "Error Saving All Device Details To DB!";
+				$error_text = "Error Saving All New Device Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description.", device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
 			
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
@@ -413,14 +413,14 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 				}
 			}
 			
-			if ( $_device_type_rgb256 == 1 ) {
+			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0 ) {
 				if (!Check0to255 ( $_device_rgb)) {
 					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
 					$_error_device_rgb = 1;
 				}
 			}
 			
-			if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1) {
+			if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 && $_device_colormode == 1 ) {
 				if (!Check2700to6500 ( $_device_white_temprature )) {
 					array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
 					$_error_device_white_temprature = 1;
