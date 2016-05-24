@@ -341,9 +341,79 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 			$error_text = "Error Saving Device Properties To DB!";
 		}
 	}		
+}$number = range(0,5);
+
+// Save General Device Settings [Keep Post Data, Verify Form, DB] (save_properties)
+if ($command <> "" && $command !="" && $command == "save_properties") 
+{	
+	$erro = array();
+	if ($_new_device == 1 )
+	{
+		array_push($erro, "Please Save General Device Details Before Syncing A Device");
+		
+	} 
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		if ( ( $_device_address1 == "" || empty($_device_address1) ) || ( $_device_address2 == "" || empty($_device_address2) ) ) {
+			$found_address = 0;
+			while (!$foundaddress) {			
+				$a1 = rand(0, 255);
+				$a2 = rand(0, 255);
+					
+				$sql='SELECT atomik_devices.device_address1, atomik_devices.device_address2 FROM atomik_devices WHERE atomik_devices.device_address1 = '.$a1.' && atomik_devices.device_address2 = '.$a2.';' ;
+				$addrs=$conn->query($sql);
+			
+				if($addrs === false) {
+  					trigger_error('Wrong Address SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+				} else {
+					$address1Total = $addrs->num_rows;
+				}
+				
+				$addrs->free();
+			
+				$sql='SELECT atomik_remotes.remote_address1, atomik_remotes.device_address2 FROM atomik_remotes WHERE atomik_remotes.remote_address1 = '.$a1.' && atomik_remotes.remote_address2 = '.$a2.';' ;
+				$addrs=$conn->query($sql);
+			
+				if($addrs === false) {
+  					trigger_error('Wrong Address SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+				} else {
+					$address2Total = $addrs->num_rows;
+				}
+				
+				$addrs->free();
+				if ( $address2Total == 0 && $address1Total == 0 ) {
+					$found_address = 1;
+				}
+			}
+			
+			$_device_address1 = $a1;
+			$_device_address2 = $a2;
+	
+			$sql = "UPDATE atomik_devices SET device_address1 = ".trim($_device_address1).", device_address2 = ".trim($_device_address2)." WHERE device_id=".$_device_id.";";
+			if ($conn->query($sql) === TRUE) {
+				$page_success = 1;
+				$success_text = "New Address Selected And Deviced Synced!";
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving MiLight Properties To DB!";
+			}
+			
+			// Run Sync Device Command
+			
+		} else {
+			
+			// Run Sync Device Command 
+			$page_success = 1;
+			$success_text = "Device Synced!";
+		}
+		
+	}
+			
 }
-
-
 ?>
 </head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
