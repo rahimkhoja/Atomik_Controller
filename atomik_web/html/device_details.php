@@ -297,7 +297,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		array_push($erro, "Please Save General Device Details Before Saving Device Properties");
 		
 	} else {
-		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_color == $row['device_color'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
 			if ( $_device_type_brightness == 1 ) {
