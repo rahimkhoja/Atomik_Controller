@@ -575,8 +575,9 @@ $("#saveallbtn").on('click', function() {
    document.devicefrm.submit();
 });
 $("#deldevbtn").on('click', function() {
+	$("#overlay").show();
 	if (window.confirm("Are you sure?")) {
-		$("#overlay").show();
+		
         document.forms["devicefrm"].command.value = "delete_device";
    		document.devicefrm.submit();
 	}
