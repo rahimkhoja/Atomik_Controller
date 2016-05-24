@@ -538,13 +538,13 @@ if ($command <> "" && $command !="" && $command == "save_properties")
   <div class="container center">
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-1"><a href="devices.php"  class="btn-warning btn">Cancel</a>
+  <div class="col-xs-1"><a href="devices.php" class="btn-warning btn">Cancel</a>
   </div>
-  <div class="col-xs-1"><a href="" class="btn-danger btn">Delete Device</a>
+  <div class="col-xs-1"><a id="deldevbtn" class="btn-danger btn">Delete Device</a>
   </div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a href="" class="btn-success btn">Save All Details</a>
+  <div class="col-xs-2 text-right"><a id="saveallbtn" class="btn-success btn">Save All Details</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -570,7 +570,16 @@ $("#savepropertiesbtn").on('click', function() {
    document.forms["devicefrm"].command.value = "save_properties";
    document.devicefrm.submit();
 });
-
+$("#saveallbtn").on('click', function() {
+   document.forms["devicefrm"].command.value = "save_all";
+   document.devicefrm.submit();
+});
+$("#deldevbtn").on('click', function() {
+	if (window.confirm("Are you sure?")) {
+        document.forms["devicefrm"].command.value = "delete_device";
+   		document.devicefrm.submit();
+	}
+});
 </script>
 </body><?php
 $rs->free();
