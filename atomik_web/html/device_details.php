@@ -142,7 +142,7 @@ if ( isset($_POST["device_colormode"])) {
 	if ($_new_device == 0 ) {
 		$_device_colormode = $row['device_colormode'];
 	} else {
-		$_device_colormode = "";
+		$_device_colormode = 1;
 	}
 }
 
@@ -215,6 +215,7 @@ if ( isset($_POST["device_type"])) {
 		$_device_type = "";
 	}
 }
+
 
 $_device_type_name = $row['device_type_name'];
 
