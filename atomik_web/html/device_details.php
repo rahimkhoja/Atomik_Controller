@@ -360,7 +360,7 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 	} else {
 		if ( ( $_device_address1 == "" || empty($_device_address1) ) || ( $_device_address2 == "" || empty($_device_address2) ) ) {
 			$found_address = 0;
-			while (!$foundaddress) {			
+			while (!$found_address) {			
 				$a1 = rand(0, 255);
 				$a2 = rand(0, 255);
 					
