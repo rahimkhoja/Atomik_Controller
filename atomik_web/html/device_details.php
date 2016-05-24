@@ -343,8 +343,8 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 	}		
 }$number = range(0,5);
 
-// Save General Device Settings [Keep Post Data, Verify Form, DB] (save_properties)
-if ($command <> "" && $command !="" && $command == "save_properties") 
+// Sync Bulb (sync_device)
+if ($command <> "" && $command !="" && $command == "sync_device") 
 {	
 	$erro = array();
 	if ($_new_device == 1 )
