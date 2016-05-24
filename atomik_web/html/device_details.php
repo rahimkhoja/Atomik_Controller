@@ -324,21 +324,9 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			}
 		}		
 		
-	} else {
-
-		echo $_device_name;
-		echo $_device_description;
-		echo $row['device_name'];
-		echo $row['device_description'];
-		
-		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] )
-		{
-			echo 'here';
-			array_push($erro, "No General Changes To Save");
-			if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
-				array_push($erro, "No Changes To Save");
-				echo 'in here';
-			}
+	} else {		
+		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+			array_push($erro, "No Changes To Save");
 		} else {
 
 			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
