@@ -236,7 +236,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			$_error_device_name = 1;
 		}
 
-		if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description)) {
+		if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) || !strlen(trim($_device_description))==0 ) {
 			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_device_description = 1;
 		}
@@ -298,7 +298,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			$_error_device_name = 1;
 		}
 
-		if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description)) {
+		if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) || !strlen(trim($_device_description))==0 ) {
 			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_device_description = 1;
 		}
@@ -334,7 +334,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				$_error_device_name = 1;
 			}
 
-			if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description)) {
+			if (!preg_match("/^[a-zA-Z0-9'. -]+$/", $_device_description) || !strlen(trim($_device_description))==0 ) {
 				array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 				$_error_device_description = 1;
 			}
@@ -536,7 +536,7 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 	} else {
 		// Run De-Sync Device Command 
 		$page_success = 1;
-		$success_text = "Device Synced!";
+		$success_text = "Device De-Synced!";
 	}
 }
 ?>
