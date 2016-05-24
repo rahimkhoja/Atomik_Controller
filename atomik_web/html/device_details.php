@@ -507,7 +507,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
   </thead>
     <tbody>
     <tr>
-        <td><p>Address Byte 2: </p></td>
+        <td width="150"><p>Address Byte 2: </p></td>
         <td><p><b><?php echo $_device_address2; ?></b></p></td>
       </tr>
       <tr>
