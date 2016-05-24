@@ -21,7 +21,6 @@ function Check0to255( $input )
 
 function Check0to100( $input )
 {
-	echo $input;
 	if (!preg_match("/^[0-9]+$/", trim($input))) {
 		if ( $input >= 0 && $input <= 100 ) {
 			return 1;
@@ -308,7 +307,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 				}
 			}
 			
-			if ( $_device_type_rgb == 1 ) {
+			if ( $_device_type_rgb256 == 1 ) {
 				if (!Check0to255 ( $_device_rgb)) {
 					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
 					$_error_device_rgb = 1;
