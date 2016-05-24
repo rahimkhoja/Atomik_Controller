@@ -8,6 +8,37 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+
+function Check0to255( $input )
+{
+	if (!preg_match("/^[0-9]+$/", $input)) {
+		if ( $input >= 0 && $input <= 255 ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function Check0to100( $input )
+{
+	if (!preg_match("/^[0-9]+$/", $input)) {
+		if ( $input >= 0 && $input <= 100 ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function Check2700to6500( $input )
+{
+	if (!preg_match("/^[0-9]+$/", $input)) {
+		if ( $input >= 2700 && $input <= 6500 ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 function processErrors($ers)
 {
 	$error_text = "";
@@ -255,6 +286,64 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	}		
 }
 
+
+
+// Save General Device Settings [Keep Post Data, Verify Form, DB] (save_properties)
+if ($command <> "" && $command !="" && $command == "save_properties") 
+{	
+	$erro = array();
+	if ($_new_device == 1 )
+	{
+		array_push($erro, "Please Save General Device Details Before Saving Device Properties");
+		
+	} else {
+		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_color == $row['device_color'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+			array_push($erro, "No Changes To Save");
+		} else {
+			if ( $_device_type_brightness == 1 ) {
+				if (!Check0to100 ( $_device_brightness)) {
+					array_push($erro, "Device Brightness Must Be A Number Between 0 and 100");
+					$_error_device_brightness = 1;
+				}
+			}
+			
+			if ( $_device_type_rgb == 1 ) {
+				if (!Check0to255 ( $_device_rgb)) {
+					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
+					$_error_device_rgb = 1;
+				}
+			}
+			
+			if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1) {
+				if (!Check2700to6500 ( $_device_white_temprature )) {
+					array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
+					$_error_device_white_temprature = 1;
+				}
+			}
+			
+		}
+		
+	}
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		
+		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
+		trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Device Properties Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Device Properties To DB!";
+		}
+	}		
+}
+
+
 ?>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -316,13 +405,11 @@ if ($command <> "" && $command !="" && $command == "save_general")
         
       </tr>
       <tr>
-        <td><p>Device Type: 
-          <input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>"><input type="hidden" name="device_id" id="device_id" value="<?php echo $_device_id; ?>">
-        </p></td>
+        <td><p>Device Type: </p></td>
         <td><center><p><strong><?php echo $_device_type_name; ?></strong></p></center></td>
       </tr>
       </tbody>
-  </table>
+  </table><input type="hidden" name="new_device" id="new_device" value="<?php echo $_new_device; ?>"><input type="hidden" name="device_type" id="device_type" value="<?php echo $_device_type; ?>"><input type="hidden" name="device_id" id="device_id" value="<?php echo $_device_id; ?>">
 </div>
 <div class="col-xs-2"></div></div><div class="container">
 <div class="col-xs-2"></div>
@@ -368,7 +455,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
         <td>
           <p>Device Color Mode: </p>
         </td>
-        <td><p><center><b>White Mode</b></center></p></td>
+        <td><input type="hidden" name="device_colormode" id="device_colormode" value="<?php echo $_device_colormode; ?>"><p><center><b>White Mode</b></center></p></td>
     </tr> <?php }; ?>
     <?php if ( $_device_type_brightness == 1 ) { ?><tr>
         <td>
@@ -400,7 +487,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Set Device Properties</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savepropertiesbtn" class="btn-success btn">Set Device Properties</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -480,6 +567,11 @@ $("#savegeneralbtn").on('click', function() {
    document.forms["devicefrm"].command.value = "save_general";
    document.devicefrm.submit();
 });
+$("#savepropertiesbtn").on('click', function() {
+   document.forms["devicefrm"].command.value = "save_properties";
+   document.devicefrm.submit();
+});
+
 </script>
 </body><?php
 $rs->free();
