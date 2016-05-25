@@ -216,9 +216,7 @@ if ( isset($_POST["device_type"])) {
 	}
 }
 
-
 $_device_type_name = $row['device_type_name'];
-
 $_device_type_brightness = $row['device_type_brightness'];
 $_device_type_warm_white = $row['device_type_warm_white'];
 $_device_type_cold_white = $row['device_type_cold_white'];
@@ -296,9 +294,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
 			array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_device_name = 1;
-		}
-
-		
+		}		
 		
 		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
 			array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
@@ -324,8 +320,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
 				$_error_device_white_temprature = 1;
 			}
-		}		
-		
+		}			
 	} else {		
 		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
 			array_push($erro, "No Changes To Save");
@@ -335,8 +330,6 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				array_push($erro, "Device Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 				$_error_device_name = 1;
 			}
-
-			
 		
 		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
 				array_push($erro, "Device Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
@@ -372,8 +365,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		$error_text = processErrors($erro);	
 	} else {
 		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb).",".trim($_device_white_temprature).")";
-			echo $sql;			
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb).",".trim($_device_white_temprature).")";		
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -385,7 +377,6 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			}
 		} else {
 			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
-			echo $sql;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -397,15 +388,13 @@ if ($command <> "" && $command !="" && $command == "save_all")
 	}		
 }
 
-
 // Save General Device Settings [Keep Post Data, Verify Form, DB] (save_properties)
 if ($command <> "" && $command !="" && $command == "save_properties") 
 {	
 	$erro = array();
 	if ($_new_device == 1 )
 	{
-		array_push($erro, "Please Save General Device Details Before Saving Device Properties");
-		
+		array_push($erro, "Please Save General Device Details Before Saving Device Properties");	
 	} else {
 		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
 			array_push($erro, "No Changes To Save");
@@ -429,10 +418,8 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 					array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
 					$_error_device_white_temprature = 1;
 				}
-			}
-			
-		}
-		
+			}	
+		}	
 	}
 	
 	if (count($erro) > 0) 
@@ -440,7 +427,6 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
 		trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
 		if ($conn->query($sql) === TRUE) {
@@ -451,7 +437,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 			$error_text = "Error Saving Device Properties To DB!";
 		}
 	}		
-}$number = range(0,5);
+}
 
 // Sync Bulb (sync_device)
 if ($command <> "" && $command !="" && $command == "sync_device") 
@@ -459,8 +445,7 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 	$erro = array();
 	if ($_new_device == 1 )
 	{
-		array_push($erro, "Please Save General Device Details Before Syncing A Device");
-		
+		array_push($erro, "Please Save General Device Details Before Syncing A Device");	
 	} 
 	
 	if (count($erro) > 0) 
@@ -522,7 +507,6 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 	}		
 }
 
-
 // De-Sync Bulb (desync_device)
 if ($command <> "" && $command !="" && $command == "desync_device") 
 {	
@@ -542,6 +526,31 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 		$page_success = 1;
 		$success_text = "Device De-Synced!";
 	}
+}
+
+// Delete Device (delete_device)
+if ($command <> "" && $command !="" && $command == "delete_device") 
+{	
+	$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id;
+ 
+	if($conn->query($sql) === false) {
+		$page_error = 1;
+		$error_text = "Error Deleting Device From Device DB!";
+	} else {
+  		$page_success = 1;
+		$success_text = "Device Deleted!";
+	}	
+	
+	$sql="DELETE FROM atomik_zone_devices WHERE zone_device_device_id=".$_device_id;
+ 
+	if($conn->query($sql) === false) {
+		$page_error = 1;
+		$error_text = "Error Deleting Device From Zone DB!";
+	} else {
+  		$page_success = 1;
+		$success_text = "Device Deleted!";
+	}	
+	
 }
 ?>
 </head><div id="overlay"></div>
@@ -601,7 +610,6 @@ if ($command <> "" && $command !="" && $command == "desync_device")
     <tr>
         <td><p>Device Description: </p></td>
         <td><p><textarea class="form-control" rows="4" cols="1" name="device_description" id="device_description"><?php echo $_device_description; ?></textarea></p></td>
-        
       </tr>
       <tr>
         <td><p>Device Type: </p></td>
@@ -619,10 +627,8 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
   <div class="col-xs-4 text-center"><p><a id="savegeneralbtn" class="btn-success btn">Save General Device Details</a></p></div>
-  
   <div class="col-xs-2"></div>
   </div>
-
   <br>
   <div class="container">
         <div class="col-xs-2"></div>
@@ -775,7 +781,6 @@ $("#saveallbtn").on('click', function() {
 $("#deldevbtn").on('click', function() {
 	$("#overlay").show();
 	if (window.confirm("Are you sure?")) {
-		
         document.forms["devicefrm"].command.value = "delete_device";
    		document.devicefrm.submit();
 	}
@@ -790,7 +795,6 @@ $("#syncdevbtn").on('click', function() {
 	}
 	$("#overlay").hide();
 });
-
 $("#desyncdevbtn").on('click', function() {
 	$("#overlay").show();
 	if (window.confirm("To De-Sync a bulb you must turn it on within 2 seconds of pressing the OK button below. Are you ready?")) {
