@@ -531,7 +531,7 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 // Delete Device (delete_device)
 if ($command <> "" && $command !="" && $command == "delete_device") 
 {	
-	if ($_new_device == 1 )
+	if ($_new_device == 0 )
 	{
 		$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id;
  
