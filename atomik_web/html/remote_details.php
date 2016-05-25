@@ -548,7 +548,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         </center></td>
       </tr>
       </tbody>
-  </table><input type="hidden" name="new_remote" id="new_remote" value="<?php echo $_new_remote; ?>"><input type="hidden" name="remote_type" id="remote_type" value="<?php echo $_remote_type; ?>"><input type="hidden" name="remote_id" id="remote_id" value="<?php echo $_device_id; ?>">
+  </table><input type="hidden" name="new_remote" id="new_remote" value="<?php echo $_new_remote; ?>"><input type="hidden" name="remote_type" id="remote_type" value="<?php echo $_remote_type; ?>"><input type="hidden" name="remote_id" id="remote_id" value="<?php echo $_remote_id; ?>">
 </div>
 <div class="col-xs-2"></div></div><div class="container">
 <div class="col-xs-2"></div>
