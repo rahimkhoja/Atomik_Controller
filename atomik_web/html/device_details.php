@@ -531,9 +531,11 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 // Delete Device (delete_device)
 if ($command <> "" && $command !="" && $command == "delete_device") 
 {	
-	if ($_new_device == 0 )
+	if ($_new_device == 1 )
 	{
-		$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id;
+		header('Location: devices.php');
+	} else {
+		$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id.";";
  
 		if($conn->query($sql) === false) {
 			$page_error = 1;
@@ -543,7 +545,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
 			$success_text = "Device Deleted!";
 		}	
 		
-		$sql="DELETE FROM atomik_zone_devices WHERE zone_device_device_id=".$_device_id;
+		$sql="DELETE FROM atomik_zone_devices WHERE zone_device_device_id=".trim($_device_id).";";
  
 		if($conn->query($sql) === false) {
 			$page_error = 1;
@@ -553,8 +555,6 @@ if ($command <> "" && $command !="" && $command == "delete_device")
 			$success_text = "Device Deleted!";
 			header('Location: devices.php');		
 		}	
-	} else {
-		header('Location: devices.php');
 	}
 }
 ?>
@@ -791,7 +791,6 @@ $("#deldevbtn").on('click', function() {
 	}
 	$("#overlay").hide();
 });
-
 $("#syncdevbtn").on('click', function() {
 	$("#overlay").show();
 	if (window.confirm("To Sync a bulb you must turn it on within 2 seconds of pressing the OK button below. Are you ready?")) {
