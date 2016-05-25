@@ -70,7 +70,7 @@ $rs->data_seek(0);
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-  <form id="chooseremfrm" name="chooseremfrm" action="remote_details.php" method="post"><input name="new_device" id="new_device" type="hidden" value="1"><table class="table table-striped">
+  <form id="chooseremfrm" name="chooseremfrm" action="remote_details.php" method="post"><input name="new_remote" id="new_remote" type="hidden" value="1"><table class="table table-striped">
   <thead>
     <tr>
         <td>
