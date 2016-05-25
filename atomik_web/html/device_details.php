@@ -531,26 +531,31 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 // Delete Device (delete_device)
 if ($command <> "" && $command !="" && $command == "delete_device") 
 {	
-	$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id;
+	if ($_new_device == 1 )
+	{
+		$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id;
  
-	if($conn->query($sql) === false) {
-		$page_error = 1;
-		$error_text = "Error Deleting Device From Device DB!";
-	} else {
-  		$page_success = 1;
-		$success_text = "Device Deleted!";
-	}	
-	
-	$sql="DELETE FROM atomik_zone_devices WHERE zone_device_device_id=".$_device_id;
+		if($conn->query($sql) === false) {
+			$page_error = 1;
+			$error_text = "Error Deleting Device From Device DB!";
+		} else {
+  			$page_success = 1;
+			$success_text = "Device Deleted!";
+		}	
+		
+		$sql="DELETE FROM atomik_zone_devices WHERE zone_device_device_id=".$_device_id;
  
-	if($conn->query($sql) === false) {
-		$page_error = 1;
-		$error_text = "Error Deleting Device From Zone DB!";
+		if($conn->query($sql) === false) {
+			$page_error = 1;
+			$error_text = "Error Deleting Device From Zone DB!";
+		} else {
+	  		$page_success = 1;
+			$success_text = "Device Deleted!";
+			header('Location: devices.php');		
+		}	
 	} else {
-  		$page_success = 1;
-		$success_text = "Device Deleted!";
-		header('Location: devices.php');		
-	}	
+		header('Location: devices.php');
+	}
 }
 ?>
 </head><div id="overlay"></div>
