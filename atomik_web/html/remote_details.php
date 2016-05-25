@@ -548,7 +548,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         </center></td>
       </tr>
       </tbody>
-  </table>
+  </table><input type="hidden" name="new_remote" id="new_remote" value="<?php echo $_new_remote; ?>"><input type="hidden" name="remote_type" id="remote_type" value="<?php echo $_remote_type; ?>"><input type="hidden" name="remote_id" id="remote_id" value="<?php echo $_device_id; ?>">
 </div>
 <div class="col-xs-2"></div></div><div class="container">
 <div class="col-xs-2"></div>
@@ -562,8 +562,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
   
   <div class="col-xs-2"></div>
   </div>
-  <br>
-  
+  <br><?php if ($_remote_type == 3) { ?>
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
@@ -574,17 +573,17 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         <td>
           <p>Username: </p>
         </td>
-        <td><p><input name="remote_user" type="text" class="form-control" id="remoteusername" value="Remote User"></p></td>
+        <td><p><input name="remote_user" type="text" class="form-control" id="remote_user" value="Remote User"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Password: </p></td>
-        <td><p><input type="password" class="form-control" id="remotepassword1" value="password"></p></td>
+        <td><p><input type="password" class="form-control" id="remotepassword1" name="remotepassword1" value="password"></p></td>
       </tr>
       <tr>
         <td><p>Repeat Password: </p></td>
-        <td><p><input type="password" class="form-control" id="remotepassword2" value="password"></p></td>
+        <td><p><input type="password" class="form-control" id="remotepassword2" name="remotepassword2" value="password"></p></td>
       </tr>
       </tbody>
   </table>
@@ -602,7 +601,8 @@ if ($command <> "" && $command !="" && $command == "delete_device")
   
   <div class="col-xs-2"></div>
   </div>
-<br>
+<br><?php }; 
+if ($_remote_type == 2) {  ?>
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
@@ -613,13 +613,13 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         <td>
           <p>Address Byte 1: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="address1" value="126"></p></td>
+        <td><p><input type="text" class="form-control" id="remote_address1" name="remote_address1" value="126"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Address Byte 2: </p></td>
-        <td><p><input type="text" class="form-control" id="address2" value="45"></p></td>
+        <td><p><input type="text" class="form-control" id="remote_address2" name="remote_address2" value="45"></p></td>
       </tr>
       </tbody>
   </table>
@@ -632,12 +632,13 @@ if ($command <> "" && $command !="" && $command == "delete_device")
 </div>
 <div class="container">
 <div class="col-xs-2"></div>
-  <div class="col-xs-4 text-center"><a href=""  class="btn-warning btn">Listen for Remote</a></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save MiLight RF Remote Details</a></p></div>
+  <div class="col-xs-4 text-center"></div>
+  <div class="col-xs-4 text-center"><p><a href=""  class="btn-warning btn">Listen for Remote</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
-<br>
+<br><?php }; 
+if ($_remote_type == 1) {  ?>
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
@@ -648,7 +649,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         <td>
           <p>MAC Address: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="macaddress" value="08:00:69:02:01:fc"></p></td>
+        <td><p><input type="text" class="form-control" id="remote_mac" name="remote_mac" value="08:00:69:02:01:fc"></p></td>
     </tr>  
   </thead>
   </table>
@@ -665,7 +666,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
   <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save MiLight Smartphone Details</a></p></div>
   
   <div class="col-xs-2"></div>
-  </div>
+  </div><?php }; ?>
   <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
