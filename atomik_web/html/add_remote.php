@@ -70,7 +70,7 @@ $rs->data_seek(0);
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-  <form id="chooseremfrm" name="chooseremfrm" action="remote_details.php" method="post"><input name="new" id="new" type="hidden" value="1"><table class="table table-striped">
+  <form id="chooseremfrm" name="chooseremfrm" action="remote_details.php" method="post"><input name="new_device" id="new_device" type="hidden" value="1"><table class="table table-striped">
   <thead>
     <tr>
         <td>
@@ -80,7 +80,7 @@ $rs->data_seek(0);
   </thead>
     <tbody>
     <tr>
-        <td><p><select id="remotetype" name="remotetype" class="form-control">
+        <td><p><select id="remote_type" name="remote_type" class="form-control">
  <?php while($row = $rs->fetch_assoc()){ ?> <option value="<?php echo $row['remote_type_id']; ?>"><?php echo $row['remote_type_name']; ?></option>
  <?php }; ?>
 </select></p></td>
@@ -108,7 +108,7 @@ $rs->data_seek(0);
   <div class="col-xs-1"></div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a id="newdevsave" class="btn-success btn">Save & Next</a>
+  <div class="col-xs-2 text-right"><a id="newremsave" class="btn-success btn">Save & Next</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -127,7 +127,7 @@ $rs->data_seek(0);
     $("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
-$("#newdevsave").on('click', function() {
+$("#newremsave").on('click', function() {
 	document.forms["chooseremfrm"].submit();
 });
 </script>
