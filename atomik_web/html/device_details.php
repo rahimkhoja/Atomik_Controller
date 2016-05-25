@@ -546,11 +546,10 @@ if ($command <> "" && $command !="" && $command == "delete_device")
 	if($conn->query($sql) === false) {
 		$page_error = 1;
 		$error_text = "Error Deleting Device From Zone DB!";
-		header('Location: devices.php');
 	} else {
   		$page_success = 1;
 		$success_text = "Device Deleted!";
-		
+		header('Location: devices.php');		
 	}	
 }
 ?>
