@@ -550,7 +550,6 @@ if ($command <> "" && $command !="" && $command == "delete_device")
   		$page_success = 1;
 		$success_text = "Device Deleted!";
 	}	
-	
 }
 ?>
 </head><div id="overlay"></div>
