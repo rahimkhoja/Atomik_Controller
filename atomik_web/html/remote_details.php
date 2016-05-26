@@ -206,16 +206,33 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
+		$_channels = 0;
+		
+		if ( $_remote_type == 1 || $_remote_type == 1 ) {
+			$_channels = 5;
+		}
+
 		if ( $_new_remote == 1 ) {
 			$sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type) VALUES ('".$_remote_name."','".$_remote_description."',".$_remote_type.")";
 			if ($conn->query($sql) === TRUE) {
-    			$page_success = 1;
-				$success_text = "General Remote Details Updated!";
+    			
 				$_new_remote = 0;
 				$_remote_id = $conn->insert_id;
+				
+				if ($_channels > 0 ) {
+					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,".$_remote_type.",'Master Channel'), (".$_remote_id.",1,".$_remote_type.",'Channel 1'), (".$_remote_id.",2,".$_remote_type.",'Channel 2'), (".$_remote_id.",3,".$_remote_type.",'Channel 3'), (".$_remote_id.",4,".$_remote_type.",'Channel 4')";
+					if ($conn->query($sql) === TRUE) {
+    					$page_success = 1;
+						$success_text = "General Remote Details Updated!";
+					} else {
+    					$page_error = 1;
+						$error_text = "Error Inserting General Remote Channels To DB!";
+					}
+				}
+				
 			} else {
     			$page_error = 1;
-				$error_text = "Error Inserting General Remote Details To DB!";
+				$error_text = "Error Inserting Remote Details To DB!";
 			}
 		} else {
 			$sql = "UPDATE atomik_remotes SET remote_name='".$_remote_name."', remote_description='".$_remote_description."' WHERE remote_id=".$_remote_id.";";
