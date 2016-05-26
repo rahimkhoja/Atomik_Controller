@@ -220,7 +220,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$_remote_id = $conn->insert_id;
 				
 				if ($_channels > 0 ) {
-					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,".$_remote_type.",'Master Channel'), (".$_remote_id.",1,".$_remote_type.",'Channel 1'), (".$_remote_id.",2,".$_remote_type.",'Channel 2'), (".$_remote_id.",3,".$_remote_type.",'Channel 3'), (".$_remote_id.",4,".$_remote_type.",'Channel 4')";
+					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
 					if ($conn->query($sql) === TRUE) {
     					$page_success = 1;
 						$success_text = "General Remote Details Updated!";
