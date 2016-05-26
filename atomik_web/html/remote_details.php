@@ -9,24 +9,50 @@
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
 
-function Check0to255( $input )
+function is_valid_mac($mac)
 {
-	if (preg_match("/^[0-9]+$/", $input)) {
-		if (  ( $input >= 0 ) && ( $input <= 255 ) ) {
-			return 1;
-		}
-	}
-	return 0;
+  // 01:23:45:67:89:ab
+  if (preg_match('/^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$/', $mac))
+    return true;
+  // 01-23-45-67-89-ab
+  if (preg_match('/^([a-fA-F0-9]{2}\-){5}[a-fA-F0-9]{2}$/', $mac))
+    return true;
+  // 0123456789ab
+  else if (preg_match('/^[a-fA-F0-9]{12}$/', $mac))
+    return true;
+  // 0123.4567.89ab
+  else if (preg_match('/^([a-fA-F0-9]{4}\.){2}[a-fA-F0-9]{4}$/', $mac))
+    return true;
+  else
+    return false;
 }
 
-function Check0to100( $input )
+function normalize_mac($mac)
 {
-	if (preg_match("/^[0-9]+$/", trim($input))) {
-		if ( ( $input >= 0 ) && ( $input <= 100 ) ) {
-			return 1;
-		}
-	}
-	return 0;
+  // remove any dots
+  $mac =  str_replace(".", "", $mac);
+
+  // replace dashes with colons
+  $mac =  str_replace("-", ":", $mac);
+
+  // counting colons
+  $colon_count = substr_count ($mac , ":");
+
+  // insert enough colons if none exist
+  if ($colon_count == 0)
+  {
+    $mac =  substr_replace($mac, ":", 2, 0);
+    $mac =  substr_replace($mac, ":", 5, 0);
+    $mac =  substr_replace($mac, ":", 8, 0);
+    $mac =  substr_replace($mac, ":", 11, 0);
+    $mac =  substr_replace($mac, ":", 14, 0);
+  }
+
+  // uppercase
+  $mac = strtoupper($mac);
+
+  // DE:AD:BE:EF:10:24
+  return $mac;
 }
 
 function processErrors($ers)
@@ -146,14 +172,31 @@ if ( isset($_POST["remote_type"])) {
 	}
 }
 
+$_remote_user = "";
+$_current_remote_user = "";
+$_current_remote_password = "";
+$_remote_password_1 = "";
+$_remote_password_2 = "";
+
+if ($_new_remote == 0 ) {
+	$_current_remote_user = $row['remote_user'];
+	$_current_remote_password = $row['remote_password'];
+}
+
 if ( isset($_POST["remote_user"])) {
 	$_remote_user = $_POST["remote_user"];
 } else {
 	if ($_new_remote == 0 ) {
 		$_remote_user = $row['remote_user'];
-	} else {
-		$_remote_user = "";
-	}
+	} 
+}
+
+if ( isset($_POST["remote_password_1"])) {
+	$_remote_password_1 = $_POST["remote_password_1"];
+} 
+
+if ( isset($_POST["remote_password_2"])) {
+	$_remote_password_2 = $_POST["remote_password_2"];
 }
 
 if ( isset($_POST["remote_mac"])) {
@@ -168,6 +211,8 @@ if ( isset($_POST["remote_mac"])) {
 
 $_remote_type_name = $row['remote_type_name'];
 
+
+// saveatomikbtn,
 // Save General Remote Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
 {	
@@ -350,37 +395,66 @@ if ($command <> "" && $command !="" && $command == "save_all")
 	}		
 }
 
-// Save General Remote Settings [Keep Post Data, Verify Form, DB] (save_properties)
-if ($command <> "" && $command !="" && $command == "save_properties") 
+// Save Password [Keep Post Data, Verify Form, DB] (save_atomik)
+if ($command <> "" && $command !="" && $command == "save_atomik") 
+{	
+	$erro = array();
+	if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user ) {
+		array_push($erro, "No Changes To Save");
+	} else {
+		if (strlen($_remote_user) < 5) {
+			array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+			$_error_remote_user = 1;
+		} 		
+		
+		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+			array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_remote_user = 1;
+		}	 
+		if ($_remote_password_1 != $_remote_password_2) {
+			array_push($erro, "New Passwords Do Not Match");
+			$_error_remote_password_2 = 1;
+			$_error_remote_password_1 = 1;
+		}
+	}
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		$sql = "UPDATE atomik_remotes SET remote_password='".trim($_remote_password_1)."';";
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Password Settings Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Password To DB!";
+		}
+	}
+		
+}
+
+
+// Save Smartphone Remote Settings [Keep Post Data, Verify Form, DB] (save_smartphone)
+if ($command <> "" && $command !="" && $command == "save_smartphone") 
 {	
 	$erro = array();
 	if ($_new_device == 1 )
 	{
 		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");	
 	} else {
-		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+		if ( $_remote_mac == $row['remote_mac'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
 			if ( $_device_type_brightness == 1 ) {
-				if (!Check0to100 ( $_device_brightness )) {
-					array_push($erro, "Remote Brightness Must Be A Number Between 0 and 100");
-					$_error_device_brightness = 1;
+				if (!is_valid_mac ( $_remote_mac )) {
+					array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+					$_error_remote_mac = 1;
+				} else {
+					$_remote_mac = normalize_mac($_remote_mac);
 				}
 			}
-			
-			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0 ) {
-				if (!Check0to255 ( $_device_rgb)) {
-					array_push($erro, "Remote Color Must Be A Number Between 0 and 255");
-					$_error_device_rgb = 1;
-				}
-			}
-			
-			if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 && $_device_colormode == 1 ) {
-				if (!Check2700to6500 ( $_device_white_temprature )) {
-					array_push($erro, "Remote White Temprature Must Be A Number Between 2700 and 6500");
-					$_error_device_white_temprature = 1;
-				}
-			}	
 		}	
 	}
 	
@@ -389,25 +463,24 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
-		trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+		$sql = "UPDATE atomik_remotess SET remote_mac = '".trim($_remote_mac)."' WHERE remote_id=".$_remote_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
-			$success_text = "Remote Properties Updated!";
+			$success_text = "Remote Mac Address Updated!";
 		} else {
     		$page_error = 1;
-			$error_text = "Error Saving Remote Properties To DB!";
+			$error_text = "Error Saving Remote Mac Address To DB!";
 		}
 	}		
 }
 
-// Listen for Mi-Light RGB RF Remote (listen_remote)
-if ($command <> "" && $command !="" && $command == "sync_device") 
+// Listen for Mi-Light RGB RF Remote (listen_milight)
+if ($command <> "" && $command !="" && $command == "listen_milight") 
 {	
 	$erro = array();
 	if ($_new_device == 1 )
 	{
-		array_push($erro, "Please Save General Remote Details Before Syncing A Remote");	
+		array_push($erro, "Please Save General Remote Details Before Lisening For A Remote");	
 	} 
 	
 	if (count($erro) > 0) 
@@ -415,88 +488,51 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		if ( ( $_device_address1 == "" || empty($_device_address1) ) || ( $_device_address2 == "" || empty($_device_address2) ) ) {
-			$found_address = 0;
-			while (!$found_address) {			
-				$a1 = rand(0, 255);
-				$a2 = rand(0, 255);
-					
-				$sql='SELECT atomik_devices.device_address1, atomik_devices.device_address2 FROM atomik_devices WHERE atomik_devices.device_address1 = '.$a1.' && atomik_devices.device_address2 = '.$a2.';' ;
-				$addrs=$conn->query($sql);
-			
-				if($addrs === false) {
-  					trigger_error('Wrong Address SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-				} else {
-					$address1Total = $addrs->num_rows;
-				}
-				
-				$addrs->free();
-			
-				$sql='SELECT atomik_remotes.remote_address1, atomik_remotes.remote_address2 FROM atomik_remotes WHERE atomik_remotes.remote_address1 = '.$a1.' && atomik_remotes.remote_address2 = '.$a2.';' ;
-				$addrs=$conn->query($sql);
-			
-				if($addrs === false) {
-  					trigger_error('Wrong Address SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-				} else {
-					$address2Total = $addrs->num_rows;
-				}
-				
-				$addrs->free();
-				if ( $address2Total == 0 && $address1Total == 0 ) {
-					$found_address = 1;
-				}
-			}
-			
-			$_device_address1 = $a1;
-			$_device_address2 = $a2;
-			$_device_transmission = 0;
-	
-			$sql = "UPDATE atomik_devices SET device_address1 = ".trim($_device_address1).", device_address2 = ".trim($_device_address2).", device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
-			if ($conn->query($sql) === TRUE) {
-				$page_success = 1;
-				$success_text = "New Address Selected And Remoted Synced!";
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Saving MiLight Properties To DB!";
-			}
-			// Run Sync Remote Command
-			
-		} else {
-			// Run Sync Remote Command 
-			$page_success = 1;
-			$success_text = "Remote Synced!";
-		}	
+		
+		// wait for 10 seconds while the Atomik Server Listens for Remote RF signals
+		
+		// Check db with something like this
+		
+		// select * FROM updateside where add_date >= now() - interval 10 second  
+		
+		// set address to the most common unknown transmission address during the 10 second interval
+		
 	}		
 }
 
 
 // Delete Remote (delete_remote)
-if ($command <> "" && $command !="" && $command == "delete_device") 
+if ($command <> "" && $command !="" && $command == "delete_remote") 
 {	
 	if ($_new_device == 1 )
 	{
-		header('Location: devices.php');
+		header('Location: remotes.php');
 	} else {
-		$sql="DELETE FROM atomik_devices WHERE device_id=".$_device_id.";";
+		$sql="DELETE FROM atomik_remotes WHERE remote_id=".trim($_remote_id).";";
  
 		if($conn->query($sql) === false) {
 			$page_error = 1;
 			$error_text = "Error Deleting Remote From Remote DB!";
 		} else {
-  			$page_success = 1;
-			$success_text = "Remote Deleted!";
-		}	
 		
-		$sql="DELETE FROM atomik_zone_devices WHERE zone_device_device_id=".trim($_device_id).";";
+			$sql="DELETE FROM atomik_remote_channels WHERE remote_channel_remote_id=".trim($_remote_id).";";
  
-		if($conn->query($sql) === false) {
-			$page_error = 1;
-			$error_text = "Error Deleting Remote From Zone DB!";
-		} else {
-	  		$page_success = 1;
-			$success_text = "Remote Deleted!";
-			header('Location: devices.php');		
-		}	
+			if($conn->query($sql) === false) {
+				$page_error = 1;
+				$error_text = "Error Deleting Remote From Remote Channel DB!";
+			}  else {
+				$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($_remote_id).";";
+ 
+				if($conn->query($sql) === false) {
+					$page_error = 1;
+					$error_text = "Error Deleting Remote From Zone DB!";
+				} else {
+		  			$page_success = 1;
+					$success_text = "Remote Deleted!";
+					header('Location: remotes.php');		
+				}	
+			}
+		}
 	}
 }
 ?></head>
@@ -506,7 +542,6 @@ if ($command <> "" && $command !="" && $command == "delete_device")
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
-    
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -596,11 +631,11 @@ if ($command <> "" && $command !="" && $command == "delete_device")
     <tbody>
     <tr>
         <td><p>Password: </p></td>
-        <td><p><input type="password" class="form-control" id="remotepassword1" name="remotepassword1" value="password"></p></td>
+        <td><p><input type="password" class="form-control" id="remote_password_1" name="remote_password_1" value="<?php echo $_remote_password_1; ?>"></p></td>
       </tr>
       <tr>
         <td><p>Repeat Password: </p></td>
-        <td><p><input type="password" class="form-control" id="remotepassword2" name="remotepassword2" value="password"></p></td>
+        <td><p><input type="password" class="form-control" id="remote_password_2" name="remote_password_2" value="<?php echo $_remote_password_2; ?>"></p></td>
       </tr>
       </tbody>
   </table>
@@ -614,7 +649,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="saveatomik" class="btn-success btn">Save Atomik Remote Details</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="saveatomikbtn" class="btn-success btn">Save Atomik Remote Details</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -650,7 +685,7 @@ if ($_remote_type == 2) {  ?>
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="listenbtn"  class="btn-warning btn">Listen for Remote</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="listenmilightbtn"  class="btn-warning btn">Listen for Remote</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -680,7 +715,7 @@ if ($_remote_type == 1) {  ?>
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="savesmartphone" class="btn-success btn">Save MiLight Smartphone Details</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savemobilebtn" class="btn-success btn">Save MiLight Smartphone Details</a></p></div>
   <div class="col-xs-2"></div>
   </div></form>
 <?php }; ?>
@@ -707,7 +742,6 @@ if ($_remote_type == 1) {  ?>
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
@@ -718,7 +752,27 @@ if ($_remote_type == 1) {  ?>
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 $("#savegeneralbtn").on('click', function() {
-   document.forms["remotefrm"].command.value = "save_general";
+   document.forms["remotefrm"].command.value = "save_general";//
+   document.remotefrm.submit();
+});
+$("#delrembtn").on('click', function() {
+   document.forms["remotefrm"].command.value = "delete_remote";//
+   document.remotefrm.submit();
+});
+$("#saveatomikbtn").on('click', function() {
+   document.forms["remotefrm"].command.value = "save_atomik";
+   document.remotefrm.submit();
+});
+$("#listenmilightbtn").on('click', function() {
+   document.forms["remotefrm"].command.value = "listen_milight";//
+   document.remotefrm.submit();
+});
+$("#savemobilebtn").on('click', function() {
+   document.forms["remotefrm"].command.value = "save_smartphone";
+   document.remotefrm.submit();
+});
+$("#saveallbtn").on('click', function() {
+   document.forms["remotefrm"].command.value = "save_all";
    document.remotefrm.submit();
 });
 </script>
