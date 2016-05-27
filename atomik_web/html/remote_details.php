@@ -292,75 +292,100 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	}		
 }
 
-// Save all Remote Settings [Keep Post Data, Verify Form, DB] (save_aa)
+// Save all Remote Settings [Keep Post Data, Verify Form, DB] (save_all)
 if ($command <> "" && $command !="" && $command == "save_all") 
 {	
 	$erro = array();
 	if ($_new_remote == 1 )
 	{
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
+		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
 			array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_device_name = 1;
-		}		
+			$_error_remote_name = 1;
+		}
 		
-		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
+		if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
 			array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_device_description = 1;
+			$_error_remote_description = 1;
 		}
 		
-		if ( $_device_type_brightness == 1 ) {
-			if (!Check0to100 ( $_device_brightness )) {
-				array_push($erro, "Remote Brightness Must Be A Number Between 0 and 100");
-				$_error_device_brightness = 1;
+		if ( $_remote_type == 3 ) {
+			if (strlen($_remote_user) < 5) {
+				array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+				$_error_remote_user = 1;
+			} 		
+		
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+				array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_remote_user = 1;
+			}	 
+		
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+				array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_remote_password_2 = 1;
+				$_error_remote_password_1 = 1;
+			}	
+		
+			if ($_remote_password_1 != $_remote_password_2) {
+				array_push($erro, "Remote Passwords Do Not Match");
+				$_error_remote_password_2 = 1;
+				$_error_remote_password_1 = 1;
 			}
 		}
 			
-		if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
-			if (!Check0to255 ( $_device_rgb)) {
-				array_push($erro, "Remote Color Must Be A Number Between 0 and 255");
-				$_error_device_rgb = 1;
+		if ( $_remote_type == 1 ) {
+			if (!is_valid_mac ( $_remote_mac )) {
+				array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+				$_error_remote_mac = 1;
+			} else {
+				$_remote_mac = normalize_mac($_remote_mac);
 			}
 		}
 			
-		if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 && $_device_colormode == 1 ) {
-			if (!Check2700to6500 ( $_device_white_temprature )) {
-				array_push($erro, "Remote White Temprature Must Be A Number Between 2700 and 6500");
-				$_error_device_white_temprature = 1;
-			}
-		}			
 	} else {		
-		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+		if ( $_remote_name == $row['remote_name'] && $_remote_description == $row['remote_description'] && $_remote_user == $row['remote_user'] && $_remote_mac == $row['remote_mac'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
 
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_device_name)) {
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
 				array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_device_name = 1;
+				$_error_remote_name = 1;
 			}
 		
-		if ( !( ( !empty($_device_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_device_description) ) || empty($_device_description) ) ) {
+			if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
 				array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_device_description = 1;
+				$_error_remote_description = 1;
 			}
 		
-			if ( $_device_type_brightness == 1 ) {
-				if (!Check0to100 ( $_device_brightness )) {
-					array_push($erro, "Remote Brightness Must Be A Number Between 0 and 100");
-					$_error_device_brightness = 1;
+			if ( $_remote_type == 3 ) {
+				if (strlen($_remote_user) < 5) {
+					array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+					$_error_remote_user = 1;
+				}	 		
+		
+				if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+					array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+					$_error_remote_user = 1;
+				}	 
+		
+				if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+					array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+					$_error_remote_password_2 = 1;
+					$_error_remote_password_1 = 1;
+				}	
+		
+				if ($_remote_password_1 != $_remote_password_2) {
+					array_push($erro, "Remote Passwords Do Not Match");
+					$_error_remote_password_2 = 1;
+					$_error_remote_password_1 = 1;
 				}
 			}
 			
-			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
-				if (!Check0to255 ( $_device_rgb)) {
-					array_push($erro, "Remote Color Must Be A Number Between 0 and 255");
-					$_error_device_rgb = 1;
-				}
-			}
-			
-			if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 && $_device_colormode == 1 ) {
-				if (!Check2700to6500 ( $_device_white_temprature )) {
-					array_push($erro, "Remote White Temprature Must Be A Number Between 2700 and 6500");
-					$_error_device_white_temprature = 1;
+			if ( $_remote_type == 1 ) {
+				if (!is_valid_mac ( $_remote_mac )) {
+					array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+					$_error_remote_mac = 1;
+				} else {
+					$_remote_mac = normalize_mac($_remote_mac);
 				}
 			}
 		}
@@ -371,19 +396,28 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb).",".trim($_device_white_temprature).")";		
+		if ( $_new_remote == 1 ) {
+			$sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type, remote_mac, remote_user, remote_password ) VALUES ('".$_remote_name."','".$_remote_description."',".trim($_remote_type).",'".trim($_remote_mac)."','".trim($_remote_user)."','".trim($_remote_password)."')";		
 			if ($conn->query($sql) === TRUE) {
-    			$page_success = 1;
-				$success_text = "All Remote Details Updated!";
-				$_new_device = 0;
-				$_device_id = $conn->insert_id;
+    			$_new_remote = 0;
+				$_remote_id = $conn->insert_id;
+				
+				if ($_channels > 0 ) {
+					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
+					if ($conn->query($sql) === TRUE) {
+    					$page_success = 1;
+						$success_text = "All Remote Details Updated!";
+					} else {
+    					$page_error = 1;
+						$error_text = "Error Inserting Remote Channels To DB!";
+					}
+				}
 			} else {
     			$page_error = 1;
 				$error_text = "Error Saving All New Remote Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+			$sql = "UPDATE atomik_remotes SET remote_name='".$_remote_name."', remote_description='".$_remote_description."', remote_mac='".trim($_remote_mac)."', remote_user='".trim($_remote_user)."', remote_password='".trim($_remote_password)."' WHERE remote_id=".$_remote_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Remote Details Updated!";
@@ -411,8 +445,15 @@ if ($command <> "" && $command !="" && $command == "save_atomik")
 			array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_remote_user = 1;
 		}	 
+		
+		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+			array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_remote_password_2 = 1;
+			$_error_remote_password_1 = 1;
+		}	
+		
 		if ($_remote_password_1 != $_remote_password_2) {
-			array_push($erro, "New Passwords Do Not Match");
+			array_push($erro, "Remote Passwords Do Not Match");
 			$_error_remote_password_2 = 1;
 			$_error_remote_password_1 = 1;
 		}
@@ -426,34 +467,31 @@ if ($command <> "" && $command !="" && $command == "save_atomik")
 		$sql = "UPDATE atomik_remotes SET remote_password='".trim($_remote_password_1)."';";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
-			$success_text = "Password Settings Updated!";
+			$success_text = "Atomik Remote Details Updated!";
 		} else {
     		$page_error = 1;
-			$error_text = "Error Saving Password To DB!";
+			$error_text = "Error Saving Atomik Details To DB!";
 		}
 	}
 		
 }
 
-
 // Save Smartphone Remote Settings [Keep Post Data, Verify Form, DB] (save_smartphone)
 if ($command <> "" && $command !="" && $command == "save_smartphone") 
 {	
 	$erro = array();
-	if ($_new_device == 1 )
+	if ($_new_remote == 1 )
 	{
 		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");	
 	} else {
 		if ( $_remote_mac == $row['remote_mac'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
-			if ( $_device_type_brightness == 1 ) {
-				if (!is_valid_mac ( $_remote_mac )) {
-					array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
-					$_error_remote_mac = 1;
-				} else {
-					$_remote_mac = normalize_mac($_remote_mac);
-				}
+			if (!is_valid_mac ( $_remote_mac )) {
+				array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+				$_error_remote_mac = 1;
+			} else {
+				$_remote_mac = normalize_mac($_remote_mac);
 			}
 		}	
 	}
@@ -463,7 +501,7 @@ if ($command <> "" && $command !="" && $command == "save_smartphone")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$sql = "UPDATE atomik_remotess SET remote_mac = '".trim($_remote_mac)."' WHERE remote_id=".$_remote_id.";";
+		$sql = "UPDATE atomik_remotes SET remote_mac = '".trim($_remote_mac)."' WHERE remote_id=".$_remote_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Remote Mac Address Updated!";
@@ -478,7 +516,7 @@ if ($command <> "" && $command !="" && $command == "save_smartphone")
 if ($command <> "" && $command !="" && $command == "listen_milight") 
 {	
 	$erro = array();
-	if ($_new_device == 1 )
+	if ($_new_remote == 1 )
 	{
 		array_push($erro, "Please Save General Remote Details Before Lisening For A Remote");	
 	} 
@@ -504,7 +542,7 @@ if ($command <> "" && $command !="" && $command == "listen_milight")
 // Delete Remote (delete_remote)
 if ($command <> "" && $command !="" && $command == "delete_remote") 
 {	
-	if ($_new_device == 1 )
+	if ($_new_remote == 1 )
 	{
 		header('Location: remotes.php');
 	} else {
