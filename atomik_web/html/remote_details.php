@@ -439,47 +439,50 @@ if ($command <> "" && $command !="" && $command == "save_all")
 if ($command <> "" && $command !="" && $command == "save_atomik") 
 {	
 	$erro = array();
-	if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user ) {
-		array_push($erro, "No Changes To Save");
+	if ( $_new_remote == 1 ) {
+		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");
 	} else {
-		if (strlen($_remote_user) < 5) {
-			array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
-			$_error_remote_user = 1;
-		} 		
-		
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
-			array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_user = 1;
-		}	 
-		
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
-			array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_password_2 = 1;
-			$_error_remote_password_1 = 1;
-		}	
-		
-		if ($_remote_password_1 != $_remote_password_2) {
-			array_push($erro, "Remote Passwords Do Not Match");
-			$_error_remote_password_2 = 1;
-			$_error_remote_password_1 = 1;
-		}
-	}
-	
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
-	} else {
-		$sql = "UPDATE atomik_remotes SET remote_password='".trim($_remote_password_1)."';";
-		if ($conn->query($sql) === TRUE) {
-    		$page_success = 1;
-			$success_text = "Atomik Remote Details Updated!";
+		if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user ) {
+			array_push($erro, "No Changes To Save");
 		} else {
-    		$page_error = 1;
-			$error_text = "Error Saving Atomik Details To DB!";
+			if (strlen($_remote_user) < 5) {
+				array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+				$_error_remote_user = 1;
+			} 		
+		
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+				array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_remote_user = 1;
+			}	 
+		
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+				array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_remote_password_2 = 1;
+				$_error_remote_password_1 = 1;
+			}	
+		
+			if ($_remote_password_1 != $_remote_password_2) {
+				array_push($erro, "Remote Passwords Do Not Match");
+				$_error_remote_password_2 = 1;
+				$_error_remote_password_1 = 1;
+			}
+		}
+	
+		if (count($erro) > 0) 
+		{
+			$page_error = 1;
+			$error_text = processErrors($erro);	
+		} else {
+			$sql = "UPDATE atomik_remotes SET remote_password='".trim($_remote_password_1)."', remote_user='".trim($_remote_user)."';";
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "Atomik Remote Details Updated!";
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving Atomik Details To DB!";
+			}
 		}
 	}
-		
 }
 
 // Save Smartphone Remote Settings [Keep Post Data, Verify Form, DB] (save_smartphone)
