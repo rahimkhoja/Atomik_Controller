@@ -114,10 +114,12 @@ atomik_device_types.device_type_warm_white=1;";
 	} else {
 		if ( $wwrs->num_rows >= 1 ) {
 	  		$_zone_type_warm_white = 1;
-	} else {
-		$_zone_type_warm_white = 0;
+		} else {
+			$_zone_type_warm_white = 0;
+		}
 	}
-
+	$wwrs->free();
+	
 	$sql = "SELECT 
 atomik_device_types.device_type_rgb256, 
 atomik_device_types.device_type_warm_white, 
@@ -142,7 +144,8 @@ atomik_device_types.device_type_cold_white=1;";
 			$_zone_type_cold_white = 0;
 		}
 	}
-	
+	$cwrs->free();
+		
 	$sql = "SELECT atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_device_types.device_type_brightness FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id=".$_zone_id." && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_rgb256=1;";  
 
 	$rgbrs=$conn->query($sql);
@@ -156,6 +159,7 @@ atomik_device_types.device_type_cold_white=1;";
 			$_zone_type_rgb256 = 0;
 		}
 	}
+	$rgbrs->free();
 
 	$sql = "SELECT 
 atomik_device_types.device_type_rgb256, 
@@ -181,6 +185,7 @@ atomik_device_types.device_type_rgb256=1;";
 			$_zone_type_brightness = 0;
 		}
 	}
+	$brs->free();
 }
 
 if ( isset($_POST["zone_name"])) {
