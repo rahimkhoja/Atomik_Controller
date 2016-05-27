@@ -83,7 +83,7 @@ if ( isset($_POST["zone_id"]) ) {
 
 if ( $_new_zone == 0 ) {
 // Atomik Setting SQL
-	$sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_description, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb, atomik_zones.zone_white_temprature WHERE atomik_zones.zone_id = ".$_zone_id.";";  
+	$sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_description, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id = ".$_zone_id.";";  
 
 	$rs=$conn->query($sql);
  
