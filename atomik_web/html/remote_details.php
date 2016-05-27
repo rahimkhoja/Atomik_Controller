@@ -264,6 +264,12 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$_new_remote = 0;
 				$_remote_id = $conn->insert_id;
 				
+				$_channels = 0;
+		
+		if ( $_remote_type == 1 || $_remote_type == 1 ) {
+			$_channels = 5;
+		}
+				
 				if ($_channels > 0 ) {
 					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
 					if ($conn->query($sql) === TRUE) {
