@@ -443,7 +443,7 @@ if ($command <> "" && $command !="" && $command == "save_atomik")
 	if ( $_new_remote == 1 ) {
 		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");
 	} else {
-		if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user ) {
+		if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user && $_remote_password_1 != "") {
 			array_push($erro, "No Changes To Save");
 		} else {
 			if (strlen($_remote_user) < 5) {
@@ -493,7 +493,7 @@ if ($command <> "" && $command !="" && $command == "save_smartphone")
 	{
 		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");	
 	} else {
-		if ( $_remote_mac == $row['remote_mac'] ) {
+		if ( $_remote_mac == $row['remote_mac'] &&  $_remote_mac != "") {
 			array_push($erro, "No Changes To Save");
 		} else {
 			if (!is_valid_mac ( $_remote_mac )) {
