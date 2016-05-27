@@ -253,7 +253,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	} else {
 		$_channels = 0;
 		
-		if ( $_remote_type == 1 || $_remote_type == 1 ) {
+		if ( $_remote_type == 1 || $_remote_type == 2 ) {
 			$_channels = 5;
 		}
 
@@ -266,7 +266,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				
 				$_channels = 0;
 		
-		if ( $_remote_type == 1 || $_remote_type == 1 ) {
+		if ( $_remote_type == 1 || $_remote_type == 2 ) {
 			$_channels = 5;
 		}
 				
