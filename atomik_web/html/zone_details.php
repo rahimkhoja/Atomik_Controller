@@ -521,7 +521,7 @@ $dzrs->data_seek(0);
   <div class="col-xs-2"></div>
   </div>
   <br>
-<?php if ( $_zone_type_rgb256 == 0 && $_zone_type_warm_white == 0 && $_zone_type_cold_white == 0 && $_zone_type_brightness == 0 ) { ?>
+<?php if ( $_zone_type_rgb256 == 1 || $_zone_type_warm_white == 1 || $_zone_type_cold_white == 1 || $_zone_type_brightness == 1 ) { ?>
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
