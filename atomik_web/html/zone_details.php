@@ -419,6 +419,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
 	}
 }
 
+if ( $_new_zone == 0 ) {
 // Atomik Zone Remotes SQL
 $sql = "SELECT atomik_zone_remotes.zone_remote_id, atomik_remotes.remote_name, atomik_remote_types.remote_type_name,
 atomik_remote_channels.remote_channel_name
@@ -444,6 +445,10 @@ if($dzrs === false) {
   $_zone_devices = $dzrs->num_rows;
 }
 $dzrs->data_seek(0);
+} else {
+	$_zone_devices = 0;
+	$_zone_remotes = 0;
+}
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
