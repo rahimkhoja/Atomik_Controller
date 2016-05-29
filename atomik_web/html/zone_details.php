@@ -437,8 +437,10 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
 	}
 }
 
-// Atomik Zone Devices SQL
-$sql = "SELECT atomik_zone_remotes.zone_remote_id, atomik_remotes.remote_name, atomik_remote_types.remote_type_name FROM atomik_zone_remotes, atomik_remote_types, atomik_remotes WHERE atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_type = atomik_remote_types.remote_type_id && atomik_zone_remotes.zone_remote_zone_id = ".$_zone_id.";";  
+// Atomik Zone Remotes SQL
+$sql = "SELECT atomik_zone_remotes.zone_remote_id, atomik_remotes.remote_name, atomik_remote_types.remote_type_name,
+atomik_remote_channels.remote_channel_name
+FROM atomik_zone_remotes, atomik_remote_types, atomik_remotes, atomik_remote_channels WHERE atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_type = atomik_remote_types.remote_type_id && atomik_remote_channels.remote_channel_remote_id = atomik_remotes.remote_id &&  atomik_zone_remotes.zone_remote_zone_id = ".$_zone_id." && atomik_remote_channels.remote_channel_zone_id = ".$_zone_id.";";  
 
 $rzrs=$conn->query($sql);
  
@@ -629,10 +631,10 @@ $dzrs->data_seek(0);
     <tr>
         <td valign="bottom"><center><p><?php echo $dzrow['device_name']; ?></p></center></td>
         <td><center><p><?php echo $dzrow['device_type_name']; ?></p></center></td>
-        <td><form id="delform<?php echo $dzrow['zone_device_device_id']; ?>" name="delform<?php echo $dzrow['zone_device_device_id']; ?>" action="zone_device.php" method="post"><input type="hidden" name="zone_device_id" id="zone_device_id" value="<?php echo $dzrow['zone_device_device_id']; ?>" ><center><p><a id="delete<?php echo $dzrow['zone_device_device_id']; ?>" class="btn-danger btn">Remove Zone Device</a></p></center></form></td>
+        <td><form id="deldevform<?php echo $dzrow['zone_device_device_id']; ?>" name="deldevform<?php echo $dzrow['zone_device_device_id']; ?>" action="zone_device.php" method="post"><input type="hidden" name="zone_device_id" id="zone_device_id" value="<?php echo $dzrow['zone_device_device_id']; ?>" ><center><p><a id="deletedev<?php echo $dzrow['zone_device_device_id']; ?>" class="btn-danger btn">Remove Zone Device</a></p></center></form></td>
         <script type="text/javascript">
-	$("#delete<?php echo $dzrow['zone_device_device_id']; ?>").on('click', function() {
-   document.delform<?php echo $dzrow['zone_device_device_id']; ?>.submit();
+	$("#deletedev<?php echo $dzrow['zone_device_device_id']; ?>").on('click', function() {
+   document.deldevform<?php echo $dzrow['zone_device_device_id']; ?>.submit();
 });
 </script>
       </tr><?php } } else { ?>
@@ -646,7 +648,7 @@ $dzrs->data_seek(0);
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           </div><div class="col-xs-4 text-right"><p><strong>Total Zone Devices: <?php echo $_zone_devices; ?></strong></p><p><a href="" class="btn-primary btn">Add Zone Device</a></p>  </div>
+           </div><div class="col-xs-4 text-right"><p><strong>Total Zone Devices: <?php echo $_zone_devices; ?></strong></p><p><a id="adddevicebtn" class="btn-primary btn">Add Zone Device</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br><div class="container center-block">
 <div class="col-xs-2"></div>
@@ -673,7 +675,7 @@ $dzrs->data_seek(0);
     <tbody>
       <?php if ( $_zone_remotes > 0 ) { while($rzrow = $rzrs->fetch_assoc()){ ?>
     <tr>
-        <td valign="bottom"><center><p><?php echo $rzrow['remote_name']; ?></p></center></td>
+        <td valign="bottom"><center><p><?php echo $rzrow['remote_name'].' - '.$rzrow['remote_channel_name']; ?></p></center></td>
         <td><center><p><?php echo $rzrow['remote_type_name']; ?></p></center></td>
         <td><form id="delremform<?php echo $rzrow['zone_remote_remote_id']; ?>" name="delremform<?php echo $rzrow['zone_remote_remote_id']; ?>" action="zone_remote.php" method="post"><input type="hidden" name="zone_remote_id" id="zone_remote_id" value="<?php echo $rzrow['zone_remote_remote_id']; ?>" ><center><p><a id="deleterem<?php echo $rzrow['zone_remote_remote_id']; ?>" class="btn-danger btn">Remove Zone Remote</a></p></center></form></td>
         <script type="text/javascript">
@@ -692,7 +694,7 @@ $dzrs->data_seek(0);
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           </div><div class="col-xs-4 text-right"><p><strong>Total Zone Remotes: <?php echo $_zone_remotes; ?></strong></p><p><a href="" class="btn-primary btn">Add Zone Remote</a></p>  </div>
+           </div><div class="col-xs-4 text-right"><p><strong>Total Zone Remotes: <?php echo $_zone_remotes; ?></strong></p><p><a id="addremotebtn" class="btn-primary btn">Add Zone Remote</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
