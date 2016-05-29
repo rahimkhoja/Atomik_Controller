@@ -475,8 +475,8 @@ $dzrs->data_seek(0);
         <li><a href="settings.php">Settings</a> </li>
         <li><a href="devices.php">Devices</a> </li>
         <li><a href="remotes.php">Remotes</a> </li>
-        <li><a href="zones.php">Zones<span class="sr-only">(current)</span></a> </li>
-        <li class="active"><a href="tasks.php">Scheduled Tasks</a> </li>
+        <li class="active"><a href="zones.php">Zones<span class="sr-only">(current)</span></a> </li>
+        <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a id="logoutbtn">Logout</a> </li>
@@ -576,13 +576,13 @@ $dzrs->data_seek(0);
         <td>
           <p>Zone Color (0-255): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="zone_rgb" name="zone_rgb" value="<?php echo $_zone_rgb; ?>" <?php if ($_zone_colormode == 1 ) { echo disabled; }; ?>></p></td>
+        <td><p><input type="text" class="form-control" id="zone_rgb" name="zone_rgb" value="<?php echo $_zone_rgb; ?>"></p></td>
     </tr><?php }; ?>
     <?php if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 ) { ?><tr>
         <td>
           <p>Zone White Temperature (2700-6500):</p>
         </td>
-        <td><p><input type="text" class="form-control" id="zone_white_temprature" name="zone_white_temprature" value="<?php echo $_zone_white_temprature; ?>" <?php if ($_zone_colormode == 0 ) { echo disabled; }; ?>></p></td>
+        <td><p><input type="text" class="form-control" id="zone_white_temprature" name="zone_white_temprature" value="<?php echo $_zone_white_temprature; ?>"></p></td>
     </tr><?php }; ?>
       </tbody>
   </table>
@@ -629,9 +629,12 @@ $dzrs->data_seek(0);
         <td><center><p><a id="deletedev<?php echo $dzrow['zone_device_id']; ?>" class="btn-danger btn">Remove Device</a></p></center></td>
         <script type="text/javascript">
 	$("#deletedev<?php echo $dzrow['zone_device_id']; ?>").on('click', function() {
-		document.forms["zonefrm"].command.value = "remove_device";
+		$("#overlay").show();
+	if (window.confirm("Are you sure?")) {
+        document.forms["zonefrm"].command.value = "remove_device";
 		document.forms["zonefrm"].zone_device_id.value = "<?php echo $dzrow['zone_device_id']; ?>";
-   		document.zonefrm.submit();
+   		document.zonefrm.submit(); }
+	$("#overlay").hide();
 	}); </script>
       </tr><?php } } else { ?>
       <tr>
@@ -675,10 +678,12 @@ $dzrs->data_seek(0);
         <td><center><p><a id="deleterem<?php echo $rzrow['zone_remote_id']; ?>" class="btn-danger btn">Remove Remote</a></p></center></td>
         <script type="text/javascript">
 	$("#deleterem<?php echo $rzrow['zone_remote_id']; ?>").on('click', function() {
-		document.forms["zonefrm"].command.value = "remove_remote";
+		$("#overlay").show();
+	if (window.confirm("Are you sure?")) {
+        document.forms["zonefrm"].command.value = "remove_remote";
 		document.forms["zonefrm"].zone_remote_id.value = "<?php echo $rzrow['zone_remote_id']; ?>";
-   		document.zonefrm.submit();
-}); </script>
+   		document.zonefrm.submit(); }
+	$("#overlay").hide();}); </script>
       </tr><?php } } else { ?>
       <tr>
       <td colspan="3" class="text-center"><h3>No Remotes</h3></td>
@@ -702,7 +707,7 @@ $dzrs->data_seek(0);
   </div>
   <div class="col-xs-1"><a href="zones.php"  class="btn-warning btn">Cancel</a>
   </div>
-  <div class="col-xs-1"><a href="" class="btn-danger btn">Delete Zone</a>
+  <div class="col-xs-1"><a id="delzonebtn" class="btn-danger btn">Delete Zone</a>
   </div>
   <div class="col-xs-4">
   </div>
@@ -715,7 +720,6 @@ $dzrs->data_seek(0);
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
@@ -726,20 +730,28 @@ $dzrs->data_seek(0);
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 $("#savegeneralbtn").on('click', function() {
-   document.forms["devicefrm"].command.value = "save_general";
-   document.devicefrm.submit();
+   document.forms["zonefrm"].command.value = "save_general";
+   document.zonefrm.submit();
 });
 $("#savepropertiesbtn").on('click', function() {
-   document.forms["devicefrm"].command.value = "save_properties";
-   document.devicefrm.submit();
+   document.forms["zonefrm"].command.value = "save_properties";
+   document.zonefrm.submit();
 });
-$("#deldevbtn").on('click', function() {
+$("#delzonebtn").on('click', function() {
 	$("#overlay").show();
 	if (window.confirm("Are you sure?")) {
-        document.forms["devicefrm"].command.value = "delete_device";
-   		document.devicefrm.submit();
+        document.forms["zonefrm"].command.value = "delete_zone";
+   		document.zonefrm.submit();
 	}
 	$("#overlay").hide();
+});
+$("#adddevicebtn").on('click', function() {
+   document.forms["zonefrm"].command.value = "add_device";
+   document.zonefrm.submit();
+});
+$("#addremotebtn").on('click', function() {
+   document.forms["zonefrm"].command.value = "add_remote";
+   document.zonefrm.submit();
 });
 </script></body><?php
 $dzrs->free();
