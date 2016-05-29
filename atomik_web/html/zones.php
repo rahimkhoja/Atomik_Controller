@@ -96,7 +96,8 @@ $rs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <?php
+    
+    <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?><?php
 	$sql = "SELECT atomik_zone_remotes.zone_remote_id FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_zone_id = ".$row['zone_id'].";";  
 	$zrs=$conn->query($sql);
 	if($zrs === false) {
@@ -113,8 +114,7 @@ $rs->data_seek(0);
 		$total_devices = $zrs->num_rows;
 	}
 	$zrs->free();
-	?><tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
-    <tr id="zon<?php echo $row['zone_id']; ?>">
+	?><tr id="zon<?php echo $row['zone_id']; ?>">
         <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $row['zone_name']; ?></p></center></td>
         <td valign="bottom"><center><p><?php echo $row['zone_status']; ?></p></center></td>
         <td valign="bottom"><center><p><?php echo $total_remotes; ?></p></center></td>
