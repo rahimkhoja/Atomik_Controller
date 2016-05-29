@@ -258,36 +258,35 @@ if ( isset($_POST["zone_white_temprature"])) {
 	}
 }
 
-// saveatomikbtn,
-// Save General Remote Settings [Keep Post Data, Verify Form, DB] (save_general)
+// Save General Zone Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
 {	
 	$erro = array();
-	if ($_new_remote == 1 )
+	if ($_new_zone == 1 )
 	{
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-			array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_name = 1;
+		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_zone_name)) {
+			array_push($erro, "Zone Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_zone_name = 1;
 		}
 		
-		if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
-			array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_description = 1;
+		if ( !( ( !empty($_zone_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_zone_description) ) || empty($_zone_description) ) ) {
+			array_push($erro, "Zone Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_zone_description = 1;
 		}
 		
 	} else {
-		if ( $_remote_name == $row['remote_name'] && $_remote_description == $row['remote_description'] )
+		if ( $_zone_name == $row['zone_name'] && $_zone_description == $row['zone_description'] )
 		{
 			array_push($erro, "No Changes To Save");
 		} else {
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-				array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_name = 1;
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_zone_name)) {
+				array_push($erro, "Zone Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_zone_name = 1;
 			}
 		
-			if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
-				array_push($erro, "Remote Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_description = 1;
+			if ( !( ( !empty($_zone_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_zone_description) ) || empty($_zone_description) ) ) {
+				array_push($erro, "Zone Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+				$_error_zone_description = 1;
 			}
 		}
 	}
@@ -297,43 +296,27 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$_channels = 0;
 		
-		if ( $_remote_type == 1 || $_remote_type == 2 ) {
-			$_channels = 5;
-		}
 
-		if ( $_new_remote == 1 ) {
-			$sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type) VALUES ('".$_remote_name."','".$_remote_description."',".$_remote_type.")";
+		if ( $_new_zone == 1 ) {
+			$sql = "INSERT INTO atomik_zones (zone_name, zone_description) VALUES ('".$_zone_name."','".$_zone_description."')";
 			if ($conn->query($sql) === TRUE) {
     			
-				$_new_remote = 0;
-				$_remote_id = $conn->insert_id;
-				
+				$_new_zone = 0;
+				$_zone_id = $conn->insert_id;
 								
-				if ($_channels > 0 ) {
-					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
-					if ($conn->query($sql) === TRUE) {
-    					$page_success = 1;
-						$success_text = "General Remote Details Updated!";
-					} else {
-    					$page_error = 1;
-						$error_text = "Error Inserting General Remote Channels To DB!";
-					}
-				}
-				
 			} else {
     			$page_error = 1;
-				$error_text = "Error Inserting Remote Details To DB!";
+				$error_text = "Error Inserting Zone Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_remotes SET remote_name='".$_remote_name."', remote_description='".$_remote_description."' WHERE remote_id=".$_remote_id.";";
+			$sql = "UPDATE atomik_zones SET zone_name='".$_zone_name."', zone_description='".$_zone_description."' WHERE zone_id=".$_zone_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
-				$success_text = "General Remote Details Updated!";
+				$success_text = "General Zone Details Updated!";
 			} else {
     			$page_error = 1;
-				$error_text = "Error Saving General Remote Details To DB!";
+				$error_text = "Error Saving General Zone Details To DB!";
 			}
 		}
 	}		
@@ -343,7 +326,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 if ($command <> "" && $command !="" && $command == "save_smartphone") 
 {	
 	$erro = array();
-	if ($_new_remote == 1 )
+	if ($_new_zone == 1 )
 	{
 		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");	
 	} else {
@@ -379,7 +362,7 @@ if ($command <> "" && $command !="" && $command == "save_smartphone")
 if ($command <> "" && $command !="" && $command == "listen_milight") 
 {	
 	$erro = array();
-	if ($_new_remote == 1 )
+	if ($_new_zone == 1 )
 	{
 		array_push($erro, "Please Save General Remote Details Before Lisening For A Remote");	
 	} 
@@ -404,7 +387,7 @@ if ($command <> "" && $command !="" && $command == "listen_milight")
 // Delete Zone (delete_zone)
 if ($command <> "" && $command !="" && $command == "delete_remote") 
 {	
-	if ($_new_remote == 1 )
+	if ($_new_zone == 1 )
 	{
 		header('Location: remotes.php');
 	} else {

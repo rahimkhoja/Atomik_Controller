@@ -80,7 +80,7 @@ $rs->data_seek(0);
 <div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           <h4><p>Zones List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Zones: <?php echo $db_records; ?></strong></p><p><a href="zone_details.php" class="btn-primary btn">Add New Zone</a></p>  </div>
+           <h4><p>Zones List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Zones: <?php echo $db_records; ?></strong></p><p><a id="newzonebtn1" class="btn-primary btn">Add New Zone</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
            <div class="container center-block">
@@ -96,9 +96,7 @@ $rs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    
-    <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
-    <tr><?php
+    <?php
 	$sql = "SELECT atomik_zone_remotes.zone_remote_id FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_zone_id = ".$row['zone_id'].";";  
 	$zrs=$conn->query($sql);
 	if($zrs === false) {
@@ -115,11 +113,12 @@ $rs->data_seek(0);
 		$total_devices = $zrs->num_rows;
 	}
 	$zrs->free();
-	?>
+	?><tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
+    <tr id="zon<?php echo $row['zone_id']; ?>">
         <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $row['zone_name']; ?></p></center></td>
-        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $row['zone_status']; ?></p></center></td>
-        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $total_remotes; ?></p></center></td>
-        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $total_devices; ?></p></center></td>
+        <td valign="bottom"><center><p><?php echo $row['zone_status']; ?></p></center></td>
+        <td valign="bottom"><center><p><?php echo $total_remotes; ?></p></center></td>
+        <td valign="bottom"><center><p><?php echo $total_devices; ?></p></center></td>
         <td><form id="zoneform<?php echo $row['zone_id']; ?>" name="remform<?php echo $row['zone_id']; ?>" action="zones.php" method="post"><input type="hidden" name="zone_id" id="zone_id" value="<?php echo $row['zone_id']; ?>" ><center><p><a id="delete<?php echo $row['zone_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['zone_id']; ?>").on('click', function() {
@@ -139,7 +138,7 @@ $("#zon<?php echo $row['zone_id']; ?>").on('click', function() {
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           </div><div class="col-xs-4 text-right"><p><strong>Total Zones: <?php echo $db_records; ?></strong></p><p><a href="zone_details.php" class="btn-primary btn">Add New Zone</a></p>  </div>
+           </div><div class="col-xs-4 text-right"><p><strong>Total Zones: <?php echo $db_records; ?></strong></p><p><a id="newzonebtn2" class="btn-primary btn">Add New Zone</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
   <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
@@ -158,6 +157,12 @@ $("#zon<?php echo $row['zone_id']; ?>").on('click', function() {
     </div><script type="text/javascript">
     $("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});
+$("#newzonebtn1").on('click', function() {
+	$().redirect('zone_details.php', {'new_zone': '1'});
+});
+$("#newzonebtn2").on('click', function() {
+	$().redirect('zone_details.php', {'new_zone': '1'});
 });
 </script>
 </body><?php
