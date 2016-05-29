@@ -401,7 +401,6 @@ if ($command <> "" && $command !="" && $command == "listen_milight")
 	}		
 }
 
-
 // Delete Zone (delete_zone)
 if ($command <> "" && $command !="" && $command == "delete_remote") 
 {	
@@ -451,7 +450,6 @@ if($rzrs === false) {
 }
 $rzrs->data_seek(0);
 
-
 // Atomik Zone Devices SQL
 $sql = "SELECT atomik_zone_devices.zone_device_id, atomik_devices.device_name, atomik_device_types.device_type_name FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_device_id = atomik_devices.device_id && atomik_devices.device_type = atomik_device_types.device_type_id && atomik_zone_devices.zone_device_zone_id = ".$_zone_id.";";  
 
@@ -463,7 +461,6 @@ if($dzrs === false) {
   $_zone_devices = $dzrs->num_rows;
 }
 $dzrs->data_seek(0);
-
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -502,7 +499,7 @@ $dzrs->data_seek(0);
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
-  <br>
+  <br><form id="zonefrm" name="zonefrm" enctype="multipart/form-data" action="zone_details.php" method="post"><input type="hidden" name="command" id="command" value="" >
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -533,7 +530,6 @@ $dzrs->data_seek(0);
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
   <div class="col-xs-4 text-center"><p><a id="savegeneralbtn" class="btn-success btn">Save General Zone Details</a></p></div>
-  
   <div class="col-xs-2"></div>
   </div>
   <br>
@@ -580,13 +576,13 @@ $dzrs->data_seek(0);
         <td>
           <p>Zone Color (0-255): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="zone_rgb" name="zone_rgb" value="<?php echo $_zone_rgb; ?>"></p></td>
+        <td><p><input type="text" class="form-control" id="zone_rgb" name="zone_rgb" value="<?php echo $_zone_rgb; ?>" <?php if ($_zone_colormode == 1 ) { echo disabled; }; ?>></p></td>
     </tr><?php }; ?>
     <?php if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 ) { ?><tr>
         <td>
           <p>Zone White Temperature (2700-6500):</p>
         </td>
-        <td><p><input type="text" class="form-control" id="zone_white_temprature" name="zone_white_temprature" value="<?php echo $_zone_white_temprature; ?>"></p></td>
+        <td><p><input type="text" class="form-control" id="zone_white_temprature" name="zone_white_temprature" value="<?php echo $_zone_white_temprature; ?>" <?php if ($_zone_colormode == 0 ) { echo disabled; }; ?>></p></td>
     </tr><?php }; ?>
       </tbody>
   </table>
@@ -601,7 +597,6 @@ $dzrs->data_seek(0);
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
   <div class="col-xs-4 text-center"><p><a id="savepropertiesbtn" class="btn-success btn">Set Zone Properties</a></p></div>
-  
   <div class="col-xs-2"></div>
   </div><?php }; ?>
 <br><div class="container center-block">
@@ -626,24 +621,24 @@ $dzrs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <tbody>
+    <tbody><input type="hidden" id="zone_device_id" name="zone_device_id" value="">
 <?php if ( $_zone_devices > 0 ) { while($dzrow = $dzrs->fetch_assoc()){ ?>
     <tr>
-        <td valign="bottom"><center><p><?php echo $dzrow['device_name']; ?></p></center></td>
+        <td><center><p><?php echo $dzrow['device_name']; ?></p></center></td>
         <td><center><p><?php echo $dzrow['device_type_name']; ?></p></center></td>
-        <td><form id="deldevform<?php echo $dzrow['zone_device_device_id']; ?>" name="deldevform<?php echo $dzrow['zone_device_device_id']; ?>" action="zone_device.php" method="post"><input type="hidden" name="zone_device_id" id="zone_device_id" value="<?php echo $dzrow['zone_device_device_id']; ?>" ><center><p><a id="deletedev<?php echo $dzrow['zone_device_device_id']; ?>" class="btn-danger btn">Remove Zone Device</a></p></center></form></td>
+        <td><center><p><a id="deletedev<?php echo $dzrow['zone_device_id']; ?>" class="btn-danger btn">Remove Device</a></p></center></td>
         <script type="text/javascript">
-	$("#deletedev<?php echo $dzrow['zone_device_device_id']; ?>").on('click', function() {
-   document.deldevform<?php echo $dzrow['zone_device_device_id']; ?>.submit();
-});
-</script>
+	$("#deletedev<?php echo $dzrow['zone_device_id']; ?>").on('click', function() {
+		document.forms["zonefrm"].command.value = "remove_device";
+		document.forms["zonefrm"].zone_device_id.value = "<?php echo $dzrow['zone_device_id']; ?>";
+   		document.zonefrm.submit();
+	}); </script>
       </tr><?php } } else { ?>
       <tr>
       <td colspan="3" class="text-center"><h3>No Devices</h3></td>
       </tr> <?php }; ?>
     </tbody>
   </table>
-        
         </div><div class="col-xs-2"></div>
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
@@ -672,31 +667,32 @@ $dzrs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <tbody>
+    <tbody><input type="hidden" id="zone_remote_id" name="zone_remote_id" value="">
       <?php if ( $_zone_remotes > 0 ) { while($rzrow = $rzrs->fetch_assoc()){ ?>
     <tr>
-        <td valign="bottom"><center><p><?php echo $rzrow['remote_name'].' - '.$rzrow['remote_channel_name']; ?></p></center></td>
+        <td><center><p><?php echo $rzrow['remote_name'].' - '.$rzrow['remote_channel_name']; ?></p></center></td>
         <td><center><p><?php echo $rzrow['remote_type_name']; ?></p></center></td>
-        <td><form id="delremform<?php echo $rzrow['zone_remote_remote_id']; ?>" name="delremform<?php echo $rzrow['zone_remote_remote_id']; ?>" action="zone_remote.php" method="post"><input type="hidden" name="zone_remote_id" id="zone_remote_id" value="<?php echo $rzrow['zone_remote_remote_id']; ?>" ><center><p><a id="deleterem<?php echo $rzrow['zone_remote_remote_id']; ?>" class="btn-danger btn">Remove Zone Remote</a></p></center></form></td>
+        <td><center><p><a id="deleterem<?php echo $rzrow['zone_remote_id']; ?>" class="btn-danger btn">Remove Remote</a></p></center></td>
         <script type="text/javascript">
-	$("#deleterem<?php echo $rzrow['zone_remote_remote_id']; ?>").on('click', function() {
-   document.delremform<?php echo $rzrow['zone_remote_remote_id']; ?>.submit();
-});
-</script>
+	$("#deleterem<?php echo $rzrow['zone_remote_id']; ?>").on('click', function() {
+		document.forms["zonefrm"].command.value = "remove_remote";
+		document.forms["zonefrm"].zone_remote_id.value = "<?php echo $rzrow['zone_remote_id']; ?>";
+   		document.zonefrm.submit();
+}); </script>
       </tr><?php } } else { ?>
       <tr>
-      <td colspan="3" class="text-center"><h3>No Devices</h3></td>
+      <td colspan="3" class="text-center"><h3>No Remotes</h3></td>
       </tr> <?php }; ?>
     </tbody>
   </table>
-        
         </div><div class="col-xs-2"></div>
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
            </div><div class="col-xs-4 text-right"><p><strong>Total Zone Remotes: <?php echo $_zone_remotes; ?></strong></p><p><a id="addremotebtn" class="btn-primary btn">Add Zone Remote</a></p>  </div>
            <div class="col-xs-2"></div>
-           </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+           </div></form>
+		   <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
@@ -725,8 +721,27 @@ $dzrs->data_seek(0);
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
-</body><?php
+    </div><script type="text/javascript">
+    $("#logoutbtn").on('click', function() {
+	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});
+$("#savegeneralbtn").on('click', function() {
+   document.forms["devicefrm"].command.value = "save_general";
+   document.devicefrm.submit();
+});
+$("#savepropertiesbtn").on('click', function() {
+   document.forms["devicefrm"].command.value = "save_properties";
+   document.devicefrm.submit();
+});
+$("#deldevbtn").on('click', function() {
+	$("#overlay").show();
+	if (window.confirm("Are you sure?")) {
+        document.forms["devicefrm"].command.value = "delete_device";
+   		document.devicefrm.submit();
+	}
+	$("#overlay").hide();
+});
+</script></body><?php
 $dzrs->free();
 $rzrs->free();
 $rs->free();
