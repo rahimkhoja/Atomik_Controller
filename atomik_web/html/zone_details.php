@@ -436,6 +436,18 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
 		}
 	}
 }
+
+// Atomik Zone Devices SQL
+$sql = "SELECT atomik_zone_devices.zone_device_id, atomik_devices.device_name, atomik_device_types.device_type_name FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_device_id = atomik_devices.device_id && atomik_devices.device_type = atomik_device_types.device_type_id && atomik_zone_devices.zone_device_zone_id = ".$_zone_id.";";  
+
+$dzrs=$conn->query($sql);
+ 
+if($dzrs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $_zone_devices = $dzrs->num_rows;
+}
+$dzrs->data_seek(0);
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -508,8 +520,8 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
   
   <div class="col-xs-2"></div>
   </div>
-
   <br>
+<?php if ( $_zone_type_rgb256 == 0 && $_zone_type_warm_white == 0 && $_zone_type_cold_white == 0 && $_zone_type_brightness == 0 ) { ?>
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
@@ -575,7 +587,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
   <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Set Zone Properties</a></p></div>
   
   <div class="col-xs-2"></div>
-  </div>
+  </div><?php }; ?>
 <br><div class="container center-block">
 <div class="col-xs-2"></div>
 <div class="col-xs-8"><hr></div>
@@ -599,21 +611,20 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
       </tr>
     </thead>
     <tbody>
+<?php if ( $_zone_devices > 0 ) { while($dzrow = $dzrs->fetch_assoc()){ ?>
+    <tr>
+        <td valign="bottom"><center><p><?php echo $dzrow['device_name']; ?></p></center></td>
+        <td><center><p><?php echo $dzrow['device_type_name']; ?></p></center></td>
+        <td><form id="delform<?php echo $dzrow['zone_device_device_id']; ?>" name="delform<?php echo $dzrow['zone_device_device_id']; ?>" action="zone_device.php" method="post"><input type="hidden" name="zone_device_id" id="zone_device_id" value="<?php echo $dzrow['zone_device_device_id']; ?>" ><center><p><a id="delete<?php echo $dzrow['zone_device_device_id']; ?>" class="btn-danger btn">Remove Zone Device</a></p></center></form></td>
+        <script type="text/javascript">
+	$("#delete<?php echo $dzrow['zone_device_device_id']; ?>").on('click', function() {
+   document.delform<?php echo $dzrow['zone_device_device_id']; ?>.submit();
+});
+</script>
+      </tr><?php } } else { ?>
       <tr>
-        <td><center><p>Kitchen Light 1</p></center></td>
-        <td><center><p>MiLight White</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Remove Device</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Kitchen Light 2</p></center></td>
-        <td><center><p>MiLight White</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Remove Device</a></p></center></td>
-      </tr>
-      <tr>
-        <td><center><p>Kitchen Light 3</p></center></td>
-        <td><center><p>MiLight White</p></center></td>
-        <td><center><p><a href="" class="btn-danger btn">Remove Device</a></p></center></td>
-      </tr>
+      <td colspan="3" class="text-center"><h3>No Devices</h3></td>
+      </tr> <?php }; ?>
     </tbody>
   </table>
         
@@ -621,7 +632,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           </div><div class="col-xs-4 text-right"><p><strong>Total Zone Devices: 3</strong></p><p><a href="" class="btn-primary btn">Add Zone Device</a></p>  </div>
+           </div><div class="col-xs-4 text-right"><p><strong>Total Zone Devices: <?php echo $_zone_devices; ?></strong></p><p><a href="" class="btn-primary btn">Add Zone Device</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br><div class="container center-block">
 <div class="col-xs-2"></div>
