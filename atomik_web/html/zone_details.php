@@ -74,7 +74,7 @@ if ( isset($_POST["new_zone"]) ) {
 } else {
 	$_new_zone = "0";
 }
-
+echo $_new_zone ;
 if ( isset($_POST["zone_id"]) ) {
 	$_zone_id = $_POST["zone_id"];
 } else {
