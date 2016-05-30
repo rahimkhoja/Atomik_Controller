@@ -14,6 +14,10 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
+// Set Command
+$command = "";
+$command = $_POST["command"];
+
 if ( isset($_POST["zone_id"]) ) {
 	$_zone_id = $_POST["zone_id"];
 } else {
