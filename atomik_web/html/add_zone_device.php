@@ -172,7 +172,8 @@ $rs->data_seek(0);
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 $("#savedevicebtn").on('click', function() {
-	document.forms["zonedevfrm"].submit();
+	document.forms["zonedevfrm"].command.value = "add_device";
+    document.zonedevfrm.submit();
 });
 </script>
 </body><?php
