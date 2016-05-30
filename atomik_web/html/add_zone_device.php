@@ -32,18 +32,23 @@ if ( isset($_POST["update_zone"]) ) {
 	$_update_zone = 1;
 }
 
-// Add Device to Zone (add_zone)
+// Add Device to Zone (add_device)
 if ($command <> "" && $command !="" && $command == "add_device") 
 {	
 	$erro = array();
-		
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
+	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($zone_device).",now() );";
+	if ($conn->query($sql) === TRUE) {
+    	if ($_update_zone > 0 ) {
+		//	Run Command To Update Device
+		//  $updatecmd = shell_exec("echo 'hello world' > /dev/null &");	
+		}
+		$page_success = 1;
+		$success_text = "Zone Device Added To Zone DB!";
+		echo '<script type="text/javascript">'."$().redirect('zone_device.php', {'zone_id': ".trim($_zone_id)."});</script>";	
 	} else {
-		echo '<script type="text/javascript">'."$().redirect('zone_device.php', {'zone_id': ".trim($_zone_id)."});</script>";			
-	}		
+    	$page_error = 1;
+		$error_text = "Error Adding Device To Zone DB!";
+	}	
 }
 
 // Atomik Setting SQL
@@ -147,7 +152,7 @@ $rs->data_seek(0);
   <div class="col-xs-1"></div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a id="zonedevsubmitbtn" class="btn-success btn">Save</a>
+  <div class="col-xs-2 text-right"><a id="savedevicebtn" class="btn-success btn">Save</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -166,8 +171,8 @@ $rs->data_seek(0);
     $("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
-$("#zonedevsubmitbtn").on('click', function() {
-	document.forms["choosezdevfrm"].submit();
+$("#savedevicebtn").on('click', function() {
+	document.forms["zonedevfrm"].submit();
 });
 </script>
 </body><?php
