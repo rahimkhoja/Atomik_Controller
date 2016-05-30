@@ -87,6 +87,12 @@ if ( isset($_POST["zone_device_id"]) ) {
 	$_zone_device_id = "0";
 }
 
+if ( isset($_POST["zone_remote_id"]) ) {
+	$_zone_remote_id = $_POST["zone_remote_id"];
+} else {
+	$_zone_remote_id = "0";
+}
+
 if ( $_new_zone == 0 ) {
 // Atomik Setting SQL
 	$sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_description, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id = ".$_zone_id.";";  

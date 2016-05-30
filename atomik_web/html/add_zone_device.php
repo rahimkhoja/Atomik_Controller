@@ -14,9 +14,40 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
+if ( isset($_POST["zone_id"]) ) {
+	$_zone_id = $_POST["zone_id"];
+} else {
+	$_zone_id = "";
+}
+
+if ( isset($_POST["zone_device"]) ) {
+	$_zone_device = $_POST["zone_device"];
+} else {
+	$_zone_device = "";
+}
+
+if ( isset($_POST["update_zone"]) ) {
+	$_update_zone = $_POST["update_zone"];
+} else {
+	$_update_zone = 1;
+}
+
+// Add Device to Zone (add_zone)
+if ($command <> "" && $command !="" && $command == "add_device") 
+{	
+	$erro = array();
+		
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		echo '<script type="text/javascript">'."$().redirect('zone_device.php', {'zone_id': ".trim($_zone_id)."});</script>";			
+	}		
+}
 
 // Atomik Setting SQL
-$sql = "SELECT atomik_device_types.device_type_name, atomik_device_types.device_type_id FROM atomik_device_types;";  
+$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices, atomik_zone_devices WHERE atomik_zone_devices.zone_device_device_id != atomik_devices.device_id;";  
 
 $rs=$conn->query($sql);
  
@@ -71,7 +102,7 @@ $rs->data_seek(0);
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-        <form id="choosezdevfrm" name="choosezdevfrm" action="zone_details.php" method="post"><input name="new" id="new" type="hidden" value="1"> <input name="zrem" id="zremnew" type="hidden" value="1"><input name="zdev" id="zdev" type="hidden" value="1">  
+        <form id="zonedevfrm" name="zonedevfrm" action="add_zone_device.php" method="post"><input name="zone_id" id="zone_id" type="hidden" value="<?php echo $zone_id; ?>"><input name="command" id="command" type="hidden" value="add_device"> 
   <table class="table table-striped">
   <thead>
     <tr>
@@ -83,15 +114,15 @@ $rs->data_seek(0);
   </thead>
     <tbody>
     <tr>
-        <td colspan="2"><p><select id="zonedevice" name="zonedevice" class="form-control">
- <?php while($row = $rs->fetch_assoc()){ ?> <option value="<?php echo $row['device_type_id']; ?>"><?php echo $row['device_type_name']; ?></option>
+        <td colspan="2"><p><select id="zone_device" name="zone_device" class="form-control">
+ <?php while($row = $rs->fetch_assoc()){ ?> <option value="<?php echo $row['device_id']; ?>"><?php echo $row['device_name']; ?></option>
  <?php }; ?>
 </select></p></td>
       </tr>
       <tr>
       <td><p>Set Device to Zone Settings: </p>
       </td>
-      <td> <p><input type="checkbox" id="updatedevice" name="updatedevice" class="form-control"  width="80"></label></p> </td>
+      <td> <p><input name="update_zone" type="checkbox" class="form-control" id="update_zone"<?php if ( $_update_zone == 1 ) { ?> checked="checked"<?php }; ?> width="80"></label></p> </td>
       </tr>
       </tbody>
   </table></form>
