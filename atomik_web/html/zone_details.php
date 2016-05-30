@@ -238,13 +238,13 @@ if ( isset($_POST["zone_brightness"])) {
 	}
 }
 
-if ( isset($_POST["zone_rgb"])) {
-	$_zone_rgb = $_POST["zone_rgb"];
+if ( isset($_POST["zone_rgb256"])) {
+	$_zone_rgb256 = $_POST["zone_rgb256"];
 } else {
 	if ($_new_zone == 0 ) {
-		$_zone_rgb = $row['zone_rgb'];
+		$_zone_rgb256 = $row['zone_rgb256'];
 	} else {
-		$_zone_rgb = 0;
+		$_zone_rgb256 = 0;
 	}
 }
 
@@ -324,7 +324,58 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	}		
 }
 
-// Add Device to Zone (add_device)
+// Update Zone Propeties [Keep Post Data, Verify Form, DB] (save_properties)
+if ($command <> "" && $command !="" && $command == "save_properties") 
+{	
+	$erro = array();
+	if ($_new_zone == 1 )
+	{
+		array_push($erro, "Please Save General Zone Details Before Saving Device Properties");	
+	} else {
+		if ( $_zone_status == $row['zone_status'] && $_zone_colormode == $row['zone_colormode'] && $_zone_brightness == $row['zone_brightness'] && $_zone_rgb256 == $row['zone_rgb256'] && $_zone_white_temprature == $row['zone_white_temprature'] ) {
+			array_push($erro, "No Changes To Save");
+		} else {
+			if ( $_zone_type_brightness == 1 ) {
+				if (!Check0to100 ( $_zone_brightness )) {
+					array_push($erro, "Device Brightness Must Be A Number Between 0 and 100");
+					$_error_zone_brightness = 1;
+				}
+			}
+			
+			if ( $_zone_type_rgb256 == 1 && $_zone_colormode == 0 ) {
+				if (!Check0to255 ( $_zone_rgb256)) {
+					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
+					$_error_zone_rgb256 = 1;
+				}
+			}
+			
+			if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 && $_zone_colormode == 1 ) {
+				if (!Check2700to6500 ( $_zone_white_temprature )) {
+					array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
+					$_error_zone_white_temprature = 1;
+				}
+			}	
+		}	
+	}
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		$sql = "UPDATE atomik_zones SET zone_status = ".trim($_zone_status).", zone_colormode = ".trim($_zone_colormode).", zone_brightness = ".
+		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature)." WHERE zone_id=".$_zone_id.";";
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Device Properties Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Device Properties To DB!";
+		}
+	}		
+}
+
+// Add Device to Zone (add_zone)
 if ($command <> "" && $command !="" && $command == "add_device") 
 {	
 	$erro = array();
@@ -558,7 +609,7 @@ $dzrs->data_seek(0);
         <td>
           <p>Zone Color (0-255): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="zone_rgb" name="zone_rgb" value="<?php echo $_zone_rgb; ?>"></p></td>
+        <td><p><input type="text" class="form-control" id="zone_rgb256" name="zone_rgb256" value="<?php echo $_zone_rgb256; ?>"></p></td>
     </tr><?php }; ?>
     <?php if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 ) { ?><tr>
         <td>

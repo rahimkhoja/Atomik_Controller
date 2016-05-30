@@ -90,7 +90,7 @@ if ( isset($_POST["device_type"]) ) {
 
 if ( $_new_device == 0 ) {
 // Atomik Setting SQL
-	$sql = "SELECT atomik_devices.device_id, atomik_devices.device_name, atomik_devices.device_description, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission, atomik_device_types.device_type_name, atomik_device_types.device_type_brightness, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && atomik_devices.device_id = ".$_device_id.";";  
+	$sql = "SELECT atomik_devices.device_id, atomik_devices.device_name, atomik_devices.device_description, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission, atomik_device_types.device_type_name, atomik_device_types.device_type_brightness, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && atomik_devices.device_id = ".$_device_id.";";  
 
 } else { 
 	$sql = "SELECT atomik_device_types.device_type_name, atomik_device_types.device_type_brightness, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white FROM atomik_device_types WHERE atomik_device_types.device_type_id = ".$_device_type.";";
@@ -156,13 +156,13 @@ if ( isset($_POST["device_brightness"])) {
 	}
 }
 
-if ( isset($_POST["device_rgb"])) {
-	$_device_rgb = $_POST["device_rgb"];
+if ( isset($_POST["device_rgb256"])) {
+	$_device_rgb256 = $_POST["device_rgb256"];
 } else {
 	if ($_new_device == 0 ) {
-		$_device_rgb = $row['device_rgb'];
+		$_device_rgb256 = $row['device_rgb256'];
 	} else {
-		$_device_rgb = 0;
+		$_device_rgb256 = 0;
 	}
 }
 
@@ -309,9 +309,9 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		}
 			
 		if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
-			if (!Check0to255 ( $_device_rgb)) {
+			if (!Check0to255 ( $_device_rgb256)) {
 				array_push($erro, "Device Color Must Be A Number Between 0 and 255");
-				$_error_device_rgb = 1;
+				$_error_device_rgb256 = 1;
 			}
 		}
 			
@@ -322,7 +322,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			}
 		}			
 	} else {		
-		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+		if ( $_device_name == $row['device_name'] && $_device_description == $row['device_description'] && $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb256 == $row['device_rgb256'] && $_device_white_temprature == $row['device_white_temprature'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
 
@@ -344,9 +344,9 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			}
 			
 			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
-				if (!Check0to255 ( $_device_rgb)) {
+				if (!Check0to255 ( $_device_rgb256)) {
 					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
-					$_error_device_rgb = 1;
+					$_error_device_rgb256 = 1;
 				}
 			}
 			
@@ -365,7 +365,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		$error_text = processErrors($erro);	
 	} else {
 		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb).",".trim($_device_white_temprature).")";		
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb256, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb256).",".trim($_device_white_temprature).")";		
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -376,7 +376,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				$error_text = "Error Saving All New Device Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -396,7 +396,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 	{
 		array_push($erro, "Please Save General Device Details Before Saving Device Properties");	
 	} else {
-		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb == $row['device_rgb'] && $_device_white_temprature == $row['device_white_temprature'] ) {
+		if ( $_device_status == $row['device_status'] && $_device_colormode == $row['device_colormode'] && $_device_brightness == $row['device_brightness'] && $_device_rgb256 == $row['device_rgb256'] && $_device_white_temprature == $row['device_white_temprature'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
 			if ( $_device_type_brightness == 1 ) {
@@ -407,9 +407,9 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 			}
 			
 			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0 ) {
-				if (!Check0to255 ( $_device_rgb)) {
+				if (!Check0to255 ( $_device_rgb256)) {
 					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
-					$_error_device_rgb = 1;
+					$_error_device_rgb256 = 1;
 				}
 			}
 			
@@ -428,7 +428,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
-		trim($_device_brightness).", device_rgb = ".trim($_device_rgb).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Device Properties Updated!";
@@ -677,7 +677,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         <td>
           <p>Device Color (0-255): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="device_rgb" name="device_rgb" value="<?php echo $_device_rgb; ?>"></p></td>
+        <td><p><input type="text" class="form-control" id="device_rgb256" name="device_rgb256" value="<?php echo $_device_rgb256; ?>"></p></td>
     </tr><?php }; ?>
     <?php if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 ) { ?><tr>
         <td>
