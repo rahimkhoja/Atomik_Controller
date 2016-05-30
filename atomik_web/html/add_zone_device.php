@@ -41,6 +41,7 @@ if ($command <> "" && $command !="" && $command == "add_device")
 {	
 	$erro = array();
 	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($zone_device).",now() );";
+	echo $sql;
 	if ($conn->query($sql) === TRUE) {
     	if ($_update_zone > 0 ) {
 		//	Run Command To Update Device
