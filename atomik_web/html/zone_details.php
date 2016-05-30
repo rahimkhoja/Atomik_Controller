@@ -313,6 +313,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			}
 		} else {
 			$sql = "UPDATE atomik_zones SET zone_name='".$_zone_name."', zone_description='".$_zone_description."' WHERE zone_id=".trim($_zone_id).";";
+			echo $sql;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Zone Details Updated!";
