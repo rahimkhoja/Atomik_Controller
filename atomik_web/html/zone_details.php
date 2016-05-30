@@ -81,6 +81,12 @@ if ( isset($_POST["zone_id"]) ) {
 	$_zone_id = "";
 }
 
+if ( isset($_POST["zone_device_id"]) ) {
+	$_zone_device_id = $_POST["zone_device_id"];
+} else {
+	$_zone_device_id = "0";
+}
+
 if ( $_new_zone == 0 ) {
 // Atomik Setting SQL
 	$sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_description, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id = ".$_zone_id.";";  
@@ -330,28 +336,28 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 	$erro = array();
 	if ($_new_zone == 1 )
 	{
-		array_push($erro, "Please Save General Zone Details Before Saving Device Properties");	
+		array_push($erro, "Please Save General Zone Details Before Saving Zone Properties");	
 	} else {
 		if ( $_zone_status == $row['zone_status'] && $_zone_colormode == $row['zone_colormode'] && $_zone_brightness == $row['zone_brightness'] && $_zone_rgb256 == $row['zone_rgb256'] && $_zone_white_temprature == $row['zone_white_temprature'] ) {
 			array_push($erro, "No Changes To Save");
 		} else {
 			if ( $_zone_type_brightness == 1 ) {
 				if (!Check0to100 ( $_zone_brightness )) {
-					array_push($erro, "Device Brightness Must Be A Number Between 0 and 100");
+					array_push($erro, "Zone Brightness Must Be A Number Between 0 and 100");
 					$_error_zone_brightness = 1;
 				}
 			}
 			
 			if ( $_zone_type_rgb256 == 1 && $_zone_colormode == 0 ) {
 				if (!Check0to255 ( $_zone_rgb256)) {
-					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
+					array_push($erro, "Zone Color Must Be A Number Between 0 and 255");
 					$_error_zone_rgb256 = 1;
 				}
 			}
 			
 			if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 && $_zone_colormode == 1 ) {
 				if (!Check2700to6500 ( $_zone_white_temprature )) {
-					array_push($erro, "Device White Temprature Must Be A Number Between 2700 and 6500");
+					array_push($erro, "Zone White Temprature Must Be A Number Between 2700 and 6500");
 					$_error_zone_white_temprature = 1;
 				}
 			}	
@@ -367,10 +373,10 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature)." WHERE zone_id=".$_zone_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
-			$success_text = "Device Properties Updated!";
+			$success_text = "Zone Properties Updated!";
 		} else {
     		$page_error = 1;
-			$error_text = "Error Saving Device Properties To DB!";
+			$error_text = "Error Saving Zone Properties To DB!";
 		}
 	}		
 }
@@ -419,6 +425,38 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 	} else {
 		echo '<script type="text/javascript">'."$().redirect('add_zone_remote.php', {'zone_id': ".trim($_zone_id)."});</script>";			
 	}		
+}
+
+// Remove Device from Zone (remove_device)
+if ($command <> "" && $command !="" && $command == "remove_device") 
+{	
+	$sql="DELETE FROM atomik_zone_devices WHERE zone_device_id=".trim($_zone_device_id).";";
+ 	if($conn->query($sql) === false) {
+		$page_error = 1;
+		$error_text = "Error Deleting Zone Device From Zone DB!";
+	} else {
+		$page_success = 1;
+		$success_text = "Zone Device Removed!";
+	}
+}
+
+// Remove Device from Zone (remove_remote)
+if ($command <> "" && $command !="" && $command == "remove_device") 
+{	
+	$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes, atomik_zone_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_zone_remotes.zone_remote_remote_id=".trim($_zone_remote_id)." && atomik_remotes.remote_type=3);";
+  	if($conn->query($sql) === false) {
+		$page_error = 1;
+		$error_text = "Error Deleting Zone Remote From Zone DB!";
+	} else {
+		$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes, atomik_zone_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_zone_remotes.zone_remote_remote_id=".trim($_zone_remote_id).";";
+		if($conn->query($sql) === false) {
+			$page_error = 1;
+			$error_text = "Error Removing MiLight Remotes From Zone DB!";
+		}  else {
+			$page_success = 1;
+			$success_text = "Zone Remote Removed!";
+		}
+	}
 }
 
 // Delete Zone (delete_zone)
