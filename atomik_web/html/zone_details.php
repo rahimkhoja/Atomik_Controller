@@ -326,23 +326,17 @@ if ($command <> "" && $command !="" && $command == "save_general")
 }
 
 // Add Device to Zone (add_device)
-if ($command <> "" && $command !="" && $command == "save_smartphone") 
+if ($command <> "" && $command !="" && $command == "add_device") 
 {	
 	$erro = array();
 	if ($_new_zone == 1 )
 	{
-		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");	
-	} else {
-		if ( $_remote_mac == $row['remote_mac'] &&  $_remote_mac != "") {
-			array_push($erro, "No Changes To Save");
-		} else {
-			if (!is_valid_mac ( $_remote_mac )) {
-				array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
-				$_error_remote_mac = 1;
-			} else {
-				$_remote_mac = normalize_mac($_remote_mac);
-			}
-		}	
+		array_push($erro, "Please Save General Zone Details Before Adding A Device");	
+	}  else {
+		if (!($_zone_name == $row['zone_name'] && $_zone_description == $row['zone_description']) )
+		{
+			array_push($erro, "Please Save Changes to Zone Details Before Adding A Device");	
+		}
 	}
 	
 	if (count($erro) > 0) 
@@ -350,73 +344,71 @@ if ($command <> "" && $command !="" && $command == "save_smartphone")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$sql = "UPDATE atomik_remotes SET remote_mac = '".trim($_remote_mac)."' WHERE remote_id=".$_remote_id.";";
-		if ($conn->query($sql) === TRUE) {
-    		$page_success = 1;
-			$success_text = "Remote Mac Address Updated!";
-		} else {
-    		$page_error = 1;
-			$error_text = "Error Saving Remote Mac Address To DB!";
-		}
+		echo '<script type="text/javascript">'."$().redirect('add_zone_device.php', {'zone_id': ".trim($_zone_id)."});</script>";			
 	}		
 }
 
-// Add Remote to Zone (add_device)
-if ($command <> "" && $command !="" && $command == "listen_milight") 
+// Add Remote to Zone (add_remote)
+if ($command <> "" && $command !="" && $command == "add_remote") 
 {	
 	$erro = array();
 	if ($_new_zone == 1 )
 	{
-		array_push($erro, "Please Save General Remote Details Before Lisening For A Remote");	
-	} 
+		array_push($erro, "Please Save General Zone Details Before Adding A Remote");	
+	}  else {
+		if (!($_zone_name == $row['zone_name'] && $_zone_description == $row['zone_description']) )
+		{
+			array_push($erro, "Please Save Changes to Zone Details Before Adding A Remote");	
+		}
+	}
 	
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		
-		// wait for 10 seconds while the Atomik Server Listens for Remote RF signals
-		
-		// Check db with something like this
-		
-		// select * FROM updateside where add_date >= now() - interval 10 second  
-		
-		// set address to the most common unknown transmission address during the 10 second interval
-		
+		echo '<script type="text/javascript">'."$().redirect('add_zone_remote.php', {'zone_id': ".trim($_zone_id)."});</script>";			
 	}		
 }
 
 // Delete Zone (delete_zone)
-if ($command <> "" && $command !="" && $command == "delete_remote") 
+if ($command <> "" && $command !="" && $command == "delete_zone") 
 {	
+
 	if ($_new_zone == 1 )
 	{
-		header('Location: remotes.php');
+		header('Location: zones.php');
 	} else {
-		$sql="DELETE FROM atomik_remotes WHERE remote_id=".trim($_remote_id).";";
+		$sql="DELETE FROM atomik_zones WHERE zone_id=".trim($_zone_id).";";
  
 		if($conn->query($sql) === false) {
 			$page_error = 1;
-			$error_text = "Error Deleting Remote From Remote DB!";
+			$error_text = "Error Deleting Zone From Zone DB!";
 		} else {
 		
-			$sql="DELETE FROM atomik_remote_channels WHERE remote_channel_remote_id=".trim($_remote_id).";";
+			$sql="DELETE FROM atomik_zone_devices WHERE zone_device_zone_id=".trim($_zone_id).";";
  
 			if($conn->query($sql) === false) {
 				$page_error = 1;
-				$error_text = "Error Deleting Remote From Remote Channel DB!";
+				$error_text = "Error Deleting Devices From Zone DB!";
 			}  else {
-				$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($_remote_id).";";
+				$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_type=3 && atomik_remote_channels.remote_channel_zone_id=".$_zone_id." );";
  
 				if($conn->query($sql) === false) {
 					$page_error = 1;
-					$error_text = "Error Deleting Remote From Zone DB!";
+					$error_text = "Error Deleting Atomik Remote Channels From Zone DB!";
 				} else {
-		  			$page_success = 1;
-					$success_text = "Remote Deleted!";
-					header('Location: remotes.php');		
-				}	
+					$sql="UPDATE set atomik_remote_channels.remote_channel_zone_id = '' FROM atomik_remote_channels WHERE remote_channel_zone_id=".trim($_zone_id).";";
+ 
+					if($conn->query($sql) === false) {
+						$page_error = 1;
+						$error_text = "Error Removing MiLight Remotes From Zone DB!";
+					}  else {
+		  				$page_success = 1;
+						$success_text = "Zone Deleted!";
+						header('Location: zones.php');		
+					}
+				}
 			}
 		}
 	}
@@ -507,7 +499,7 @@ $dzrs->data_seek(0);
     <tbody>
     <tr>
         <td><p>Zone Description: </p></td>
-        <td><p><textarea class="form-control" id="zone_description" name="zone_description" rows="4" cols="1"><?php echo $_zone_name; ?></textarea></p></td>
+        <td><p><textarea class="form-control" id="zone_description" name="zone_description" rows="4" cols="1"><?php echo $_zone_description; ?></textarea></p></td>
       </tr>
       </tbody>
   </table><input type="hidden" name="new_zone" id="new_zone" value="<?php echo $_new_zone; ?>"><input type="hidden" name="zone_id" id="zone_id" value="<?php echo $_zone_id; ?>">
