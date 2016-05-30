@@ -49,7 +49,7 @@ if ($command <> "" && $command !="" && $command == "add_device")
 		}
 		$page_success = 1;
 		$success_text = "Zone Device Added To Zone DB!";
-		echo '<script type="text/javascript">'."$().redirect('zone_device.php', {'zone_id': ".trim($_zone_id)."});</script>";	
+		echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
 	} else {
     	$page_error = 1;
 		$error_text = "Error Adding Device To Zone DB!";
