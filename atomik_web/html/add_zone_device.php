@@ -57,7 +57,7 @@ if ($command <> "" && $command !="" && $command == "add_device")
 }
 
 // Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices, atomik_zone_devices WHERE atomik_zone_devices.zone_device_device_id != atomik_devices.device_id;";  
+$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices WHERE device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";  
 
 $rs=$conn->query($sql);
  
@@ -132,7 +132,7 @@ $rs->data_seek(0);
       <tr>
       <td><p>Set Device to Zone Settings: </p>
       </td>
-      <td> <p><input name="update_zone" type="checkbox" class="form-control" id="update_zone"<?php if ( $_update_zone == 1 ) { ?> checked="checked"<?php }; ?> width="80"></label></p> </td>
+      <td> <p><input name="update_zone" type="checkbox" class="form-control" value="1" id="update_zone"<?php if ( $_update_zone == 1 ) { ?> checked="checked"<?php }; ?> width="80"></label></p> </td>
       </tr>
       </tbody>
   </table></form>

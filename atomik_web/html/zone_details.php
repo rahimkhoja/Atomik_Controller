@@ -387,7 +387,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 	}		
 }
 
-// Add Device to Zone (add_zone)
+// Add Device to Zone (add_device)
 if ($command <> "" && $command !="" && $command == "add_device") 
 {	
 	$erro = array();
@@ -399,6 +399,18 @@ if ($command <> "" && $command !="" && $command == "add_device")
 		{
 			array_push($erro, "Please Save Changes to Zone Details Before Adding A Device");	
 		}
+		$sql = 'SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices WHERE device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices)';
+		$cdrs=$conn->query($sql);
+ 		if($cdrs === false) {
+  			trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+		} else {
+  			$_available_devices = $cdrs->num_rows;
+		}		
+		if ($_available_devices == 0 )
+		{
+			array_push($erro, "No Devices Available To Add To Zone");	
+		}
+		
 	}
 	
 	if (count($erro) > 0) 
@@ -833,6 +845,7 @@ $("#addremotebtn").on('click', function() {
 </script></body><?php
 $dzrs->free();
 $rzrs->free();
+$cdrs->free();
 $rs->free();
 $conn->close();
 ?>
