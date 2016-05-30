@@ -40,7 +40,7 @@ if ( isset($_POST["update_zone"]) ) {
 if ($command <> "" && $command !="" && $command == "add_device") 
 {	
 	$erro = array();
-	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($zone_device).",now() );";
+	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($_zone_device).",now() );";
 	echo $sql;
 	if ($conn->query($sql) === TRUE) {
     	if ($_update_zone > 0 ) {
@@ -112,7 +112,7 @@ $rs->data_seek(0);
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-        <form id="zonedevfrm" name="zonedevfrm" action="add_zone_device.php" method="post"><input name="zone_id" id="zone_id" type="hidden" value="<?php echo $zone_id; ?>"><input name="command" id="command" type="hidden" value="add_device"> 
+        <form id="zonedevfrm" name="zonedevfrm" action="add_zone_device.php" method="post"><input name="zone_id" id="zone_id" type="hidden" value="<?php echo $_zone_id; ?>"><input name="command" id="command" type="hidden" value="add_device"> 
   <table class="table table-striped">
   <thead>
     <tr>
