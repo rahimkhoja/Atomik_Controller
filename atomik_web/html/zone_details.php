@@ -313,7 +313,6 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			}
 		} else {
 			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".trim($_zone_name)."', atomik_zones.zone_description='".trim($_zone_description)."' WHERE atomik_zones.zone_id=".trim($_zone_id).";";
-			echo $sql;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Zone Details Updated!";
@@ -398,7 +397,7 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 					$page_error = 1;
 					$error_text = "Error Deleting Atomik Remote Channels From Zone DB!";
 				} else {
-					$sql="UPDATE set atomik_remote_channels.remote_channel_zone_id = '' FROM atomik_remote_channels WHERE remote_channel_zone_id=".trim($_zone_id).";";
+					$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
  
 					if($conn->query($sql) === false) {
 						$page_error = 1;
