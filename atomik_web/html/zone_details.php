@@ -312,7 +312,8 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$error_text = "Error Inserting Zone Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".$_zone_name."', atomik_zones.zone_description='".$_zone_description."' WHERE atomik_zones.zone_id=".trim($_zone_id).";";
+			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".trim($_zone_name)."', atomik_zones.zone_description='".trim($_zone_description)."' WHERE atomik_zones.zone_id=".trim($_zone_id).";";
+			echo $sql;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Zone Details Updated!";
