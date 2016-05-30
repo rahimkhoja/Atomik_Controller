@@ -74,7 +74,7 @@ if ( isset($_POST["new_zone"]) ) {
 } else {
 	$_new_zone = "0";
 }
-echo $_new_zone ;
+
 if ( isset($_POST["zone_id"]) ) {
 	$_zone_id = $_POST["zone_id"];
 } else {
@@ -304,13 +304,15 @@ if ($command <> "" && $command !="" && $command == "save_general")
     			
 				$_new_zone = 0;
 				$_zone_id = $conn->insert_id;
+				$page_success = 1;
+				$success_text = "General Zone Details Added to DB!";
 								
 			} else {
     			$page_error = 1;
 				$error_text = "Error Inserting Zone Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_zones SET zone_name='".$_zone_name."', zone_description='".$_zone_description."' WHERE zone_id=".$_zone_id.";";
+			$sql = "UPDATE atomik_zones SET zone_name='".$_zone_name."', zone_description='".$_zone_description."' WHERE zone_id=".trim($_zone_id).";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Zone Details Updated!";
