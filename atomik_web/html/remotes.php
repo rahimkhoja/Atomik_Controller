@@ -98,7 +98,7 @@ $rs->data_seek(0);
     <tr id="rem<?php echo $row['remote_id']; ?>">
         <td valign="bottom"><center><p><?php echo $row['remote_name']; ?></p></center></td>
         <td><center><p><?php echo $row['remote_type_name']; ?></p></center></td>
-        <td><form id="remform<?php echo $row['remote_id']; ?>" name="remform<?php echo $row['remote_id']; ?>" action="remotes.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['remote_id']; ?>" ><center><p><a id="delete<?php echo $row['remote_id']; ?>" class="btn-danger btn">Delete Remote</a></p></center></form></td>
+        <td onclick="event.cancelBubble=true;"><form id="remform<?php echo $row['remote_id']; ?>" name="remform<?php echo $row['remote_id']; ?>" action="remotes.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['remote_id']; ?>" ><center><p><a id="delete<?php echo $row['remote_id']; ?>" class="btn-danger btn">Delete Remote</a></p></center></form></td>
         <script type="text/javascript">
 		$("#rem<?php echo $row['remote_id']; ?>").on('click', function() {
 			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>'});
