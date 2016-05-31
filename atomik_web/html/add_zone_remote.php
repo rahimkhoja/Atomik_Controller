@@ -60,7 +60,8 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 				if ($conn->query($sql) === TRUE) {
     				$page_success = 1;
 					$success_text = "Remote Channel Updated Updated!";
-					echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
+					/** echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>"; **/
+						
 				} else {
     				$page_error = 1;
 					$error_text = "Error Saving Remote Channel Details To DB!";
@@ -85,7 +86,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 					if ($conn->query($sql) === TRUE) {
 						$page_success = 1;
 						$success_text = "Zone Device Added To Zone DB!";
-						echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
+						/** echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>"; **/
 					} else {
     					$page_error = 1;
 						$error_text = "Error Adding Device To Zone DB!";
@@ -107,7 +108,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 							if ($conn->query($sql) === TRUE) {
 								$page_success = 1;
 								$success_text = "Atomik Zone Remote Added To Zone DB!";
-								echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
+								/** echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>"; **/
 							} else {
     							$page_error = 1;
 								$error_text = "Error Adding Atomik Remote To Zone DB!";
@@ -118,7 +119,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 							if ($conn->query($sql) === TRUE) {
 								$page_success = 1;
 								$success_text = "Atomik Zone Remote Added To Zone DB!";
-								echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
+								/** echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>"; **/	
 							} else {
     							$page_error = 1;
 								$error_text = "Error Adding Atomik Remote To Zone DB!";
