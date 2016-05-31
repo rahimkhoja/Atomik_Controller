@@ -100,12 +100,12 @@ $rs->data_seek(0);
         <td><center><p><?php echo $row['remote_type_name']; ?></p></center></td>
         <td><form id="remform<?php echo $row['remote_id']; ?>" name="remform<?php echo $row['remote_id']; ?>" action="remotes.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['remote_id']; ?>" ><center><p><a id="delete<?php echo $row['remote_id']; ?>" class="btn-danger btn">Delete Remote</a></p></center></form></td>
         <script type="text/javascript">
-	$("#delete<?php echo $row['remote_id']; ?>").on('click', function() {
-   document.remform<?php echo $row['remote_id']; ?>.submit();
-});
-$("#rem<?php echo $row['remote_id']; ?>").on('click', function() {
-   $().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>'});
-});
+		$("#rem<?php echo $row['remote_id']; ?>").on('click', function() {
+			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>'});
+		});
+		$("#delete<?php echo $row['remote_id']; ?>").on('click', function() {
+			document.remform<?php echo $row['remote_id']; ?>.submit();
+		});
 </script>
       </tr><?php } } else { ?>
       <tr>
