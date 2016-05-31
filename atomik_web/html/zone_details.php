@@ -428,12 +428,12 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 	$erro = array();
 	if ($_new_zone == 1 )
 	{
-		array_push($erro, "Please Save General Zone Details Before Adding A Remote");	
+		array_push($erro, "Please Save General Zone Details Before Adding A Device");	
 	}  else {
 		if (!($_zone_name == $row['zone_name'] && $_zone_description == $row['zone_description']) )
 		{
-			array_push($erro, "Please Save Changes to Zone Details Before Adding A Remote");	
-		}
+			array_push($erro, "Please Save Changes to Zone Details Before Adding A Device");	
+		}		
 	}
 	
 	if (count($erro) > 0) 
