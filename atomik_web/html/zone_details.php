@@ -437,14 +437,12 @@ echo 'here';
 			array_push($erro, "Please Save Changes to Zone Details Before Adding A Device");	
 		}		
 	}
-	echo 'here 1';
+	
 	if (count($erro) > 0) 
 	{
-		echo 'here2';
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		echo 'here 3';
 		echo '<script type="text/javascript">'."$().redirect('add_zone_remote.php', {'zone_id': ".trim($_zone_id)."});</script>";			
 	}		
 }
