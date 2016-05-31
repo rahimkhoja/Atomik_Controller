@@ -175,7 +175,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-   <form id="zoneremfrm" name="zoneremfrm" action="zone_details.php" method="post"><input name="zone_id" id="zone_id" type="hidden" value="<?php echo $_zone_id; ?>"><input name="command" id="command" type="hidden" value="add_remote">         
+   <form id="zoneremfrm" name="zoneremfrm" action="add_zone_remote.php" method="post"><input name="zone_id" id="zone_id" type="hidden" value="<?php echo $_zone_id; ?>"><input name="command" id="command" type="hidden" value="add_remote">         
   <table class="table table-striped">
   <thead>
     <tr>
@@ -256,7 +256,7 @@ if($remrs === false) {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 $("#saveremotebtn").on('click', function() {
-	document.forms["zoneremfrm"].submit();
+	document.zoneremfrm.submit();
 });
 </script>
 </body><?php
