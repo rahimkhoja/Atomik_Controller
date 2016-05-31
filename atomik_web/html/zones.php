@@ -89,10 +89,10 @@ $rs->data_seek(0);
   <table class="table table-striped">
     <thead>
       <tr>
-        <td><b><center>Name</center></b></td>
-        <td><b><center>Status</center></b></td>
-        <td><b><center># of Remotes</center></b></td>
-        <td><b><center># of Devices</center></b></td>
+        <td style="vertical-align:bottom"><b><center>Name</center></b></td>
+        <td style="vertical-align:bottom"><b><center>Status</center></b></td>
+        <td style="vertical-align:bottom"><b><center># of Remotes</center></b></td>
+        <td style="vertical-align:bottom"><b><center># of Devices</center></b></td>
         <td></td>
       </tr>
     </thead>
