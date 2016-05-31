@@ -233,7 +233,7 @@ if($remrs === false) {
   <div class="col-xs-1"></div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a id="zoneremsubmitbtn" class="btn-success btn">Save</a>
+  <div class="col-xs-2 text-right"><a id="saveremotebtn" class="btn-success btn">Save</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -251,8 +251,8 @@ if($remrs === false) {
     $("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
-$("#zoneremsubmitbtn").on('click', function() {
-	document.forms["choosezremfrm"].submit();
+$("#saveremotebtn").on('click', function() {
+	document.forms["zoneremfrm"].submit();
 });
 </script>
 </body><?php
