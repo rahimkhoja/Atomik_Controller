@@ -14,19 +14,15 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
-// SELECT atomik_remotes.remote_name, atomik_remote_channels.remote_channel_name, atomik_remote_channels.remote_channel_remote_id FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_zone_id=0
-// Atomik Setting SQL
-$sql = "SELECT atomik_device_types.device_type_name, atomik_device_types.device_type_id FROM atomik_device_types;";  
+// Set Command
+$command = "";
+$command = $_POST["command"];
 
-$rs=$conn->query($sql);
- 
-if($rs === false) {
-  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+if ( isset($_POST["zone_id"]) ) {
+	$_zone_id = $_POST["zone_id"];
 } else {
-  $db_records = $rs->num_rows;
+	$_zone_id = "";
 }
-$rs->data_seek(0);
-
 ?>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
@@ -71,7 +67,7 @@ $rs->data_seek(0);
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
-   <form id="choosezremfrm" name="choosezremfrm" action="zone_details.php" method="post"><input name="new" id="new" type="hidden" value="1">         
+   <form id="choosezremfrm" name="choosezremfrm" action="zone_details.php" method="post"><input name="zone_id" id="zone_id" type="hidden" value="<?php echo $_zone_id; ?>"><input name="command" id="command" type="hidden" value="add_remote">         
   <table class="table table-striped">
   <thead>
     <tr>
@@ -82,10 +78,34 @@ $rs->data_seek(0);
   </thead>
     <tbody>
     <tr>
-        <td ><p><select id="zoneremote" name="zoneremote" class="form-control">
- <?php while($row = $rs->fetch_assoc()){ ?> <option value="<?php echo $row['remote_type_id']; ?>"><?php echo $row['remote_type_name']; ?></option>
- <?php }; ?>
-</select></p></td>
+        <td ><p><select id="remote_id" name="remote_id" class="form-control">
+        <?php
+$sql = "SELECT atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes;";
+$remrs=$conn->query($sql);
+if($remrs === false) {
+	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  	$atomik_remotes = $remrs->num_rows;
+  	$remrs->data_seek(0);
+  	while($remrow = $remrs->fetch_assoc()){
+	  	if ( $remrow['remote_type'] == 1 || $remrow['remote_type'] == 1 ) {
+			$sql = "SELECT atomik_remote_channels.remote_channel_id FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=".$remrow['remote_id']." && atomik_remote_channels.remote_channel_zone_id=0;";
+		  	$rchrs=$conn->query($sql);
+		  	$_available_channels = 0;
+		  	if($rchrs === false) {
+			  	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+		  	} else {
+			  	$_available_channels = $rchrs->num_rows;
+		  	}
+		  	if ( $_available_channels > 0 ) {
+			  	echo '<option value="'. $remrow['remote_id']. '">'.$remrow['remote_name'].'</option>';
+		  	}
+	  	} else { 
+			echo '<option value="'. $remrow['remote_id']. '">'.$remrow['remote_name'].'</option>';
+		}
+	}
+}
+?></select></p></td>
       </tr>
       </tbody>
   </table></form>
