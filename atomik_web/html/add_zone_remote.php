@@ -14,7 +14,7 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
-
+// SELECT atomik_remotes.remote_name, atomik_remote_channels.remote_channel_name, atomik_remote_channels.remote_channel_remote_id FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_zone_id=0
 // Atomik Setting SQL
 $sql = "SELECT atomik_device_types.device_type_name, atomik_device_types.device_type_id FROM atomik_device_types;";  
 

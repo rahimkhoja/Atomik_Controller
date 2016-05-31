@@ -96,15 +96,13 @@ $rs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-   
-   
    <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
-    <tr>
-        <td valign="bottom" id="task<?php echo $row['task_id']; ?>"><center><p><?php echo $row['task_name']; ?></p></center></td>
-        <td id="task<?php echo $row['task_id']; ?>"><center>
+    <tr id="task<?php echo $row['task_id']; ?>">
+        <td valign="bottom"><center><p><?php echo $row['task_name']; ?></p></center></td>
+        <td><center>
           <p><?php echo $row['zone_name']; ?></p>
         </center></td>
-        <td><form id="taskform<?php echo $row['task_id']; ?>" name="taskform<?php echo $row['task_id']; ?>" action="tasks.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['task_id']; ?>" ><center><p><a id="delete<?php echo $row['task_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
+        <td><form id="taskform<?php echo $row['task_id']; ?>" name="taskform<?php echo $row['task_id']; ?>" action="tasks.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['task_id']; ?>" ><center><p><a id="delete<?php echo $row['task_id']; ?>" class="btn-danger btn">Delete Task</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['task_id']; ?>").on('click', function() {
    document.taskform<?php echo $row['task_id']; ?>.submit();

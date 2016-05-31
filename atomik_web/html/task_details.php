@@ -1,9 +1,12 @@
-<!doctype html>
+<?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
 <title>Atomik Controller - Scheduled Task Details</title>
 <link rel="stylesheet" href="css/atomik.css">
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/jquery.redirect.min.js"></script>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -23,7 +26,7 @@
         <li class="active"><a href="tasks.php">Scheduled Tasks<span class="sr-only">(current)</span></a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Logout</a> </li>
+        <li><a id="logoutbtn">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -38,12 +41,11 @@
           <h3>Scheduled Task Details</h3>
         </div>
     </div>
-   </div><hr><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
-<hr>
+   </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success_text; ?>
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <br>
   <div class="container">
         <div class="col-xs-2"></div>
@@ -371,12 +373,11 @@
   
   <div class="col-xs-2"></div>
   </div>
-<br>
-  <hr><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><hr>
+  <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+  <strong>Success!</strong> <?php echo $success_text; ?>
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <div class="container center">
   <div class="col-xs-2">
   </div>
@@ -401,6 +402,36 @@
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
-</body>
+    </div><script type="text/javascript">
+    $("#logoutbtn").on('click', function() {
+	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});
+$("#savegeneralbtn").on('click', function() {
+   document.forms["zonefrm"].command.value = "save_general";
+   document.zonefrm.submit();
+});
+$("#savepropertiesbtn").on('click', function() {
+   document.forms["zonefrm"].command.value = "save_properties";
+   document.zonefrm.submit();
+});
+$("#delzonebtn").on('click', function() {
+	$("#overlay").show();
+	if (window.confirm("Are you sure?")) {
+        document.forms["zonefrm"].command.value = "delete_zone";
+   		document.zonefrm.submit();
+	}
+	$("#overlay").hide();
+});
+$("#adddevicebtn").on('click', function() {
+   document.forms["zonefrm"].command.value = "add_device";
+   document.zonefrm.submit();
+});
+$("#addremotebtn").on('click', function() {
+   document.forms["zonefrm"].command.value = "add_remote";
+   document.zonefrm.submit();
+});
+</script></body><?php
+$rs->free();
+$conn->close();
+?>
 </html>

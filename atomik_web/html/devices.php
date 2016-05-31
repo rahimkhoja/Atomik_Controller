@@ -98,12 +98,12 @@ $rs->data_seek(0);
     </thead>
     <tbody>
 <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
-    <tr>
-        <td valign="bottom" id="dev<?php echo $row['device_id']; ?>"><center><p><?php echo $row['device_name']; ?></p></center></td>
-        <td id="dev<?php echo $row['device_id']; ?>"><center>
+    <tr id="dev<?php echo $row['device_id']; ?>">
+        <td valign="bottom"><center><p><?php echo $row['device_name']; ?></p></center></td>
+        <td><center>
           <p><?php echo $row['device_type_name']; ?></p>
         </center></td>
-        <td id="dev<?php echo $row['device_id']; ?>"><center><p><?php if ($row['device_status'] == 1) { echo "ON"; } else { echo "OFF"; }; ?></p></center></td>
+        <td><center><p><?php if ($row['device_status'] == 1) { echo "ON"; } else { echo "OFF"; }; ?></p></center></td>
         <td><form id="delform<?php echo $row['device_id']; ?>" name="delform<?php echo $row['device_id']; ?>" action="devices.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['device_id']; ?>" ><center><p><a id="delete<?php echo $row['device_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['device_id']; ?>").on('click', function() {

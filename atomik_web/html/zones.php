@@ -115,11 +115,11 @@ $rs->data_seek(0);
 	}
 	$zrs->free();
 	?><tr id="zon<?php echo $row['zone_id']; ?>">
-        <td valign="bottom" id="zon<?php echo $row['zone_id']; ?>"><center><p><?php echo $row['zone_name']; ?></p></center></td>
+        <td valign="bottom"><center><p><?php echo $row['zone_name']; ?></p></center></td>
         <td valign="bottom"><center><p><?php echo $row['zone_status']; ?></p></center></td>
         <td valign="bottom"><center><p><?php echo $total_remotes; ?></p></center></td>
         <td valign="bottom"><center><p><?php echo $total_devices; ?></p></center></td>
-        <td><form id="zoneform<?php echo $row['zone_id']; ?>" name="remform<?php echo $row['zone_id']; ?>" action="zones.php" method="post"><input type="hidden" name="zone_id" id="zone_id" value="<?php echo $row['zone_id']; ?>" ><center><p><a id="delete<?php echo $row['zone_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
+        <td><form id="zoneform<?php echo $row['zone_id']; ?>" name="remform<?php echo $row['zone_id']; ?>" action="zones.php" method="post"><input type="hidden" name="zone_id" id="zone_id" value="<?php echo $row['zone_id']; ?>" ><center><p><a id="delete<?php echo $row['zone_id']; ?>" class="btn-danger btn">Delete Zone</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['zone_id']; ?>").on('click', function() {
    document.remform<?php echo $row['zone_id']; ?>.submit();

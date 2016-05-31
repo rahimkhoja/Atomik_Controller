@@ -95,12 +95,10 @@ $rs->data_seek(0);
       </tr>
     </thead>
     <tbody> <?php if ( $db_records > 0 ) { while($row = $rs->fetch_assoc()){ ?>
-    <tr>
-        <td valign="bottom" id="rem<?php echo $row['remote_id']; ?>"><center><p><?php echo $row['remote_name']; ?></p></center></td>
-        <td id="rem<?php echo $row['remote_id']; ?>"><center>
-          <p><?php echo $row['remote_type_name']; ?></p>
-        </center></td>
-        <td><form id="remform<?php echo $row['remote_id']; ?>" name="remform<?php echo $row['remote_id']; ?>" action="remotes.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['remote_id']; ?>" ><center><p><a id="delete<?php echo $row['remote_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
+    <tr id="rem<?php echo $row['remote_id']; ?>">
+        <td valign="bottom"><center><p><?php echo $row['remote_name']; ?></p></center></td>
+        <td><center><p><?php echo $row['remote_type_name']; ?></p></center></td>
+        <td><form id="remform<?php echo $row['remote_id']; ?>" name="remform<?php echo $row['remote_id']; ?>" action="remotes.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['remote_id']; ?>" ><center><p><a id="delete<?php echo $row['remote_id']; ?>" class="btn-danger btn">Delete Remote</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['remote_id']; ?>").on('click', function() {
    document.remform<?php echo $row['remote_id']; ?>.submit();
