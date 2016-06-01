@@ -470,7 +470,7 @@ if ($command <> "" && $command !="" && $command == "remove_device")
 // Remove Device from Zone (remove_remote)
 if ($command <> "" && $command !="" && $command == "remove_remote") 
 {	
-	"SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_zone_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_number, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
+	"SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_zone_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_number, atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
 	$rdchrs=$conn->query($sql);
  
 	if($rdchrs === false) {
@@ -495,7 +495,8 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 			$error_text = "Error Removing MiLight Remote Channels From Zone DB!";
 	}
 			
-			$sql="DELETE FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && atomik_zone_remotes.zone_remote_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && atomik_zone_remotes.zone_remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
+			$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && zone_remote_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && zone_remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
+			echo $sql;
 			if($conn->query($sql) === false) {
 				$page_error = 1;
 				$error_text = "Error Deleting Zone Remote From Zone DB!";
