@@ -480,7 +480,7 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 	$rdchrs->data_seek(0);
 	$rdchrs_row = $rdchrs->fetch_assoc();
 	
-	}
+	
 	
 	if ($rdchrs_row['remote_type'] == 3) {
 	$sql="DELETE FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id)." && atomik_remote_channels.remote_channel_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && atomik_remote_channels.remote_channel_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && atomik_remote_channels.remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
@@ -506,7 +506,7 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 			}
 		}
 	}
-
+}
 
 // Delete Zone (delete_zone)
 if ($command <> "" && $command !="" && $command == "delete_zone") 
