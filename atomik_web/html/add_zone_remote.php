@@ -137,7 +137,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 						
 							// figure out what number to use
 							echo '<br>Insert Channel from Gap Numbers<BR>';
-							$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).",'Atomik Remote Channel ".($avl_chn_row['remote_channel_number']+2)."');";
+							$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).",'Atomik Remote Channel ".($avl_chn_row['remote_channel_number']+1)."');";// here
 							 
 							if ($conn->query($sql) === TRUE) {
 								$page_success = 1;
