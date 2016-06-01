@@ -12,22 +12,6 @@ $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
-
-// Check for delete
-
-if ( isset($_POST["item"]) ) {
-	$_item = $_POST["item"];
-
-	$sql="DELETE FROM atomik_zones WHERE zone_id=".$_item;
- 
-	if($conn->query($sql) === false) {
-		$page_error = 1;
-		$error_text = "Error Deleting Device From DB!";
-	} else {
-  		$page_success = 1;
-		$success_text = "Zone Deleted!";
-	}
-}
 		
 // Atomik Setting SQL
 $sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id, atomik_zones.zone_status FROM atomik_zones;";  
@@ -122,6 +106,7 @@ $rs->data_seek(0);
         <td onclick="event.cancelBubble=true;"><form id="zoneform<?php echo $row['zone_id']; ?>" name="remform<?php echo $row['zone_id']; ?>" action="zones.php" method="post"><input type="hidden" name="zone_id" id="zone_id" value="<?php echo $row['zone_id']; ?>" ><center><p><a id="delete<?php echo $row['zone_id']; ?>" class="btn-danger btn">Delete Zone</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['zone_id']; ?>").on('click', function() {
+		$().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>','command': 'delete_zone'});
    document.remform<?php echo $row['zone_id']; ?>.submit();
 });
 $("#zon<?php echo $row['zone_id']; ?>").on('click', function() {

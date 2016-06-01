@@ -397,7 +397,6 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 // Add Device to Zone (add_device)
 if ($command <> "" && $command !="" && $command == "add_device") 
 {	
-	echo 'Add_Device Fired<BR>';
 	$erro = array();
 	
 	if ($_new_zone == 1 )
@@ -409,7 +408,7 @@ if ($command <> "" && $command !="" && $command == "add_device")
 		{
 			array_push($erro, "Please Save Changes to Zone Details Before Adding A Device");	
 		}
-		echo 'Not New Zone<BR>';
+		
 		$sql = 'SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices WHERE device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices)';
 		$cdrs=$conn->query($sql);
  		
@@ -417,7 +416,6 @@ if ($command <> "" && $command !="" && $command == "add_device")
   			trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
 		} else {
   			$_available_devices = $cdrs->num_rows;
-			echo 'Checking Available DevicesBR>';
 		}		
 		if ($_available_devices == 0 )
 		{
@@ -425,13 +423,12 @@ if ($command <> "" && $command !="" && $command == "add_device")
 		}
 	}
 	
-	echo 'Counting Errors<BR>';
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		echo 'Redirct With Post<BR>';
+		echo "<BR>";
 		echo '<script type="text/javascript">'."$().redirect('add_zone_device.php', {'zone_id': ".trim($_zone_id)."});</script>";			
 	}		
 }
@@ -440,7 +437,6 @@ if ($command <> "" && $command !="" && $command == "add_device")
 if ($command <> "" && $command !="" && $command == "add_remote") 
 {	
 
-echo 'here';
 	$erro = array();
 	if ($_new_zone == 1 )
 	{
@@ -457,6 +453,7 @@ echo 'here';
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
+		echo "<BR>";
 		echo '<script type="text/javascript">'."$().redirect('add_zone_remote.php', {'zone_id': ".trim($_zone_id)."});</script>";			
 	}		
 }
