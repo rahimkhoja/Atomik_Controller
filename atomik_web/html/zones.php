@@ -107,7 +107,6 @@ $rs->data_seek(0);
         <script type="text/javascript">
 	$("#delete<?php echo $row['zone_id']; ?>").on('click', function() {
 		$().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>','command': 'delete_zone'});
-   document.remform<?php echo $row['zone_id']; ?>.submit();
 });
 $("#zon<?php echo $row['zone_id']; ?>").on('click', function() {
    $().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>'});
