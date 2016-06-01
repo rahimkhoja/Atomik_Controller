@@ -69,6 +69,13 @@ $error = "";
 $command = "";
 $command = $_POST["command"];
 
+
+if ( isset($_POST["remote_channel_id"]) ) {
+	$_remote_channel_id = $_POST["remote_channel_id"];
+} else {
+	$_remote_channel_id = "0";
+}
+
 if ( isset($_POST["new_zone"]) ) {
 	$_new_zone = $_POST["new_zone"];
 } else {
@@ -461,20 +468,40 @@ if ($command <> "" && $command !="" && $command == "remove_device")
 }
 
 // Remove Device from Zone (remove_remote)
-if ($command <> "" && $command !="" && $command == "remove_device") 
+if ($command <> "" && $command !="" && $command == "remove_remote") 
 {	
-	$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes, atomik_zone_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_zone_remotes.zone_remote_remote_id=".trim($_zone_remote_id)." && atomik_remotes.remote_type=3);";
+	"SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_zone_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_number, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
+	$rdchrs=$conn->query($sql);
+ 
+	if($rdchrs === false) {
+  	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+
+	$rdchrs->data_seek(0);
+	$rdchrs_row = $rdchrs->fetch_assoc();
+	
+	}
+	
+	
+	$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id)." && atomik_remotes.remote_type=3);";
   	if($conn->query($sql) === false) {
 		$page_error = 1;
-		$error_text = "Error Deleting Zone Remote From Zone DB!";
+		$error_text = "Error Deleting Zone Remote Channels From Zone DB!";
 	} else {
-		$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes, atomik_zone_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_zone_remotes.zone_remote_remote_id=".trim($_zone_remote_id).";";
+		$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
 		if($conn->query($sql) === false) {
 			$page_error = 1;
-			$error_text = "Error Removing MiLight Remotes From Zone DB!";
+			$error_text = "Error Removing MiLight Remote Channels From Zone DB!";
 		}  else {
-			$page_success = 1;
-			$success_text = "Zone Remote Removed!";
+			
+			$sql="DELETE FROM atomik_zone_remotes WHERE atomik_zone_remotes.zone_remote_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && atomik_zone_remotes.zone_remote_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && atomik_zone_remotes.zone_remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
+			if($conn->query($sql) === false) {
+				$page_error = 1;
+				$error_text = "Error Deleting Zone Remote From Zone DB!";
+			} else {
+				$page_success = 1;
+				$success_text = "Zone Remote Removed!";
+			}
 		}
 	}
 }
@@ -524,9 +551,7 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 
 if ( $_new_zone == 0 ) {
 // Atomik Zone Remotes SQL
-$sql = "SELECT atomik_zone_remotes.zone_remote_id, atomik_remotes.remote_name, atomik_remote_types.remote_type_name,
-atomik_remote_channels.remote_channel_name
-FROM atomik_zone_remotes, atomik_remote_types, atomik_remotes, atomik_remote_channels WHERE atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_type = atomik_remote_types.remote_type_id && atomik_remote_channels.remote_channel_remote_id = atomik_remotes.remote_id &&  atomik_zone_remotes.zone_remote_zone_id = ".$_zone_id." && atomik_remote_channels.remote_channel_zone_id = ".$_zone_id.";";  
+$sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_name, atomik_remotes.remote_name, atomik_remote_types.remote_type_name FROM atomik_remote_types, atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_type=atomik_remote_types.remote_type_id && atomik_remote_channels.remote_channel_zone_id=".$_zone_id.";";  
 
 $rzrs=$conn->query($sql);
  
@@ -761,18 +786,18 @@ $dzrs->data_seek(0);
         <td></td>
       </tr>
     </thead>
-    <tbody><input type="hidden" id="zone_remote_id" name="zone_remote_id" value="">
+    <tbody><input type="hidden" id="remote_channel_id" name="remote_channel_id" value="">
       <?php if ( $_zone_remotes > 0 ) { while($rzrow = $rzrs->fetch_assoc()){ ?>
     <tr>
         <td><center><p><?php echo $rzrow['remote_name'].' - '.$rzrow['remote_channel_name']; ?></p></center></td>
         <td><center><p><?php echo $rzrow['remote_type_name']; ?></p></center></td>
-        <td><center><p><a id="deleterem<?php echo $rzrow['zone_remote_id']; ?>" class="btn-danger btn">Remove Remote</a></p></center></td>
+        <td><center><p><a id="deleterem<?php echo $rzrow['remote_channel_id']; ?>" class="btn-danger btn">Remove Remote</a></p></center></td>
         <script type="text/javascript">
-	$("#deleterem<?php echo $rzrow['zone_remote_id']; ?>").on('click', function() {
+	$("#deleterem<?php echo $rzrow['remote_channel_id']; ?>").on('click', function() {
 		$("#overlay").show();
 	if (window.confirm("Are you sure?")) {
         document.forms["zonefrm"].command.value = "remove_remote";
-		document.forms["zonefrm"].zone_remote_id.value = "<?php echo $rzrow['zone_remote_id']; ?>";
+		document.forms["zonefrm"].zone_remote_id.value = "<?php echo $rzrow['remote_channel_id']; ?>";
    		document.zonefrm.submit(); }
 	$("#overlay").hide();}); </script>
       </tr><?php } } else { ?>
