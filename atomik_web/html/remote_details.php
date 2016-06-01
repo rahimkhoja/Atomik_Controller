@@ -274,9 +274,10 @@ if ($command <> "" && $command !="" && $command == "save_general")
     					$page_error = 1;
 						$error_text = "Error Inserting General Remote Channels To DB!";
 					}
+				}else {
+					$page_success = 1;
+					$success_text = "All Remote Details Updated!";
 				}
-				$page_success = 1;
-						$success_text = "General Remote Details Updated!";
 			} else {
     			$page_error = 1;
 				$error_text = "Error Inserting Remote Details To DB!";
@@ -406,9 +407,9 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				
 				$_channels = 0;
 		
-		if ( $_remote_type == 1 || $_remote_type == 2 ) {
-			$_channels = 5;
-		}
+				if ( $_remote_type == 1 || $_remote_type == 2 ) {
+					$_channels = 5;
+				}
 				
 				if ($_channels > 0 ) {
 					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
@@ -419,6 +420,9 @@ if ($command <> "" && $command !="" && $command == "save_all")
     					$page_error = 1;
 						$error_text = "Error Inserting Remote Channels To DB!";
 					}
+				} else {
+					$page_success = 1;
+					$success_text = "All Remote Details Updated!";
 				}
 			} else {
     			$page_error = 1;
@@ -583,7 +587,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
 		}
 	}
 }
-?></head>
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -804,8 +808,12 @@ $("#savegeneralbtn").on('click', function() {
    document.remotefrm.submit();
 });
 $("#delrembtn").on('click', function() {
-   document.forms["remotefrm"].command.value = "delete_remote";//
-   document.remotefrm.submit();
+	$("#overlay").show();
+	if (window.confirm("Are you sure?")) {
+        document.forms["remotefrm"].command.value = "delete_remote";//
+   		document.remotefrm.submit();
+	}
+	$("#overlay").hide();
 });
 $("#saveatomikbtn").on('click', function() {
    document.forms["remotefrm"].command.value = "save_atomik";

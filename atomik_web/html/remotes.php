@@ -6,14 +6,13 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-</head><?php 
+<?php 
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
 
-		
 // Atomik Setting SQL
 $sql = "SELECT atomik_remotes.remote_name, atomik_remotes.remote_id, atomik_remote_types.remote_type_name FROM atomik_remotes, atomik_remote_types WHERE atomik_remotes.remote_type = atomik_remote_types.remote_type_id;";  
 
@@ -25,7 +24,7 @@ if($rs === false) {
   $db_records = $rs->num_rows;
 }
 $rs->data_seek(0);
-?>
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -89,7 +88,11 @@ $rs->data_seek(0);
 			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>'});
 		});
 		$("#delete<?php echo $row['remote_id']; ?>").on('click', function() {
-			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>', 'command': 'delete_remote'});
+			$("#overlay").show();
+			if (window.confirm("Are You Sure You Want To Delete This Remote?")) {
+       			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>', 'command': 'delete_remote'});
+			}
+			$("#overlay").hide();		
 		});
 </script>
       </tr><?php } } else { ?>

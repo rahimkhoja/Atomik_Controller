@@ -7,29 +7,13 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-</head><?php 
+<?php 
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
 
-// Check for delete
-
-if ( isset($_POST["item"]) ) {
-	$_item = $_POST["item"];
-
-	$sql="DELETE FROM atomik_devices WHERE device_id=".$_item;
- 
-	if($conn->query($sql) === false) {
-		$page_error = 1;
-		$error_text = "Error Deleting Device From DB!";
-	} else {
-  		$page_success = 1;
-		$success_text = "Device Deleted!";
-	}
-}
-		
 // Atomik Setting SQL
 $sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_devices.device_status, atomik_device_types.device_type_name FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id;";  
 
@@ -41,7 +25,7 @@ if($rs === false) {
   $db_records = $rs->num_rows;
 }
 $rs->data_seek(0);
-?>
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -105,7 +89,11 @@ $rs->data_seek(0);
         <td onclick="event.cancelBubble=true;"><form id="delform<?php echo $row['device_id']; ?>" name="delform<?php echo $row['device_id']; ?>" action="devices.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['device_id']; ?>" ><center><p><a id="delete<?php echo $row['device_id']; ?>" class="btn-danger btn">Delete Device</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['device_id']; ?>").on('click', function() {
-   document.delform<?php echo $row['device_id']; ?>.submit();
+   $("#overlay").show();
+	if (window.confirm("Are You Sure You Want To Delete This Device?")) {
+    	$().redirect('device_details.php', {'device_id': '<?php echo $row['device_id']; ?>', 'command': 'delete_device'});
+	}
+	$("#overlay").hide();
 });
 $("#dev<?php echo $row['device_id']; ?>").on('click', function() {
    $().redirect('device_details.php', {'device_id': '<?php echo $row['device_id']; ?>'});

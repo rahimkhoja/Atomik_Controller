@@ -597,7 +597,7 @@ $dzrs->data_seek(0);
 	$_zone_devices = 0;
 	$_zone_remotes = 0;
 }
-?></head>
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->

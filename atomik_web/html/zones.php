@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-</head><?php 
+<?php 
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
@@ -24,7 +24,7 @@ if($rs === false) {
   $db_records = $rs->num_rows;
 }
 $rs->data_seek(0);
-?>
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -106,7 +106,11 @@ $rs->data_seek(0);
         <td onclick="event.cancelBubble=true;"><form id="zoneform<?php echo $row['zone_id']; ?>" name="remform<?php echo $row['zone_id']; ?>" action="zones.php" method="post"><input type="hidden" name="zone_id" id="zone_id" value="<?php echo $row['zone_id']; ?>" ><center><p><a id="delete<?php echo $row['zone_id']; ?>" class="btn-danger btn">Delete Zone</a></p></center></form></td>
         <script type="text/javascript">
 	$("#delete<?php echo $row['zone_id']; ?>").on('click', function() {
-		$().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>','command': 'delete_zone'});
+		$("#overlay").show();
+	if (window.confirm("Are You Sure You Want To Delete This Zone?")) {
+    	$().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>','command': 'delete_zone'});
+	}
+	$("#overlay").hide();
 });
 $("#zon<?php echo $row['zone_id']; ?>").on('click', function() {
    $().redirect('zone_details.php', {'zone_id': '<?php echo $row['zone_id']; ?>'});
