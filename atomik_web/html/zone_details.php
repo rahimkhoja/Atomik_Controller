@@ -797,7 +797,7 @@ $dzrs->data_seek(0);
 		$("#overlay").show();
 	if (window.confirm("Are you sure?")) {
         document.forms["zonefrm"].command.value = "remove_remote";
-		document.forms["zonefrm"].zone_remote_id.value = "<?php echo $rzrow['remote_channel_id']; ?>";
+		document.forms["zonefrm"].remote_channel_id.value = "<?php echo $rzrow['remote_channel_id']; ?>";
    		document.zonefrm.submit(); }
 	$("#overlay").hide();}); </script>
       </tr><?php } } else { ?>
