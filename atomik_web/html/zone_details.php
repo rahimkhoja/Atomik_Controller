@@ -498,18 +498,18 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 				$page_error = 1;
 				$error_text = "Error Removing MiLight Remote Channels From Zone DB!";
 			}
-			
-			$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && zone_remote_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && zone_remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
-			echo $sql.'<BR>';
-		
-			if($conn->query($sql) === false) {
-				$page_error = 1;
-				$error_text = "Error Deleting Zone Remote From Zone DB!";
-			} else {
-				$page_success = 1;
-				$success_text = "Zone Remote Removed!";
-			}
 		}
+		$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && zone_remote_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && zone_remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
+		echo $sql.'<BR>';
+		
+		if($conn->query($sql) === false) {
+			$page_error = 1;
+			$error_text = "Error Deleting Zone Remote From Zone DB!";
+		} else {
+			$page_success = 1;
+			$success_text = "Zone Remote Removed!";
+		}
+		
 	}
 }
 
