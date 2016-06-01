@@ -470,7 +470,9 @@ if ($command <> "" && $command !="" && $command == "remove_device")
 // Remove Device from Zone (remove_remote)
 if ($command <> "" && $command !="" && $command == "remove_remote") 
 {	
-	"SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_zone_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_number, atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
+	$sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_zone_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_number, atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
+	echo $sql;
+	
 	$rdchrs=$conn->query($sql);
  
 	if($rdchrs === false) {
