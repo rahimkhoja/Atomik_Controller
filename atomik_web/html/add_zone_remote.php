@@ -123,7 +123,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 					// Already Channel Entries. Find The Lowest Possible Number For Channel
 					// Find Gaps
 					echo '<br>Find Gaps<BR>';
-					$sql = "SELECT a AS remote_channel_number, b AS next_id, (b - a) -1 AS missing_inbetween FROM ( SELECT a1.remote_channel_number AS a , MIN(a2.remote_channel_number) 					AS b FROM atomik_remote_channels AS a1 LEFT JOIN atomik_remote_channels AS a2 ON a2.remote_channel_number > a1.remote_channel_number WHERE a1.remote_channel_number <= 100 && a2.remote_channel_remote_id=25 GROUP BY a1.remote_channel_number) AS tab WHERE b > a + 1";
+					$sql = "SELECT a AS remote_channel_number, b AS next_id, (b - a) -1 AS missing_inbetween FROM ( SELECT a1.remote_channel_number AS a , MIN(a2.remote_channel_number) AS b FROM atomik_remote_channels AS a1 LEFT JOIN atomik_remote_channels AS a2 ON a2.remote_channel_number > a1.remote_channel_number WHERE a1.remote_channel_number <= 100 && a2.remote_channel_remote_id=".trim($_remote_id)." GROUP BY a1.remote_channel_number) AS tab WHERE b > a + 1";
 					 
 					$avl_chn_rs=$conn->query($sql);
 					if($avl_chn_rs === false) {
@@ -137,7 +137,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 						
 							// figure out what number to use
 							echo '<br>Insert Channel from Gap Numbers<BR>';
-							$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).",'Atomik Remote Channel ".($avl_chn_row['remote_channel_number']+1)."');";// here
+							$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).",'Atomik Remote Channel ".($avl_chn_row['remote_channel_number']+2)."');";// here
 							 
 							if ($conn->query($sql) === TRUE) {
 								$page_success = 1;
