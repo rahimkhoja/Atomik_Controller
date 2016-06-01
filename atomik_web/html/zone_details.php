@@ -534,21 +534,30 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 				$page_error = 1;
 				$error_text = "Error Deleting Devices From Zone DB!";
 			}  else {
-				$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_type=3 && atomik_remote_channels.remote_channel_zone_id=".$_zone_id." );";
+				
+				$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_zone_id=".trim($_zone_id).";";
  
 				if($conn->query($sql) === false) {
 					$page_error = 1;
-					$error_text = "Error Deleting Atomik Remote Channels From Zone DB!";
-				} else {
-					$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
+					$error_text = "Error Deleting Devices From Zone DB!";
+				}  else {
+				
+					$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remotes WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_type=3 && atomik_remote_channels.remote_channel_zone_id=".$_zone_id." );";
  
 					if($conn->query($sql) === false) {
 						$page_error = 1;
-						$error_text = "Error Removing MiLight Remotes From Zone DB!";
-					}  else {
-		  				$page_success = 1;
-						$success_text = "Zone Deleted!";
-						header('Location: zones.php');		
+						$error_text = "Error Deleting Atomik Remote Channels From Zone DB!";
+					} else {
+						$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
+ 
+						if($conn->query($sql) === false) {
+							$page_error = 1;
+							$error_text = "Error Removing MiLight Remotes From Zone DB!";
+						}  else {
+		  					$page_success = 1;
+							$success_text = "Zone Deleted!";
+							header('Location: zones.php');		
+						}
 					}
 				}
 			}
