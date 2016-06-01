@@ -483,7 +483,8 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 	}
 	
 	
-	$sql="DELETE FROM atomik_remote_channels WHERE EXISTS( SELECT atomik_remote_channels.remote_channel_id FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id)." && atomik_remotes.remote_type=3);";
+	$sql="DELETE FROM atomik_remote_channels WHERE EXISTS(SELECT atomik_remote_channels.remote_channel_id FROM atomik_remote_channels, atomik_remotes WHERE atomik_remotes.remote_id=atomik_remote_channels.remote_channel_remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id)." && atomik_remotes.remote_type=3
+);";
   	if($conn->query($sql) === false) {
 		$page_error = 1;
 		$error_text = "Error Deleting Zone Remote Channels From Zone DB!";
