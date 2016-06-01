@@ -275,7 +275,8 @@ if ($command <> "" && $command !="" && $command == "save_general")
 						$error_text = "Error Inserting General Remote Channels To DB!";
 					}
 				}
-				
+				$page_success = 1;
+						$success_text = "General Remote Details Updated!";
 			} else {
     			$page_error = 1;
 				$error_text = "Error Inserting Remote Details To DB!";

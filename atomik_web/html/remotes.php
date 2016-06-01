@@ -13,21 +13,6 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
-// Check for delete
-
-if ( isset($_POST["item"]) ) {
-	$_item = $_POST["item"];
-
-	$sql="DELETE FROM atomik_remotes WHERE remote_id=".$_item;
- 
-	if($conn->query($sql) === false) {
-		$page_error = 1;
-		$error_text = "Error Deleting Device From DB!";
-	} else {
-  		$page_success = 1;
-		$success_text = "Remote Deleted!";
-	}
-}
 		
 // Atomik Setting SQL
 $sql = "SELECT atomik_remotes.remote_name, atomik_remotes.remote_id, atomik_remote_types.remote_type_name FROM atomik_remotes, atomik_remote_types WHERE atomik_remotes.remote_type = atomik_remote_types.remote_type_id;";  
@@ -104,7 +89,7 @@ $rs->data_seek(0);
 			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>'});
 		});
 		$("#delete<?php echo $row['remote_id']; ?>").on('click', function() {
-			document.remform<?php echo $row['remote_id']; ?>.submit();
+			$().redirect('remote_details.php', {'remote_id': '<?php echo $row['remote_id']; ?>', 'command': 'delete_remote'});
 		});
 </script>
       </tr><?php } } else { ?>
