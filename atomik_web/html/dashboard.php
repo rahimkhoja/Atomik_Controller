@@ -6,6 +6,9 @@
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
 <?php
+
+$atomik_version = "0.8 Alpha";
+
 $page_error = 0;
 $page_success = 0;
 
@@ -288,7 +291,7 @@ function getTimeZone() {
     <thead>
       <tr>
         <td>Atomik Controller Version: </td>
-        <td>0.5a</td>
+        <td><?php echo $atomik_version; ?></td>
       </tr>
     </thead>
     <tbody>
