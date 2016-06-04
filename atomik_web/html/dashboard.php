@@ -26,7 +26,7 @@ if ($itemcount = $conn->query("SELECT zone_id FROM atomik_zones")) {
 }
 
 if ($itemcount = $conn->query("SELECT task_id FROM atomik_tasks")) {
-	$zone_total = $itemcount->num_rows;
+	$task_total = $itemcount->num_rows;
     $itemcount->close();
 }
 
@@ -310,15 +310,15 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Total Remotes: </td>
-        <td><?php echo $device_remotes; ?></td>
+        <td><?php echo $remote_total; ?></td>
       </tr>
        <tr>
         <td>Total Zones: </td>
-        <td><?php echo $device_zones; ?></td>
+        <td><?php echo $zone_total; ?></td>
       </tr>
       <tr>
         <td>Total Scheduled Tasks: </td>
-        <td><?php echo $device_tasks; ?></td>
+        <td><?php echo $task_total; ?></td>
       </tr>
     </tbody>
   </table>
