@@ -1,4 +1,4 @@
-<!doctype html>
+<?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -8,6 +8,27 @@
 <?php
 $page_error = 0;
 $page_success = 0;
+
+
+if ($itemcount = $conn->query("SELECT device_id FROM atomik_devices")) {
+	$device_total = $itemcount->num_rows;
+    $itemcount->close();
+}
+
+if ($itemcount = $conn->query("SELECT remote_id FROM atomik_remotes")) {
+	$remote_total = $itemcount->num_rows;
+    $itemcount->close();
+}
+
+if ($itemcount = $conn->query("SELECT zone_id FROM atomik_zones")) {
+	$zone_total = $itemcount->num_rows;
+    $itemcount->close();
+}
+
+if ($itemcount = $conn->query("SELECT task_id FROM atomik_tasks")) {
+	$zone_total = $itemcount->num_rows;
+    $itemcount->close();
+}
 
 $timezone = 'UTC';
 if (file_exists('/etc/timezone')) {
@@ -143,7 +164,6 @@ function getSSID() {
   }
 }
 
-
 function getCPU() {
 $command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '".'{$1=$1};1'."'";
   exec($command, $result);
@@ -153,7 +173,6 @@ $command = "more /proc/cpuinfo | grep 'model name' | cut -d: -f2 | awk '".'{$1=$
     return "Not Found";
   }
 }
-
 
 function getUptime() {
   $command = "uptime -p | sed 's/up //g' "; //| awk '{\$1=\$1};1'";
@@ -195,7 +214,6 @@ function getTimeZone() {
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
-    
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -288,19 +306,19 @@ function getTimeZone() {
       </tr>
       <tr>
         <td>Total Devices: </td>
-        <td>21</td>
+        <td><?php echo $device_total; ?></td>
       </tr>
       <tr>
         <td>Total Remotes: </td>
-        <td>4 </td>
+        <td><?php echo $device_remotes; ?></td>
       </tr>
        <tr>
         <td>Total Zones: </td>
-        <td>11</td>
+        <td><?php echo $device_zones; ?></td>
       </tr>
       <tr>
         <td>Total Scheduled Tasks: </td>
-        <td>4</td>
+        <td><?php echo $device_tasks; ?></td>
       </tr>
     </tbody>
   </table>
@@ -399,4 +417,6 @@ function getTimeZone() {
       <hr>
     </div>
 </body>
-</html>
+</html><?php 
+$conn->close();
+?>
