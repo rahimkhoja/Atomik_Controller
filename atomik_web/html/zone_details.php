@@ -221,6 +221,36 @@ atomik_device_types.device_type_rgb256=1;";
 	$brs->free();
 }
 
+$sql = "SELECT atomik_remotes.remote_id WHERE atomik_remotes.remote_type = 3;";
+
+$remavrs=$conn->query($sql);
+ 
+if($remavrs === false) {
+	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+	if ( $remavrs->num_rows >= 1 ) {
+		$_remotes_available = 1;
+	} else {
+
+		$sql = "SELECT atomik_remotes.remote_channels WHERE atomik_remotes.remote_channel_zone_id = 0;";
+
+   		$regremavrs=$conn->query($sql);
+ 
+		if($regremavrs === false) {
+			trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+		} else {
+			if ( $regremavrs->num_rows >= 1 ) {
+  				$_remotes_available = 1;
+			} else {
+				$_remotes_available = 0;
+			}
+		}
+	}
+}
+
+$remavrs->free();
+$regremavrs->free();
+
 if ( isset($_POST["zone_name"])) {
 	$_zone_name = $_POST["zone_name"];
 } else {
@@ -398,7 +428,6 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 	} else {
 		$sql = "UPDATE atomik_zones SET zone_status = ".trim($_zone_status).", zone_colormode = ".trim($_zone_colormode).", zone_brightness = ".
 		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update = CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE zone_id=".$_zone_id.";";
-		echo $sql.'<BR>';
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Zone Properties Updated!";
@@ -463,6 +492,11 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 		}		
 	}
 	
+	if ($_remotes_available == 0 )
+	{
+		array_push($erro, "No Devices Available To Add To Zone");	
+	}
+		
 	if (count($erro) > 0) 
 	{
 		$page_error = 1;
@@ -490,7 +524,6 @@ if ($command <> "" && $command !="" && $command == "remove_device")
 if ($command <> "" && $command !="" && $command == "remove_remote") 
 {	
 	$sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_zone_id, atomik_remote_channels.remote_channel_remote_id, atomik_remote_channels.remote_channel_number, atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes, atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=atomik_remotes.remote_id && atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id).";";
-	echo $sql.'<BR>';
 	
 	$rdchrs=$conn->query($sql);
  
@@ -503,7 +536,6 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 	
 		if ($rdchrs_row['remote_type'] == 3) {
 			$sql="DELETE FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_id=".trim($_remote_channel_id)." && atomik_remote_channels.remote_channel_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && atomik_remote_channels.remote_channel_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && atomik_remote_channels.remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
-			echo $sql.'<BR>';
 			
 		  	if($conn->query($sql) === false) {
 				$page_error = 1;
@@ -512,15 +544,14 @@ if ($command <> "" && $command !="" && $command == "remove_remote")
 		} else {
 			
 			$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_id=".trim($_remote_channel_id).";";
-			echo $sql.'<BR>';
+			
 			if($conn->query($sql) === false) {
 				$page_error = 1;
 				$error_text = "Error Removing MiLight Remote Channels From Zone DB!";
 			}
 		}
 		$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($rdchrs_row['remote_channel_remote_id'])." && zone_remote_zone_id=".trim($rdchrs_row['remote_channel_zone_id'])." && zone_remote_channel_number=".trim($rdchrs_row['remote_channel_number']).";";
-		echo $sql.'<BR>';
-		
+				
 		if($conn->query($sql) === false) {
 			$page_error = 1;
 			$error_text = "Error Deleting Zone Remote From Zone DB!";
