@@ -221,7 +221,7 @@ atomik_device_types.device_type_rgb256=1;";
 	$brs->free();
 }
 
-$sql = "SELECT atomik_remotes.remote_id WHERE atomik_remotes.remote_type = 3;";
+$sql = "SELECT atomik_remotes.remote_id From atomik_remotes WHERE atomik_remotes.remote_type = 3;";
 
 $remavrs=$conn->query($sql);
  
@@ -232,7 +232,7 @@ if($remavrs === false) {
 		$_remotes_available = 1;
 	} else {
 
-		$sql = "SELECT atomik_remotes.remote_channels WHERE atomik_remotes.remote_channel_zone_id = 0;";
+		$sql = "SELECT atomik_remotes.remote_channels FROM atomik_remotes WHERE atomik_remotes.remote_channel_zone_id = 0;";
 
    		$regremavrs=$conn->query($sql);
  
