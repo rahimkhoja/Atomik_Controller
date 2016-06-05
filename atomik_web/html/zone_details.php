@@ -59,6 +59,20 @@ function processErrors($ers)
 	return $error_text;
 }
 
+// Timezone
+
+$sql = "SELECT timezone FROM atomik_settings;";
+$rs=$conn->query($sql);
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+$timezone = $row['timezone'];
+$rs->free();
+
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
@@ -318,7 +332,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		
 
 		if ( $_new_zone == 1 ) {
-			$sql = "INSERT INTO atomik_zones (zone_name, zone_description) VALUES ('".$_zone_name."','".$_zone_description."')";
+			$sql = "INSERT INTO atomik_zones (zone_name, zone_description, zone_last_update) VALUES ('".$_zone_name."','".$_zone_description."', CONVERT_TZ(NOW(), '".$timezone."', 'UTC') )";
 			if ($conn->query($sql) === TRUE) {
     			
 				$_new_zone = 0;
@@ -331,7 +345,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$error_text = "Error Inserting Zone Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".trim($_zone_name)."', atomik_zones.zone_description='".trim($_zone_description)."' WHERE atomik_zones.zone_id=".trim($_zone_id).";";
+			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".trim($_zone_name)."', atomik_zones.zone_description='".trim($_zone_description)."', zone_last_update=CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE atomik_zones.zone_id=".trim($_zone_id).";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Zone Details Updated!";
@@ -383,7 +397,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		$sql = "UPDATE atomik_zones SET zone_status = ".trim($_zone_status).", zone_colormode = ".trim($_zone_colormode).", zone_brightness = ".
-		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature)." WHERE zone_id=".$_zone_id.";";
+		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update=CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE zone_id=".$_zone_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Zone Properties Updated!";
