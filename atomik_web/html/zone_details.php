@@ -484,17 +484,17 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 	$erro = array();
 	if ($_new_zone == 1 )
 	{
-		array_push($erro, "Please Save General Zone Details Before Adding A Device");	
+		array_push($erro, "Please Save General Zone Details Before Adding A Remote");	
 	}  else {
 		if (!($_zone_name == $row['zone_name'] && $_zone_description == $row['zone_description']) )
 		{
-			array_push($erro, "Please Save Changes to Zone Details Before Adding A Device");	
+			array_push($erro, "Please Save Changes to Zone Details Before Adding A Remote");	
 		}		
 	}
 	
 	if ($_remotes_available == 0 )
 	{
-		array_push($erro, "No Devices Available To Add To Zone");	
+		array_push($erro, "No Remotes Available To Add To Zone");	
 	}
 		
 	if (count($erro) > 0) 
