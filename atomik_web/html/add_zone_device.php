@@ -14,6 +14,20 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
+// Timezone
+
+$sql = "SELECT timezone FROM atomik_settings;";
+$rs=$conn->query($sql);
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+$timezone = $row['timezone'];
+$rs->free();
+
 // Set Command
 $command = "";
 $command = $_POST["command"];
@@ -40,7 +54,7 @@ if ( isset($_POST["update_zone"]) ) {
 if ($command <> "" && $command !="" && $command == "add_device") 
 {	
 	$erro = array();
-	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($_zone_device).",now() );";
+	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($_zone_device).",CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
 	
 	if ($conn->query($sql) === TRUE) {
     	if ($_update_zone > 0 ) {
@@ -167,7 +181,6 @@ $rs->data_seek(0);
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>

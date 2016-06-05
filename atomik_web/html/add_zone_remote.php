@@ -14,6 +14,20 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
+// Timezone
+
+$sql = "SELECT timezone FROM atomik_settings;";
+$rs=$conn->query($sql);
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+$timezone = $row['timezone'];
+$rs->free();
+
 // Set Command
 $command = "";
 $command = $_POST["command"];
@@ -64,7 +78,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 				if ($conn->query($sql) === TRUE) {
     				$page_success = 1;
 					$success_text = "Remote Channel Updated Updated!";
-					$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".trim($_remote_channel).", now() );";
+					$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".trim($_remote_channel).", CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
 					
 					if ($conn->query($sql) === TRUE) {
 						$page_success = 1;
@@ -104,7 +118,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 					if ($conn->query($sql) === TRUE) {
 						$page_success = 1;
 						$success_text = "Remote Channel Updated Updated!";
-						$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",0 , now() );";
+						$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",0 , CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
 						
 						if ($conn->query($sql) === TRUE) {
 							$page_success = 1;
@@ -142,7 +156,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 								$page_success = 1;
 								$success_text = "Atomik Zone Remote Channel Added To Zone DB!";
 								
-								$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).", now() );";
+								$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).", CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
 								
 								if ($conn->query($sql) === TRUE) {
 									$page_success = 1;
@@ -166,7 +180,7 @@ if ($command <> "" && $command !="" && $command == "add_remote")
 								$page_success = 1;
 								$success_text = "Atomik Zone Remote Channel Added To Zone DB!";
 								
-								$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".$_channels_used.", now() );";
+								$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".$_channels_used.", CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
 								
 								if ($conn->query($sql) === TRUE) {
 									$page_success = 1;

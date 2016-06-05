@@ -12,7 +12,7 @@ $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
-		
+
 // Atomik Setting SQL
 $sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id, atomik_zones.zone_status FROM atomik_zones;";  
 
@@ -24,6 +24,8 @@ if($rs === false) {
   $db_records = $rs->num_rows;
 }
 $rs->data_seek(0);
+
+
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 

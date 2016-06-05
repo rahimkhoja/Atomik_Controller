@@ -397,7 +397,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		$sql = "UPDATE atomik_zones SET zone_status = ".trim($_zone_status).", zone_colormode = ".trim($_zone_colormode).", zone_brightness = ".
-		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update = CONVERT_TZ(NOW(), \"".$timezone."\", \"UTC\") WHERE zone_id=".$_zone_id.";";
+		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update = CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE zone_id=".$_zone_id.";";
 		echo $sql.'<BR>';
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
