@@ -345,7 +345,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 				$error_text = "Error Inserting Zone Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".trim($_zone_name)."', atomik_zones.zone_description='".trim($_zone_description)."', zone_last_update=CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE atomik_zones.zone_id=".trim($_zone_id).";";
+			$sql = "UPDATE atomik_zones SET atomik_zones.zone_name='".trim($_zone_name)."', atomik_zones.zone_description='".trim($_zone_description)."', zone_last_update = CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE atomik_zones.zone_id=".trim($_zone_id).";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Zone Details Updated!";
@@ -397,7 +397,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		$sql = "UPDATE atomik_zones SET zone_status = ".trim($_zone_status).", zone_colormode = ".trim($_zone_colormode).", zone_brightness = ".
-		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update=CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE zone_id=".$_zone_id.";";
+		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update = CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE zone_id=".$_zone_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Zone Properties Updated!";
