@@ -437,10 +437,9 @@ if($zlrs === false) {
 </select></p></td>
     </tr> 
   </thead>
-    <tbody><tr>
-        <td>
-          <p>Task Status: </p>
-        </td>
+    <tbody>
+    <tr>
+     <td><p>Task Status: </p></td>
         <td><p><select id="task_status" name="task_status" class="form-control">
   <option value="1" <?php if ($_task_status == 1) { echo ' selected'; }?>>ON</option>
   <option value="0" <?php if ($_task_status == 0) { echo ' selected'; }?>>OFF</option>
