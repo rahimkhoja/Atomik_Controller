@@ -514,7 +514,7 @@ atomik_device_types.device_type_rgb256=1;";
         <td>
           <p>Month: </p>
         </td>
-        <td><p><select class="form-control" id="task_month" name="task_month" multiple>
+        <td><p><select class="form-control" id="task_month[]" name="task_month[]" multiple>
   <option selected value="*">Every Month</option>
   <option value="1">January</option>
   <option value="2">February</option>
@@ -534,7 +534,7 @@ atomik_device_types.device_type_rgb256=1;";
     <tbody>
       <tr>
         <td><p>Weekday: </p></td>
-        <td><p><select class="form-control" id="task_weekday" name="task_weekday" multiple>
+        <td><p><select class="form-control" id="task_weekday[]" name="task_weekday[]" multiple>
   <option selected value="*">Every Day</option>
   <option value="0">Sunday</option>
   <option value="1">Monday</option>
@@ -547,7 +547,7 @@ atomik_device_types.device_type_rgb256=1;";
       </tr>
       <tr>
         <td><p>Minute: </p></td>
-        <td><p><select class="form-control" id="task_minute" name="task_minute" multiple>
+        <td><p><select class="form-control" id="task_minute[]" name="task_minute[]" multiple>
   <option selected value="0">0</option>
   <option value="1">1</option>
   <option value="2">2</option>
@@ -617,7 +617,7 @@ atomik_device_types.device_type_rgb256=1;";
   <thead>
     <tr>
         <td><p>Day: </p></td>
-        <td><p><select class="form-control" id="task_day" name="task_day" multiple>
+        <td><p><select class="form-control" id="task_day[]" name="task_day[]" multiple>
   <option selected value="*">Every Day</option>
   <option value="1">1</option>
   <option value="2">2</option>
@@ -656,32 +656,82 @@ atomik_device_types.device_type_rgb256=1;";
     <tbody>
     <tr>
         <td><p>Hour: </p></td>
-        <td><p><select class="form-control" id="task_hour" name="task_hour" multiple>
-  <option value="*">Every Hour</option>
-  <option value="0">0</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option selected value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  <option value="11">11</option>
-  <option value="12">12</option>
-  <option value="13">13</option>
-  <option value="14">14</option>
-  <option value="15">15</option>
-  <option value="16">16</option>
-  <option value="17">17</option>
-  <option value="18">18</option>
-  <option value="19">19</option>
-  <option value="20">20</option>
-  <option value="21">21</option>
-  <option value="22">22</option>
-  <option value="23">23</option>
+        <td><p><select class="form-control" id="task_hour[]" name="task_hour[]" multiple>
+  <option value="*" <?php if (in_array('*', $_task_hour, true)) {
+    echo "selected";
+}; ?>>Every Hour</option>
+  <option value="0" <?php if (in_array('0', $_task_hour, true)) {
+    echo "selected";
+}; ?>>0</option>
+  <option value="1" <?php if (in_array('1', $_task_hour, true)) {
+    echo "selected";
+}; ?>>1</option>
+  <option value="2" <?php if (in_array('2', $_task_hour, true)) {
+    echo "selected";
+}; ?>>2</option>
+  <option value="3" <?php if (in_array('3', $_task_hour, true)) {
+    echo "selected";
+}; ?>>3</option>
+  <option value="4" <?php if (in_array('4', $_task_hour, true)) {
+    echo "selected";
+}; ?>>4</option>
+  <option value="5" <?php if (in_array('5', $_task_hour, true)) {
+    echo "selected";
+}; ?>>5</option>
+  <option value="6" <?php if (in_array('6', $_task_hour, true)) {
+    echo "selected";
+}; ?>>6</option>
+  <option value="7" <?php if (in_array('7', $_task_hour, true)) {
+    echo "selected";
+}; ?>>7</option>
+  <option value="8" <?php if (in_array('8', $_task_hour, true)) {
+    echo "selected";
+}; ?>>8</option>
+  <option value="9" <?php if (in_array('9', $_task_hour, true)) {
+    echo "selected";
+}; ?>>9</option>
+  <option value="10" <?php if (in_array('10', $_task_hour, true)) {
+    echo "selected";
+}; ?>>10</option>
+  <option value="11" <?php if (in_array('11', $_task_hour, true)) {
+    echo "selected";
+}; ?>>11</option>
+  <option value="12" <?php if (in_array('12', $_task_hour, true)) {
+    echo "selected";
+}; ?>>12</option>
+  <option value="13" <?php if (in_array('13', $_task_hour, true)) {
+    echo "selected";
+}; ?>>13</option>
+  <option value="14" <?php if (in_array('14', $_task_hour, true)) {
+    echo "selected";
+}; ?>>14</option>
+  <option value="15" <?php if (in_array('15', $_task_hour, true)) {
+    echo "selected";
+}; ?>>15</option>
+  <option value="16" <?php if (in_array('16', $_task_hour, true)) {
+    echo "selected";
+}; ?>>16</option>
+  <option value="17" <?php if (in_array('17', $_task_hour, true)) {
+    echo "selected";
+}; ?>>17</option>
+  <option value="18" <?php if (in_array('18', $_task_hour, true)) {
+    echo "selected";
+}; ?>>18</option>
+  <option value="19" <?php if (in_array('19', $_task_hour, true)) {
+    echo "selected";
+}; ?>>19</option>
+  <option value="20" <?php if (in_array('20', $_task_hour, true)) {
+    echo "selected";
+}; ?>>20</option>
+  <option value="21" <?php if (in_array('21', $_task_hour, true)) {
+    echo "selected";
+}; ?>>21</option>
+  <option value="22" <?php if (in_array('22', $_task_hour, true)) {
+    echo "selected";
+}; ?>>22</option>
+  <option value="23" <?php if (in_array('23', $_task_hour, true)) {
+    echo "selected";
+}; ?>>23</option>
 </select></p></td>
       </tr>
       </tbody>
@@ -697,7 +747,7 @@ atomik_device_types.device_type_rgb256=1;";
 <div class="col-xs-2"></div>
   <div class="col-xs-2 text-center"></div>
   <div class="col-xs-2 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save Task Schedule</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="saveschedulebtn" class="btn-success btn">Save Task Schedule</a></p></div>
   
   <div class="col-xs-2"></div>
   </div></form>
