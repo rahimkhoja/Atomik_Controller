@@ -198,8 +198,6 @@ if ( isset($_POST["task_hour"])) {
 	}
 }
 
-echo serialize($_task_hour);
-
 if ( isset($_POST["task_day"])) {
 	$_task_day = $_POST["task_day"];
 } else {
@@ -517,19 +515,45 @@ atomik_device_types.device_type_rgb256=1;";
           <p>Month: </p>
         </td>
         <td><p><select class="form-control" id="task_month[]" name="task_month[]" multiple>
-  <option selected value="*">Every Month</option>
-  <option value="1">January</option>
-  <option value="2">February</option>
-  <option value="3">March</option>
-  <option value="4">April</option>
-  <option value="5">May</option>
-  <option value="6">June</option>
-  <option value="7">July</option>
-  <option value="8">August</option>
-  <option value="9">September</option>
-  <option value="10">October</option>
-  <option value="11">November</option>
-  <option value="12">December</option>
+  <option value="*" <?php if (in_array('*', $_task_month, true)) {
+    echo "selected";
+}; ?>>Every Month</option>
+  <option value="1" <?php if (in_array('1', $_task_month, true)) {
+    echo "selected";
+}; ?>>January</option>
+  <option value="2" <?php if (in_array('2', $_task_month, true)) {
+    echo "selected";
+}; ?>>February</option>
+  <option value="3" <?php if (in_array('3', $_task_month, true)) {
+    echo "selected";
+}; ?>>March</option>
+  <option value="4" <?php if (in_array('4', $_task_month, true)) {
+    echo "selected";
+}; ?>>April</option>
+  <option value="5" <?php if (in_array('5', $_task_month, true)) {
+    echo "selected";
+}; ?>>May</option>
+  <option value="6" <?php if (in_array('6', $_task_month, true)) {
+    echo "selected";
+}; ?>>June</option>
+  <option value="7" <?php if (in_array('7', $_task_month, true)) {
+    echo "selected";
+}; ?>>July</option>
+  <option value="8" <?php if (in_array('8', $_task_month, true)) {
+    echo "selected";
+}; ?>>August</option>
+  <option value="9" <?php if (in_array('9', $_task_month, true)) {
+    echo "selected";
+}; ?>>September</option>
+  <option value="10" <?php if (in_array('10', $_task_month, true)) {
+    echo "selected";
+}; ?>>October</option>
+  <option value="11" <?php if (in_array('11', $_task_month, true)) {
+    echo "selected";
+}; ?>>November</option>
+  <option value="12" <?php if (in_array('12', $_task_month, true)) {
+    echo "selected";
+}; ?>>December</option>
 </select></p></td>
     </tr>
   </thead>
@@ -537,79 +561,215 @@ atomik_device_types.device_type_rgb256=1;";
       <tr>
         <td><p>Weekday: </p></td>
         <td><p><select class="form-control" id="task_weekday[]" name="task_weekday[]" multiple>
-  <option selected value="*">Every Day</option>
-  <option value="0">Sunday</option>
-  <option value="1">Monday</option>
-  <option value="2">Tuesday</option>
-  <option value="3">Wednesday</option>
-  <option value="4">Thursday</option>
-  <option value="5">Friday</option>
-  <option value="6">Saturday</option>
+  <option value="*" <?php if (in_array('*', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Every Weekday</option>
+  <option value="0" <?php if (in_array('0', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Sunday</option>
+  <option value="1" <?php if (in_array('1', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Monday</option>
+  <option value="2" <?php if (in_array('2', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Tuesday</option>
+  <option value="3" <?php if (in_array('3', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Wednesday</option>
+  <option value="4" <?php if (in_array('4', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Thursday</option>
+  <option value="5" <?php if (in_array('5', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Friday</option>
+  <option value="6" <?php if (in_array('6', $_task_weekday, true)) {
+    echo "selected";
+}; ?>>Saturday</option>
 </select></p></td>
       </tr>
       <tr>
         <td><p>Minute: </p></td>
         <td><p><select class="form-control" id="task_minute[]" name="task_minute[]" multiple>
-  <option selected value="0">0</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  <option value="11">11</option>
-  <option value="12">12</option>
-  <option value="13">13</option>
-  <option value="14">14</option>
-  <option value="15">15</option>
-  <option value="16">16</option>
-  <option value="17">17</option>
-  <option value="18">18</option>
-  <option value="19">19</option>
-  <option value="20">20</option>
-  <option value="21">21</option>
-  <option value="22">22</option>
-  <option value="23">23</option>
-  <option value="24">24</option>
-  <option value="25">25</option>
-  <option value="26">26</option>
-  <option value="27">27</option>
-  <option value="28">28</option>
-  <option value="29">29</option>
-  <option value="30">30</option>
-  <option value="31">31</option>
-  <option value="32">32</option>
-  <option value="33">33</option>
-  <option value="34">34</option>
-  <option value="35">35</option>
-  <option value="36">36</option>
-  <option value="37">37</option>
-  <option value="38">38</option>
-  <option value="39">39</option>
-  <option value="40">40</option>
-  <option value="41">41</option>
-  <option value="42">42</option>
-  <option value="43">43</option>
-  <option value="44">44</option>
-  <option value="45">45</option>
-  <option value="46">46</option>
-  <option value="47">47</option>
-  <option value="48">48</option>
-  <option value="49">49</option>
-  <option value="50">50</option>
-  <option value="51">51</option>
-  <option value="52">52</option>
-  <option value="53">53</option>
-  <option value="54">54</option>
-  <option value="55">55</option>
-  <option value="56">56</option>
-  <option value="57">57</option>
-  <option value="58">58</option>
-  <option value="59">59</option>
+  <option value="0" <?php if ( in_array('0', $_task_minute, true) ){ 
+echo 'selected'; 
+ }; ?>>0</option>
+  <option value="1" <?php if ( in_array('1', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>1</option>
+  <option value="2" <?php if ( in_array('2', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>2</option>
+  <option value="3" <?php if ( in_array('3', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>3</option>
+  <option value="4" <?php if ( in_array('4', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>4</option>
+  <option value="5" <?php if ( in_array('5', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>5</option>
+  <option value="6" <?php if ( in_array('6', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>6</option>
+  <option value="7" <?php if ( in_array('7', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>7</option>
+  <option value="8" <?php if ( in_array('8', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>8</option>
+  <option value="9" <?php if ( in_array('9', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>8</option>
+  <option value="10" <?php if ( in_array('10', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>10</option>
+  <option value="11" <?php if ( in_array('11', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>11</option>
+  <option value="12" <?php if ( in_array('12', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>12</option>
+  <option value="13" <?php if ( in_array('13', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>13</option>
+  <option value="14" <?php if ( in_array('14', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>14</option>
+  <option value="15" <?php if ( in_array('15', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>15</option>
+  <option value="16" <?php if ( in_array('16', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>16</option>
+  <option value="17" <?php if ( in_array('17', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>17</option>
+  <option value="18" <?php if ( in_array('18', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>18</option>
+  <option value="19" <?php if ( in_array('19', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>19</option>
+  <option value="20" <?php if ( in_array('20', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>20</option>
+  <option value="21" <?php if ( in_array('21', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>21</option>
+  <option value="22" <?php if ( in_array('22', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>22</option>
+  <option value="23" <?php if ( in_array('23', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>23</option>
+  <option value="24" <?php if ( in_array('24', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>24</option>
+  <option value="25" <?php if ( in_array('25', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>25</option>
+  <option value="26" <?php if ( in_array('26', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>26</option>
+  <option value="27" <?php if ( in_array('27', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>27</option>
+  <option value="28" <?php if ( in_array('28', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>28</option>
+  <option value="29" <?php if ( in_array('29', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>29</option>
+  <option value="30" <?php if ( in_array('30', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>30</option>
+  <option value="31" <?php if ( in_array('31', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>31</option>
+  <option value="32" <?php if ( in_array('32', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>32</option>
+  <option value="33" <?php if ( in_array('33', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>33</option>
+  <option value="34" <?php if ( in_array('34', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>34</option>
+  <option value="35" <?php if ( in_array('35', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>35</option>
+  <option value="36" <?php if ( in_array('36', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>36</option>
+  <option value="37" <?php if ( in_array('37', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>37</option>
+  <option value="38" <?php if ( in_array('38', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>38</option>
+  <option value="39" <?php if ( in_array('39', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>39</option>
+  <option value="40" <?php if ( in_array('40', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>40</option>
+  <option value="41" <?php if ( in_array('41', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>41</option>
+  <option value="42" <?php if ( in_array('42', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>42</option>
+  <option value="43" <?php if ( in_array('43', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>43</option>
+  <option value="44" <?php if ( in_array('44', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>44</option>
+  <option value="45" <?php if ( in_array('45', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>45</option>
+  <option value="46" <?php if ( in_array('46', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>46</option>
+  <option value="47" <?php if ( in_array('47', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>47</option>
+  <option value="48" <?php if ( in_array('48', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>48</option>
+  <option value="49" <?php if ( in_array('49', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>49</option>
+  <option value="50" <?php if ( in_array('50', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>50</option>
+  <option value="51" <?php if ( in_array('51', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>51</option>
+  <option value="52" <?php if ( in_array('52', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>52</option>
+  <option value="53" <?php if ( in_array('53', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>53</option>
+  <option value="54" <?php if ( in_array('54', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>54</option>
+  <option value="55" <?php if ( in_array('55', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>55</option>
+  <option value="56" <?php if ( in_array('56', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>56</option>
+  <option value="57" <?php if ( in_array('57', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>57</option>
+  <option value="58" <?php if ( in_array('58', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>58</option>
+  <option value="59" <?php if ( in_array('59', $_task_minute, true) ) { 
+echo 'selected'; 
+ }; ?>>59</option>
 </select></p></td>
       </tr>
       </tbody>
@@ -620,38 +780,105 @@ atomik_device_types.device_type_rgb256=1;";
     <tr>
         <td><p>Day: </p></td>
         <td><p><select class="form-control" id="task_day[]" name="task_day[]" multiple>
-  <option selected value="*">Every Day</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  <option value="11">11</option>
-  <option value="12">12</option>
-  <option value="13">13</option>
-  <option value="14">14</option>
-  <option value="15">15</option>
-  <option value="16">16</option>
-  <option value="17">17</option>
-  <option value="18">18</option>
-  <option value="19">19</option>
-  <option value="20">20</option>
-  <option value="21">21</option>
-  <option value="22">22</option>
-  <option value="23">23</option>
-  <option value="24">24</option>
-  <option value="25">25</option>
-  <option value="26">26</option>
-  <option value="27">27</option>
-  <option value="28">28</option>
-  <option value="29">29</option>
-  <option value="30">30</option>
-  <option value="31">31</option>
+    <option value="*" <?php if ( in_array('*', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>Everyday</option>
+  <option value="0" <?php if ( in_array('0', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>0</option>
+  <option value="1" <?php if ( in_array('1', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>1</option>
+  <option value="2" <?php if ( in_array('2', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>2</option>
+  <option value="3" <?php if ( in_array('3', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>3</option>
+  <option value="4" <?php if ( in_array('4', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>4</option>
+  <option value="5" <?php if ( in_array('5', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>5</option>
+  <option value="6" <?php if ( in_array('6', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>6</option>
+  <option value="7" <?php if ( in_array('7', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>7</option>
+  <option value="8" <?php if ( in_array('8', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>8</option>
+  <option value="9" <?php if ( in_array('9', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>8</option>
+  <option value="10" <?php if ( in_array('10', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>10</option>
+  <option value="11" <?php if ( in_array('11', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>11</option>
+  <option value="12" <?php if ( in_array('12', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>12</option>
+  <option value="13" <?php if ( in_array('13', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>13</option>
+  <option value="14" <?php if ( in_array('14', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>14</option>
+  <option value="15" <?php if ( in_array('15', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>15</option>
+  <option value="16" <?php if ( in_array('16', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>16</option>
+  <option value="17" <?php if ( in_array('17', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>17</option>
+  <option value="18" <?php if ( in_array('18', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>18</option>
+  <option value="19" <?php if ( in_array('19', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>19</option>
+  <option value="20" <?php if ( in_array('20', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>20</option>
+  <option value="21" <?php if ( in_array('21', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>21</option>
+  <option value="22" <?php if ( in_array('22', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>22</option>
+  <option value="23" <?php if ( in_array('23', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>23</option>
+  <option value="24" <?php if ( in_array('24', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>24</option>
+  <option value="25" <?php if ( in_array('25', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>25</option>
+  <option value="26" <?php if ( in_array('26', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>26</option>
+  <option value="27" <?php if ( in_array('27', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>27</option>
+  <option value="28" <?php if ( in_array('28', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>28</option>
+  <option value="29" <?php if ( in_array('29', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>29</option>
+  <option value="30" <?php if ( in_array('30', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>30</option>
+  <option value="31" <?php if ( in_array('31', $_task_day, true) ) { 
+echo 'selected'; 
+ }; ?>>31</option>
 </select></p></td>
       </tr>  
   </thead>
