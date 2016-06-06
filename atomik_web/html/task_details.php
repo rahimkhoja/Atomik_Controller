@@ -194,7 +194,7 @@ if ( isset($_POST["task_hour"])) {
 	if ($_new_task == 0 ) {
 		$_task_hour = $row['task_cron_hour'];
 	} else {
-		$_task_hour = "";
+		$_task_hour = array();;
 	}
 }
 
@@ -204,7 +204,7 @@ if ( isset($_POST["task_day"])) {
 	if ($_new_task == 0 ) {
 		$_task_day = $row['task_cron_day'];
 	} else {
-		$_task_day = "";
+		$_task_day = array();"";
 	}
 }
 
@@ -214,7 +214,7 @@ if ( isset($_POST["task_weekday"])) {
 	if ($_new_task == 0 ) {
 		$_task_weekday = $row['task_cron_weekday'];
 	} else {
-		$_task_weekday = "";
+		$_task_weekday = array();;
 	}
 }
 
@@ -224,7 +224,7 @@ if ( isset($_POST["task_minute"])) {
 	if ($_new_task == 0 ) {
 		$_task_minute = $row['task_cron_minute'];
 	} else {
-		$_task_minute = "";
+		$_task_minute = array();;
 	}
 }
 
@@ -234,7 +234,7 @@ if ( isset($_POST["task_month"])) {
 	if ($_new_task == 0 ) {
 		$_task_month = $row['task_cron_month'];
 	} else {
-		$_task_month = "";
+		$_task_month = array();;
 	}
 }
 
