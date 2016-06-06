@@ -8,6 +8,70 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+function Check0to255( $input )
+{
+	if (preg_match("/^[0-9]+$/", $input)) {
+		if (  ( $input >= 0 ) && ( $input <= 255 ) ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function Check0to100( $input )
+{
+	if (preg_match("/^[0-9]+$/", trim($input))) {
+		if ( ( $input >= 0 ) && ( $input <= 100 ) ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function Check2700to6500( $input )
+{
+	if (preg_match("/^[0-9]+$/", $input)) {
+		if ( ( $input >= 2700 ) && ( $input <= 6500 ) ) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function processErrors($ers)
+{
+	$error_text = "";
+	$i = 0;
+	$prefix = '';
+	$len = count($ers);
+	foreach ($ers as $er)
+	{
+    	$error_text .= $prefix . $er;
+    	$prefix = ', ';
+		if ($i == $len - 2 && $len != 2) {
+       		$prefix = ', and ';
+    	} else if ($i == $len - 2 && $len == 2) {
+			$prefix = ' and ';
+		}
+		$i++;
+	}
+	$error_text .= '.';
+	return $error_text;
+}
+
+// Timezone
+
+$sql = "SELECT timezone FROM atomik_settings;";
+$rs=$conn->query($sql);
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+$timezone = $row['timezone'];
+$rs->free();
 
 // Set Default Error & Success Settings
 $page_error = 0;
@@ -33,7 +97,7 @@ if ( isset($_POST["task_id"]) ) {
 	$_task_id = "";
 }
 
-if ( $_new_device == 0 ) {
+if ( $_new_task == 0 ) {
 // Atomik Setting SQL
 	$sql = "SELECT atomik_tasks.task_id, atomik_tasks.task_name, atomik_tasks.task_description, atomik_tasks.task_zone_id, atomik_tasks.task_status, atomik_tasks.task_color_mode, atomik_tasks.task_brightness, atomik_tasks.task_rgb256, atomik_tasks.task_white_temprature, atomik_tasks.task_cron_minute, atomik_tasks.task_cron_hour, atomik_tasks.task_cron_day, atomik_tasks.task_cron_month, atomik_tasks.task_cron_weekday FROM atomik_tasks WHERE atomik_tasks.task_id = ".$_task_id.";";  
 
@@ -48,6 +112,113 @@ if($rs === false) {
 $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 
+}
+
+if ( $_new_task == 0 ) {
+// Atomik Setting SQL
+	$sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_description, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id = ".$_task_zone_id.";";  
+
+	$rs=$conn->query($sql);
+ 
+	if($rs === false) {
+ 		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} 
+
+	$rs->data_seek(0);
+	$row = $rs->fetch_assoc();
+
+	$sql = "SELECT 
+atomik_device_types.device_type_rgb256, 
+atomik_device_types.device_type_warm_white, 
+atomik_device_types.device_type_cold_white, 
+atomik_device_types.device_type_brightness 
+FROM 
+atomik_zone_devices, atomik_device_types, atomik_devices 
+WHERE 
+atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." &&
+atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
+atomik_devices.device_type=atomik_device_types.device_type_id && 
+atomik_device_types.device_type_warm_white=1;";  
+
+	$wwrs=$conn->query($sql);
+ 
+	if($wwrs === false) {
+	  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+		if ( $wwrs->num_rows >= 1 ) {
+	  		$_zone_type_warm_white = 1;
+		} else {
+			$_zone_type_warm_white = 0;
+		}
+	}
+	$wwrs->free();
+	
+	$sql = "SELECT 
+atomik_device_types.device_type_rgb256, 
+atomik_device_types.device_type_warm_white, 
+atomik_device_types.device_type_cold_white, 
+atomik_device_types.device_type_brightness 
+FROM 
+atomik_zone_devices, atomik_device_types, atomik_devices 
+WHERE 
+atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." &&
+atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
+atomik_devices.device_type=atomik_device_types.device_type_id && 
+atomik_device_types.device_type_cold_white=1;";  
+
+	$cwrs=$conn->query($sql);
+ 
+	if($cwrs === false) {
+  		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+		if ( $cwrs->num_rows >= 1 ) {
+  			$_zone_type_cold_white = 1;
+		} else {
+			$_zone_type_cold_white = 0;
+		}
+	}
+	$cwrs->free();
+		
+	$sql = "SELECT atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_device_types.device_type_brightness FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_rgb256=1;";  
+
+	$rgbrs=$conn->query($sql);
+ 
+	if($rgbrs === false) {
+	  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+		if ( $rgbrs->num_rows >= 1 ) {
+ 			$_zone_type_rgb256 = 1;
+		} else {
+			$_zone_type_rgb256 = 0;
+		}
+	}
+	$rgbrs->free();
+
+	$sql = "SELECT 
+atomik_device_types.device_type_rgb256, 
+atomik_device_types.device_type_warm_white, 
+atomik_device_types.device_type_cold_white, 
+atomik_device_types.device_type_brightness 
+FROM 
+atomik_zone_devices, atomik_device_types, atomik_devices 
+WHERE 
+atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." &&
+atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
+atomik_devices.device_type=atomik_device_types.device_type_id && 
+atomik_device_types.device_type_rgb256=1;";  
+
+	$brs=$conn->query($sql);
+ 
+	if($brs === false) {
+  		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+		if ( $brs->num_rows >= 1 ) {
+  			$_zone_type_brightness = 1;
+		} else {
+			$_zone_type_brightness = 0;
+		}
+	}
+	$brs->free();
 }
 
 if ( isset($_POST["task_name"])) {
@@ -224,14 +395,13 @@ if ( isset($_POST["task_month"])) {
         <td>
           <p>Task Name: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="task_name" name="task_name" value="Turn OFF Porch Lights - Morning"></p></td>
+        <td><p><input type="text" class="form-control" id="task_name" name="task_name" value="<?php $_task_name; ?>"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Task Description: </p></td>
-        <td><p><textarea class="form-control" rows="4" cols="1" id="task_description" name="task_description" >Turn off porch lights in the morning at 8 am everyday.
-</textarea></p></td>
+        <td><p><textarea class="form-control" rows="4" cols="1" id="task_description" name="task_description" ><?php $_task_description; ?></textarea></p></td>
       </tr>
       </tbody>
   </table>
@@ -575,28 +745,25 @@ if ( isset($_POST["task_month"])) {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
 });
 $("#savegeneralbtn").on('click', function() {
-   document.forms["zonefrm"].command.value = "save_general";
-   document.zonefrm.submit();
+   document.forms["taskfrm"].command.value = "save_general";
+   document.taskfrm.submit();
 });
 $("#savepropertiesbtn").on('click', function() {
-   document.forms["zonefrm"].command.value = "save_properties";
-   document.zonefrm.submit();
+   document.forms["taskfrm"].command.value = "save_properties";
+   document.taskfrm.submit();
 });
-$("#delzonebtn").on('click', function() {
+
+$("#saveschedulebtn").on('click', function() {
+   document.forms["taskfrm"].command.value = "save_schedule";
+   document.taskfrm.submit();
+});
+$("#deltaskbtn").on('click', function() {
 	$("#overlay").show();
 	if (window.confirm("Are you sure?")) {
-        document.forms["zonefrm"].command.value = "delete_zone";
-   		document.zonefrm.submit();
+        document.forms["taskfrm"].command.value = "delete_task";
+   		document.taskfrm.submit();
 	}
 	$("#overlay").hide();
-});
-$("#adddevicebtn").on('click', function() {
-   document.forms["zonefrm"].command.value = "add_device";
-   document.zonefrm.submit();
-});
-$("#addremotebtn").on('click', function() {
-   document.forms["zonefrm"].command.value = "add_remote";
-   document.zonefrm.submit();
 });
 </script></body><?php
 $rs->free();
