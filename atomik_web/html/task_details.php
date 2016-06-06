@@ -437,7 +437,7 @@ if($zlrs === false) {
 </select></p></td>
     </tr> 
   </thead>
-    <tbody> <tr>
+    <tbody><tr>
         <td>
           <p>Task Status: </p>
         </td>
