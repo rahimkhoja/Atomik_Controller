@@ -100,19 +100,17 @@ if ( isset($_POST["task_id"]) ) {
 if ( $_new_task == 0 ) {
 // Atomik Setting SQL
 	$sql = "SELECT atomik_tasks.task_id, atomik_tasks.task_name, atomik_tasks.task_description, atomik_tasks.task_zone_id, atomik_tasks.task_status, atomik_tasks.task_color_mode, atomik_tasks.task_brightness, atomik_tasks.task_rgb256, atomik_tasks.task_white_temprature, atomik_tasks.task_cron_minute, atomik_tasks.task_cron_hour, atomik_tasks.task_cron_day, atomik_tasks.task_cron_month, atomik_tasks.task_cron_weekday FROM atomik_tasks WHERE atomik_tasks.task_id = ".$_task_id.";";  
-
-$rs=$conn->query($sql);
+	echo $sql;
+	$rs=$conn->query($sql);
  
-if($rs === false) {
-  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-} else {
-  $db_records = $rs->num_rows;
-}
+	if($rs === false) {
+	  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+	  $db_records = $rs->num_rows;
+	}
 
-
-$rs->data_seek(0);
-$row = $rs->fetch_assoc();
-
+	$rs->data_seek(0);
+	$row = $rs->fetch_assoc();
 }
 
 // Post Variable 
@@ -154,7 +152,7 @@ if ( isset($_POST["task_colormode"])) {
 	$_task_colormode = $_POST["task_colormode"];
 } else {
 	if ($_new_task == 0 ) {
-		$_task_colormode = $row['task_colormode'];
+		$_task_colormode = $row['task_color_mode'];
 	} else {
 		$_task_colormode = 1;
 	}
