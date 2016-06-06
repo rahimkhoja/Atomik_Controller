@@ -7,7 +7,174 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-</head><div id="overlay"></div>
+<?php 
+
+// Set Default Error & Success Settings
+$page_error = 0;
+$page_success = 0;
+$success_text = "";
+$error = "";
+
+// Set Command
+$command = "";
+$command = $_POST["command"];
+
+// Set Post Variables
+
+if ( isset($_POST["new_task"]) ) {
+	$_new_task = $_POST["new_task"];
+} else {
+	$_new_task = "0";
+}
+
+if ( isset($_POST["task_id"]) ) {
+	$_task_id = $_POST["task_id"];
+} else {
+	$_task_id = "";
+}
+
+if ( $_new_device == 0 ) {
+// Atomik Setting SQL
+	$sql = "SELECT atomik_tasks.task_id, atomik_tasks.task_name, atomik_tasks.task_description, atomik_tasks.task_zone_id, atomik_tasks.task_status, atomik_tasks.task_color_mode, atomik_tasks.task_brightness, atomik_tasks.task_rgb256, atomik_tasks.task_white_temprature, atomik_tasks.task_cron_minute, atomik_tasks.task_cron_hour, atomik_tasks.task_cron_day, atomik_tasks.task_cron_month, atomik_tasks.task_cron_weekday FROM atomik_tasks WHERE atomik_tasks.task_id = ".$_task_id.";";  
+
+$rs=$conn->query($sql);
+ 
+if($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  $db_records = $rs->num_rows;
+}
+
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+
+}
+
+if ( isset($_POST["task_name"])) {
+	$_task_name = $_POST["task_name"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_name = $row['task_name'];
+	} 
+}
+
+if ( isset($_POST["task_description"])) {
+	$_task_description = $_POST["task_description"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_description = $row['task_description'];
+	} 
+}
+
+if ( isset($_POST["task_zone"])) {
+	$_task_zone = $_POST["task_zone"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_zone = $row['task_zone'];
+	} 
+}
+
+if ( isset($_POST["task_status"])) {
+	$_task_status = $_POST["task_status"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_status = $row['task_status'];
+	} else {
+		$_task_status = "";
+	}
+}
+
+if ( isset($_POST["task_colormode"])) {
+	$_task_colormode = $_POST["task_colormode"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_colormode = $row['task_colormode'];
+	} else {
+		$_task_colormode = 1;
+	}
+}
+
+if ( isset($_POST["task_brightness"])) {
+	$_task_brightness = $_POST["task_brightness"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_brightness = $row['task_brightness'];
+	} else {
+		$_task_brightness = 0;
+	}
+}
+
+if ( isset($_POST["task_rgb256"])) {
+	$_task_rgb256 = $_POST["task_rgb256"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_rgb256 = $row['task_rgb256'];
+	} else {
+		$_task_rgb256 = 0;
+	}
+}
+
+if ( isset($_POST["task_white_temprature"])) {
+	$_task_white_temprature = $_POST["task_white_temprature"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_white_temprature = $row['task_white_temprature'];
+	} else {
+		$_task_white_temprature = 2700;
+	}
+}
+
+if ( isset($_POST["task_hour"])) {
+	$_task_hour = $_POST["task_hour"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_hour = $row['task_cron_hour'];
+	} else {
+		$_task_hour = "";
+	}
+}
+
+if ( isset($_POST["task_day"])) {
+	$_task_day = $_POST["task_day"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_day = $row['task_cron_day'];
+	} else {
+		$_task_day = "";
+	}
+}
+
+if ( isset($_POST["task_weekday"])) {
+	$_task_weekday = $_POST["task_weekday"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_weekday = $row['task_cron_weekday'];
+	} else {
+		$_task_weekday = "";
+	}
+}
+
+if ( isset($_POST["task_minute"])) {
+	$_task_minute = $_POST["task_minute"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_minute = $row['task_cron_minute'];
+	} else {
+		$_task_minute = "";
+	}
+}
+
+if ( isset($_POST["task_month"])) {
+	$_task_month = $_POST["task_month"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_month = $row['task_cron_month'];
+	} else {
+		$_task_month = "";
+	}
+}
+
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -46,7 +213,7 @@
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
-  <br>
+  <br><form id="taskfrm" name="taskfrm" enctype="multipart/form-data" action="task_details.php" method="post"><input type="hidden" name="command" id="command" value="" >
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8">
@@ -57,13 +224,13 @@
         <td>
           <p>Task Name: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="devicename" value="Turn OFF Porch Lights - Morning"></p></td>
+        <td><p><input type="text" class="form-control" id="task_name" name="task_name" value="Turn OFF Porch Lights - Morning"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Task Description: </p></td>
-        <td><p><textarea class="form-control" rows="4" cols="1">Turn off porch lights in the morning at 8 am everyday.
+        <td><p><textarea class="form-control" rows="4" cols="1" id="task_description" name="task_description" >Turn off porch lights in the morning at 8 am everyday.
 </textarea></p></td>
       </tr>
       </tbody>
@@ -93,7 +260,7 @@
         <td>
           <p>Task Zone: </p>
         </td>
-        <td><p><select id="devicestatus" class="form-control">
+        <td><p><select id="task_zone" name="task_zone" class="form-control">
         <option value="11">Porch Lights</option>
         <option value="10">Living Room Lamps</option>
         <option value="9">Living Room Lights</option>
@@ -113,45 +280,47 @@
         <td>
           <p>Task Status: </p>
         </td>
-        <td><p><select id="devicestatus" class="form-control">
-  <option value="1">ON</option>
-  <option value="0">OFF</option>
+        <td><p><select id="task_status" name="task_status" class="form-control">
+  <option value="1" <?php if ($_task_status == 1) { echo ' selected'; }?>>ON</option>
+  <option value="0" <?php if ($_task_status == 0) { echo ' selected'; }?>>OFF</option>
 </select></p></td>
     </tr>  
-    <tr>
+  </thead>
+  <tr>
+    <tbody>
+    <?php if ( ( $_zone_type_rgb256 == 1 && $_zone_type_warm_white == 1 ) || ( $_zone_type_rgb256 == 1 && $_zone_type_cold_white == 1 ) ) { ?><tr>
         <td>
-          <p>Task Color Mode: </p> - Multiple Colour Mode Bulbs
+          <p>Task Color Mode: </p>
         </td>
-        <td><p><select id="eth0status" class="form-control">
-  <option value="1">White Mode</option>
-  <option value="0">Color Mode</option>
+        <td><p><select id="task_colormode" name="task_colormode" class="form-control">
+  <option value="1"<?php if ($_task_colormode == 1) { echo ' selected'; }?>>White Mode</option>
+  <option value="0"<?php if ($_task_colormode == 0) { echo ' selected'; }?>>Color Mode</option>
 </select></p></td>
-    </tr> 
-    
-    <tr>
+    </tr> <?php }; ?>
+    <?php if ( $_zone_type_rgb256 == 0 ) { ?><tr>
         <td>
-          <p>Task Color Mode: </p> - Single Mode Bulbs
+          <p>Task Color Mode: </p>
         </td>
-           
-        <td><p><center><b>White Mode</b></center></p></td>
-    </tr> <tr>
+        <td><input type="hidden" name="task_colormode" id="task_colormode" value="<?php echo $_task_colormode; ?>"><p><center><b>White Mode</b></center></p></td>
+    </tr> <?php }; ?>
+    <?php if ( $_zone_type_brightness == 1 ) { ?><tr>
         <td>
           <p>Task Brightness (0-100): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="remoteusername" value="100"></p></td>
-    </tr> 
-    <tr>
+        <td><p><input type="text" class="form-control" id="task_brightness" name="task_brightness" value="<?php echo $_task_brightness; ?>"></p></td>
+    </tr> <?php }; ?>
+    <?php if ( $_zone_type_rgb256 == 1 ) { ?><tr>
         <td>
-          <p>Task Color (0-255): </p>- Only Avaiable for RGB Bulbs
+          <p>Task Color (0-255): </p>
         </td>
-        <td><p><input type="text" class="form-control" id="remoteusername" value="1"></p></td>
-    </tr>
-    <tr>
+        <td><p><input type="text" class="form-control" id="task_rgb256" name="task_rgb256" value="<?php echo $_task_rgb256; ?>"></p></td>
+    </tr><?php }; ?>
+    <?php if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 ) { ?><tr>
         <td>
-          <p>Task White Temperature (2700-6500):</p>- Only Available for Dual White Bulbs
+          <p>Task White Temperature (2700-6500):</p>
         </td>
-        <td><p><input type="text" class="form-control" id="remoteusername" value="1"></p></td>
-    </tr>
+        <td><p><input type="text" class="form-control" id="task_white_temprature" name="task_white_temprature" value="<?php echo $_task_white_temprature; ?>"></p></td>
+    </tr><?php }; ?>
       </tbody>
   </table>
 </div>
@@ -185,7 +354,7 @@
         <td>
           <p>Month: </p>
         </td>
-        <td><p><select class="form-control" id="taskmonth" name="taskmonth" multiple>
+        <td><p><select class="form-control" id="task_month" name="task_month" multiple>
   <option selected value="*">Every Month</option>
   <option value="1">January</option>
   <option value="2">February</option>
@@ -205,7 +374,7 @@
     <tbody>
       <tr>
         <td><p>Weekday: </p></td>
-        <td><p><select class="form-control" id="taskweekday" name="taskweekday" multiple>
+        <td><p><select class="form-control" id="task_weekday" name="task_weekday" multiple>
   <option selected value="*">Every Day</option>
   <option value="0">Sunday</option>
   <option value="1">Monday</option>
@@ -218,8 +387,7 @@
       </tr>
       <tr>
         <td><p>Minute: </p></td>
-        <td><p><select class="form-control" id="taskday" name="taskday" multiple>
-  <option value="*">Every Minute</option>
+        <td><p><select class="form-control" id="task_minute" name="task_minute" multiple>
   <option selected value="0">0</option>
   <option value="1">1</option>
   <option value="2">2</option>
@@ -289,7 +457,7 @@
   <thead>
     <tr>
         <td><p>Day: </p></td>
-        <td><p><select class="form-control" id="taskday" name="taskday" multiple>
+        <td><p><select class="form-control" id="task_day" name="task_day" multiple>
   <option selected value="*">Every Day</option>
   <option value="1">1</option>
   <option value="2">2</option>
@@ -328,7 +496,7 @@
     <tbody>
     <tr>
         <td><p>Hour: </p></td>
-        <td><p><select class="form-control" id="taskday" name="taskday" multiple>
+        <td><p><select class="form-control" id="task_hour" name="task_hour" multiple>
   <option value="*">Every Hour</option>
   <option value="0">0</option>
   <option value="1">1</option>
@@ -372,7 +540,7 @@
   <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save Task Schedule</a></p></div>
   
   <div class="col-xs-2"></div>
-  </div>
+  </div></form>
   <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
