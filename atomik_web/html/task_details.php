@@ -239,6 +239,7 @@ if ( isset($_POST["task_month"])) {
 }
 
 if ( $_new_task == 0 ) {
+	
 // Atomik Setting SQL
 
 	$sql = "SELECT 
@@ -335,6 +336,18 @@ atomik_device_types.device_type_rgb256=1;";
 	$brs->free();
 }
 
+// Atomik Zone List
+
+$sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id FROM atomik_zones;";  
+
+$zlrs=$conn->query($sql);
+ 
+if($zlrs === false) {
+	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+	$zlrs->data_seek(0);	
+}
+	
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -342,7 +355,6 @@ atomik_device_types.device_type_rgb256=1;";
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
-    
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -408,7 +420,6 @@ atomik_device_types.device_type_rgb256=1;";
   
   <div class="col-xs-2"></div>
   </div>
-
   <br>
   <div class="container">
         <div class="col-xs-2"></div>
@@ -421,18 +432,8 @@ atomik_device_types.device_type_rgb256=1;";
           <p>Task Zone: </p>
         </td>
         <td><p><select id="task_zone" name="task_zone" class="form-control">
-        <option value="11">Porch Lights</option>
-        <option value="10">Living Room Lamps</option>
-        <option value="9">Living Room Lights</option>
-        <option value="8">Kitchen Lights</option>
-        <option value="7">Downstairs Bathroom Light</option>
-        <option value="6">Downstairs Hallway Lights</option>
-        <option value="5">Bedroom 2 Lights</option>
-        <option value="4">Upstairs Bathroom Lights</option>
-        <option value="3">Upstairs Hallway Lights</option>
-        <option value="2">Bedroom 1 Lamp</option>
-  <option value="1">Bedroom 1 Lights</option>
-  <option value="0">Please Choose Zone</option>
+        <?php while($zlrow = $zlrs->fetch_assoc()){ ?> <option value="<?php echo $zlrow['zone_id']; ?>"><?php echo $zlrow['zone_name']; ?></option>
+ <?php }; ?>
 </select></p></td>
     </tr> 
   </thead>
@@ -445,9 +446,7 @@ atomik_device_types.device_type_rgb256=1;";
   <option value="0" <?php if ($_task_status == 0) { echo ' selected'; }?>>OFF</option>
 </select></p></td>
     </tr>  
-  </thead>
   <tr>
-    <tbody>
     <?php if ( ( $_zone_type_rgb256 == 1 && $_zone_type_warm_white == 1 ) || ( $_zone_type_rgb256 == 1 && $_zone_type_cold_white == 1 ) ) { ?><tr>
         <td>
           <p>Task Color Mode: </p>
@@ -1021,7 +1020,6 @@ $("#savepropertiesbtn").on('click', function() {
    document.forms["taskfrm"].command.value = "save_properties";
    document.taskfrm.submit();
 });
-
 $("#saveschedulebtn").on('click', function() {
    document.forms["taskfrm"].command.value = "save_schedule";
    document.taskfrm.submit();
@@ -1034,8 +1032,12 @@ $("#deltaskbtn").on('click', function() {
 	}
 	$("#overlay").hide();
 });
+$("#task_zone").on('change', function() {
+   document.taskfrm.submit();
+});
 </script></body><?php
 $rs->free();
+$zlrs->free();
 $conn->close();
 ?>
 </html>
