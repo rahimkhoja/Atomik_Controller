@@ -100,7 +100,7 @@ if ( isset($_POST["task_id"]) ) {
 if ( $_new_task == 0 ) {
 // Atomik Setting SQL
 	$sql = "SELECT atomik_tasks.task_id, atomik_tasks.task_name, atomik_tasks.task_description, atomik_tasks.task_zone_id, atomik_tasks.task_status, atomik_tasks.task_color_mode, atomik_tasks.task_brightness, atomik_tasks.task_rgb256, atomik_tasks.task_white_temprature, atomik_tasks.task_cron_minute, atomik_tasks.task_cron_hour, atomik_tasks.task_cron_day, atomik_tasks.task_cron_month, atomik_tasks.task_cron_weekday FROM atomik_tasks WHERE atomik_tasks.task_id = ".$_task_id.";";  
-	echo $sql;
+	
 	$rs=$conn->query($sql);
  
 	if($rs === false) {
@@ -385,13 +385,13 @@ atomik_device_types.device_type_rgb256=1;";
         <td>
           <p>Task Name: </p>
         </td>
-        <td><p><input type="text" class="form-control" id="task_name" name="task_name" value="<?php $_task_name; ?>"></p></td>
+        <td><p><input type="text" class="form-control" id="task_name" name="task_name" value="<?php echo $_task_name; ?>"></p></td>
     </tr>  
   </thead>
     <tbody>
     <tr>
         <td><p>Task Description: </p></td>
-        <td><p><textarea class="form-control" rows="4" cols="1" id="task_description" name="task_description" ><?php $_task_description; ?></textarea></p></td>
+        <td><p><textarea class="form-control" rows="4" cols="1" id="task_description" name="task_description" ><?php echo $_task_description; ?></textarea></p></td>
       </tr>
       </tbody>
   </table>
