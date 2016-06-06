@@ -136,7 +136,7 @@ if ( isset($_POST["task_zone"])) {
 	$_task_zone = $_POST["task_zone"];
 } else {
 	if ($_new_task == 0 ) {
-		$_task_zone = $row['task_zone'];
+		$_task_zone = $row['task_zone_id'];
 	} 
 }
 
@@ -251,7 +251,7 @@ atomik_device_types.device_type_brightness
 FROM 
 atomik_zone_devices, atomik_device_types, atomik_devices 
 WHERE 
-atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." &&
+atomik_zone_devices.zone_device_zone_id=".$_task_zone." &&
 atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
 atomik_devices.device_type=atomik_device_types.device_type_id && 
 atomik_device_types.device_type_warm_white=1;";  
@@ -277,7 +277,7 @@ atomik_device_types.device_type_brightness
 FROM 
 atomik_zone_devices, atomik_device_types, atomik_devices 
 WHERE 
-atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." &&
+atomik_zone_devices.zone_device_zone_id=".$_task_zone." &&
 atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
 atomik_devices.device_type=atomik_device_types.device_type_id && 
 atomik_device_types.device_type_cold_white=1;";  
@@ -295,7 +295,7 @@ atomik_device_types.device_type_cold_white=1;";
 	}
 	$cwrs->free();
 		
-	$sql = "SELECT atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_device_types.device_type_brightness FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_rgb256=1;";  
+	$sql = "SELECT atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_device_types.device_type_brightness FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id=".$_task_zone." && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_rgb256=1;";  
 
 	$rgbrs=$conn->query($sql);
  
@@ -318,7 +318,7 @@ atomik_device_types.device_type_brightness
 FROM 
 atomik_zone_devices, atomik_device_types, atomik_devices 
 WHERE 
-atomik_zone_devices.zone_device_zone_id=".$_task_zone_id." &&
+atomik_zone_devices.zone_device_zone_id=".$_task_zone." &&
 atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
 atomik_devices.device_type=atomik_device_types.device_type_id && 
 atomik_device_types.device_type_rgb256=1;";  
