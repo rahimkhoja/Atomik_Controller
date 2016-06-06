@@ -130,8 +130,8 @@ if ( isset($_POST["task_description"])) {
 	} 
 }
 
-if ( isset($_POST["task_zone"])) {
-	$_task_zone = $_POST["task_zone"];
+if ( isset($_POST["task_zone_id"])) {
+	$_task_zone = $_POST["task_zone_id"];
 } else {
 	if ($_new_task == 0 ) {
 		$_task_zone = $row['task_zone_id'];
@@ -431,8 +431,8 @@ if($zlrs === false) {
         <td>
           <p>Task Zone: </p>
         </td>
-        <td><p><select id="task_zone" name="task_zone" class="form-control">
-        <?php while($zlrow = $zlrs->fetch_assoc()){ ?> <option value="<?php echo $zlrow['zone_id']; ?>"><?php echo $zlrow['zone_name']; ?></option>
+        <td><p><select id="task_zone_id" name="task_zone_id" class="form-control">
+        <?php while($zlrow = $zlrs->fetch_assoc()){ ?> <option value="<?php echo $zlrow['zone_id']; ?>"<?php if ( $zlrow['zone_id'] == $_task_zone ) { echo ' selected'; }; ?>><?php echo $zlrow['zone_name']; ?></option>
  <?php }; ?>
 </select></p></td>
     </tr> 
@@ -1030,7 +1030,7 @@ $("#deltaskbtn").on('click', function() {
 	}
 	$("#overlay").hide();
 });
-$("#task_zone").on('change', function() {
+$("#task_zone_id").on('change', function() {
    document.taskfrm.submit();
 });
 </script></body><?php
