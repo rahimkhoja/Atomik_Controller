@@ -198,7 +198,7 @@ if ( isset($_POST["task_hour"])) {
 	}
 }
 
-echo $_task_hour;
+echo serialize($_task_hour);
 
 if ( isset($_POST["task_day"])) {
 	$_task_day = $_POST["task_day"];
