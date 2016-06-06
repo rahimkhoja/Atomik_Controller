@@ -390,7 +390,7 @@ atomik_device_types.device_type_rgb256=1;";
   </thead>
     <tbody>
     <tr>
-        <td><p>Task Description: </p></td>
+        <td><p>Task Description: </p><input type="hidden" name="new_task" id="new_task" value="<?php echo $_new_task; ?>"><input type="hidden" name="task_id" id="task_id" value="<?php echo $_task_id; ?>"></td>
         <td><p><textarea class="form-control" rows="4" cols="1" id="task_description" name="task_description" ><?php echo $_task_description; ?></textarea></p></td>
       </tr>
       </tbody>
