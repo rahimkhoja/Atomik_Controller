@@ -416,7 +416,7 @@ if($zlrs === false) {
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save General Task Details</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savegeneralbtn" class="btn-success btn">Save General Task Details</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -428,7 +428,7 @@ if($zlrs === false) {
   <table class="table table-striped">
   <thead>
     <tr>
-        <td>
+        <td width="250">
           <p>Task Zone: </p>
         </td>
         <td><p><select id="task_zone_id" name="task_zone_id" class="form-control">
@@ -476,7 +476,7 @@ if($zlrs === false) {
         <td>
           <p>Task White Temperature (2700-6500):</p>
         </td>
-        <td><p><input type="text" class="form-control" id="task_white_temprature" name="task_white_temprature" value="<?php echo $_task_white_temprature; ?>"></p></td>
+        <td><input type="text" class="form-control" id="task_white_temprature" name="task_white_temprature" value="<?php echo $_task_white_temprature; ?>"></td>
     </tr><?php }; ?>
       </tbody>
   </table>
@@ -490,7 +490,7 @@ if($zlrs === false) {
 <div class="container">
 <div class="col-xs-2"></div>
   <div class="col-xs-4 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a href="" class="btn-success btn">Save Task Properties</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savepropertiesbtn" class="btn-success btn">Save Task Properties</a></p></div>
   
   <div class="col-xs-2"></div>
   </div>
@@ -974,7 +974,6 @@ echo 'selected';
   <div class="col-xs-2 text-center"></div>
   <div class="col-xs-2 text-center"></div>
   <div class="col-xs-4 text-center"><p><a id="saveschedulebtn" class="btn-success btn">Save Task Schedule</a></p></div>
-  
   <div class="col-xs-2"></div>
   </div></form>
   <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
@@ -987,11 +986,11 @@ echo 'selected';
   </div>
   <div class="col-xs-1"><a href="tasks.php"  class="btn-warning btn">Cancel</a>
   </div>
-  <div class="col-xs-1"><a href="" class="btn-danger btn">Delete Scheduled Task</a>
+  <div class="col-xs-1"><a id="deltaskbtn" class="btn-danger btn">Delete Scheduled Task</a>
   </div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a href="" class="btn-success btn">Save All Task Details</a>
+  <div class="col-xs-2 text-right"><a id="saveallbtn" class="btn-success btn">Save All Task Details</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -1000,7 +999,6 @@ echo 'selected';
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
@@ -1029,6 +1027,10 @@ $("#deltaskbtn").on('click', function() {
    		document.taskfrm.submit();
 	}
 	$("#overlay").hide();
+});
+$("#saveallbtn").on('click', function() {
+   document.forms["taskfrm"].command.value = "save_all";
+   document.taskfrm.submit();
 });
 $("#task_zone_id").on('change', function() {
    document.taskfrm.submit();
