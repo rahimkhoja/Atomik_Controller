@@ -445,7 +445,6 @@ if($zlrs === false) {
   <option value="0" <?php if ($_task_status == 0) { echo ' selected'; }?>>OFF</option>
 </select></p></td>
     </tr>  
-  <tr>
     <?php if ( ( $_zone_type_rgb256 == 1 && $_zone_type_warm_white == 1 ) || ( $_zone_type_rgb256 == 1 && $_zone_type_cold_white == 1 ) ) { ?><tr>
         <td>
           <p>Task Color Mode: </p>
