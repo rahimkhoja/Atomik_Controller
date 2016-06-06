@@ -13,22 +13,6 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
-// Check for delete
-
-if ( isset($_POST["item"]) ) {
-	$_item = $_POST["item"];
-
-	$sql="DELETE FROM atomik_tasks WHERE task_id=".$_item;
- 
-	if($conn->query($sql) === false) {
-		$page_error = 1;
-		$error_text = "Error Deleting Device From DB!";
-	} else {
-  		$page_success = 1;
-		$success_text = "Task Deleted!";
-	}
-}
-		
 // Atomik Setting SQL
 $sql = "SELECT atomik_tasks.task_name, atomik_tasks.task_id, atomik_zones.zone_name FROM atomik_tasks, atomik_zones WHERE atomik_zones.zone_id = atomik_tasks.task_zone_id;";  
 
@@ -80,7 +64,7 @@ $rs->data_seek(0);
 <div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           <h4><p>Scheduled Tasks List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Scheduled Tasks: <?php echo $db_records; ?></strong></p><p><a href="task_details.php" class="btn-primary btn">Add New Scheduled Task</a></p>  </div>
+           <h4><p>Scheduled Tasks List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Scheduled Tasks: <?php echo $db_records; ?></strong></p><p><a id="newtaskbtn1" class="btn-primary btn">Add New Scheduled Task</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
            <div class="container center-block">
@@ -119,7 +103,7 @@ $("#task<?php echo $row['task_id']; ?>").on('click', function() {
 </div><div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           </div><div class="col-xs-4 text-right"><p><strong>Total Scheduled Tasks: <?php echo $db_records; ?></strong></p><p><a href="task_details.php" class="btn-primary btn">Add New Scheduled Task</a></p>  </div>
+           </div><div class="col-xs-4 text-right"><p><strong>Total Scheduled Tasks: <?php echo $db_records; ?></strong></p><p><a id="newtaskbtn2" class="btn-primary btn">Add New Scheduled Task</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
   <?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
@@ -138,6 +122,12 @@ $("#task<?php echo $row['task_id']; ?>").on('click', function() {
     </div><script type="text/javascript">
     $("#logoutbtn").on('click', function() {
 	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});
+$("#newtaskbtn1").on('click', function() {
+	$().redirect('task_details.php', {'new_task': '1'});
+});
+$("#newtaskbtn2").on('click', function() {
+	$().redirect('task_details.php', {'new_task': '1'});
 });
 </script>
 </body><?php

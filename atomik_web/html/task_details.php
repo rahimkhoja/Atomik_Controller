@@ -498,8 +498,8 @@ if($zlrs === false) {
   <div class="container">
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
-            <h4><p>Task Schedule:</p></h4><p> * Mutiple Choice Inputs</p>
-            </div>
+            <h4><p>Task Schedule:</p></h4>
+        </div>
             <div class="col-xs-2"></div>
             </div>
             <div class="container">
