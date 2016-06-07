@@ -246,10 +246,10 @@ if($remavrs === false) {
 			}
 		}
 	}
+	$regremavrs->free();
 }
 
 $remavrs->free();
-$regremavrs->free();
 
 if ( isset($_POST["zone_name"])) {
 	$_zone_name = $_POST["zone_name"];
