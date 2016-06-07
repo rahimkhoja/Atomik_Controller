@@ -246,7 +246,6 @@ if($remavrs === false) {
 			}
 		}
 	}
-	$regremavrs->free();
 }
 
 $remavrs->free();
