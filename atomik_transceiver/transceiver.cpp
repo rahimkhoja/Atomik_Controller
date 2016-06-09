@@ -47,6 +47,8 @@ std::atomic<bool> disableSocket;
 int do_receive = 0;
 int do_command = 0;
 int do_server = 0;
+int do_sync = 0;
+int do_desync = 0;
 int alreadyRunning = 0;
 
 uint8_t prefix   = 0xB8;
@@ -109,6 +111,7 @@ option_code hashit (std::string inString) {
     if (inString == "-v") return v;
     if (inString == "-w") return w;
 }
+
 void sendJSON(std::string jsonstr)
 {
   
@@ -138,8 +141,6 @@ void sendJSON(std::string jsonstr)
 return;
 
  }
-
-  
 
 
 std::string strConcat(std::string a, std::string b)
@@ -637,7 +638,8 @@ void receive()
                 } else {
                    // printf("0");
                 }
-            }
+                 
+           }
             
             int dupesReceived = mlr.dupesReceived();
             for (; dupesPrinted < dupesReceived; dupesPrinted++) {
