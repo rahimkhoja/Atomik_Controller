@@ -63,7 +63,7 @@ uint64_t command = 0x00;
 
 int radiomode = 1;
 
-const char *options = "hdfslumt:n:p:q:r:c:b:k:v:w:";
+const char *options = "hdsut:n:p:q:r:c:b:k:v:w:";
   
 std::thread socketServerThread;
   
@@ -75,16 +75,13 @@ std::vector<std::string> socket_args;
 enum option_code {
     h,
     d,
-    f,
-    s,
-    l,
-    u,
-    m,
     t,
     n,
     p,
     q,
     r,
+    s,
+    u,
     c,
     b,
     k,
@@ -95,16 +92,13 @@ enum option_code {
 option_code hashit (std::string inString) {
     if (inString == "-h") return h;
     if (inString == "-d") return d;
-    if (inString == "-f") return f;
-    if (inString == "-s") return s;
-    if (inString == "-l") return l;
-    if (inString == "-u") return u;
-    if (inString == "-m") return m;
     if (inString == "-t") return t;
     if (inString == "-n") return n;
     if (inString == "-p") return p;
     if (inString == "-q") return q;
     if (inString == "-r") return r;
+    if (inString == "-u") return u;
+    if (inString == "-s") return s;
     if (inString == "-c") return c;
     if (inString == "-b") return b;
     if (inString == "-k") return k;
@@ -199,7 +193,9 @@ void usage(const char *arg, const char *options){
   printf("   -b BB<hex>               Brightness byte\n");
   printf("   -k KK<hex>               Key byte\n");
   printf("   -v SS<hex>               Sequence byte\n");
-  printf("   -m M <int>               Radio Mode ( RGB=1 White=2 )\n");
+  printf("   -t T<int>                Radio Mode ( RGB=1 White=2 )\n");
+  printf("   -s                       Sync Bulb ( Requires options -q and -r )\n");
+  printf("   -u                       De-Sync Bulb ( Requires options -q and -r )\n");
   printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
   printf("\n");
 }
@@ -267,6 +263,7 @@ void getOptions(std::vector<std::string> args, int type)
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
                  radiomode = (uint8_t)tmp;
                  break;
+
             }
         }
     
@@ -415,7 +412,8 @@ void resetVars()
 {
   do_receive = 0;
   do_command = 0;
-
+  do_sync    = 0;
+  do_desync  = 0;
   prefix   = 0xB8;
   rem_p    = 0x00;
   remote   = 0x01;
@@ -631,14 +629,14 @@ void receive()
                     consoleWrite(output);
                     
                     // Run Command Temporary
-                    char commandOUT[100];
-                    sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n %d", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode, resends);
-                     system(commandOUT);
+                    // char commandOUT[100];
+                    // sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n %d", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode, resends);
+                    // system(commandOUT);
                     
                 } else {
                    // printf("0");
                 }
-                 
+    		usleep(10000);             
            }
             
             int dupesReceived = mlr.dupesReceived();

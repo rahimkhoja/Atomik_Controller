@@ -83,7 +83,7 @@ void JSONfilewrite (std::string textjson)
 {
   JSONfileMutex.lock();
   
-  char filename[] = "AtomikEmulatorJSON.log";
+  char filename[] = "/var/log/atomik/AtomikEmulatorJSON.log";
   std::fstream json;
 
   json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
@@ -161,8 +161,8 @@ void listen()
         s1 = fread(reply, 1, 15, fd);
         reply[s1] = ',';
         s1++;
-        fd = popen("ifconfig | awk '/HWaddr/&&/wlan0/' | cut -d ' ' -f 10 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
-        //fd = popen("ifconfig | grep \"HWaddr\" | cut -d ' ' -f 11 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
+        // fd = popen("ifconfig | awk '/HWaddr/&&/wlan0/' | cut -d ' ' -f 10 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
+        fd = popen("ifconfig | grep \"HWaddr\" | cut -d ' ' -f 11 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
         s2 = fread(reply + s1, 1, 12 ,fd);
         reply[s1 + s2] = ',';
     }
