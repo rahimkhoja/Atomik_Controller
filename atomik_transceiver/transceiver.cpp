@@ -263,6 +263,14 @@ void getOptions(std::vector<std::string> args, int type)
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
                  radiomode = (uint8_t)tmp;
                  break;
+                case s:
+                 do_sync = 1;
+                 do_desync = 0;
+                 break;
+                case u:
+                 do_desync = 1;
+                 do_sync = 0;
+                 break;
 
             }
         }
@@ -384,6 +392,16 @@ void getOptions(std::vector<std::string> args, int type)
       case 't':
         tmp = strtoll(optarg, NULL, 10);
         radiomode = (uint8_t)tmp;
+        break;
+      case 's':
+        do_sync = 1;
+        do_desync = 0;
+        do_command = 1;
+        break;
+      case 'u':
+        do_desync = 1;
+        do_sync = 0;
+        do_command = 1;
         break;
       case '?':
         if (type == 0 ) {
@@ -646,17 +664,35 @@ void receive()
            // fflush(stdout);
        
         } else {
-        
+                       
             std::string comandSTR = getCommand();     
-			if (debug) {			
+			
+            if (debug) {			
 				consoleWrite(strConcat("Command Processed: ", comandSTR));
 			}
+            
             getOptions(String2Vector(comandSTR), 1);
             
-			send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            if ( do_sync == 1 ) {
+                for(int i=0; i<10; i++) {
+                     send(0x00, 0x00, 0x01, remote, rem_p, prefix, seq, 10);
+                     seq = seq + 1;
+                     usleep(350);
+                }
+                 
+            } else if (do_desync == 1) {
+                for(int i=0; i<5; i++) {
+                     send(0x00, 0x00, 0x01, remote, rem_p, prefix, seq, 10);
+                     seq = seq + 1;
+                     usleep(100);
+                }
+            } else {
+                send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            }
             
-			removeCommand();
+            removeCommand();
             resetVars();
+            
         }
     }
 }
@@ -999,7 +1035,15 @@ int main(int argc, char** argv)
         {
             send(command);
         } else {
-            send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            if ( do_sync == 1 ) {
+                for(int i=0; i<10; i++) {
+                     send(0x00, 0x00, 0x01, remote, rem_p, prefix, seq, 10);
+                     seq = seq + 1;
+                     usleep(350);
+                }    
+            } else {
+                send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            }        
         }
        
     }
