@@ -15,5 +15,4 @@ PIDFile     = /run/atomikTRA.pid
 StandardOutput=null
 
 [Install]
-Alias=atomik-transceiver.service
 WantedBy = multi-user.target

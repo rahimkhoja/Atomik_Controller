@@ -15,5 +15,4 @@ PIDFile     = /run/atomikEMU.pid
 StandardOutput=null
 
 [Install]
-Alias=atomik-emulator.service
 WantedBy = multi-user.target
