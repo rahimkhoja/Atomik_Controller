@@ -84,18 +84,17 @@ void JSONfilewrite (std::string textjson)
   JSONfileMutex.lock();
   
   char filename[] = "/var/log/atomik/AtomikEmulatorJSON.log";
-  std::fstream json;
+  std::ofstream json;
 
-  json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+  json.open(filename, std::ios_base::app);
   if (!json ) 
   {
-        json.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
-        json << textjson.c_str();
-        json << "\n";
+        json.open(filename,  std::ios_base::app);
+        json << textjson.c_str() << std::endl;
         json.close();
   } else {
   
-        json << textjson.c_str();
+        json << textjson.c_str() << std::endl;
         json.close();
   }
        

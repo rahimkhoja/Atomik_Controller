@@ -1,35 +1,19 @@
+#!/bin/bash
 # location: /etc/systemd/system/
 [Unit]
 Description = Atomik Mi-Light Emulator Serivce 
-After       = syslog.target
+After       = syslog.target network.target
 
 [Service]
-# make sure the shell script is executable (chmod +x $1)
-# and it begins with a shebang (#!/bin/bash)
 ExecStart   = /usr/bin/emulator
-
-# In my example script I start a node server,
-# So tell the serive how to kill it / reload.
 ExecStop    = kill -INT `cat /run/atomikEMU.pid`
 ExecReload  = kill -TERM `cat /run/atomikEMU.pid`
-
-# In case if it gets stopped, restart it immediately
 Restart     = always
-
-
-# With notify Type, service manager will be notified
-# when the starting up has finished
-Type        = notify
-
-# Since Type is notify, notify only service updates
-# sent from the main process of the service
+Type        = simple 
 NotifyAccess= main
-
-# systemd gets to read the PID of daemon's main process
-# see ExecStop and ExecReload
 PIDFile     = /run/atomikEMU.pid
+StandardOutput=null
 
 [Install]
-# multi-user.target corresponds to run level 3
-# roughtly meaning wanted by system start
+Alias=atomik-emulator.service
 WantedBy = multi-user.target
