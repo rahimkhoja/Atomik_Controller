@@ -318,6 +318,7 @@ function getTimeZone() {
         <td>Mi-Light Transceiver Service: </td>
         <td><?php exec("service atomik-transceiver status | grep 'Active: '", $output);
 		if (strpos($output,'running') !== false) {
+			echo $output;
 			echo "Running";
 		} else {
 		    echo "Stopped";
