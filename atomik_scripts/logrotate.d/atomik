@@ -1,0 +1,9 @@
+/var/log/atomik/*.log {
+	weekly
+	missingok
+	rotate 24 
+	compress
+	delaycompress
+	notifempty
+	create 
+}

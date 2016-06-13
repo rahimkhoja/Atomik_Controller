@@ -1,0 +1,18 @@
+#!/bin/bash
+# location: /etc/systemd/system/
+[Unit]
+Description = Atomik Mi-Light Transceiver Serivce 
+After       = syslog.target network.target
+
+[Service]
+ExecStart   = /usr/bin/transceiver
+ExecStop    = kill -INT `cat /run/atomikTRA.pid`
+ExecReload  = kill -TERM `cat /run/atomikTRA.pid`
+Restart     = always
+Type        = simple 
+NotifyAccess= main
+PIDFile     = /run/atomikTRA.pid
+StandardOutput=null
+
+[Install]
+WantedBy = multi-user.target

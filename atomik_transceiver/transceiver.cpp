@@ -47,6 +47,8 @@ std::atomic<bool> disableSocket;
 int do_receive = 0;
 int do_command = 0;
 int do_server = 0;
+int do_sync = 0;
+int do_desync = 0;
 int alreadyRunning = 0;
 
 uint8_t prefix   = 0xB8;
@@ -61,7 +63,7 @@ uint64_t command = 0x00;
 
 int radiomode = 1;
 
-const char *options = "hdfslumt:n:p:q:r:c:b:k:v:w:";
+const char *options = "hdsut:n:p:q:r:c:b:k:v:w:";
   
 std::thread socketServerThread;
   
@@ -73,16 +75,13 @@ std::vector<std::string> socket_args;
 enum option_code {
     h,
     d,
-    f,
-    s,
-    l,
-    u,
-    m,
     t,
     n,
     p,
     q,
     r,
+    s,
+    u,
     c,
     b,
     k,
@@ -93,22 +92,20 @@ enum option_code {
 option_code hashit (std::string inString) {
     if (inString == "-h") return h;
     if (inString == "-d") return d;
-    if (inString == "-f") return f;
-    if (inString == "-s") return s;
-    if (inString == "-l") return l;
-    if (inString == "-u") return u;
-    if (inString == "-m") return m;
     if (inString == "-t") return t;
     if (inString == "-n") return n;
     if (inString == "-p") return p;
     if (inString == "-q") return q;
     if (inString == "-r") return r;
+    if (inString == "-u") return u;
+    if (inString == "-s") return s;
     if (inString == "-c") return c;
     if (inString == "-b") return b;
     if (inString == "-k") return k;
     if (inString == "-v") return v;
     if (inString == "-w") return w;
 }
+
 void sendJSON(std::string jsonstr)
 {
   
@@ -139,8 +136,6 @@ return;
 
  }
 
-  
-
 
 std::string strConcat(std::string a, std::string b)
 {
@@ -154,19 +149,18 @@ void JSONfilewrite (std::string textjson)
 {
   JSONfileMutex.lock();
   
-  char filename[] = "AtomikRadioJSON.log";
-  std::fstream json;
+  char filename[] = "/var/log/atomik/AtomikRadioJSON.log";
+  std::ofstream json;
 
-  json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+  json.open(filename, std::ios_base::app);
   if (!json ) 
   {
-        json.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
-        json << textjson.c_str();
-        json << "\n";
+        json.open(filename, std::ios_base::app);
+        json << textjson.c_str() << std::endl;
         json.close();
   } else {
   
-        json << textjson.c_str();
+        json << textjson.c_str() << std::endl;
         json.close();
   }
        
@@ -198,7 +192,9 @@ void usage(const char *arg, const char *options){
   printf("   -b BB<hex>               Brightness byte\n");
   printf("   -k KK<hex>               Key byte\n");
   printf("   -v SS<hex>               Sequence byte\n");
-  printf("   -m M <int>               Radio Mode ( RGB=1 White=2 )\n");
+  printf("   -t T<int>                Radio Mode ( RGB=1 White=2 )\n");
+  printf("   -s                       Sync Bulb ( Requires options -q and -r )\n");
+  printf("   -u                       De-Sync Bulb ( Requires options -q and -r )\n");
   printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
   printf("\n");
 }
@@ -266,6 +262,15 @@ void getOptions(std::vector<std::string> args, int type)
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
                  radiomode = (uint8_t)tmp;
                  break;
+                case s:
+                 do_sync = 1;
+                 do_desync = 0;
+                 break;
+                case u:
+                 do_desync = 1;
+                 do_sync = 0;
+                 break;
+
             }
         }
     
@@ -387,6 +392,16 @@ void getOptions(std::vector<std::string> args, int type)
         tmp = strtoll(optarg, NULL, 10);
         radiomode = (uint8_t)tmp;
         break;
+      case 's':
+        do_sync = 1;
+        do_desync = 0;
+        do_command = 1;
+        break;
+      case 'u':
+        do_desync = 1;
+        do_sync = 0;
+        do_command = 1;
+        break;
       case '?':
         if (type == 0 ) {
         if(optopt == 'n' || optopt == 'p' || optopt == 'q' || 
@@ -408,21 +423,34 @@ void getOptions(std::vector<std::string> args, int type)
     }
   }     
 }
+ if ( radiomode==1 )
+  {
+     prefix   = 0xB8;
+  } else if ( radiomode==2 ) {
+     prefix   = 0x5A;
+  }
+
 }
 
 void resetVars()
 {
   do_receive = 0;
   do_command = 0;
-
-  prefix   = 0xB8;
+  do_sync    = 0;
+  do_desync  = 0;
+  if ( radiomode==1 )  
+  {
+     prefix   = 0xB8;
+  } else if ( radiomode==2 ) {
+     prefix   = 0x5A;
+  }
   rem_p    = 0x00;
   remote   = 0x01;
   color    = 0x00;
   bright   = 0x00;
   key      = 0x01;
   seq      = 0x00;
-  resends  =   60;
+  resends  =   30;
 
   command = 0x00;
 }
@@ -599,16 +627,16 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 
 
 void receive()
-{
-    printf("Receiving mode, press Ctrl-C to end\n");
-    while(1){
-        // check if there are any new messages to send! 
-        if(getCommandListSize() == 0)
+{ // 1
+    	printf("Receiving mode, press Ctrl-C to end\n");
+    	while(1)
+	{
+        	// check if there are any new messages to send! 
+        	if(getCommandListSize() == 0)
 		{
 			char data[50];
-			radiomode = 1;
 			int ret = mlr.setRadioMode(radiomode);
-  
+ 
 			if(ret < 0)
 			{
 				fprintf(stderr, "Failed to open connection to the 2.4GHz module.\n");
@@ -616,51 +644,72 @@ void receive()
 				usage(all_args.front().c_str(), options);
 				exit(-1);
 			}
-             
-			if(mlr.available()) {
-                uint8_t packet[7];
-                size_t packet_length = sizeof(packet);
-                mlr.read(packet, packet_length);
-                if (packet[5] > 0) 
-                {
-                    sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
-                    std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                    JSONfilewrite(output);
-                    sendJSON(output);
-                    consoleWrite(output);
-                    
-                    // Run Command Temporary
-                    char commandOUT[100];
-                    sprintf(commandOUT, "/var/working/atomik_controller/transceiver -p %02X -q 43 -r 1d -c %02X -b %02X -k %02X -v %02X -t %d -n %d", packet[0], packet[3], packet[4], packet[5], packet[6], radiomode, resends);
-                     system(commandOUT);
-                    
-                } else {
-                   // printf("0");
-                }
-            }
             
-            int dupesReceived = mlr.dupesReceived();
-            for (; dupesPrinted < dupesReceived; dupesPrinted++) {
-               // printf(".");
-            }
-           // fflush(stdout);
-       
-        } else {
-        
-            std::string comandSTR = getCommand();     
-			if (debug) {			
+			if(mlr.available()) 
+			{
+               			uint8_t packet[7];
+               			size_t packet_length = sizeof(packet);
+               			mlr.read(packet, packet_length);
+               			if (packet[5] > 0) 
+               			{
+                 			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
+                    			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
+                    			JSONfilewrite(output);
+                    			sendJSON(output);
+                    			consoleWrite(output);
+                		}
+           		}
+           
+            		int dupesReceived = mlr.dupesReceived();
+			usleep(50000);
+ 
+	      	} else {
+                       
+        		std::string comandSTR = getCommand();     
+			
+       		     	if (debug) 
+			{			
 				consoleWrite(strConcat("Command Processed: ", comandSTR));
 			}
-            getOptions(String2Vector(comandSTR), 1);
             
-			send(color, bright, key, remote, rem_p, prefix, seq, resends);
-            
-			removeCommand();
-            resetVars();
-        }
-    }
-}
+            		getOptions(String2Vector(comandSTR), 1);
+           
+			if ( do_sync == 1 && radiomode == 1 ) {
+               			for(int i=0; i<5; i++) {
+               				send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
+               				usleep(350);
+               			}
+            		} else if ( do_desync == 1 && radiomode == 1 ) {
+               			send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
 
+               			for(int i=0; i<5; i++) {
+               				send(0xd3, 0xe1, 0x13, remote, rem_p, prefix, seq, 30);
+               				usleep(350);
+               			}
+
+            		} else if ( do_sync == 1 && radiomode == 2 ) {
+               			for(int i=0; i<5; i++) {
+               				send(0x01, 0x08, 0x03, remote, rem_p, 0x5a, seq, 30);
+               				usleep(350);
+               			}
+
+          	  	}  else if ( do_desync == 1 && radiomode == 2 ) {
+               			uint8_t bseq = 0xf9;
+               			for(int i=0; i<5; i++) {
+               				send(0x01, 0x08, bseq, remote, rem_p, 0x5a, seq, 10);
+               				bseq = bseq - 1;
+                      			usleep(155000);
+               			}
+
+            		} else {
+               			send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            		}
+ 
+            		removeCommand();
+            		resetVars();
+       		}
+	}
+}
 
 void socketConnect(int type , std::string data)
 {
@@ -965,9 +1014,7 @@ int main(int argc, char** argv)
         sprintf(argstrout, "Arg String: %s", Vector2String(all_args).c_str());
         consoleWrite(argstrout);
     }
-    
-    
-    
+ 
     if(do_server) 
     {
         socketConnect(0,"");
@@ -992,14 +1039,42 @@ int main(int argc, char** argv)
         socketConnect(0, "");
         if(alreadyRunning) { 
             socketConnect(1, Vector2String(all_args));
-             exit(1);
+            exit(1);
         } 
         
         if (do_command==2) 
         {
             send(command);
         } else {
-            send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            if ( do_sync == 1 && radiomode == 1 ) {
+                for(int i=0; i<5; i++) {
+                     send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
+                     usleep(350);
+                } 
+            } else if ( do_desync == 1 && radiomode == 1 ) {
+                send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
+                for(int i=0; i<5; i++) {
+                     send(0xd3, 0xe1, 0x13, remote, rem_p, prefix, seq, 30);
+                     usleep(350);
+                }
+    
+            } else if ( do_sync == 1 && radiomode == 2 ) {
+                for(int i=0; i<5; i++) {
+                     send(0x01, 0x08, 0x03, remote, rem_p, prefix, seq, 30);
+                     usleep(350);
+                }
+
+            }  else if ( do_desync == 1 && radiomode == 2 ) {
+                uint8_t bseq = 0xf9; 
+		for(int i=0; i<5; i++) {
+                     send(0x01, 0x08, bseq, remote, rem_p, prefix, seq, 30);
+                     bseq = bseq - 1; 
+			usleep(155000);
+                }
+
+            } else {
+                send(color, bright, key, remote, rem_p, prefix, seq, resends);
+            }        
         }
        
     }

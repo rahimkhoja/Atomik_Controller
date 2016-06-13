@@ -83,19 +83,18 @@ void JSONfilewrite (std::string textjson)
 {
   JSONfileMutex.lock();
   
-  char filename[] = "AtomikEmulatorJSON.log";
-  std::fstream json;
+  char filename[] = "/var/log/atomik/AtomikEmulatorJSON.log";
+  std::ofstream json;
 
-  json.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+  json.open(filename, std::ios_base::app);
   if (!json ) 
   {
-        json.open(filename,  std::fstream::in | std::fstream::out | std::fstream::trunc);
-        json << textjson.c_str();
-        json << "\n";
+        json.open(filename,  std::ios_base::app);
+        json << textjson.c_str() << std::endl;
         json.close();
   } else {
   
-        json << textjson.c_str();
+        json << textjson.c_str() << std::endl;
         json.close();
   }
        
@@ -161,8 +160,8 @@ void listen()
         s1 = fread(reply, 1, 15, fd);
         reply[s1] = ',';
         s1++;
-        fd = popen("ifconfig | awk '/HWaddr/&&/wlan0/' | cut -d ' ' -f 10 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
-        //fd = popen("ifconfig | grep \"HWaddr\" | cut -d ' ' -f 11 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
+        // fd = popen("ifconfig | awk '/HWaddr/&&/wlan0/' | cut -d ' ' -f 10 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
+        fd = popen("ifconfig | grep \"HWaddr\" | cut -d ' ' -f 11 | tr -d [:space:] | tr -d ':' | tr [:lower:] [:upper:]", "r");
         s2 = fread(reply + s1, 1, 12 ,fd);
         reply[s1 + s2] = ',';
     }
@@ -185,7 +184,7 @@ void listen()
             if (FD_ISSET(discover_fd, &socks))
             {                       
 
-			    int n = recvfrom(discover_fd, mesg, 41, 0, (struct sockaddr *)&cliaddr, &len);
+		int n = recvfrom(discover_fd, mesg, 41, 0, (struct sockaddr *)&cliaddr, &len);
                 mesg[n] = '\0';
 
                 if (debug)
@@ -242,7 +241,7 @@ void listen()
                     sin = (struct sockaddr_in *) &areq.arp_ha;
                     sin->sin_family = ARPHRD_ETHER;
 
-                    strncpy(areq.arp_dev, "wlan0", 15);
+                    strncpy(areq.arp_dev, "eth0", 15);
 
                     if (ioctl(data_fd, SIOCGARP, (caddr_t) &areq) == -1)
                     {
