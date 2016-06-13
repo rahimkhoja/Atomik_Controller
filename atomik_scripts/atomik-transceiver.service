@@ -6,12 +6,12 @@ After       = syslog.target network.target
 
 [Service]
 ExecStart   = /usr/bin/transceiver
-ExecStop    = kill -INT `cat /run/atomikTRA.pid`
-ExecReload  = kill -TERM `cat /run/atomikTRA.pid`
+#ExecStop    = kill -INT `cat /run/atomikTRA.pid`
+#ExecReload  = kill -TERM `cat /run/atomikTRA.pid`
 Restart     = always
 Type        = simple 
 NotifyAccess= main
-PIDFile     = /run/atomikTRA.pid
+#PIDFile     = /run/atomikTRA.pid
 StandardOutput=null
 
 [Install]

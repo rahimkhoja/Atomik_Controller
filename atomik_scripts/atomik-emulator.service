@@ -6,12 +6,12 @@ After       = syslog.target network.target
 
 [Service]
 ExecStart   = /usr/bin/emulator
-ExecStop    = kill -INT `cat /run/atomikEMU.pid`
-ExecReload  = kill -TERM `cat /run/atomikEMU.pid`
+#ExecStop    = kill -INT `cat /run/atomikEMU.pid`
+#ExecReload  = kill -TERM `cat /run/atomikEMU.pid`
 Restart     = always
 Type        = simple 
 NotifyAccess= main
-PIDFile     = /run/atomikEMU.pid
+#PIDFile     = /run/atomikEMU.pid
 StandardOutput=null
 
 [Install]
