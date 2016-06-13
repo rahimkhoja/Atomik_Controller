@@ -79,6 +79,16 @@ function getInterfaceGateway($interface) {
 	}
 }
 
+function getService($servicename) {
+	$command = "service ".$servicename." status | grep 'Active: '";
+	exec($command, $output);
+		if (strpos($output[0],'running') !== false) {
+			echo "Running";
+		} else {
+		    echo "Stopped";
+		};
+}
+
 function getInterfaceAddress($interface) {
 	if (getInterfaceStatus($interface) == "Connected") { 
 		$command = "ifconfig ".$interface." | grep 'inet addr' | cut -d: -f2 | awk {'print $1'}";
@@ -297,32 +307,15 @@ function getTimeZone() {
     <tbody>
       <tr>
         <td>Atomik API Service: </td>
-        <td><?php exec("service atomik-server status | grep 'Active: '", $output);
-		$pos = strpos($output,'running');
-		if($pos === false) {
- 			echo "Stopped";
-		} else {
-		    echo "Running";
-		};?></td>
+        <td><?php getService('atomik-server'); ?></td>
       </tr>
     <tr>
         <td>Mi-Light Emulator Service: </td>
-        <td><?php exec("service atomik-emulator status | grep 'Active: '", $output);
-		if (strpos($output,'running') !== false) {
-			echo "Running";
-		} else {
-		    echo "Stopped";
-		};?></td>
+        <td><?php getService('atomik-emulator'); ?></td>
       </tr>
       <tr>
         <td>Mi-Light Transceiver Service: </td>
-        <td><?php exec("service atomik-transceiver status | grep 'Active: '", $output);
-		if (strpos($output,'running') !== false) {
-			echo $output;
-			echo "Running";
-		} else {
-		    echo "Stopped";
-		};?></td>
+        <td><?php getService('atomik-transceiver'); ?></td>
       </tr>
       <tr>
         <td>Total Devices: </td>
