@@ -297,15 +297,33 @@ function getTimeZone() {
     <tbody>
       <tr>
         <td>Atomik API Service: </td>
-        <td>Running</td>
+        <td><?php exec("service atomik-server status | grep 'Active: '", $output);
+		$pos = strpos($output,'running');
+		if($pos === false) {
+ 			echo "Stopped";
+		} else {
+		    echo "Running";
+		};?></td>
       </tr>
     <tr>
         <td>Mi-Light Emulator Service: </td>
-        <td>Running</td>
+        <td><?php exec("service atomik-emulator status | grep 'Active: '", $output);
+		$pos = strpos($output,'running');
+		if($pos === false) {
+ 			echo "Stopped";
+		} else {
+		    echo "Running";
+		};?></td>
       </tr>
       <tr>
         <td>Mi-Light Transceiver Service: </td>
-        <td>Running</td>
+        <td><?php exec("service atomik-transceiver status | grep 'Active: '", $output);
+		$pos = strpos($output,'running');
+		if($pos === false) {
+ 			echo "Stopped";
+		} else {
+		    echo "Running";
+		};?></td>
       </tr>
       <tr>
         <td>Total Devices: </td>
