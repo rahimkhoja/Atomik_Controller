@@ -308,21 +308,19 @@ function getTimeZone() {
     <tr>
         <td>Mi-Light Emulator Service: </td>
         <td><?php exec("service atomik-emulator status | grep 'Active: '", $output);
-		$pos = strpos($output,'running');
-		if($pos === false) {
- 			echo "Stopped";
+		if (strpos($output,'running') !== false) {
+			echo "Running";
 		} else {
-		    echo "Running";
+		    echo "Stopped";
 		};?></td>
       </tr>
       <tr>
         <td>Mi-Light Transceiver Service: </td>
         <td><?php exec("service atomik-transceiver status | grep 'Active: '", $output);
-		$pos = strpos($output,'running');
-		if($pos === false) {
- 			echo "Stopped";
+		if (strpos($output,'running') !== false) {
+			echo "Running";
 		} else {
-		    echo "Running";
+		    echo "Stopped";
 		};?></td>
       </tr>
       <tr>
