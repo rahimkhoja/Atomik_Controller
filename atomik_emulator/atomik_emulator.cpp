@@ -184,7 +184,7 @@ void listen()
             if (FD_ISSET(discover_fd, &socks))
             {                       
 
-			    int n = recvfrom(discover_fd, mesg, 41, 0, (struct sockaddr *)&cliaddr, &len);
+		int n = recvfrom(discover_fd, mesg, 41, 0, (struct sockaddr *)&cliaddr, &len);
                 mesg[n] = '\0';
 
                 if (debug)
@@ -241,7 +241,7 @@ void listen()
                     sin = (struct sockaddr_in *) &areq.arp_ha;
                     sin->sin_family = ARPHRD_ETHER;
 
-                    strncpy(areq.arp_dev, "wlan0", 15);
+                    strncpy(areq.arp_dev, "eth0", 15);
 
                     if (ioctl(data_fd, SIOCGARP, (caddr_t) &areq) == -1)
                     {
