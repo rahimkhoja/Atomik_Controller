@@ -78,7 +78,72 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, 
 			$trans = $trans + 1;
 		}
 		if ($new_b != $old_b) {
-			$sendcom = $sendcombase." -b ".dechex($new_b)." -k 0e -v ".dechex($trans);
+			if ($new_b == 3) {
+				$sendcom = $sendcombase." -b ".dechex(137)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 6) {
+				$sendcom = $sendcombase." -b ".dechex(129)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 9) {
+				$sendcom = $sendcombase." -b ".dechex(121)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 12) {
+				$sendcom = $sendcombase." -b ".dechex(113)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 15) {
+				$sendcom = $sendcombase." -b ".dechex(105)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 19) {
+				$sendcom = $sendcombase." -b ".dechex(97)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 22) {
+				$sendcom = $sendcombase." -b ".dechex(89)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 25) {
+				$sendcom = $sendcombase." -b ".dechex(81)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 28) {
+				$sendcom = $sendcombase." -b ".dechex(73)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 31) {
+				$sendcom = $sendcombase." -b ".dechex(65)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 34) {
+				$sendcom = $sendcombase." -b ".dechex(57)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 37) {
+				$sendcom = $sendcombase." -b ".dechex(49)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 40) {
+				$sendcom = $sendcombase." -b ".dechex(41)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 44) {
+				$sendcom = $sendcombase." -b ".dechex(33)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 47) {
+				$sendcom = $sendcombase." -b ".dechex(25)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 50) {
+				$sendcom = $sendcombase." -b ".dechex(17)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 53) {
+				$sendcom = $sendcombase." -b ".dechex(9)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 56) {
+				$sendcom = $sendcombase." -b ".dechex(1)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 59) {
+				$sendcom = $sendcombase." -b ".dechex(249)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 62) {
+				$sendcom = $sendcombase." -b ".dechex(241)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 65) {
+				$sendcom = $sendcombase." -b ".dechex(233)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 69) {
+				$sendcom = $sendcombase." -b ".dechex(225)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 72) {
+				$sendcom = $sendcombase." -b ".dechex(217)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 75) {
+				$sendcom = $sendcombase." -b ".dechex(209)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 78) {
+				$sendcom = $sendcombase." -b ".dechex(201)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 81) {
+				$sendcom = $sendcombase." -b ".dechex(193)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 84) {
+				$sendcom = $sendcombase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 87) {
+				$sendcom = $sendcombase." -b ".dechex(177)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 90) {
+				$sendcom = $sendcombase." -b ".dechex(169)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 94) {
+				$sendcom = $sendcombase." -b ".dechex(161)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 97) {
+				$sendcom = $sendcombase." -b ".dechex(153)." -k 0e -v ".dechex($trans);
+			} else if ($new_b == 100) {
+				$sendcom = $sendcombase." -b ".dechex(145)." -k 0e -v ".dechex($trans);
+			} 
+			
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
@@ -216,6 +281,74 @@ if ( isset($_POST["device_brightness"])) {
 		$_device_brightness = 0;
 	}
 }
+
+if ($_device_brightness <= 3) {
+				$_device_brightness = 3;
+			} else if ($_device_brightness <= 6) {
+				$_device_brightness = 6;
+			} else if ($_device_brightness <= 9) {
+				$_device_brightness = 9;
+			} else if ($_device_brightness <= 12) {
+				$_device_brightness = 12;
+			} else if ($_device_brightness <= 15) {
+				$_device_brightness = 15;
+			} else if ($_device_brightness <= 19) {
+				$_device_brightness = 19;
+			} else if ($_device_brightness <= 22) {
+				$_device_brightness = 22;
+			} else if ($_device_brightness <= 25) {
+				$_device_brightness = 25;
+			} else if ($_device_brightness <= 28) {
+				$_device_brightness = 28;
+			} else if ($_device_brightness <= 31) {
+				$_device_brightness = 31;
+			} else if ($_device_brightness <= 34) {
+				$_device_brightness = 34;
+			} else if ($_device_brightness <= 37) {
+				$_device_brightness = 37;
+			} else if ($_device_brightness <= 40) {
+				$_device_brightness = 40;
+			} else if ($_device_brightness <= 44) {
+				$_device_brightness = 44;
+			} else if ($_device_brightness <= 47) {
+				$_device_brightness = 47;
+			} else if ($_device_brightness <= 50) {
+				$_device_brightness = 50;
+			} else if ($_device_brightness <= 53) {
+				$_device_brightness = 53;
+			} else if ($_device_brightness <= 56) {
+				$_device_brightness = 56;
+			} else if ($_device_brightness <= 59) {
+				$_device_brightness = 59;
+			} else if ($_device_brightness <= 62) {
+				$_device_brightness = 62;
+			} else if ($_device_brightness <= 65) {
+				$_device_brightness = 65;
+			} else if ($_device_brightness <= 69) {
+				$_device_brightness = 69;
+			} else if ($_device_brightness <= 72) {
+				$_device_brightness = 72;
+			} else if ($_device_brightness <= 75) {
+				$_device_brightness = 75;
+			} else if ($_device_brightness <= 78) {
+				$_device_brightness = 78;
+			} else if ($_device_brightness <= 81) {
+				$_device_brightness = 81;
+			} else if ($_device_brightness <= 84) {
+				$_device_brightness = 84;
+			} else if ($_device_brightness <= 87) {
+				$_device_brightness = 87;
+			} else if ($_device_brightness <= 90) {
+				$_device_brightness = 90;
+			} else if ($_device_brightness <= 94) {
+				$_device_brightness = 94;
+			} else if ($_device_brightness <= 97) {
+				$_device_brightness = 97;
+			} else if ($_device_brightness <= 100) {
+				$_device_brightness = 100;
+			}
+
+
 
 if ( isset($_POST["device_rgb256"])) {
 	$_device_rgb256 = $_POST["device_rgb256"];
