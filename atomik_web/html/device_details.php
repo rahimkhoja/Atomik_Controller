@@ -59,7 +59,8 @@ function generateAddress( $db, $ty  )
 			}
 		 }	
 	}
-	return $a1.'---'.$a2;
+	$output = $a1."---".$a2;
+	return $output;
 }
 
 
@@ -292,6 +293,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			
 			
 			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_address1, device_address2 ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$new_addresses_array[0].",".$new_addresses_array[1].")";
+			echo sql;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Device Details Updated!";
