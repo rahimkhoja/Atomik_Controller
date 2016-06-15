@@ -78,7 +78,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, 
 			$trans = $trans + 1;
 		}
 		if ($new_b != $old_b) {
-			$sendcom = $sendcom." -b ".dechex($new_b)." -k 4e -v ".dechex($trans);
+			$sendcom = $sendcom." -b ".dechex($new_b)." -k 0e -v ".dechex($trans);
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
