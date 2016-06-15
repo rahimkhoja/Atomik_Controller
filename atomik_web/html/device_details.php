@@ -73,19 +73,23 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, 
 			} else {
 				$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 04 -v ".dechex($trans);
 			}
+			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
 		if ($new_b != $old_b) {
 			$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 4e -v ".dechex($trans);
+			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
 		if ($new_c != $old_c) {
 			$initcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 03 -v ".dechex($trans);
-			exec($initcom);	
+			exec($initcom);
+			echo $initcom;	
 			$trans = $trans + 1;
 			$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 0f -v ".dechex($trans);
+			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
@@ -235,7 +239,7 @@ if ( isset($_POST["device_white_temprature"])) {
 
 	if ($_new_device != 1 ) {
 		$_device_address1 = $row['device_address1'];
-		$_device_address2 = $_POST["device_address2"];
+		$_device_address2 = $row['device_address2'];
 	} else {
 		$_device_address1 = "";
 		$_device_address2 = "";
