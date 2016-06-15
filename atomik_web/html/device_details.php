@@ -63,9 +63,9 @@ function generateAddress( $db, $ty  )
 	return $output;
 }
 
-function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, $tra) {
+function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, $tra, $rgb) {
 	$trans = $tra;
-	if ( $_device_type_rgb256 == 1 ) {
+	if ( $rgb == 1 ) {
 		$sendcom = "-t 1 -q ".dechex($add1)." -r ".dechex($add2);
 		if ($new_s != $old_s) {
 			if ($new_s == 1 ) {
@@ -95,7 +95,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, 
 		}
 		echo $sendcom;
 	} else {
-		
+		echo white;
 	}
 			
 }
@@ -486,7 +486,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Device Properties Updated!";
-			transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_address1, $_device_address2, ($_device_transmission + 1));
+			transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_address1, $_device_address2, ($_device_transmission + 1), $_device_type_rgb256);
 			
 		} else {
     		$page_error = 1;
