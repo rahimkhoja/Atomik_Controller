@@ -66,7 +66,7 @@ function generateAddress( $db, $ty  )
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, $tra, $rgb) {
 	$trans = $tra;
 	if ( $rgb == 1 ) {
-		$sendcom = "-t 1 -q ".dechex($add1)." -r ".dechex($add2);
+		$sendcom = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
 		if ($new_s != $old_s) {
 			if ($new_s == 1 ) {
 				$sendcom = $sendcom." -c ".dechex($new_c)." -b ".dechex($new_b)." -k 03 -v ".dechex($trans);
@@ -515,8 +515,9 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 	} else {
 		
 			// Run Sync Device Command
-			$sendcom = "-s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			$sendcom = "/usr/bin/transceiver -s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
 			exec($sendcom);
+			echo $sendcom;
 			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission + 5)." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
