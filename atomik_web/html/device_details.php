@@ -313,7 +313,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			
 			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_address1, device_address2, device_transmission ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$new_addresses_array[0].",".$new_addresses_array[1].", 0)";
 			$_device_address1 = $new_addresses_array[0];
-			$_device_address1 = $new_addresses_array[1];
+			$_device_address2 = $new_addresses_array[1];
 			$_device_transmission = 0;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
@@ -421,7 +421,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			$new_address_string = generateAddress($conn, $_device_type);
 			$new_addresses_array = explode("---", $new_address_string);
 			$_device_address1 = $new_addresses_array[0];
-			$_device_address1 = $new_addresses_array[1];
+			$_device_address2 = $new_addresses_array[1];
 			$_device_transmission = 0;
 			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb256, device_white_temprature, device_address1, device_address2, device_transmission ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb256).",".trim($_device_white_temprature).",".$new_addresses_array[0].",".$new_addresses_array[1].", 0);";		
 			if ($conn->query($sql) === TRUE) {
@@ -513,58 +513,22 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		if ( ( $_device_address1 == "" || empty($_device_address1) ) || ( $_device_address2 == "" || empty($_device_address2) ) ) {
-			$found_address = 0;
-			while (!$found_address) {			
-				$a1 = rand(0, 255);
-				$a2 = rand(0, 255);
-					
-				$sql='SELECT atomik_devices.device_address1, atomik_devices.device_address2 FROM atomik_devices WHERE atomik_devices.device_address1 = '.$a1.' && atomik_devices.device_address2 = '.$a2.';' ;
-				$addrs=$conn->query($sql);
-			
-				if($addrs === false) {
-  					trigger_error('Wrong Address SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-				} else {
-					$address1Total = $addrs->num_rows;
-				}
-				
-				$addrs->free();
-			
-				$sql='SELECT atomik_remotes.remote_address1, atomik_remotes.remote_address2 FROM atomik_remotes WHERE atomik_remotes.remote_address1 = '.$a1.' && atomik_remotes.remote_address2 = '.$a2.';' ;
-				$addrs=$conn->query($sql);
-			
-				if($addrs === false) {
-  					trigger_error('Wrong Address SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-				} else {
-					$address2Total = $addrs->num_rows;
-				}
-				
-				$addrs->free();
-				if ( $address2Total == 0 && $address1Total == 0 ) {
-					$found_address = 1;
-				}
-			}
-			
-			$_device_address1 = $a1;
-			$_device_address2 = $a2;
-			$_device_transmission = 0;
-	
-			$sql = "UPDATE atomik_devices SET device_address1 = ".trim($_device_address1).", device_address2 = ".trim($_device_address2).", device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
+		
+			// Run Sync Device Command
+			$sendcom = "-s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			exec($sendcom);
+			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission + 5)." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
-				$page_success = 1;
-				$success_text = "New Address Selected And Deviced Synced!";
+    			$page_success = 1;
+				$success_text = "Device Synced!";
+			
 			} else {
     			$page_error = 1;
-				$error_text = "Error Saving MiLight Properties To DB!";
+				$error_text = "Device Synced , but DB Error!";
 			}
-			// Run Sync Device Command
 			
-		} else {
-			// Run Sync Device Command 
-			$page_success = 1;
-			$success_text = "Device Synced!";
-		}	
-	}		
+	}	
+	
 }
 
 // De-Sync Bulb (desync_device)
@@ -853,7 +817,7 @@ $("#deldevbtn").on('click', function() {
 });
 $("#syncdevbtn").on('click', function() {
 	$("#overlay").show();
-	if (window.confirm("To Sync a bulb you must turn it on within 2 seconds of pressing the OK button below. Are you ready?")) {
+	if (window.confirm("Sync Bulb\n\nPlease turn on the power to your bulb and immediately click the OK button below. \n\nAre you ready?")) {
         document.forms["devicefrm"].command.value = "sync_device";
    		document.devicefrm.submit();
 	}
