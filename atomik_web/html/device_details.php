@@ -66,29 +66,29 @@ function generateAddress( $db, $ty  )
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, $tra, $rgb) {
 	$trans = $tra;
 	if ( $rgb == 1 ) {
-		$sendcom = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
+		$sendcombase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
 		if ($new_s != $old_s) {
 			if ($new_s == 1 ) {
-				$sendcom = $sendcom." -k 03 -v ".dechex($trans);
+				$sendcom = $sendcombase." -k 03 -v ".dechex($trans);
 			} else {
-				$sendcom = $sendcom." -k 04 -v ".dechex($trans);
+				$sendcom = $sendcombase." -k 04 -v ".dechex($trans);
 			}
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
 		if ($new_b != $old_b) {
-			$sendcom = $sendcom." -b ".dechex($new_b)." -k 0e -v ".dechex($trans);
+			$sendcom = $sendcombase." -b ".dechex($new_b)." -k 0e -v ".dechex($trans);
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
 		if ($new_c != $old_c) {
-			$initcom = $sendcom." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
+			$initcom = $sendcombase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
 			exec($initcom);
 			echo $initcom;	
 			$trans = $trans + 1;
-			$sendcom = $sendcom." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
+			$sendcom = $sendcombase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
