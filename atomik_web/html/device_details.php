@@ -69,26 +69,26 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, 
 		$sendcom = "-t 1 -q ".dechex($add1)." -r ".dechex($add2);
 		if ($new_s != $old_s) {
 			if ($new_s == 1 ) {
-				$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 03 -v ".dechex($trans);
+				$sendcom = $sendcom." -c ".dechex($new_c)." -b ".dechex($new_b)." -k 03 -v ".dechex($trans);
 			} else {
-				$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 04 -v ".dechex($trans);
+				$sendcom = $sendcom." -c ".dechex($new_c)." -b ".dechex($new_b)." -k 04 -v ".dechex($trans);
 			}
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
 		if ($new_b != $old_b) {
-			$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 4e -v ".dechex($trans);
+			$sendcom = $sendcom." -c ".dechex($new_c)." -b ".dechex($new_b)." -k 4e -v ".dechex($trans);
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
 		}
 		if ($new_c != $old_c) {
-			$initcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 03 -v ".dechex($trans);
+			$initcom = $sendcom." -c ".dechex($new_c)." -b ".dechex($new_b)." -k 03 -v ".dechex($trans);
 			exec($initcom);
 			echo $initcom;	
 			$trans = $trans + 1;
-			$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 0f -v ".dechex($trans);
+			$sendcom = $sendcom." -c ".dechex($new_c)." -b ".dechex($new_b)." -k 0f -v ".dechex($trans);
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
@@ -312,7 +312,9 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			
 			
 			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_address1, device_address2, device_transmission ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$new_addresses_array[0].",".$new_addresses_array[1].", 0)";
-			
+			$_device_address1 = $new_addresses_array[0];
+			$_device_address1 = $new_addresses_array[1];
+			$_device_transmission = 0;
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Device Details Updated!";
@@ -418,7 +420,9 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			// Generate Random Numbers
 			$new_address_string = generateAddress($conn, $_device_type);
 			$new_addresses_array = explode("---", $new_address_string);
-			
+			$_device_address1 = $new_addresses_array[0];
+			$_device_address1 = $new_addresses_array[1];
+			$_device_transmission = 0;
 			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb256, device_white_temprature, device_address1, device_address2, device_transmission ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb256).",".trim($_device_white_temprature).",".$new_addresses_array[0].",".$new_addresses_array[1].", 0);";		
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
