@@ -63,6 +63,38 @@ function generateAddress( $db, $ty  )
 	return $output;
 }
 
+function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, $tra) {
+	$trans = $tra;
+	if ( $_device_type_rgb256 == 1 ) {
+		$sendcom = "-t 1 -q ".dechex($add1)." -r ".dechex($add2);
+		if ($new_s != $old_s) {
+			if ($new_s == 1 ) {
+				$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 03 -v ".dechex($trans);
+			} else {
+				$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 04 -v ".dechex($trans);
+			}
+			exec($sendcom);	
+			$trans = $trans + 1;
+		}
+		if ($new_b != $old_b) {
+			$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 4e -v ".dechex($trans);
+			exec($sendcom);	
+			$trans = $trans + 1;
+		}
+		if ($new_c != $old_c) {
+			$initcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 03 -v ".dechex($trans);
+			exec($initcom);	
+			$trans = $trans + 1;
+			$sendcom = $sendcom." -c ".dechex($_device_rgb256)." -b ".dechex($_device_brightness)." -k 0f -v ".dechex($trans);
+			exec($sendcom);	
+			$trans = $trans + 1;
+		}
+		echo $sendcom;
+	} else {
+		
+	}
+			
+}
 
 function processErrors($ers)
 {
@@ -201,35 +233,18 @@ if ( isset($_POST["device_white_temprature"])) {
 	}
 }
 
-if ( isset($_POST["device_address1"])) {
-	$_device_address1 = $_POST["device_address1"];
-} else {
-	if ($_new_device == 0 ) {
+	if ($_new_device != 1 ) {
 		$_device_address1 = $row['device_address1'];
+		$_device_address2 = $_POST["device_address2"];
 	} else {
 		$_device_address1 = "";
-	}
-}
-
-if ( isset($_POST["device_address2"])) {
-	$_device_address2 = $_POST["device_address2"];
-} else {
-	if ($_new_device == 0 ) {
-		$_device_address2 = $row['device_address2'];
-	} else {
 		$_device_address2 = "";
 	}
-}
-
-if ( isset($_POST["device_transmission"])) {
-	$_device_transmission = $_POST["device_transmission"];
-} else {
-	if ($_new_device == 0 ) {
+	if ($_new_device != 1 ) {
 		$_device_transmission = $row['device_transmission'];
 	} else {
-		$_device_transmission = "";
+		$_device_transmission = 0;
 	}
-}
 
 if ( isset($_POST["device_type"])) {
 	$_device_type = $_POST["device_type"];
@@ -292,8 +307,8 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			$new_addresses_array = explode("---", $new_address_string);
 			
 			
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_address1, device_address2 ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$new_addresses_array[0].",".$new_addresses_array[1].")";
-			echo sql;
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_address1, device_address2, device_transmission ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$new_addresses_array[0].",".$new_addresses_array[1].", 0)";
+			
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Device Details Updated!";
@@ -316,7 +331,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	}		
 }
 
-// Save all Device Settings [Keep Post Data, Verify Form, DB] (save_aa)
+// Save all Device Settings [Keep Post Data, Verify Form, DB] (save_all)
 if ($command <> "" && $command !="" && $command == "save_all") 
 {	
 	$erro = array();
@@ -396,7 +411,11 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		$error_text = processErrors($erro);	
 	} else {
 		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb256, device_white_temprature ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb256).",".trim($_device_white_temprature).")";		
+			// Generate Random Numbers
+			$new_address_string = generateAddress($conn, $_device_type);
+			$new_addresses_array = explode("---", $new_address_string);
+			
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_status, device_colormode, device_brightness, device_rgb256, device_white_temprature, device_address1, device_address2, device_transmission ) VALUES ('".$_device_name."','".$_device_description."',".trim($_device_type).",".trim($_device_status).",".trim($_device_colormode).",".trim($_device_brightness).",".trim($_device_rgb256).",".trim($_device_white_temprature).",".$new_addresses_array[0].",".$new_addresses_array[1].", 0);";		
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -459,10 +478,12 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
-		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature).", device_transmission = ".trim($_device_transmission + 1)." WHERE device_id=".$_device_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Device Properties Updated!";
+			transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_address1, $_device_address2, ($_device_transmission + 1));
+			
 		} else {
     		$page_error = 1;
 			$error_text = "Error Saving Device Properties To DB!";
