@@ -39,6 +39,30 @@ function Check2700to6500( $input )
 	return 0;
 }
 
+function generateAddress( )
+{
+	$loop = true;
+	while( $loop ) {
+		 $a1 =rand(0,255);
+		 $a2 =rand(0,255);
+		 if ( $a2 != 27 ) {
+			$sql = 'SELECT atomik_devices.device_id, atomik_devices.device_address1, atomik_devices.device_address2 FROM atomik_devices WHERE atomik_devices.device_type = '.$_device_type.' &&  atomik_devices.device_address1 = '.$a1.' && atomik_devices.device_address2 = '.$a2.';';
+			$rs=$conn->query($sql);
+			$db_records = -1;
+			if($rs === false) {
+  				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+			} else {
+  				$db_records = $rs->num_rows;
+			}
+			if ( $db_records == 0 ) {
+				$loop = false;	
+			}
+		 }	
+	}
+	return $a1.'---'.$a2;
+}
+
+
 function processErrors($ers)
 {
 	$error_text = "";
@@ -262,7 +286,12 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		$error_text = processErrors($erro);	
 	} else {
 		if ( $_new_device == 1 ) {
-			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.")";
+			// Generate Random Numbers
+			$new_address_string = generateAddress();
+			$new_addresses_array = explode("---", $new_address_string);
+			
+			
+			$sql = "INSERT INTO atomik_devices (device_name, device_description, device_type, device_address1, device_address2 ) VALUES ('".$_device_name."','".$_device_description."',".$_device_type.",".$new_addresses_array[0].",".$new_addresses_array[1].")";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "General Device Details Updated!";
