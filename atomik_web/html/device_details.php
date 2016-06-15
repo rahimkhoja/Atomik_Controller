@@ -39,14 +39,14 @@ function Check2700to6500( $input )
 	return 0;
 }
 
-function generateAddress( $db  )
+function generateAddress( $db, $ty  )
 {
 	$loop = true;
 	while( $loop ) {
 		 $a1 =rand(0,255);
 		 $a2 =rand(0,255);
 		 if ( $a2 != 27 ) {
-			$sql = 'SELECT atomik_devices.device_id, atomik_devices.device_address1, atomik_devices.device_address2 FROM atomik_devices WHERE atomik_devices.device_type = '.$_device_type.' &&  atomik_devices.device_address1 = '.$a1.' && atomik_devices.device_address2 = '.$a2.';';
+			$sql = 'SELECT atomik_devices.device_id, atomik_devices.device_address1, atomik_devices.device_address2 FROM atomik_devices WHERE atomik_devices.device_type = '.$ty.' &&  atomik_devices.device_address1 = '.$a1.' && atomik_devices.device_address2 = '.$a2.';';
 			$rs=$db->query($sql);
 			$db_records = -1;
 			if($rs === false) {
@@ -287,7 +287,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
 	} else {
 		if ( $_new_device == 1 ) {
 			// Generate Random Numbers
-			$new_address_string = generateAddress($conn);
+			$new_address_string = generateAddress($conn, $_device_type);
 			$new_addresses_array = explode("---", $new_address_string);
 			
 			
