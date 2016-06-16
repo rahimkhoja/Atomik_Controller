@@ -63,7 +63,7 @@ function generateAddress( $db, $ty  )
 	return $output;
 }
 
-function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $old_wt, $new_wt, $old_cm, $new_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
+function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
 	$trans = $tra + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
@@ -109,7 +109,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $old_wt, $new_
 			if ( $old_cm != $new_cm ) {
 				echo 'current CM: '.$new_cm.'\n';
 			// Color Mode Change
-				if ($new_cm == 1 ) {
+				if ( $new_cm == 1 ) {
 					$sendcom = $sendcommandbase." -k 13 -v ".dechex($trans);
 				} else {
 					$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
