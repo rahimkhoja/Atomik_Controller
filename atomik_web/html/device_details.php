@@ -64,8 +64,7 @@ function generateAddress( $db, $ty  )
 }
 
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $old_wt, $new_wt, $old_cm, $new_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
-	
-	$trans = $tra;
+	$trans = $tra + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
@@ -108,6 +107,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $old_wt, $new_
 		// Status On
 			
 			if ( $old_cm != $new_cm ) {
+				echo 'current CM: '.$new_cm.'\n';
 			// Color Mode Change
 				if ($new_cm == 1 ) {
 					$sendcom = $sendcommandbase." -k 13 -v ".dechex($trans);
@@ -214,7 +214,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $old_wt, $new_
 		// End Status On
 	
 	} 
-			
+	return $trans;
 }
 
 function processErrors($ers)
@@ -657,12 +657,13 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
+		$trans = transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_white_temprature, $row['device_white_temprature'], $_device_colormode, $row['device_colormode'], $_device_address1, $_device_address2, $_device_transmission, $_device_type_rgb256, $_device_type_warm_white, $_device_type_cold_white);
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
-		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature).", device_transmission = ".trim($_device_transmission + 1)." WHERE device_id=".$_device_id.";";
+		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature).", device_transmission = ".trim($trans)." WHERE device_id=".$_device_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Device Properties Updated!";
-			transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_white_temprature, $row['device_white_temprature'], $_device_colormode, $row['device_colormode'], $_device_address1, $_device_address2, ($_device_transmission + 1), $_device_type_rgb256, $_device_type_warm_white, $_device_type_cold_white);
+			
 		} else {
     		$page_error = 1;
 			$error_text = "Error Saving Device Properties To DB!";
