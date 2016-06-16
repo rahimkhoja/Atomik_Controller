@@ -125,7 +125,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		
 			if ( $new_cm == 0 ) {
 			// Color Mode Color
-				if ($new_c != $old_c) {
+				if ($new_c != $old_c || $old_cm != $new_cm) {
 				// Color Change
 					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
 					exec($initcom);
@@ -146,7 +146,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			}
 			// End Color Mode Color
 		
-			if ($new_b != $old_b) {
+			if ($new_b != $old_b || $old_cm != $new_cm ) {
 			// Brightness Change
 				if ($new_b == 4) {
 					$sendcom = $sendcommandbase." -b ".dechex(129)." -k 0e -v ".dechex($trans);
