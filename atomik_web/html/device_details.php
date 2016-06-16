@@ -63,94 +63,157 @@ function generateAddress( $db, $ty  )
 	return $output;
 }
 
-function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $add1, $add2, $tra, $rgb) {
+function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $old_wt, $new_wt, $old_cm, $new_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
+	
 	$trans = $tra;
-	if ( $rgb == 1 ) {
-		$sendcombase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
-		if ($new_s != $old_s) {
-			if ($new_s == 1 ) {
-				$sendcom = $sendcombase." -k 03 -v ".dechex($trans);
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
+	
+	
+	if ( $cw == 1 && $ww == 1 ) {
+		$sendcommandbase = "/usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2);
+		// White Bulbs
+		echo white;
+		if ( $old_cm != $new_cm ) {
+			if ( $new_cm == 0) {
+			// Color 
+				
 			} else {
-				$sendcom = $sendcombase." -k 04 -v ".dechex($trans);
+			// White	
+			
+			}
+		}
+			
+	} else if ( $cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1 ) {
+		$sendcommandbase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
+	// RGBWW and RGBCW	
+		if ($new_s != $old_s) {
+		// Status Changed
+			if ($new_s == 1 ) {
+				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
+			} else {
+				$sendcom = $sendcommandbase." -k 04 -v ".dechex($trans);
 			}
 			echo $sendcom;
 			exec($sendcom);	
 			$trans = $trans + 1;
+			if ( $trans >= 256 ) {
+				$trans = $trans - 256;
+			}
 		}
-		if ($new_b != $old_b) {
-			if ($new_b == 4) {
-				$sendcom = $sendcombase." -b ".dechex(129)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 8) {
-				$sendcom = $sendcombase." -b ".dechex(121)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 12) {
-				$sendcom = $sendcombase." -b ".dechex(113)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 15) {
-				$sendcom = $sendcombase." -b ".dechex(105)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 19) {
-				$sendcom = $sendcombase." -b ".dechex(97)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 23) {
-				$sendcom = $sendcombase." -b ".dechex(89)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 27) {
-				$sendcom = $sendcombase." -b ".dechex(81)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 31) {
-				$sendcom = $sendcombase." -b ".dechex(73)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 35) {
-				$sendcom = $sendcombase." -b ".dechex(65)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 39) { //10
-				$sendcom = $sendcombase." -b ".dechex(57)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 42) { //11
-				$sendcom = $sendcombase." -b ".dechex(49)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 46) { //12
-				$sendcom = $sendcombase." -b ".dechex(41)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 50) { //13
-				$sendcom = $sendcombase." -b ".dechex(33)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 54) { //14
-				$sendcom = $sendcombase." -b ".dechex(25)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 58) { //15
-				$sendcom = $sendcombase." -b ".dechex(17)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 62) { //16
-				$sendcom = $sendcombase." -b ".dechex(9)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 65) { //17
-				$sendcom = $sendcombase." -b ".dechex(1)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 69) { //18
-				$sendcom = $sendcombase." -b ".dechex(249)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 73) { //19
-				$sendcom = $sendcombase." -b ".dechex(241)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 77) { // 20
-				$sendcom = $sendcombase." -b ".dechex(233)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 81) { // 21
-				$sendcom = $sendcombase." -b ".dechex(225)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 85) { // 22
-				$sendcom = $sendcombase." -b ".dechex(217)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 88) { // 23
-				$sendcom = $sendcombase." -b ".dechex(209)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 92) { // 24
-				$sendcom = $sendcombase." -b ".dechex(201)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 96) { // 25
-				$sendcom = $sendcombase." -b ".dechex(193)." -k 0e -v ".dechex($trans);
-			} else if ($new_b == 100) { // 26
-				$sendcom = $sendcombase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
-			} 
+		// End Status Change
+		
+		if ( $new_s == 1 ) {
+		// Status On
 			
-			
-			echo $sendcom;
-			exec($sendcom);	
-			$trans = $trans + 1;
+			if ( $old_cm != $new_cm ) {
+			// Color Mode Change
+				if ($new_cm == 1 ) {
+					$sendcom = $sendcommandbase." -k 13 -v ".dechex($trans);
+				} else {
+					$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
+				}
+				echo $sendcom;
+				exec($sendcom);	
+				$trans = $trans + 1;
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
+			}
+			// End Color Mode Change
+		
+			if ( $new_cm == 0 ) {
+			// Color Mode Color
+				if ($new_c != $old_c) {
+				// Color Change
+					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
+					exec($initcom);
+					echo $initcom;	
+					$trans = $trans + 1;
+					if ( $trans >= 256 ) {
+						$trans = $trans - 256;
+					}
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
+					echo $sendcom;
+					exec($sendcom);	
+					$trans = $trans + 1;
+					if ( $trans >= 256 ) {
+						$trans = $trans - 256;
+					}
+				}
+				// End Color Change
+			}
+			// End Color Mode Color
+		
+			if ($new_b != $old_b) {
+			// Brightness Change
+				if ($new_b == 4) {
+					$sendcom = $sendcommandbase." -b ".dechex(129)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 8) {
+					$sendcom = $sendcommandbase." -b ".dechex(121)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 12) {
+					$sendcom = $sendcommandbase." -b ".dechex(113)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 15) {
+					$sendcom = $sendcommandbase." -b ".dechex(105)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 19) {
+					$sendcom = $sendcommandbase." -b ".dechex(97)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 23) {
+					$sendcom = $sendcommandbase." -b ".dechex(89)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 27) {
+					$sendcom = $sendcommandbase." -b ".dechex(81)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 31) {
+					$sendcom = $sendcommandbase." -b ".dechex(73)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 35) {
+					$sendcom = $sendcommandbase." -b ".dechex(65)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 39) { //10
+					$sendcom = $sendcommandbase." -b ".dechex(57)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 42) { //11
+					$sendcom = $sendcommandbase." -b ".dechex(49)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 46) { //12
+					$sendcom = $sendcommandbase." -b ".dechex(41)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 50) { //13
+					$sendcom = $sendcommandbase." -b ".dechex(33)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 54) { //14
+					$sendcom = $sendcommandbase." -b ".dechex(25)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 58) { //15
+					$sendcom = $sendcommandbase." -b ".dechex(17)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 62) { //16
+					$sendcom = $sendcommandbase." -b ".dechex(9)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 65) { //17
+					$sendcom = $sendcommandbase." -b ".dechex(1)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 69) { //18
+					$sendcom = $sendcommandbase." -b ".dechex(249)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 73) { //19
+					$sendcom = $sendcommandbase." -b ".dechex(241)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 77) { // 20
+					$sendcom = $sendcommandbase." -b ".dechex(233)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 81) { // 21
+					$sendcom = $sendcommandbase." -b ".dechex(225)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 85) { // 22
+					$sendcom = $sendcommandbase." -b ".dechex(217)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 88) { // 23
+					$sendcom = $sendcommandbase." -b ".dechex(209)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 92) { // 24
+					$sendcom = $sendcommandbase." -b ".dechex(201)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 96) { // 25
+					$sendcom = $sendcommandbase." -b ".dechex(193)." -k 0e -v ".dechex($trans);
+				} else if ($new_b == 100) { // 26
+					$sendcom = $sendcommandbase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
+				} 
+		
+				echo $sendcom;
+				exec($sendcom);	
+				$trans = $trans + 1;
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
+			}
+			// End Brightness Change
 		}
-		if ($new_c != $old_c) {
-			$initcom = $sendcombase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
-			exec($initcom);
-			echo $initcom;	
-			$trans = $trans + 1;
-			$sendcom = $sendcombase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
-			echo $sendcom;
-			exec($sendcom);	
-			$trans = $trans + 1;
-		}
-		echo $sendcom;
-	} else {
-		echo white;
-	}
+		// End Status On
+	
+	} 
 			
 }
 
@@ -599,8 +662,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Device Properties Updated!";
-			transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_address1, $_device_address2, ($_device_transmission + 1), $_device_type_rgb256);
-			
+			transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_white_temprature, $row['device_white_temprature'], $_device_colormode, $row['device_colormode'], $_device_address1, $_device_address2, ($_device_transmission + 1), $_device_type_rgb256, $_device_type_warm_white, $_device_type_cold_white);
 		} else {
     		$page_error = 1;
 			$error_text = "Error Saving Device Properties To DB!";
