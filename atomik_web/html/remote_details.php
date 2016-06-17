@@ -541,14 +541,35 @@ if ($command <> "" && $command !="" && $command == "listen_milight")
 		$error_text = processErrors($erro);	
 	} else {
 		
-		// wait for 10 seconds while the Atomik Server Listens for Remote RF signals
-		
-		// Check db with something like this
-		
-		// select * FROM updateside where add_date >= now() - interval 10 second  
-		
-		// set address to the most common unknown transmission address during the 10 second interval
-		
+		$sql = "SELECT command_received_ADD1, command_received_ADD2, COUNT(*) AS count  FROM atomik_commands_received as c WHERE command_received_date >= CONVERT_TZ(NOW(), 'America/Vancouver', 'UTC') - INTERVAL 15 SECOND && command_received_processed = 0 GROUP BY command_received_ADD1, command_received_ADD2;";
+		sleep(10);
+		$listenrs=$conn->query($sql);
+ 
+		if($listenrs === false) {
+ 		 	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+		} else {
+  			$listencount = $rs->num_rows;
+		}
+
+		$listenrs->data_seek(0);
+		$listenrow = $listenrs->fetch_assoc();
+		if ( $listencount > 0 ) {
+			$_remote_address1 = $listenrow['command_received_ADD1'];
+			$_remote_address2 = $listenrow['command_received_ADD2'];
+			$sql = "UPDATE atomik_remotes SET remote_address1 = '".trim($_remote_address1)."', remote_address2 = '".trim($_remote_address2)." WHERE remote_id=".$_remote_id.";";
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "Remote Address Detected!";
+			} else {
+    			$page_error = 1;
+				$error_text = "Error Saving Remote RF Address To DB!";
+			}
+		} else {
+			$page_error = 1;
+			$error_text = "Sorry No RF Remotes Detected!";
+			
+		}
+		$listenrs->free();
 	}		
 }
 

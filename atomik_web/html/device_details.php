@@ -73,25 +73,21 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		// White Bulb Details
 		$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
 		$WhiteTemp = array(2700,3080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
+		
 		if ($new_s != $old_s) {
-		// Status Changed
+			// Status Changed
+			$trans = $trans + 1;
+			if ( $trans >= 256 ) {
+				$trans = $trans - 256;
+			}
 			if ($new_s == 1 ) {
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
 				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
 			} else {
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
 				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0B";
 			}
 			echo $sendcom;
 			exec($sendcom);	
-		}
-		// End Status Change
+		} // End Status Change
 		
 		if ( $new_s == 1 ) {
 		// Status On
@@ -209,17 +205,13 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 	// RGBWW and RGBCW	
 		if ($new_s != $old_s) {
 		// Status Changed
-			if ($new_s == 1 ) {
-				$trans = $trans + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
+			$trans = $trans + 1;
+			if ( $trans >= 256 ) {
+				$trans = $trans - 256;
+			}
+			if ($new_s == 1 ) {	
 				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
 			} else {
-				$trans = $trans + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
 				$sendcom = $sendcommandbase." -k 04 -v ".dechex($trans);
 			}
 			echo $sendcom;
@@ -231,12 +223,13 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		// Status On
 			
 			if ( $old_cm != $new_cm ) {
+				// Color Mode Change
 				$trans = $trans + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
 				echo 'current CM: '.$new_cm.'\n';
-			// Color Mode Change
+				
 				if ( $new_cm == 1 ) {
 					$sendcom = $sendcommandbase." -k 13 -v ".dechex($trans);
 				} else {
@@ -250,11 +243,12 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			if ( $new_cm == 0 ) {
 			// Color Mode Color
 				if ($new_c != $old_c || $old_cm != $new_cm) {
+					// Color Change
 					$trans = $trans + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
-				// Color Change
+					if ( $trans >= 256 ) {
+						$trans = $trans - 256;
+					}
+				
 					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
 					exec($initcom);
 					echo $initcom;	
@@ -272,7 +266,11 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			// End Color Mode Color
 		
 			if ($new_b != $old_b || $old_cm != $new_cm ) {
-			// Brightness Change
+				// Brightness Change
+				$trans = $trans + 1;
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
 				if ($new_b == 4) {
 					$sendcom = $sendcommandbase." -b ".dechex(129)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 8) {
@@ -325,11 +323,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 					$sendcom = $sendcommandbase." -b ".dechex(193)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 100) { // 26
 					$sendcom = $sendcommandbase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
-				} 
-		$trans = $trans + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
+				}
 				echo $sendcom;
 				exec($sendcom);	
 			}
@@ -869,7 +863,8 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 			
 			exec($sendcom);
 			echo $sendcom;
-			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission + 5)." WHERE device_id=".$_device_id.";";
+			$_device_transmission = $_device_transmission + 5;
+			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "Device Synced!";
@@ -907,7 +902,8 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 			
 			exec($sendcom);
 			echo $sendcom;
-			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission + 5)." WHERE device_id=".$_device_id.";";
+			$_device_transmission = $_device_transmission + 5;
+			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission )." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "Device De-Synced!";
