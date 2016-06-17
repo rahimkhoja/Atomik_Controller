@@ -72,7 +72,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		
 		// White Bulb Details
 		$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
-		$WhiteTemp = array(2700,2080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
+		$WhiteTemp = array(2700,3080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
 		if ($new_s != $old_s) {
 		// Status Changed
 			if ($new_s == 1 ) {
@@ -506,6 +506,32 @@ if ( isset($_POST["device_brightness"])) {
 	}
 }
 
+if ($_device_white_temprature <= 2700) {
+	$_device_white_temprature = 2700;
+} else if ($_device_white_temprature <= 3080) {
+	$_device_white_temprature = 3080;
+} else if ($_device_white_temprature <= 3460) {
+	$_device_white_temprature = 3460;
+} else if ($_device_white_temprature <= 3840) {
+	$_device_white_temprature = 3840;
+} else if ($_device_white_temprature <= 4220) {
+	$_device_white_temprature = 4220;
+} else if ($_device_white_temprature <= 4600) {
+	$_device_white_temprature = 4600;
+} else if ($_device_white_temprature <= 4980) {
+	$_device_white_temprature = 4980;
+} else if ($_device_white_temprature <= 5360) {
+	$_device_white_temprature = 5360;
+} else if ($_device_white_temprature <= 5740) {
+	$_device_white_temprature = 5740;
+} else if ($_device_white_temprature <= 6120) {
+	$_device_white_temprature = 6120;
+} else if ($_device_white_temprature <= 6500) {
+	$_device_white_temprature = 6500;
+} 
+
+
+
 if ($_device_type_warm_white == 1 && $_device_type_cold_white == 1 ) {
 	if ($_device_brightness <= 9) {
 	$_device_brightness = 9;
@@ -805,9 +831,9 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$trans = transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_white_temprature, $row['device_white_temprature'], $_device_colormode, $row['device_colormode'], $_device_address1, $_device_address2, $_device_transmission, $_device_type_rgb256, $_device_type_warm_white, $_device_type_cold_white);
+		$_device_transmission = transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_white_temprature, $row['device_white_temprature'], $_device_colormode, $row['device_colormode'], $_device_address1, $_device_address2, $_device_transmission, $_device_type_rgb256, $_device_type_warm_white, $_device_type_cold_white);
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
-		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature).", device_transmission = ".trim($trans)." WHERE device_id=".$_device_id.";";
+		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature).", device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Device Properties Updated!";
@@ -861,10 +887,9 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 if ($command <> "" && $command !="" && $command == "desync_device") 
 {	
 	$erro = array();
-	
-	if ( ( $_device_address1 == "" || empty($_device_address1) ) || ( $_device_address2 == "" || empty($_device_address2) ) ) 
+	if ($_new_device == 1 )
 	{
-		array_push($erro, "You Can Only DeSync A Device Once It Has Been Synced");
+		array_push($erro, "Please Save General Device Details Before De-Syncing A Device");	
 	} 
 	
 	if (count($erro) > 0) 
@@ -872,10 +897,28 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		// Run De-Sync Device Command 
-		$page_success = 1;
-		$success_text = "Device De-Synced!";
-	}
+		
+			// Run Sync Device Command
+			if ($_device_type_warm_white && $_device_type_cold_white) {
+				$sendcom = "/usr/bin/transceiver -u -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			} else {
+				$sendcom = "/usr/bin/transceiver -u -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			}
+			
+			exec($sendcom);
+			echo $sendcom;
+			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission + 5)." WHERE device_id=".$_device_id.";";
+			if ($conn->query($sql) === TRUE) {
+    			$page_success = 1;
+				$success_text = "Device De-Synced!";
+			
+			} else {
+    			$page_error = 1;
+				$error_text = "Device De-Synced , but DB Error!";
+			}
+			
+	}	
+	
 }
 
 // Delete Device (delete_device)
