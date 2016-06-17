@@ -231,7 +231,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				echo 'current CM: '.$new_cm.'\n';
 				
 				if ( $new_cm == 1 ) {
-					$sendcom = $sendcommandbase." -k 13 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -k 13 -b ".dechex($old_b)." -v ".dechex($trans);
 				} else {
 					$sendcom = $sendcommandbase." -k 03 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 				}
@@ -249,14 +249,14 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 						$trans = $trans - 256;
 					}
 				
-					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -b ".dechex($old_b)." -v ".dechex($trans);
+					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
 					exec($initcom);
 					echo $initcom;	
 					$trans = $trans + 1;
 					if ( $trans >= 256 ) {
 						$trans = $trans - 256;
 					}
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -b ".dechex($old_b)." -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
 					echo $sendcom;
 					exec($sendcom);	
 					
@@ -265,7 +265,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			}
 			// End Color Mode Color
 		
-			if ($new_b != $old_b || $old_cm != $new_cm ) {
+			if ($new_b != $old_b ) {
 				// Brightness Change
 				$trans = $trans + 1;
 				if ( $trans >= 256 ) {
