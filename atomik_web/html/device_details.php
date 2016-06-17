@@ -210,9 +210,9 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				$trans = $trans - 256;
 			}
 			if ($new_s == 1 ) {	
-				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
+				$sendcom = $sendcommandbase." -k 03 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 			} else {
-				$sendcom = $sendcommandbase." -k 04 -v ".dechex($trans);
+				$sendcom = $sendcommandbase." -k 04 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 			}
 			echo $sendcom;
 			exec($sendcom);	
@@ -231,9 +231,9 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				echo 'current CM: '.$new_cm.'\n';
 				
 				if ( $new_cm == 1 ) {
-					$sendcom = $sendcommandbase." -k 13 -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -k 13 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 				} else {
-					$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -k 03 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 				}
 				echo $sendcom;
 				exec($sendcom);	
@@ -249,14 +249,14 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 						$trans = $trans - 256;
 					}
 				
-					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
+					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -b ".dechex($old_b)." -v ".dechex($trans);
 					exec($initcom);
 					echo $initcom;	
 					$trans = $trans + 1;
 					if ( $trans >= 256 ) {
 						$trans = $trans - 256;
 					}
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -b ".dechex($old_b)." -v ".dechex($trans);
 					echo $sendcom;
 					exec($sendcom);	
 					
@@ -272,57 +272,57 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 					$trans = $trans - 256;
 				}
 				if ($new_b == 4) {
-					$sendcom = $sendcommandbase." -b ".dechex(129)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(129)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 8) {
-					$sendcom = $sendcommandbase." -b ".dechex(121)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(121)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 12) {
-					$sendcom = $sendcommandbase." -b ".dechex(113)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(113)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 15) {
-					$sendcom = $sendcommandbase." -b ".dechex(105)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(105)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 19) {
-					$sendcom = $sendcommandbase." -b ".dechex(97)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(97)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 23) {
-					$sendcom = $sendcommandbase." -b ".dechex(89)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(89)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 27) {
-					$sendcom = $sendcommandbase." -b ".dechex(81)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(81)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 31) {
-					$sendcom = $sendcommandbase." -b ".dechex(73)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(73)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 35) {
-					$sendcom = $sendcommandbase." -b ".dechex(65)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(65)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 39) { //10
-					$sendcom = $sendcommandbase." -b ".dechex(57)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(57)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 42) { //11
-					$sendcom = $sendcommandbase." -b ".dechex(49)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(49)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 46) { //12
-					$sendcom = $sendcommandbase." -b ".dechex(41)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(41)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 50) { //13
-					$sendcom = $sendcommandbase." -b ".dechex(33)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(33)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 54) { //14
-					$sendcom = $sendcommandbase." -b ".dechex(25)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(25)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 58) { //15
-					$sendcom = $sendcommandbase." -b ".dechex(17)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(17)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 62) { //16
-					$sendcom = $sendcommandbase." -b ".dechex(9)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(9)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 65) { //17
-					$sendcom = $sendcommandbase." -b ".dechex(1)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(1)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 69) { //18
-					$sendcom = $sendcommandbase." -b ".dechex(249)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(249)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 73) { //19
-					$sendcom = $sendcommandbase." -b ".dechex(241)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(241)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 77) { // 20
-					$sendcom = $sendcommandbase." -b ".dechex(233)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(233)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 81) { // 21
-					$sendcom = $sendcommandbase." -b ".dechex(225)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(225)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 85) { // 22
-					$sendcom = $sendcommandbase." -b ".dechex(217)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(217)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 88) { // 23
-					$sendcom = $sendcommandbase." -b ".dechex(209)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(209)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 92) { // 24
-					$sendcom = $sendcommandbase." -b ".dechex(201)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(201)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 96) { // 25
-					$sendcom = $sendcommandbase." -b ".dechex(193)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(193)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 100) { // 26
-					$sendcom = $sendcommandbase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
+					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(185)." -k 0e -v ".dechex($trans);
 				}
 				echo $sendcom;
 				exec($sendcom);	
