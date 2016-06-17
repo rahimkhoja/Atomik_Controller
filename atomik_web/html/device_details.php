@@ -781,9 +781,9 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 		
 			// Run Sync Device Command
 			if ($_device_type_warm_white && $_device_type_cold_white) {
-			$sendcom = "/usr/bin/transceiver -s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
-			} else {
 				$sendcom = "/usr/bin/transceiver -s -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			} else {
+				$sendcom = "/usr/bin/transceiver -s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
 			}
 			
 			exec($sendcom);
