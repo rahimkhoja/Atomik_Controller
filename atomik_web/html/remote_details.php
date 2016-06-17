@@ -548,7 +548,7 @@ if ($command <> "" && $command !="" && $command == "listen_milight")
 		if($listenrs === false) {
  		 	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
 		} else {
-  			$listencount = $rs->num_rows;
+  			$listencount = $listenrs->num_rows;
 		}
 
 		$listenrs->data_seek(0);
@@ -556,7 +556,7 @@ if ($command <> "" && $command !="" && $command == "listen_milight")
 		if ( $listencount > 0 ) {
 			$_remote_address1 = $listenrow['command_received_ADD1'];
 			$_remote_address2 = $listenrow['command_received_ADD2'];
-			$sql = "UPDATE atomik_remotes SET remote_address1 = '".trim($_remote_address1)."', remote_address2 = '".trim($_remote_address2)." WHERE remote_id=".$_remote_id.";";
+			$sql = "UPDATE atomik_remotes SET remote_address1 = ".hexdec(trim($_remote_address1)).", remote_address2 = ".hexdec(trim($_remote_address2))." WHERE remote_id=".$_remote_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "Remote Address Detected!";
