@@ -65,15 +65,14 @@ function generateAddress( $db, $ty  )
 
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
 	$trans = $tra;
-	
-	
+		
 	if ( $cw == 1 && $ww == 1 ) {
 		
 		$sendcommandbase = "/usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2)." -c 01";
 		
-	// White
-	$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
-	$WhiteTemp = array(2700,2080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
+		// White Bulb Details
+		$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
+		$WhiteTemp = array(2700,2080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
 		if ($new_s != $old_s) {
 		// Status Changed
 			if ($new_s == 1 ) {
@@ -99,11 +98,11 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			
 			if ( $old_cm != $new_cm ) {
 				$trans = $trans + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
 				echo 'current CM: '.$new_cm.'\n';
-			// Color Mode Change
+				// Color Mode Change
 				if ( $new_cm == 1 ) {
 					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 18";
 				} else {
@@ -111,23 +110,33 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				}
 				echo $sendcom;
 				exec($sendcom);	
-		}
+			}
 			
-		
 			if ($new_b != $old_b || $old_cm != $new_cm ) {
 			// Brightness Change
 				$old_pos = array_search ( $old_b, $Brightness );
 				$new_pos = array_search ( $new_b, $Brightness );
+				
 				if ( $new_pos > $old_pos ) {
-					$move = $new_pos - $old_pos;	
-					for ($x = 0; $x <= $move; $x++) {
+					if ( $new_pos == array_search ( 100, $Brightness ) ) {
 						$trans = $trans + 1;
 						if ( $trans >= 256 ) {
 							$trans = $trans - 256;
 						}
-						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0C";
+						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 18";
 						echo $sendcom;
 						exec($sendcom);
+					} else {
+						$move = $new_pos - $old_pos;	
+						for ($x = 0; $x <= $move; $x++) {
+							$trans = $trans + 1;
+							if ( $trans >= 256 ) {
+								$trans = $trans - 256;
+							}
+							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0C";
+							echo $sendcom;
+							exec($sendcom);
+						}
 					}
 				} else {
 					$move = $old_pos - $new_pos;	
@@ -140,13 +149,59 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 						echo $sendcom;
 						exec($sendcom);
 					}
+				}	
+			}
+			
+			if ($new_wt != $old_wt ) {
+			// White Temp Change
+				$old_pos = array_search ( $old_wt, $WhiteTemp );
+				$new_pos = array_search ( $new_wt, $WhiteTemp );
+				
+				if ( $new_pos > $old_pos ) {
+					if ( $new_pos == array_search ( 2700, $WhiteTemp ) ) {
+						$trans = $trans + 1;
+						if ( $trans >= 256 ) {
+							$trans = $trans - 256;
+						}
+						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 1f";
+						echo $sendcom;
+						exec($sendcom);
+					} else {
+						$move = $new_pos - $old_pos;	
+						for ($x = 0; $x <= $move; $x++) {
+							$trans = $trans + 1;
+							if ( $trans >= 256 ) {
+								$trans = $trans - 256;
+							}
+							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0f";
+							echo $sendcom;
+							exec($sendcom);
+						}
+					}
+				} else {
+					if ( $new_pos == array_search ( 6500, $WhiteTemp ) ) {
+						$trans = $trans + 1;
+						if ( $trans >= 256 ) {
+							$trans = $trans - 256;
+						}
+						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 1e";
+						echo $sendcom;
+						exec($sendcom);
+					} else {
+						$move = $old_pos - $new_pos;	
+						for ($x = 0; $x <= $move; $x++) {
+							$trans = $trans + 1;
+							if ( $trans >= 256 ) {
+								$trans = $trans - 256;
+							}
+							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0e";
+							echo $sendcom;
+							exec($sendcom);
+						}
+					}	
 				}
 			}
-			// End Brightness Change
 		}
-			
-			
-			
 			
 	} else if ( $cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1 ) {
 		$sendcommandbase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
@@ -155,13 +210,13 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		if ($new_s != $old_s) {
 		// Status Changed
 			if ($new_s == 1 ) {
-				$trans = $tra + 1;
+				$trans = $trans + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
 				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
 			} else {
-				$trans = $tra + 1;
+				$trans = $trans + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
@@ -176,7 +231,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		// Status On
 			
 			if ( $old_cm != $new_cm ) {
-				$trans = $tra + 1;
+				$trans = $trans + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
@@ -195,7 +250,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			if ( $new_cm == 0 ) {
 			// Color Mode Color
 				if ($new_c != $old_c || $old_cm != $new_cm) {
-					$trans = $tra + 1;
+					$trans = $trans + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
@@ -271,7 +326,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else if ($new_b == 100) { // 26
 					$sendcom = $sendcommandbase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
 				} 
-		$trans = $tra + 1;
+		$trans = $trans + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
