@@ -77,13 +77,13 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		if ($new_s != $old_s) {
 		// Status Changed
 			if ($new_s == 1 ) {
-				$trans = $tra + 1;
+				$trans = $trans + 1;
 				if ( $trans >= 256 ) {
 					$trans = $trans - 256;
 				}
 				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
 			} else {
-				$trans = $tra + 1;
+				$trans = $trans + 1;
 				if ( $trans >= 256 ) {
 					$trans = $trans - 256;
 				}
@@ -98,7 +98,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		// Status On
 			
 			if ( $old_cm != $new_cm ) {
-				$trans = $tra + 1;
+				$trans = $trans + 1;
 	if ( $trans >= 256 ) {
 		$trans = $trans - 256;
 	}
@@ -121,7 +121,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				if ( $new_pos > $old_pos ) {
 					$move = $new_pos - $old_pos;	
 					for ($x = 0; $x <= $move; $x++) {
-						$trans = $tra + 1;
+						$trans = $trans + 1;
 						if ( $trans >= 256 ) {
 							$trans = $trans - 256;
 						}
@@ -132,7 +132,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else {
 					$move = $old_pos - $new_pos;	
 					for ($x = 0; $x <= $move; $x++) {
-						$trans = $tra + 1;
+						$trans = $trans + 1;
 						if ( $trans >= 256 ) {
 							$trans = $trans - 256;
 						}
