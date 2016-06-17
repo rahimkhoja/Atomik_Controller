@@ -1190,7 +1190,7 @@ $("#syncdevbtn").on('click', function() {
 });
 $("#desyncdevbtn").on('click', function() {
 	$("#overlay").show();
-	if (window.confirm("To De-Sync a bulb you must turn it on within 2 seconds of pressing the OK button below. Are you ready?")) {
+	if (window.confirm("De-Sync Bulb\n\nPlease turn on the power to your bulb and immediately click the OK button below. \n\nAre you ready?")) {
         document.forms["devicefrm"].command.value = "desync_device";
    		document.devicefrm.submit();
 	}

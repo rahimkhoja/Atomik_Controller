@@ -841,8 +841,12 @@ $("#saveatomikbtn").on('click', function() {
    document.remotefrm.submit();
 });
 $("#listenmilightbtn").on('click', function() {
-   document.forms["remotefrm"].command.value = "listen_milight";//
-   document.remotefrm.submit();
+	$("#overlay").show();
+	if (window.confirm("Listen for RF Remote\n\nAfter you click the OK button, please continuously press buttons on your RF Remote for 10 Seconds.\n\nAre you ready?")) {
+        document.forms["remotefrm"].command.value = "listen_milight";//
+   		document.remotefrm.submit();
+	}
+	$("#overlay").hide();
 });
 $("#savemobilebtn").on('click', function() {
    document.forms["remotefrm"].command.value = "save_smartphone";
