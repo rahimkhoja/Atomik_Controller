@@ -64,42 +64,33 @@ function generateAddress( $db, $ty  )
 }
 
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
-	$trans = $tra + 1;
-	if ( $trans >= 256 ) {
-		$trans = $trans - 256;
-	}
+	$trans = $tra;
 	
 	
 	if ( $cw == 1 && $ww == 1 ) {
-		$sendcommandbase = "/usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2);
-		// White Bulbs
-		echo white;
-		if ( $old_cm != $new_cm ) {
-			if ( $new_cm == 0) {
-			// Color 
-				
-			} else {
-			// White	
-			
-			}
-		}
-			
-	} else if ( $cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1 ) {
-		$sendcommandbase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
-	// RGBWW and RGBCW	
+		
+		$sendcommandbase = "/usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2)." -c 01";
+		
+	// White
+	$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
+	$WhiteTemp = array(2700,2080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
 		if ($new_s != $old_s) {
 		// Status Changed
 			if ($new_s == 1 ) {
-				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
+				$trans = $tra + 1;
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
+				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
 			} else {
-				$sendcom = $sendcommandbase." -k 04 -v ".dechex($trans);
+				$trans = $tra + 1;
+				if ( $trans >= 256 ) {
+					$trans = $trans - 256;
+				}
+				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0B";
 			}
 			echo $sendcom;
 			exec($sendcom);	
-			$trans = $trans + 1;
-			if ( $trans >= 256 ) {
-				$trans = $trans - 256;
-			}
 		}
 		// End Status Change
 		
@@ -107,6 +98,88 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		// Status On
 			
 			if ( $old_cm != $new_cm ) {
+				$trans = $tra + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
+				echo 'current CM: '.$new_cm.'\n';
+			// Color Mode Change
+				if ( $new_cm == 1 ) {
+					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 18";
+				} else {
+					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
+				}
+				echo $sendcom;
+				exec($sendcom);	
+		}
+			
+		
+			if ($new_b != $old_b || $old_cm != $new_cm ) {
+			// Brightness Change
+				$old_pos = array_search ( $old_b, $Brightness );
+				$new_pos = array_search ( $new_b, $Brightness );
+				if ( $new_pos > $old_pos ) {
+					$move = $new_pos - $old_pos;	
+					for ($x = 0; $x <= $move; $x++) {
+						$trans = $tra + 1;
+						if ( $trans >= 256 ) {
+							$trans = $trans - 256;
+						}
+						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0C";
+						echo $sendcom;
+						exec($sendcom);
+					}
+				} else {
+					$move = $old_pos - $new_pos;	
+					for ($x = 0; $x <= $move; $x++) {
+						$trans = $tra + 1;
+						if ( $trans >= 256 ) {
+							$trans = $trans - 256;
+						}
+						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 04";
+						echo $sendcom;
+						exec($sendcom);
+					}
+				}
+			}
+			// End Brightness Change
+		}
+			
+			
+			
+			
+	} else if ( $cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1 ) {
+		$sendcommandbase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
+		
+	// RGBWW and RGBCW	
+		if ($new_s != $old_s) {
+		// Status Changed
+			if ($new_s == 1 ) {
+				$trans = $tra + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
+				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
+			} else {
+				$trans = $tra + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
+				$sendcom = $sendcommandbase." -k 04 -v ".dechex($trans);
+			}
+			echo $sendcom;
+			exec($sendcom);	
+		}
+		// End Status Change
+		
+		if ( $new_s == 1 ) {
+		// Status On
+			
+			if ( $old_cm != $new_cm ) {
+				$trans = $tra + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
 				echo 'current CM: '.$new_cm.'\n';
 			// Color Mode Change
 				if ( $new_cm == 1 ) {
@@ -116,16 +189,16 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				}
 				echo $sendcom;
 				exec($sendcom);	
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
 			}
 			// End Color Mode Change
 		
 			if ( $new_cm == 0 ) {
 			// Color Mode Color
 				if ($new_c != $old_c || $old_cm != $new_cm) {
+					$trans = $tra + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
 				// Color Change
 					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
 					exec($initcom);
@@ -137,10 +210,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
 					echo $sendcom;
 					exec($sendcom);	
-					$trans = $trans + 1;
-					if ( $trans >= 256 ) {
-						$trans = $trans - 256;
-					}
+					
 				}
 				// End Color Change
 			}
@@ -201,13 +271,12 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else if ($new_b == 100) { // 26
 					$sendcom = $sendcommandbase." -b ".dechex(185)." -k 0e -v ".dechex($trans);
 				} 
-		
+		$trans = $tra + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
 				echo $sendcom;
 				exec($sendcom);	
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
 			}
 			// End Brightness Change
 		}
@@ -324,6 +393,54 @@ if ( isset($_POST["device_colormode"])) {
 	}
 }
 
+if ( isset($_POST["device_rgb256"])) {
+	$_device_rgb256 = $_POST["device_rgb256"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_rgb256 = $row['device_rgb256'];
+	} else {
+		$_device_rgb256 = 0;
+	}
+}
+
+if ( isset($_POST["device_white_temprature"])) {
+	$_device_white_temprature = $_POST["device_white_temprature"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_white_temprature = $row['device_white_temprature'];
+	} else {
+		$_device_white_temprature = 2700;
+	}
+}
+
+	if ($_new_device != 1 ) {
+		$_device_address1 = $row['device_address1'];
+		$_device_address2 = $row['device_address2'];
+	} else {
+		$_device_address1 = "";
+		$_device_address2 = "";
+	}
+	if ($_new_device != 1 ) {
+		$_device_transmission = $row['device_transmission'];
+	} else {
+		$_device_transmission = 0;
+	}
+
+if ( isset($_POST["device_type"])) {
+	$_device_type = $_POST["device_type"];
+} else {
+	if ($_new_device == 0 ) {
+		$_device_type = $row['device_type'];
+	} else {
+		$_device_type = "";
+	}
+}
+
+$_device_type_name = $row['device_type_name'];
+$_device_type_brightness = $row['device_type_brightness'];
+$_device_type_warm_white = $row['device_type_warm_white'];
+$_device_type_cold_white = $row['device_type_cold_white'];
+$_device_type_rgb256 = $row['device_type_rgb256'];
 if ( isset($_POST["device_brightness"])) {
 	$_device_brightness = $_POST["device_brightness"];
 } else {
@@ -334,6 +451,32 @@ if ( isset($_POST["device_brightness"])) {
 	}
 }
 
+if ($_device_type_warm_white == 1 && $_device_type_cold_white == 1 ) {
+	if ($_device_brightness <= 9) {
+	$_device_brightness = 9;
+} else if ($_device_brightness <= 18) {
+	$_device_brightness = 18;
+} else if ($_device_brightness <= 27) {
+	$_device_brightness = 27;
+} else if ($_device_brightness <= 36) {
+	$_device_brightness = 36;
+} else if ($_device_brightness <= 45) {
+	$_device_brightness = 45;
+} else if ($_device_brightness <= 54) {
+	$_device_brightness = 54;
+} else if ($_device_brightness <= 63) {
+	$_device_brightness = 63;
+} else if ($_device_brightness <= 72) {
+	$_device_brightness = 72;
+} else if ($_device_brightness <= 81) {
+	$_device_brightness = 81;
+} else if ($_device_brightness <= 90) {
+	$_device_brightness = 90;
+} else if ($_device_brightness <= 100) {
+	$_device_brightness = 100;
+} 
+
+} else {
 if ($_device_brightness <= 4) {
 	$_device_brightness = 4;
 } else if ($_device_brightness <= 8) {
@@ -387,57 +530,7 @@ if ($_device_brightness <= 4) {
 } else if ($_device_brightness <= 100) {
 	$_device_brightness = 100;
 } 
-
-
-if ( isset($_POST["device_rgb256"])) {
-	$_device_rgb256 = $_POST["device_rgb256"];
-} else {
-	if ($_new_device == 0 ) {
-		$_device_rgb256 = $row['device_rgb256'];
-	} else {
-		$_device_rgb256 = 0;
-	}
 }
-
-if ( isset($_POST["device_white_temprature"])) {
-	$_device_white_temprature = $_POST["device_white_temprature"];
-} else {
-	if ($_new_device == 0 ) {
-		$_device_white_temprature = $row['device_white_temprature'];
-	} else {
-		$_device_white_temprature = 2700;
-	}
-}
-
-	if ($_new_device != 1 ) {
-		$_device_address1 = $row['device_address1'];
-		$_device_address2 = $row['device_address2'];
-	} else {
-		$_device_address1 = "";
-		$_device_address2 = "";
-	}
-	if ($_new_device != 1 ) {
-		$_device_transmission = $row['device_transmission'];
-	} else {
-		$_device_transmission = 0;
-	}
-
-if ( isset($_POST["device_type"])) {
-	$_device_type = $_POST["device_type"];
-} else {
-	if ($_new_device == 0 ) {
-		$_device_type = $row['device_type'];
-	} else {
-		$_device_type = "";
-	}
-}
-
-$_device_type_name = $row['device_type_name'];
-$_device_type_brightness = $row['device_type_brightness'];
-$_device_type_warm_white = $row['device_type_warm_white'];
-$_device_type_cold_white = $row['device_type_cold_white'];
-$_device_type_rgb256 = $row['device_type_rgb256'];
-
 
 // Save General Device Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
@@ -687,7 +780,12 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 	} else {
 		
 			// Run Sync Device Command
+			if ($_device_type_warm_white && $_device_type_cold_white) {
 			$sendcom = "/usr/bin/transceiver -s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			} else {
+				$sendcom = "/usr/bin/transceiver -s -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+			}
+			
 			exec($sendcom);
 			echo $sendcom;
 			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission + 5)." WHERE device_id=".$_device_id.";";
