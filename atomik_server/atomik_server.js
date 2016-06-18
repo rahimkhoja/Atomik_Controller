@@ -81,6 +81,25 @@ if (typeof bright == 'undefined') {
 
 }
 
+function checkRFJSON ( address1, address2, channel ) {
+  
+  var addint1 = parseInt(address1, 16);
+  var addint2 = parseInt(address2, 16);
+  var sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1 = "+addint1+" && atomik_remotes.remote_address2 = "+addint2+";";
+   connection.query(sql, function(err, rows ) {
+    if (err) throw err;
+ 
+    if (result.length > 0) {
+      if (result)
+        console.log("Test:" + result);
+        retrun rows[0].zone_id;
+    }  else {
+      return 0;
+    }
+});
+
+}
+
 function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
 
 if (typeof channel == 'undefined') {
@@ -159,8 +178,13 @@ app.post('/transceiver', function (req, res) {
  res.send('ok!\n');  
  console.log('Transceiver Data:');
  console.log(req.body);
- log_tra_no_execute(req.body.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.Address1, req.body.Address2);
-
+ 
+ zone = checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Channel );
+ if  ( zone == 0 ) { 
+   log_tra_no_execute(req.body.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.Address1, req.body.Address2);
+  } else {
+   // valid command
+  }
 });
 
 app.get('/cron', function (req, res) {
