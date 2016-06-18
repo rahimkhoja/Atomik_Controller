@@ -92,7 +92,7 @@ function checkRFJSON ( address1, address2, channel ) {
     if (result.length > 0) {
       if (result)
         console.log("Test:" + result);
-        retrun rows[0].zone_id;
+        return rows[0].zone_id;
     }  else {
       return 0;
     }
