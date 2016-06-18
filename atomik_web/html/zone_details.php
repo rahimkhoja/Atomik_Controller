@@ -86,6 +86,53 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			
 			if ($new_b != $old_b) {
 			// Brightness Change
+				
+	if ($new_b <= 9) {
+	$new_b = 9;
+} else if ($new_b <= 18) {
+	$new_b = 18;
+} else if ($new_b <= 27) {
+	$new_b = 27;
+} else if ($new_b <= 36) {
+	$new_b = 36;
+} else if ($new_b <= 45) {
+	$new_b = 45;
+} else if ($new_b <= 54) {
+	$new_b = 54;
+} else if ($new_b <= 63) {
+	$new_b = 63;
+} else if ($new_b <= 72) {
+	$new_b = 72;
+} else if ($new_b <= 81) {
+	$new_b = 81;
+} else if ($new_b <= 90) {
+	$new_b = 90;
+} else if ($new_b <= 100) {
+	$new_b = 100;
+} 
+if ($old_b <= 9) {
+	$old_b = 9;
+} else if ($old_b <= 18) {
+	$old_b = 18;
+} else if ($old_b <= 27) {
+	$old_b = 27;
+} else if ($old_b <= 36) {
+	$old_b = 36;
+} else if ($old_b <= 45) {
+	$old_b = 45;
+} else if ($old_b <= 54) {
+	$old_b = 54;
+} else if ($old_b <= 63) {
+	$old_b = 63;
+} else if ($old_b <= 72) {
+	$old_b = 72;
+} else if ($old_b <= 81) {
+	$old_b = 81;
+} else if ($old_b <= 90) {
+	$old_b = 90;
+} else if ($old_b <= 100) {
+	$old_b = 100;
+}
 				$old_pos = array_search ( $old_b, $Brightness );
 				$new_pos = array_search ( $new_b, $Brightness );
 				
