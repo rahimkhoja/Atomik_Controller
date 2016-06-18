@@ -79,20 +79,31 @@ if (typeof bright == 'undefined') {
 
 }
 
-function checkRFJSON ( address1, address2, channel ) {
+function validRF(zoneID, req){
+  console.log('Valid Command!:');
+  console.log("Zone_ID: " + zoneID );
+}
+
+function invalidRF(req){
+  console.log('Invalid Command:');
+  log_tra_no_execute(req.body.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.Address1, req.body.Address2);
+}
+
+function checkRFJSON ( address1, address2, channel, req ) {
   
   var addint1 = parseInt(address1, 16);
   var addint2 = parseInt(address2, 16);
   var sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1 = "+addint1+" && atomik_remotes.remote_address2 = "+addint2+";";
-   connection.query(sql, function(err, rows ) {
+   connection.query(sql, function(err, rows, req ) {
     if (err) throw err;
  
     if ( rows.length > 0) {
       if (rows )
-        console.log("Test:" + rows );
-        return rows[0].zone_id;
+        console.log("Rows Length:" + rows.length );
+        console.log("Row Zone_ID:" + rows[0].zone_id );
+        validRF(rows[0].zone_id, req)
     }  else {
-      return 0;
+      invalidRF(req);
     }
 });
 
@@ -177,13 +188,7 @@ app.post('/transceiver', function (req, res) {
  console.log('Transceiver Data:');
  console.log(req.body);
  
- zone = checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Channel );
- if  ( zone == 0 ) { 
-   console.log('Invalid Command:');
-   log_tra_no_execute(req.body.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.Address1, req.body.Address2);
-  } else {
-   console.log('Valid Command!:');
-  }
+ checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Channel, req );
 });
 
 app.get('/cron', function (req, res) {
