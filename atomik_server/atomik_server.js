@@ -18,11 +18,9 @@ connection.connect(function (err){
   }
 }); 
 
-
 var app = express();
 
 var PORT = 4200;
-
 
 function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
 
@@ -181,9 +179,10 @@ app.post('/transceiver', function (req, res) {
  
  zone = checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Channel );
  if  ( zone == 0 ) { 
+   console.log('Invalid Command:');
    log_tra_no_execute(req.body.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.Address1, req.body.Address2);
   } else {
-   // valid command
+   console.log('Valid Command!:');
   }
 });
 
