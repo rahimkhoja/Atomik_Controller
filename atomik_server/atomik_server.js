@@ -89,9 +89,9 @@ function checkRFJSON ( address1, address2, channel ) {
    connection.query(sql, function(err, rows ) {
     if (err) throw err;
  
-    if (result.length > 0) {
-      if (result)
-        console.log("Test:" + result);
+    if ( rows.length > 0) {
+      if (rows )
+        console.log("Test:" + rows );
         return rows[0].zone_id;
     }  else {
       return 0;
