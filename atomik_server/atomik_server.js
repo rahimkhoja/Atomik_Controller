@@ -171,11 +171,10 @@ function checkRFJSON ( address1, address2, channel, req ) {
    
       if ( rows.length > 0) {
         if ( rows ) {
-          console.log("Valid Command and Updating Channel");
-          console.log("Rows Length:" + rows.length );
+          console.log("Valid Command");
           console.log("Row Zone_ID:" + rows[0].zone_id );
           validRF(rows[0].zone_id, req);
-          updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+          
         }
       }  else {
         invalidRF(req);
@@ -193,10 +192,10 @@ function checkRFJSON ( address1, address2, channel, req ) {
  
       if ( rows.length > 0) {
         if (rows ) {
-        console.log("Valid Command");
-          console.log("Rows Length:" + rows.length );
+          console.log("Valid Command and Updating Channel");
           console.log("Row Zone_ID:" + rows[0].zone_id );
           validRF(rows[0].zone_id, req);
+          updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
           }
       }  else {
         invalidRF(req);
