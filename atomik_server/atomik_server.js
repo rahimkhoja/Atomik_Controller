@@ -186,39 +186,40 @@ function checkRFJSON ( address1, address2, channel, req ) {
     })(req);
     
   } else {
-  (function(req) {
-    var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
-    console.log(sql);
+    (function(req) {
+      var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
+      console.log(sql);
     
-    connection.query(sql, function(err, rows ) {
-    if (err) throw err;
+      connection.query(sql, function(err, rows ) {
+        if (err) throw err;
  
-      if ( rows.length > 0) {
-        if (rows ) {
-          console.log("Valid Command and Updating Channel");
-          console.log("Row Zone_ID:" + rows[0].zone_id );
-          validRF(rows[0].zone_id, req);
-          updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+        if ( rows.length > 0) {
+          if (rows ) {
+            console.log("Valid Command and Updating Channel");
+            console.log("Row Zone_ID:" + rows[0].zone_id );
+            validRF(rows[0].zone_id, req);
+            updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
           }
-      }  else {
-        // Check if valid remote addresses without valid channel, if so update channel for remote
-        var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+";"; 
-        console.log(sql);
-        connection.query(sql, function(err, rows ) {
-          if (err) throw err;
+        }  else {
+          // Check if valid remote addresses without valid channel, if so update channel for remote
+          var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+";"; 
+          console.log(sql);
+          connection.query(sql, function(err, rows ) {
+            if (err) throw err;
         
-          if ( rows.length > 0) {
-            if (rows ) {
-              updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+            if ( rows.length > 0) {
+              if (rows ) {
+                updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+              }
             }
-          }
-        });
-        invalidRF(req);
-      }
-    });
-  })(req);
+          });
+          invalidRF(req);
+        }
+      });
+    })(req);
   }
 }
+
 
 function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
 
@@ -358,56 +359,56 @@ function increaseTrans(tra) {
 
 }
 
-    function updateZone(req, zoneID) {
-      console.log('Running -- updatezone');
-      (function (req) {
-        var sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission, atomik_zone_devices.zone_device_zone_id FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+zoneID+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1;";	
-        console.log(sql);
+function updateZone(req, zoneID) {
+  console.log('Running -- updatezone');
+  (function (req) {
+    var sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission, atomik_zone_devices.zone_device_zone_id FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+zoneID+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1;";	
+    console.log(sql);
     
-        connection.query(sql, function(err, results ) {
-          if (err) throw err;
+    connection.query(sql, function(err, results ) {
+      if (err) throw err;
    
-          for (var i=0; i < results.length; i++) { 
-      
-            if (typeof req.body.Configuration.Status == 'undefined') {
-              sta = results[i].device_status;
-            } else {
-              sta = '"'+req.body.Configuration.Status+'"';
-            }
+      for (var i=0; i < results.length; i++) { 
+     
+        if (typeof req.body.Configuration.Status == 'undefined') {
+          sta = results[i].device_status;
+        } else {
+          sta = '"'+req.body.Configuration.Status+'"';
+        }
 
-            if (typeof req.body.Configuration.ColorMode == 'undefined') {
-              cm = results[i].device_colormode;
-            } else {
-              cm = '"'+req.body.Configuration.ColorMode+'"';
-            }
+        if (typeof req.body.Configuration.ColorMode == 'undefined') {
+          cm = results[i].device_colormode;
+        } else {
+          cm = '"'+req.body.Configuration.ColorMode+'"';
+        }
 
-            if (typeof req.body.Configuration.Color == 'undefined') {
-              col = results[i].device_rgb256;
-            } else {
-              col = req.body.Configuration.Color;
-            }
+        if (typeof req.body.Configuration.Color == 'undefined') {
+          col = results[i].device_rgb256;
+        } else {
+          col = req.body.Configuration.Color;
+        }
 
-            if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
-              wt = results[i].device_white_temprature;
-            } else {
-              wt = req.body.Configuration.WhiteTemp;
-            }
+        if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
+          wt = results[i].device_white_temprature;
+        } else {
+          wt = req.body.Configuration.WhiteTemp;
+        }
   
-            if (typeof req.body.Configuration.Brightness == 'undefined') {
-              bri = results[i].device_brightness;
-            } else {
+        if (typeof req.body.Configuration.Brightness == 'undefined') {
+          bri = results[i].device_brightness;
+        } else {
               bri = req.body.Configuration.Brightness;
-            }
+        }
       
-            traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, req.body.Configuration.Address1, req.body.Configuration.Address1, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
+        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, req.body.Configuration.Address1, req.body.Configuration.Address1, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
         
-            updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
-            lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
-            lastUpdate_Zone(results[i].zone_device_zone_id);
-          }
-        });
-      })(req);
-    }
+        updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
+        lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
+        lastUpdate_Zone(results[i].zone_device_zone_id);
+      }
+    });
+  })(req);
+}
 
 function updateDevice (status, colormode, brightness, color, whitetemp, transmission, device_id) {
   console.log('Running -- updateDevice');
