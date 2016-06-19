@@ -23,7 +23,7 @@ var app = express();
 var PORT = 4200;
 
 function updateCurrentChannel( channel, remote_id ) {
-
+  console.log('Running -- updateCurrentChannel');
   var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+'? WHERE remote_id = '+remote_id+';'; 
   console.log(sql);
   connection.query(sql, function(err) {
@@ -74,14 +74,14 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
   });
 }
 
-function validRF(zoneID, req, chan){
+function validRF(zoneID, req){
   console.log('Valid Command!:');
   console.log("Zone_ID: " + zoneID );
   
-  if (typeof chan == 'undefined') {
+  if (typeof  req.body.Configuration.Channel == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+chan+'"';
+    cha = '"'+req.body.Configuration.Channel+'"';
   }
 
   if (typeof req.body.Configuration.Status == 'undefined') {
@@ -116,14 +116,13 @@ function validRF(zoneID, req, chan){
   log_tra_execute(cha, req.body.DateTime, req.body.Data, sta, cm, col, wt, bri, req.body.Address1, req.body.Address2);
 }
 
-function invalidRF(req, chan){
+function invalidRF(req){
   console.log('Invalid Command:');
-  if (typeof chan == 'undefined') {
+  if (typeof  req.body.Configuration.Channel == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+chan+'"';
+    cha = '"'+req.body.Configuration.Channel+'"';
   }
-
   if (typeof req.body.Configuration.Status == 'undefined') {
     sta = 'NULL';
   } else {
@@ -169,14 +168,15 @@ function checkRFJSON ( address1, address2, channel, req ) {
     
     connection.query(sql, function(err, rows ) {
     if (err) throw err;
- 
+   
       if ( rows.length > 0) {
         if ( rows ) {
+          console.log("Valid Command and Updating Channel");
           console.log("Rows Length:" + rows.length );
           console.log("Row Zone_ID:" + rows[0].zone_id );
           validRF(rows[0].zone_id, req);
           updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
-          }
+        }
       }  else {
         invalidRF(req);
       }
@@ -193,12 +193,13 @@ function checkRFJSON ( address1, address2, channel, req ) {
  
       if ( rows.length > 0) {
         if (rows ) {
+        console.log("Valid Command");
           console.log("Rows Length:" + rows.length );
           console.log("Row Zone_ID:" + rows[0].zone_id );
-          validRF(rows[0].zone_id, req, req.body.Configuration.Channel);
+          validRF(rows[0].zone_id, req);
           }
       }  else {
-        invalidRF(req, req.body.Configuration.Channel);
+        invalidRF(req);
       }
     });
   })(req);
