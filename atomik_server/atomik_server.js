@@ -77,10 +77,11 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
 function validRF(zoneID, req){
   console.log('Valid Command!:');
   console.log("Zone_ID: " + zoneID );
-  if (typeof req.body.Configuration.Channel == 'undefined') {
+  var channel = req.body.Configuration.Channel;
+  if (typeof channel == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+req.body.Configuration.Channel+'"';
+    cha = '"'+channel+'"';
   }
 
   if (typeof req.body.Configuration.Status == 'undefined') {
@@ -229,7 +230,7 @@ app.post('/emulator', function (req, res) {
   console.log('Emulator Data:');
   console.log(req.body);
 
-  log_emu_no_execute(req.body.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.IP, req.body.MAC);
+  log_emu_no_execute(req.body.Configuration.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.IP, req.body.MAC);
 
 });
 
