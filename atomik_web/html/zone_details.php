@@ -81,7 +81,9 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
 				}
 				echo $sendcom;
-				exec($sendcom.' > /dev/null &');	
+				exec($sendcom.' > /dev/null &');
+				if ( $new_cm == 1 ) {
+					
 			}
 			
 			if ($new_b != $old_b) {
@@ -425,6 +427,7 @@ atomik_device_types.device_type_brightness=1;";
     		$success = false;
 		}
 	}
+	return $success;
 }
 
 
