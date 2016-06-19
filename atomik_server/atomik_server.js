@@ -271,9 +271,8 @@ app.listen(PORT, function () {
 });
 
 function atomikTransmitCMD(type, address1, address2, color, bright, tran, command ) {
-  async.series([
-    cmd = '/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16); 
-    execFn(cmd, '/usr/atomik/')
+  async.series([ 
+    execFn('/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16), '/usr/atomik/')
   ]);
 }
 
