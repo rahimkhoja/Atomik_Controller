@@ -77,10 +77,10 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
 function validRF(zoneID, req){
   console.log('Valid Command!:');
   console.log("Zone_ID: " + zoneID );
-  if (typeof req.body.Channel == 'undefined') {
+  if (typeof req.body.Configuration.Channel == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+req.body.Channel+'"';
+    cha = '"'+req.body.Configuration.Channel+'"';
   }
 
   if (typeof req.body.Configuration.Status == 'undefined') {
@@ -117,10 +117,10 @@ function validRF(zoneID, req){
 
 function invalidRF(req){
   console.log('Invalid Command:');
-  if (typeof req.body.Channel == 'undefined') {
+  if (typeof req.body.Configuration.Channel == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+req.body.Channel+'"';
+    cha = '"'+req.body.Configuration.Channel+'"';
   }
 
   if (typeof req.body.Configuration.Status == 'undefined') {
