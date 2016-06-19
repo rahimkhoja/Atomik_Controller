@@ -81,13 +81,13 @@ function log_tra_no_execute(channel, date, rec_data, status, colormode, color, w
   connection.query(sql, function(err, rows, fields) {
     if (!err) {
       console.log('The solution is: ', rows);
+      fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql+"\n", function (err) {
+      if (err) throw err;
+        console.log('The "data to append" was appended to file!');
+      });
     } else {
       console.log('Error while performing Query.');
     }
-    fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql, function (err) {
-      if (err) throw err;
-      console.log('The "data to append" was appended to file!');
-    });
   });
 }
 
@@ -136,14 +136,15 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
 
   connection.query(sql, function(err, rows, fields) {
     if (!err) {
-     console.log('The solution is: ', rows);
-    } else {
-     console.log('Error while performing Query.');
-     fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql+"\n", function (err) {
+      console.log('The solution is: ', rows);
+      fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql+"\n", function (err) {
       if (err) throw err;
         console.log('The "data to append" was appended to file!');
-    });
- });
+      });
+    } else {
+      console.log('Error while performing Query.');
+    }
+  });
 }
 
 function validRF(zoneID, req){
