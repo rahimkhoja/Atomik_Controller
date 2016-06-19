@@ -22,6 +22,22 @@ var app = express();
 
 var PORT = 4200;
 
+function updateCurrentChannel( channel, remote_id ) {
+
+  var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+'? WHERE remote_id = '+remote_id+';'; 
+  console.log(sql);
+  connection.query(sql, function(err) {
+   if (!err)
+     console.log('Channel Updated');
+   else
+     console.log('Error while performing Query.');
+   });
+} 
+
+
+
+}
+
 function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
 
   if (typeof channel == 'undefined') {
@@ -145,20 +161,42 @@ function checkRFJSON ( address1, address2, channel, req ) {
   
   var addint1 = parseInt(address1, 16);
   var addint2 = parseInt(address2, 16);
-  var sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1 = "+addint1+" && atomik_remotes.remote_address2 = "+addint2+";";
-   connection.query(sql, function(err, rows, req ) {
+  
+  if (typeof channel == 'undefined') {
+  
+  var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" atomik_zone_remotes.zone_remote_channel_number="+channel+";"; 
+  connection.query(sql, function(err, rows, req ) {
     if (err) throw err;
  
-    if ( rows.length > 0) {
-      if (rows )
-        console.log("Rows Length:" + rows.length );
-        console.log("Row Zone_ID:" + rows[0].zone_id );
-        validRF(rows[0].zone_id, req)
-    }  else {
-      invalidRF(req);
-    }
-});
-
+      if ( rows.length > 0) {
+        if (rows ) {
+          console.log("Rows Length:" + rows.length );
+          console.log("Row Zone_ID:" + rows[0].zone_id );
+          validRF(rows[0].zone_id, req);
+          updateCurrentChannel(req.body.Channel, rows[0].zone_remote_remote_id);
+          }
+      }  else {
+        invalidRF(req);
+      }
+    });
+    
+  } else {
+    var sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1 = "+addint1+" && atomik_remotes.remote_address2 = "+addint2+" atomik_remotes.atomik_remote_current_channel = atomik_zone_remotes.zone_remote_channel_number;";
+    connection.query(sql, function(err, rows, req ) {
+    if (err) throw err;
+ 
+      if ( rows.length > 0) {
+        if (rows ) {
+          console.log("Rows Length:" + rows.length );
+          console.log("Row Zone_ID:" + rows[0].zone_id );
+          validRF(rows[0].zone_id, req);
+          }
+      }  else {
+        invalidRF(req);
+      }
+    });
+  
+  }
 }
 
 function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
