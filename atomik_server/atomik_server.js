@@ -80,7 +80,7 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
 function validRF(zoneID, req){
   console.log('Valid Command!:');
   console.log("Zone_ID: " + zoneID );
-  
+  updateZone(req, zoneID);
   if (typeof  req.body.Configuration.Channel == 'undefined') {
     cha = 'NULL';
   } else {
