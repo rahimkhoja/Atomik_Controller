@@ -567,7 +567,6 @@ function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_
     // Close White CCT Bulb Transmissiom
   } else if (cw == 1 && rgb == 1 || ww == 1 && rgb == 1) {
     // Start RGB WW and RGB CW Bulb Transmission
-    sendcommandbase = "/usr/bin/transceiver -t 1 -q " + add1.toString(16) + " -r " + add2.toString(16);
     atomikTransmitCMD(1, add1, add2, old_c, old_b, trans, 3);
     // RGBWW and RGBCW
     if (new_s != old_s) {
