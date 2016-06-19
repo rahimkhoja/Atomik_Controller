@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql')
 var fs = require('fs');
+var async = require(‘async’);
+var exec = require(‘child_process’).exec;
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -267,3 +269,270 @@ app.listen(PORT, function () {
   console.log('Atomik Server - Version 0.80');
   console.log('Listening for Atomik JSON Data (Port: ' + PORT + ') : ( press ctrl-c to end )');
 });
+
+function atomikTransmitCMD(type, address1, address2, color, bright, tran, command ) {
+  async.series([
+
+    var cmd = '/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16); 
+    execFn(cmd, ‘/usr/atomik/’)
+  ]);
+}
+
+var execFn = function(cmd, dir) {
+  return function(cb) {
+    console.log(‘EXECUTING: ‘ + cmd);
+    exec(cmd, { cwd: dir }, function() { cb(); });
+  }
+}
+
+function ColBrightnessPercent2Value(percent) {
+	if (percent >= 4) {
+		return 129;
+	} else if (percent >= 8) {
+		return 121;
+	} else if (percent >= 12) {
+		return 113;
+	} else if (percent >= 15) {
+		return 105;
+	} else if (percent >= 19) {
+		return 97;
+	} else if (percent >= 23) {
+		return 89;
+	} else if (percent >= 27) {
+		return 81;
+	} else if (percent >= 31) {
+		return 73;
+	} else if (percent >= 35) {
+		return 65;
+	} else if (percent >= 39) {
+		return 57;
+	} else if (percent >= 42) {
+		return 49;
+	} else if (percent >= 46) {
+		return 41;
+	} else if (percent >= 50) {
+		return 33;
+	} else if (percent >= 54) {
+		return 25;
+	} else if (percent >= 58) {
+		return 17;
+	} else if (percent >= 62) {
+		return 9;
+	} else if (percent >= 65) {
+		return 1;
+	} else if (percent >= 69) {
+		return 249;
+	} else if (percent >= 73) {
+		return 241;
+	} else if (percent >= 77) {
+		return 233;
+	} else if (percent >= 81) {
+		return 225;
+	} else if (percent >= 85) {
+		return 217;
+	} else if (percent >= 88) {
+		return 209;
+	} else if (percent >= 92) {
+		return 201;
+	} else if (percent >= 96) {
+		return 193;
+	} else if (percent >= 100) {
+		return 185;
+	}
+}
+
+
+function array_search(needle, haystack) {
+    for(var i in haystack) {
+        if(haystack[i] == needle) return i;
+    }
+    return false;
+}
+
+
+function increaseTrans(tra) {
+	trans = tra + 1;
+    if ( trans >= 256 ) {
+		trans = trans - 256;
+    }
+	return trans;
+
+}
+
+function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_cm, old_cm, add1, add2, tra, rgb, cw, ww){
+    trans = tra;
+    if ( cw == 1 && ww == 1 && rgb != 1 )        {
+            
+            // White Bulb Details
+            Brightness = [9,18,27,36,45,54,63,72,81,90,100];
+            WhiteTemp = [2700,3080,3460,3840,4220,4600,4980,5360,5740,6120,6500];
+
+            if (new_s != old_s)                {
+                // Status Changed
+                   trans = increaseTrans(trans);
+                    if (new_s == 1 )       {
+							atomikTransmitCMD(2, add1, add2, 1, 8, trans, (255-trans));
+                        }                    else                        {
+							atomikTransmitCMD(2, add1, add2, 1, 11, trans, (255-trans));
+                        }
+                } // End Status Change
+
+            if ( new_s == 1 )                {
+                    // Status On
+
+                    if ( old_cm != new_cm )                        {
+                            trans = increaseTrans(trans);
+                            // Color Mode Change
+                            if ( new_cm == 1 )                                {
+                                    atomikTransmitCMD(2, add1, add2, 1, 24, trans, (255-trans) );
+                                }                            else                                {
+                                    atomikTransmitCMD(2, add1, add2, 1, 08, trans, (255-trans));
+                                }
+                            
+                            if ( new_cm == 1 )                                {
+
+                                }
+
+                            if (new_b != old_b)                                {
+                                    // Brightness Change
+                                    if (new_b <= 9)                                        {
+                                            new_b = 9;
+                                        }                                    else if (new_b <= 18)                                        {
+                                            new_b = 18;
+                                        }                                    else if (new_b <= 27)                                        {
+                                            new_b = 27;
+                                        }                                    else if (new_b <= 36)                                        {
+                                            new_b = 36;
+                                        }                                    else if (new_b <= 45)                                        {
+                                            new_b = 45;
+                                        }                                    else if (new_b <= 54)                                        {
+                                            new_b = 54;
+                                        }                                    else if (new_b <= 63)                                        {
+                                            new_b = 63;
+                                        }                                    else if (new_b <= 72)                                        {
+                                            new_b = 72;
+                                        }                                    else if (new_b <= 81)                                        {
+                                            new_b = 81;
+                                        }                                    else if (new_b <= 90)                                        {
+                                            new_b = 90;
+                                        }                                    else if (new_b <= 100)                                        {
+                                            new_b = 100;
+                                        }
+                                    
+                                    old_pos = array_search ( old_b, Brightness );
+                                    new_pos = array_search ( new_b, Brightness );
+
+                                    if ( new_pos > old_pos )                                        {
+                                            if ( new_pos == array_search ( 100, Brightness ) )                                                {
+                                                    trans = increaseTrans(trans);
+                                                    atomikTransmitCMD(2, add1, add2, 1, 24, trans, (255-trans));
+													
+                                                }                                            else                                                {
+                                                    move = new_pos - old_pos;
+                                                    for (x = 0; x <= move; x++)                                                        {
+                                                            trans = increaseTrans(trans);
+                                                            atomikTransmitCMD(2, add1, add2, 1, 12, trans, (255-trans));
+                                                        }
+                                                }
+                                        }                                    else                                        {
+                                            move = old_pos - new_pos;
+                                            for (x = 0; x <= move; x++)                                                {
+                                                    trans = increaseTrans(trans);
+													atomikTransmitCMD(2, add1, add2, 1, 4, trans, (255-trans));
+                                                }
+                                        }
+                                }
+
+                            if (new_wt != old_wt )                                {
+                                    // White Temp Change
+                                    old_pos = array_search ( old_wt, WhiteTemp );
+                                    new_pos = array_search ( new_wt, WhiteTemp );
+
+                                    if ( new_pos > old_pos )                                        {
+                                            if ( new_pos == array_search ( 2700, WhiteTemp ) )                                                {
+                                                    trans = increaseTrans(trans);
+													atomikTransmitCMD(2, add1, add2, 1, 31, trans, (255-trans));
+                                                    
+                                                }                                            else                                                {
+                                                    move = new_pos - old_pos;
+                                                    for (x = 0; x <= move; x++)                                                        {
+                                                            trans = increaseTrans(trans);
+                                                            atomikTransmitCMD(2, add1, add2, 1, 15, trans, (255-trans));
+															
+                                                        }
+                                                }
+                                        }                                    else                                        {
+                                            if ( new_pos == array_search ( 6500, WhiteTemp ) )                                                {
+                                                    trans = increaseTrans(trans);
+                                                    atomikTransmitCMD(2, add1, add2, 1, 30, trans, (255-trans));
+                                                    
+                                                }                                            else                                                {
+                                                    move = old_pos - new_pos;
+                                                    for (x = 0; x <= move; x++)                                                        {
+                                                            trans = increaseTrans(trans);
+															atomikTransmitCMD(2, add1, add2, 1, 14, trans, (255-trans));
+                                                        }
+                                                }
+                                        }
+                                }
+                        }
+
+                }            else if ( cw == 1 && rgb == 1 || ww == 1 && rgb == 1 )                {
+                    sendcommandbase = "/usr/bin/transceiver -t 1 -q "+add1.toString(16)+" -r "+add2.toString(16);
+					atomikTransmitCMD(1, add1, add2, old_c, old_b, trans, 3);
+
+                    // RGBWW and RGBCW
+                    if (new_s != old_s)                        {
+                            // Status Changed
+                            trans = increaseTrans(trans);
+                            if (new_s == 1 )                                {
+                                    atomikTransmitCMD(1, add1, add2, old_c, ColBrightnessPercent2Value(old_b), trans, 3);
+                                }                            else                                {
+                                    atomikTransmitCMD(1, add1, add2, old_c, ColBrightnessPercent2Value(old_b), trans, 4);
+                                }
+                            
+                           
+                        }
+                    // End Status Change
+
+                    if ( new_s == 1 )                        {
+                            // Status On
+
+                            if ( old_cm != new_cm )                                {
+                                    // Color Mode Change
+                                    trans = increaseTrans(trans);
+                                    
+                                    if ( new_cm == 1 )                                        {
+											new_b = 185;
+											atomikTransmitCMD(1, add1, add2, old_c, ColBrightnessPercent2Value(old_b), trans, 19);
+                                        }                                    else                                        {
+                                            atomikTransmitCMD(1, add1, add2, old_c, ColBrightnessPercent2Value(old_b), trans, 3);
+                                        }
+                                }
+                            // End Color Mode Change > /dev/null &
+
+                            if ( new_cm == 0 )                                {
+                                    // Color Mode Color
+                                    if (new_c != old_c || old_cm != new_cm)                                        {
+                                            // Color Change
+                                            trans = increaseTrans(trans);
+											atomikTransmitCMD(1, add1, add2, old_c, ColBrightnessPercent2Value(old_b), trans, 3);
+											trans = increaseTrans(trans);
+											atomikTransmitCMD(1, add1, add2, new_c, ColBrightnessPercent2Value(old_b), trans, 15);
+                                    }
+                                    // End Color Change
+                                }
+                            // End Color Mode Color
+
+                            if (new_b != old_b )                                {
+                                    // Brightness Change
+                                    trans = increaseTrans(trans);
+									atomikTransmitCMD(1, add1, add2, new_c, ColBrightnessPercent2Value(new_b), trans, 14);
+                                }
+                            // End Brightness Change
+                        }
+                    // End Status On
+
+                }
+            return trans;
+        }
