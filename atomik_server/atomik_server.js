@@ -361,51 +361,51 @@ function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_
     trans = tra;
     if ( cw == 1 && ww == 1 && rgb != 1 )        {
             
-            // White Bulb Details
-            Brightness = [9,18,27,36,45,54,63,72,81,90,100];
-            WhiteTemp = [2700,3080,3460,3840,4220,4600,4980,5360,5740,6120,6500];
+// White Bulb Details
+        Brightness = [9,18,27,36,45,54,63,72,81,90,100];
+        WhiteTemp = [2700,3080,3460,3840,4220,4600,4980,5360,5740,6120,6500];
+        
+        if (new_s != old_s)                {
+            // Status Changed
+            trans = increaseTrans(trans);
+            if (new_s == 1 )       {
+			    atomikTransmitCMD(2, add1, add2, 1, 8, trans, (255-trans));
+            }                    else                        {
+				atomikTransmitCMD(2, add1, add2, 1, 11, trans, (255-trans));
+            }
+        } // End Status Change
 
-            if (new_s != old_s)                {
-                // Status Changed
-                   trans = increaseTrans(trans);
-                    if (new_s == 1 )       {
-							atomikTransmitCMD(2, add1, add2, 1, 8, trans, (255-trans));
-                        }                    else                        {
-							atomikTransmitCMD(2, add1, add2, 1, 11, trans, (255-trans));
-                        }
-                } // End Status Change
+        if ( new_s == 1 )                {
+            // Status On
 
-            if ( new_s == 1 )                {
-                    // Status On
-
-                    if ( old_cm != new_cm )                        {
-                            trans = increaseTrans(trans);
-                            // Color Mode Change
-                            if ( new_cm == 1 )                                {
-                                    atomikTransmitCMD(2, add1, add2, 1, 24, trans, (255-trans) );
-                                }                            else                                {
-                                    atomikTransmitCMD(2, add1, add2, 1, 08, trans, (255-trans));
-                                }
+            if ( old_cm != new_cm )                        {
+                trans = increaseTrans(trans);
+                // Color Mode Change
+                if ( new_cm == 1 )                                {
+                    atomikTransmitCMD(2, add1, add2, 1, 24, trans, (255-trans) );
+                }                            else                                {
+                    atomikTransmitCMD(2, add1, add2, 1, 08, trans, (255-trans));
+                }
                             
-                            if ( new_cm == 1 )                                {
+                if ( new_cm == 1 )                                {
 
-                                }
+                }
 
-                            if (new_b != old_b)                                {
-                                    // Brightness Change
-                                    if (new_b <= 9)                                        {
-                                            new_b = 9;
-                                        }                                    else if (new_b <= 18)                                        {
-                                            new_b = 18;
-                                        }                                    else if (new_b <= 27)                                        {
-                                            new_b = 27;
-                                        }                                    else if (new_b <= 36)                                        {
-                                            new_b = 36;
-                                        }                                    else if (new_b <= 45)                                        {
-                                            new_b = 45;
-                                        }                                    else if (new_b <= 54)                                        {
-                                            new_b = 54;
-                                        }                                    else if (new_b <= 63)                                        {
+                if (new_b != old_b)                                {
+                    // Brightness Change
+                    if (new_b <= 9)                                        {
+                        new_b = 9;
+                    }                                    else if (new_b <= 18)                                        {
+                        new_b = 18;
+                    }                                    else if (new_b <= 27)                                        {
+                        new_b = 27;
+                    }                                    else if (new_b <= 36)                                        {
+                        new_b = 36;
+                    }                                    else if (new_b <= 45)                                        {
+                        new_b = 45;
+                    }                                    else if (new_b <= 54)                                        {
+                        new_b = 54;
+                    }                                    else if (new_b <= 63)                                        {
                                             new_b = 63;
                                         }                                    else if (new_b <= 72)                                        {
                                             new_b = 72;
@@ -415,35 +415,35 @@ function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_
                                             new_b = 90;
                                         }                                    else if (new_b <= 100)                                        {
                                             new_b = 100;
-                                        }
-                                    
-                                    old_pos = array_search ( old_b, Brightness );
-                                    new_pos = array_search ( new_b, Brightness );
+                    }
+                                   
+                    old_pos = array_search ( old_b, Brightness );
+                    new_pos = array_search ( new_b, Brightness );
 
-                                    if ( new_pos > old_pos )                                        {
-                                            if ( new_pos == array_search ( 100, Brightness ) )                                                {
-                                                    trans = increaseTrans(trans);
-                                                    atomikTransmitCMD(2, add1, add2, 1, 24, trans, (255-trans));
+                    if ( new_pos > old_pos )                                        {
+                        if ( new_pos == array_search ( 100, Brightness ) )                                                {
+                            trans = increaseTrans(trans);
+                            atomikTransmitCMD(2, add1, add2, 1, 24, trans, (255-trans));
 													
-                                                }                                            else                                                {
-                                                    move = new_pos - old_pos;
-                                                    for (x = 0; x <= move; x++)                                                        {
-                                                            trans = increaseTrans(trans);
-                                                            atomikTransmitCMD(2, add1, add2, 1, 12, trans, (255-trans));
-                                                        }
-                                                }
-                                        }                                    else                                        {
-                                            move = old_pos - new_pos;
-                                            for (x = 0; x <= move; x++)                                                {
-                                                    trans = increaseTrans(trans);
-													atomikTransmitCMD(2, add1, add2, 1, 4, trans, (255-trans));
-                                                }
-                                        }
-                                }
+                        }                                            else                                                {
+                        move = new_pos - old_pos;
+                        for (x = 0; x <= move; x++)                                                        {
+                            trans = increaseTrans(trans);
+                            atomikTransmitCMD(2, add1, add2, 1, 12, trans, (255-trans));
+                        }
+                    }
+                }                                    else                                        {
+                    move = old_pos - new_pos;
+                    for (x = 0; x <= move; x++)                                                {
+                        trans = increaseTrans(trans);
+						atomikTransmitCMD(2, add1, add2, 1, 4, trans, (255-trans));
+                    }
+                }
+            }
 
-                            if (new_wt != old_wt )                                {
-                                    // White Temp Change
-                                    old_pos = array_search ( old_wt, WhiteTemp );
+            if (new_wt != old_wt )                                {
+                // White Temp Change
+                old_pos = array_search ( old_wt, WhiteTemp );
                                     new_pos = array_search ( new_wt, WhiteTemp );
 
                                     if ( new_pos > old_pos )                                        {
@@ -531,6 +531,7 @@ function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_
                         }
                     // End Status On
 
+                }
                 }
             return trans;
         }
