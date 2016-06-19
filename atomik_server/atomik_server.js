@@ -74,14 +74,14 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
   });
 }
 
-function validRF(zoneID, req){
+function validRF(zoneID, req, chan){
   console.log('Valid Command!:');
   console.log("Zone_ID: " + zoneID );
-  var channel = req.body.Configuration.Channel;
-  if (typeof channel == 'undefined') {
+  
+  if (typeof chan == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+channel+'"';
+    cha = '"'+chan+'"';
   }
 
   if (typeof req.body.Configuration.Status == 'undefined') {
@@ -116,12 +116,12 @@ function validRF(zoneID, req){
   log_tra_execute(cha, req.body.DateTime, req.body.Data, sta, cm, col, wt, bri, req.body.Address1, req.body.Address2);
 }
 
-function invalidRF(req){
+function invalidRF(req, chan){
   console.log('Invalid Command:');
-  if (typeof req.body.Configuration.Channel == 'undefined') {
+  if (typeof chan == 'undefined') {
     cha = 'NULL';
   } else {
-    cha = '"'+req.body.Configuration.Channel+'"';
+    cha = '"'+chan+'"';
   }
 
   if (typeof req.body.Configuration.Status == 'undefined') {
@@ -191,10 +191,10 @@ function checkRFJSON ( address1, address2, channel, req ) {
         if (rows ) {
           console.log("Rows Length:" + rows.length );
           console.log("Row Zone_ID:" + rows[0].zone_id );
-          validRF(rows[0].zone_id, req);
+          validRF(rows[0].zone_id, req, req.body.Configuration.Channel);
           }
       }  else {
-        invalidRF(req);
+        invalidRF(req, req.body.Configuration.Channel);
       }
     });
   
