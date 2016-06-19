@@ -237,7 +237,7 @@ app.post('/transceiver', function (req, res) {
  console.log('Transceiver Data:');
  console.log(req.body);
  
- checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Channel, req );
+ checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Configuration.Channel, req );
 });
 
 app.get('/cron', function (req, res) {
