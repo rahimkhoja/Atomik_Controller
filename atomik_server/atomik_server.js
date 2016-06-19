@@ -27,15 +27,13 @@ function updateCurrentChannel( channel, remote_id ) {
   var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+'? WHERE remote_id = '+remote_id+';'; 
   console.log(sql);
   connection.query(sql, function(err) {
-   if (!err)
+   if (!err) {
      console.log('Channel Updated');
-   else
+   } else {
      console.log('Error while performing Query.');
-   });
+    }
+  });
 } 
-
-
-
 
 
 function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
@@ -82,15 +80,17 @@ function log_tra_no_execute(channel, date, rec_data, status, colormode, color, w
 
   connection.query(sql, function(err, rows, fields) {
     if (!err) {
-     console.log('The solution is: ', rows);
+      console.log('The solution is: ', rows);
     } else {
-     console.log('Error while performing Query.');
-     fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql, function (err) {
+      console.log('Error while performing Query.');
+    }
+    fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql, function (err) {
       if (err) throw err;
-        console.log('The "data to append" was appended to file!');
+      console.log('The "data to append" was appended to file!');
     });
- });
+  });
 }
+
 
 function log_tra_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
 
