@@ -399,14 +399,14 @@ function updateZone(req, zoneID) {
         } else {
               bri = req.body.Configuration.Brightness;
         }
-      
+         console.log('Transmit Address: '+req.body.Configuration.Address1+' ('+parseInt(req.body.Configuration.Address1, 16)+') '+req.body.Configuration.Address2+' ('+parseInt(req.body.Configuration.Address2, 16)+')');
         traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, parseInt(req.body.Configuration.Address1, 16), parseInt(req.body.Configuration.Address2, 16) , results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
         
         updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
         lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
         lastUpdate_Zone(results[i].zone_device_zone_id);
       }
-    });
+    })(req);
   })(req);
 }
 
