@@ -24,7 +24,7 @@ var PORT = 4200;
 
 function updateCurrentChannel( channel, remote_id ) {
   console.log('Running -- updateCurrentChannel');
-  var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+'? WHERE remote_id = '+remote_id+';'; 
+  var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
   console.log(sql);
   connection.query(sql, function(err) {
    if (!err) {
@@ -198,6 +198,19 @@ function checkRFJSON ( address1, address2, channel, req ) {
           updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
           }
       }  else {
+        // Check if valid remote addresses without valid channel, if so update channel for remote
+        var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+";"; 
+        console.log(sql);
+        connection.query(sql, function(err, rows ) {
+          if (err) throw err;
+        
+          if ( rows.length > 0) {
+            if (rows ) {
+              updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+            }
+          }
+        })(req);
+        
         invalidRF(req);
       }
     });
