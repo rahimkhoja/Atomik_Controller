@@ -209,8 +209,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
               updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
             }
           }
-        })(req);
-        
+        });
         invalidRF(req);
       }
     });
