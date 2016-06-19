@@ -36,7 +36,7 @@ function updateCurrentChannel( channel, remote_id ) {
 
 
 
-}
+
 
 function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
 
