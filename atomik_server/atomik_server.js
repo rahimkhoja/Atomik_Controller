@@ -1,4 +1,4 @@
-var express = require('express');
+-var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql')
 var fs = require('fs');
@@ -272,13 +272,15 @@ app.listen(PORT, function () {
 
 function atomikTransmitCMD(type, address1, address2, color, bright, tran, command ) {
   async.series([
-    execFn('/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16), '/usr/atomik/')
+
+    var cmd = '/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16); 
+    execFn(cmd, '/usr/atomik/')
   ]);
 }
 
 var execFn = function(cmd, dir) {
   return function(cb) {
-    console.log(‘EXECUTING: ‘ + cmd);
+    console.log('EXECUTING: '+ cmd);
     exec(cmd, { cwd: dir }, function() { cb(); });
   }
 }
