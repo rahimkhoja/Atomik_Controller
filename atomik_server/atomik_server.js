@@ -173,7 +173,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
           console.log("Rows Length:" + rows.length );
           console.log("Row Zone_ID:" + rows[0].zone_id );
           validRF(rows[0].zone_id, req);
-          updateCurrentChannel(req.body.Channel, rows[0].zone_remote_remote_id);
+          updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
           }
       }  else {
         invalidRF(req);
