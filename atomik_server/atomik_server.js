@@ -400,7 +400,7 @@ function updateZone(req, zoneID) {
               bri = req.body.Configuration.Brightness;
         }
       
-        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, req.body.Configuration.Address1, req.body.Configuration.Address1, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
+        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, parseInt(req.body.Configuration.Address1, 16), parseInt(req.body.Configuration.Address2, 16) , results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
         
         updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
         lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
