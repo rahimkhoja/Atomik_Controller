@@ -181,7 +181,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
         invalidRF(req);
       }
     });
-    });
+    })(req);
     
   } else {
   (function(req) {
@@ -201,7 +201,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
         invalidRF(req, req.body.Configuration.Channel);
       }
     });
-  });
+  })(req);
   }
 }
 
