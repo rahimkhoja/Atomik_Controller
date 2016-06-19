@@ -2,8 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql')
 var fs = require('fs');
-var async = require(‘async’);
-var exec = require(‘child_process’).exec;
+var async = require('async');
+var exec = require('child_process').exec;
 
 var connection = mysql.createConnection({
   host: 'localhost',
