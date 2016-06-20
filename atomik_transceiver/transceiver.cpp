@@ -688,9 +688,9 @@ void receive()
             		} else if ( do_desync == 1 && radiomode == 1 ) {
                			send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
 
-               			for(int i=0; i<5; i++) {
+               			for(int i=0; i<10; i++) {
                				send(0xd3, 0xe1, 0x13, remote, rem_p, prefix, seq, 30);
-               				usleep(350);
+               				usleep(5000);
                			}
 
             		} else if ( do_sync == 1 && radiomode == 2 ) {
