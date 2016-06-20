@@ -632,17 +632,15 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 void receive()
 { // 1
     	printf("Receiving mode, press Ctrl-C to end\n");
-        int start = 1;
-        int ret = -1;
+        int ret = ret = mlr.setRadioMode(default_radiomode);
     	while(1)
 	{
         	// check if there are any new messages to send! 
         	if(getCommandListSize() == 0)
 		{
 			char data[50];
-            if( start == 1 || ( start == 0 && default_radiomode != radiomode ) {
+            if( default_radiomode != radiomode ) {
 			  ret = mlr.setRadioMode(default_radiomode);
-              start = 0;
             }
  
 			if(ret < 0)
