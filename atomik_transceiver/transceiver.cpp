@@ -1051,7 +1051,7 @@ int main(int argc, char** argv)
             send(command);
         } else {
             if ( do_sync == 1 && radiomode == 1 ) {
-                for(int i=0; i<5; i++) {
+                for(int i=0; i<8; i++) {
                      send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
                      usleep(350);
                 } 
