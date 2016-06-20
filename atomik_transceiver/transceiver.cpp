@@ -458,7 +458,6 @@ void resetVars()
 
   command = 0x00;
   
-  radiomode = default_radiomode;
 }
 
 int getCommandListSize()
