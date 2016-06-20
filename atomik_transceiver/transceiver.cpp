@@ -260,7 +260,6 @@ void getOptions(std::vector<std::string> args, int type)
                  seq = (uint8_t)tmp;
                  break;
                 case t:
-                printf("default_radiomode is NOT set here");
                  tmp = strtoll(arguments[i+1].c_str(), NULL, 10);
                  radiomode = (uint8_t)tmp;
                  break;
@@ -392,7 +391,6 @@ void getOptions(std::vector<std::string> args, int type)
         break;
       case 't':
         tmp = strtoll(optarg, NULL, 10);
-        printf("default_radiomode IS set here");
         radiomode = (uint8_t)tmp;
         default_radiomode = (uint8_t)tmp;
         break;
@@ -634,14 +632,17 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 void receive()
 { // 1
     	printf("Receiving mode, press Ctrl-C to end\n");
+        int start = 1;
     	while(1)
 	{
         	// check if there are any new messages to send! 
         	if(getCommandListSize() == 0)
 		{
 			char data[50];
-            printf("Setting Radio Mode %i", default_radiomode);
-			int ret = mlr.setRadioMode(default_radiomode);
+            if( start == 1 || default_radiomode != radiomode ) {
+			  int ret = mlr.setRadioMode(default_radiomode);
+              start = 0;
+            }
  
 			if(ret < 0)
 			{
