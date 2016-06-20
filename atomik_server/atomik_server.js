@@ -463,6 +463,9 @@ function lastUpdate_Zone(zone_id) {
 
 
 function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_cm, old_cm, add1, add2, tra, rgb, cw, ww) {
+   console.log('Running -- Transmit');
+    console.log('Bright(o/n): '+old_b+'/'+new_b+' - '+'Status(o/n): '+old_s+'/'+new_s+' - '+'Color(o/n): '+old_c+'/'+new_c+' - '+'ColorMode(o/n): '+old_cm+'/'+new_cm+' - '+'WhiteTemp(o/n): '+old_wt+'/'+new_wt);
+
   trans = tra;
   if (cw == 1 && ww == 1 && rgb != 1) {
     // White Bulb Details
