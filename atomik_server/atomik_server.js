@@ -372,28 +372,22 @@ function updateZone(req, zoneID) {
      
         if (typeof req.body.Configuration.Status == 'undefined') {
           sta = results[i].device_status;
+        } else if ( req.body.Configuration.Status == "On" ) {
+          sta = 1;
+        } else if ( req.body.Configuration.Status == "Off" ) {
+          sta = 0;
         } else {
-          if ( req.body.Configuration.Status == "On" ) {
-            sta = 1;
-          } else if ( req.body.Configuration.Status == "Off" ) {
-            sta = 0;
-          } else {
-            sta = '"'+req.body.Configuration.Status+'"';
-          }
+          sta = '"'+req.body.Configuration.Status+'"';
         }
-        
+                
         if (typeof req.body.Configuration.ColorMode == 'undefined') {
           cm = results[i].device_colormode;
-        } else {
-          cm = '"'+req.body.Configuration.ColorMode+'"';
-        if ( req.body.Configuration.ColorMode == "RGB256" ) {
-            cm = 0;
-          } else if ( req.body.Configuration.ColorMode == "White" ) {
-            cm = 1;
-          }
+        } else if ( req.body.Configuration.ColorMode == "RGB256" ) {
+          cm = 0;
+        } else if ( req.body.Configuration.ColorMode == "White" ) {
+          cm = 1;
         }
-        
-
+    
         if (typeof req.body.Configuration.Color == 'undefined') {
           col = results[i].device_rgb256;
         } else {
