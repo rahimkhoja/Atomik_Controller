@@ -640,6 +640,7 @@ void receive()
         	if(getCommandListSize() == 0)
 		{
 			char data[50];
+            printf("Setting Radio Mode %i", default_radiomode);
 			int ret = mlr.setRadioMode(default_radiomode);
  
 			if(ret < 0)
