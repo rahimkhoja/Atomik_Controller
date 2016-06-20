@@ -62,6 +62,7 @@ uint8_t resends  =   60;
 uint64_t command = 0x00;
 
 int radiomode = 1;
+int default_radiomode = 1;
 
 const char *options = "hdsut:n:p:q:r:c:b:k:v:w:";
   
@@ -391,6 +392,7 @@ void getOptions(std::vector<std::string> args, int type)
       case 't':
         tmp = strtoll(optarg, NULL, 10);
         radiomode = (uint8_t)tmp;
+        default_radiomode = (uint8_t)tmp;
         break;
       case 's':
         do_sync = 1;
@@ -453,6 +455,8 @@ void resetVars()
   resends  =   30;
 
   command = 0x00;
+  
+  radiomode = default_radiomode;
 }
 
 int getCommandListSize()
@@ -675,7 +679,7 @@ void receive()
             		getOptions(String2Vector(comandSTR), 1);
            
 			if ( do_sync == 1 && radiomode == 1 ) {
-               			for(int i=0; i<5; i++) {
+               			for(int i=0; i<8; i++) {
                				send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
                				usleep(350);
                			}
@@ -704,7 +708,7 @@ void receive()
             		} else {
                			send(color, bright, key, remote, rem_p, prefix, seq, resends);
             		}
- 
+                     
             		removeCommand();
             		resetVars();
        		}
