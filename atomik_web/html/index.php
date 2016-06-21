@@ -14,7 +14,10 @@
 		$error_text = "Invalid Username Or Password!";	
 		$_SESSION['is_error'] == 0;
 	}
-	
+	$username = $_POST["username"];
+  		$password_sha1 = sha1($_POST["password"]);
+		echo $username;
+		echo $password_sha1;
 	echo "before";
 	if (isset($_POST["username"]) && isset($_POST["password"])) {
 	  	$username = $_POST["username"];
