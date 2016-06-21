@@ -14,14 +14,13 @@
 		$error_text = "Invalid Username Or Password!";	
 	}
 	
-    session_destroy();
-    session_start();
 	if (isset($_POST['username']) && isset($_POST['username'])) {
 	  	$username = $_POST['username'];
   		$password_sha1 = sha1($_POST['password']);
 		echo $username;
 		echo $password_sha1;
-
+		session_destroy();
+    	session_start();
 	  	if ( $username == "admin" ) {
   			$sql  = "SELECT atomik_settings.id, atomik_settings.password FROM atomik_settings WHERE atomik_settings.password='".$password_sha1."';";
 			echo $sql;
