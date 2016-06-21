@@ -12,8 +12,10 @@
 	if ( $_SESSION['is_error'] == 1 ) {
 		$page_error = 1;
 		$error_text = "Invalid Username Or Password!";	
+		$_SESSION['is_error'] == 0;
 	}
 	
+	echo "before";
 	if (isset($_POST["username"]) && isset($_POST["password"])) {
 	  	$username = $_POST["username"];
   		$password_sha1 = sha1($_POST["password"]);
@@ -31,7 +33,6 @@
 			} else {
   				$db_records = $rs->num_rows;
 			}
-
 
 		    if ($db_records > 0) {
 		    	$_SESSION['signed_in'] = true;
@@ -115,7 +116,7 @@
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div></div><script type="text/javascript">
 	$("#loginbtn").on('click', function() {
-   document.loginfrm.submit();
+   document.forms["loginfrm"].submit();
 });</script></body><?php
 $rs->free();
 $conn->close();
