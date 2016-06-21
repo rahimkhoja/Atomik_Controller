@@ -111,7 +111,7 @@
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
  </div>
-<div class="footer FooterColor">
+<div class="FooterColor">
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
