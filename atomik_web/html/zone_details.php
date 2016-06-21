@@ -39,330 +39,497 @@ function Check2700to6500( $input )
 }
 
 
-function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww) {
-	$trans = $tra;
-		
-	if ( $cw == 1 && $ww == 1 && $rgb != 1 ) {
-		
-		$sendcommandbase = "/usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2)." -c 01";
-		
-		// White Bulb Details
-		$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
-		$WhiteTemp = array(2700,3080,3460,3840,4220,4600,4980,5360,5740,6120,6500);
-		
-		if ($new_s != $old_s) {
-			// Status Changed
-			$trans = $trans + 1;
-			if ( $trans >= 256 ) {
-				$trans = $trans - 256;
-			}
-			if ($new_s == 1 ) {
-				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
-			} else {
-				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0B";
-			}
-			echo $sendcom;
-			exec($sendcom.' > /dev/null &');	
-		} // End Status Change
-		
-		if ( $new_s == 1 ) {
-		// Status On
-			
-			if ( $old_cm != $new_cm ) {
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
-				echo 'current CM: '.$new_cm.'\n';
-				// Color Mode Change
-				if ( $new_cm == 1 ) {
-					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 18";
-				} else {
-					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
-				}
-				echo $sendcom;
-				exec($sendcom.' > /dev/null &');
-				if ( $new_cm == 1 ) {
-					
-			}
-			
-			if ($new_b != $old_b) {
-			// Brightness Change
-				
-	if ($new_b <= 9) {
-	$new_b = 9;
-} else if ($new_b <= 18) {
-	$new_b = 18;
-} else if ($new_b <= 27) {
-	$new_b = 27;
-} else if ($new_b <= 36) {
-	$new_b = 36;
-} else if ($new_b <= 45) {
-	$new_b = 45;
-} else if ($new_b <= 54) {
-	$new_b = 54;
-} else if ($new_b <= 63) {
-	$new_b = 63;
-} else if ($new_b <= 72) {
-	$new_b = 72;
-} else if ($new_b <= 81) {
-	$new_b = 81;
-} else if ($new_b <= 90) {
-	$new_b = 90;
-} else if ($new_b <= 100) {
-	$new_b = 100;
-} 
-if ($old_b <= 9) {
-	$old_b = 9;
-} else if ($old_b <= 18) {
-	$old_b = 18;
-} else if ($old_b <= 27) {
-	$old_b = 27;
-} else if ($old_b <= 36) {
-	$old_b = 36;
-} else if ($old_b <= 45) {
-	$old_b = 45;
-} else if ($old_b <= 54) {
-	$old_b = 54;
-} else if ($old_b <= 63) {
-	$old_b = 63;
-} else if ($old_b <= 72) {
-	$old_b = 72;
-} else if ($old_b <= 81) {
-	$old_b = 81;
-} else if ($old_b <= 90) {
-	$old_b = 90;
-} else if ($old_b <= 100) {
-	$old_b = 100;
-}
-				$old_pos = array_search ( $old_b, $Brightness );
-				$new_pos = array_search ( $new_b, $Brightness );
-				
-				if ( $new_pos > $old_pos ) {
-					if ( $new_pos == array_search ( 100, $Brightness ) ) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
-						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 18";
-						echo $sendcom;
-						exec($sendcom.' > /dev/null &');
-					} else {
-						$move = $new_pos - $old_pos;	
-						for ($x = 0; $x <= $move; $x++) {
-							$trans = $trans + 1;
-							if ( $trans >= 256 ) {
-								$trans = $trans - 256;
-							}
-							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0C";
-							echo $sendcom;
-							exec($sendcom.' > /dev/null &');
-						}
-					}
-				} else {
-					$move = $old_pos - $new_pos;	
-					for ($x = 0; $x <= $move; $x++) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
-						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 04";
-						echo $sendcom;
-						exec($sendcom.' > /dev/null &');
-					}
-				}	
-			}
-			
-			if ($new_wt != $old_wt ) {
-			// White Temp Change
-				$old_pos = array_search ( $old_wt, $WhiteTemp );
-				$new_pos = array_search ( $new_wt, $WhiteTemp );
-				
-				if ( $new_pos > $old_pos ) {
-					if ( $new_pos == array_search ( 2700, $WhiteTemp ) ) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
-						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 1f";
-						echo $sendcom;
-						exec($sendcom.' > /dev/null &');
-					} else {
-						$move = $new_pos - $old_pos;	
-						for ($x = 0; $x <= $move; $x++) {
-							$trans = $trans + 1;
-							if ( $trans >= 256 ) {
-								$trans = $trans - 256;
-							}
-							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0f";
-							echo $sendcom;
-							exec($sendcom.' > /dev/null &');
-						}
-					}
-				} else {
-					if ( $new_pos == array_search ( 6500, $WhiteTemp ) ) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
-						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 1e";
-						echo $sendcom;
-						exec($sendcom.' > /dev/null &');
-					} else {
-						$move = $old_pos - $new_pos;	
-						for ($x = 0; $x <= $move; $x++) {
-							$trans = $trans + 1;
-							if ( $trans >= 256 ) {
-								$trans = $trans - 256;
-							}
-							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0e";
-							echo $sendcom;
-							exec($sendcom.' > /dev/null &');
-						}
-					}	
-				}
-			}
-		}
-			
-	} else if ( $cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1 ) {
-		$sendcommandbase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
-		
-	// RGBWW and RGBCW	
-		if ($new_s != $old_s) {
-		// Status Changed
-			$trans = $trans + 1;
-			if ( $trans >= 256 ) {
-				$trans = $trans - 256;
-			}
-			if ($new_s == 1 ) {	
-				$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans);
-			} else {
-				$sendcom = $sendcommandbase." -k 04 -v ".dechex($trans);
-			}
-			echo $sendcom;
-			exec($sendcom.' > /dev/null &');	
-		}
-		// End Status Change
-		
-		if ( $new_s == 1 ) {
-		// Status On
-			
-			if ( $old_cm != $new_cm ) {
-				// Color Mode Change
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
-				echo 'current CM: '.$new_cm.'\n';
-				
-				if ( $new_cm == 1 ) {
-					$sendcom = $sendcommandbase." -k 13 -v ".dechex($trans)." -c ".dechex($old_c);
-				} else {
-					$sendcom = $sendcommandbase." -k 03 -v ".dechex($trans)." -c ".dechex($old_c);
-				}
-				echo $sendcom;
-				exec($sendcom.' > /dev/null &');	
-			}
-			// End Color Mode Change > /dev/null &
-		
-			if ( $new_cm == 0 ) {
-			// Color Mode Color
-				if ($new_c != $old_c || $old_cm != $new_cm) {
-					// Color Change
-					$trans = $trans + 1;
-					if ( $trans >= 256 ) {
-						$trans = $trans - 256;
-					}
-				
-					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
-					exec($initcom);
-					echo $initcom;	
-					$trans = $trans + 1;
-					if ( $trans >= 256 ) {
-						$trans = $trans - 256;
-					}
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
-					echo $sendcom;
-					exec($sendcom.' > /dev/null &');	
-					
-				}
-				// End Color Change
-			}
-			// End Color Mode Color
-		
-			if ($new_b != $old_b ) {
-				// Brightness Change
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
-				if ($new_b == 4) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(129)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 8) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(121)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 12) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(113)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 15) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(105)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 19) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(97)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 23) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(89)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 27) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(81)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 31) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(73)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 35) {
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(65)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 39) { //10
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(57)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 42) { //11
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(49)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 46) { //12
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(41)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 50) { //13
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(33)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 54) { //14
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(25)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 58) { //15
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(17)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 62) { //16
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(9)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 65) { //17
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(1)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 69) { //18
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(249)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 73) { //19
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(241)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 77) { // 20
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(233)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 81) { // 21
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(225)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 85) { // 22
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(217)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 88) { // 23
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(209)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 92) { // 24
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(201)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 96) { // 25
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(193)." -k 0e -v ".dechex($trans);
-				} else if ($new_b == 100) { // 26
-					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(185)." -k 0e -v ".dechex($trans);
-				}
-				echo $sendcom;
-				exec($sendcom.' > /dev/null &');	
-			}
-			// End Brightness Change
-		}
-		// End Status On
-	
-	} 
-	return $trans;
-}
+function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww)
+{
+  $trans = $tra;
+  if ($cw == 1 && $ww == 1 && $rgb != 1) {
+    $sendcommandbase = "/usr/bin/transceiver -t 2 -q " . dechex($add1) . " -r " . dechex($add2) . " -c 01";
+
+    // White Bulb Details
+
+    $Brightness = array(
+      9,
+      18,
+      27,
+      36,
+      45,
+      54,
+      63,
+      72,
+      81,
+      90,
+      100
+    );
+    $WhiteTemp = array(
+      2700,
+      3080,
+      3460,
+      3840,
+      4220,
+      4600,
+      4980,
+      5360,
+      5740,
+      6120,
+      6500
+    );
+    if ($new_s != $old_s) {
+
+      // Status Changed
+
+      $trans = $trans + 1;
+      if ($trans >= 256) {
+        $trans = $trans - 256;
+      }
+
+      if ($new_s == 1) {
+        $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
+      }
+      else {
+        $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0B";
+      }
+
+      echo $sendcom;
+      exec($sendcom . ' > /dev/null &');
+    } // End Status Change
+    
+	if ($new_s == 1) {
+      // Status On
+
+      if ($old_cm != $new_cm) {
+        $trans = $trans + 1;
+        if ($trans >= 256) {
+          $trans = $trans - 256;
+        }
+
+        // Color Mode Change
+
+        if ($new_cm == 1) {
+          $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
+        }
+        else {
+          $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
+        }
+
+        echo $sendcom;
+        exec($sendcom . ' > /dev/null &');
+
+	  }
+
+      if ($new_b != $old_b) {
+        // Brightness Change
+
+        if ($new_b <= 9) {
+          $new_b = 9;
+        }
+        else
+        if ($new_b <= 18) {
+            $new_b = 18;
+          }
+          else
+          if ($new_b <= 27) {
+            $new_b = 27;
+          }
+          else
+          if ($new_b <= 36) {
+            $new_b = 36;
+          }
+          else
+          if ($new_b <= 45) {
+            $new_b = 45;
+          }
+          else
+          if ($new_b <= 54) {
+            $new_b = 54;
+          }
+          else
+          if ($new_b <= 63) {
+            $new_b = 63;
+          }
+          else
+          if ($new_b <= 72) {
+            $new_b = 72;
+          }
+          else
+          if ($new_b <= 81) {
+            $new_b = 81;
+          }
+          else
+          if ($new_b <= 90) {
+            $new_b = 90;
+          }
+          else
+          if ($new_b <= 100) {
+            $new_b = 100;
+          }
+
+          if ($old_b <= 9) {
+            $old_b = 9;
+          }
+          else
+          if ($old_b <= 18) {
+            $old_b = 18;
+          }
+          else
+          if ($old_b <= 27) {
+            $old_b = 27;
+          }
+          else
+          if ($old_b <= 36) {
+            $old_b = 36;
+          }
+          else
+          if ($old_b <= 45) {
+            $old_b = 45;
+          }
+          else
+          if ($old_b <= 54) {
+            $old_b = 54;
+          }
+          else
+          if ($old_b <= 63) {
+            $old_b = 63;
+          }
+          else
+          if ($old_b <= 72) {
+            $old_b = 72;
+          }
+          else
+          if ($old_b <= 81) {
+            $old_b = 81;
+          }
+          else
+          if ($old_b <= 90) {
+            $old_b = 90;
+          }
+          else
+          if ($old_b <= 100) {
+            $old_b = 100;
+          }
+
+          $old_pos = array_search($old_b, $Brightness);
+          $new_pos = array_search($new_b, $Brightness);
+          if ($new_pos > $old_pos) {
+            if ($new_pos == array_search(100, $Brightness)) {
+              $trans = $trans + 1;
+              if ($trans >= 256) {
+                $trans = $trans - 256;
+              }
+
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
+              echo $sendcom;
+              exec($sendcom . ' > /dev/null &');
+            }
+            else {
+              $move = $new_pos - $old_pos;
+              for ($x = 0; $x <= $move; $x++) {
+                $trans = $trans + 1;
+                if ($trans >= 256) {
+                  $trans = $trans - 256;
+                }
+
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0C";
+                echo $sendcom;
+                exec($sendcom . ' > /dev/null &');
+              }
+            }
+          }
+          else {
+            $move = $old_pos - $new_pos;
+            for ($x = 0; $x <= $move; $x++) {
+              $trans = $trans + 1;
+              if ($trans >= 256) {
+                $trans = $trans - 256;
+              }
+
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 04";
+              echo $sendcom;
+              exec($sendcom . ' > /dev/null &');
+            }
+          }
+        }
+
+        if ($new_wt != $old_wt) {
+
+          // White Temp Change
+
+          $old_pos = array_search($old_wt, $WhiteTemp);
+          $new_pos = array_search($new_wt, $WhiteTemp);
+          if ($new_pos > $old_pos) {
+            if ($new_pos == array_search(2700, $WhiteTemp)) {
+              $trans = $trans + 1;
+              if ($trans >= 256) {
+                $trans = $trans - 256;
+              }
+
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
+              echo $sendcom;
+              exec($sendcom . ' > /dev/null &');
+            }
+            else {
+              $move = $new_pos - $old_pos;
+              for ($x = 0; $x <= $move; $x++) {
+                $trans = $trans + 1;
+                if ($trans >= 256) {
+                  $trans = $trans - 256;
+                }
+
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
+                echo $sendcom;
+                exec($sendcom . ' > /dev/null &');
+              }
+            }
+          }
+          else {
+            if ($new_pos == array_search(6500, $WhiteTemp)) {
+              $trans = $trans + 1;
+              if ($trans >= 256) {
+                $trans = $trans - 256;
+              }
+
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
+              echo $sendcom;
+              exec($sendcom . ' > /dev/null &');
+            }
+            else {
+              $move = $old_pos - $new_pos;
+              for ($x = 0; $x <= $move; $x++) {
+                $trans = $trans + 1;
+                if ($trans >= 256) {
+                  $trans = $trans - 256;
+                }
+
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
+                echo $sendcom;
+                exec($sendcom . ' > /dev/null &');
+              }
+            }
+          }
+        }
+      }
+	  
+	  
+	  
+	  
+  } else if ($cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1) {
+      $sendcommandbase = "/usr/bin/transceiver -t 1 -q " . dechex($add1) . " -r " . dechex($add2);
+
+      // RGBWW and RGBCW
+
+      if ($new_s != $old_s) {
+
+        // Status Changed
+
+        $trans = $trans + 1;
+        if ($trans >= 256) {
+          $trans = $trans - 256;
+        }
+
+        if ($new_s == 1) {
+          $sendcom = $sendcommandbase . " -k 03 -v " . dechex($trans);
+        }
+        else {
+          $sendcom = $sendcommandbase . " -k 04 -v " . dechex($trans);
+        }
+
+        echo $sendcom;
+        exec($sendcom . ' > /dev/null &');
+      }
+
+      // End Status Change
+
+      if ($new_s == 1) {
+
+        // Status On
+
+        if ($old_cm != $new_cm) {
+
+          // Color Mode Change
+
+          $trans = $trans + 1;
+          if ($trans >= 256) {
+            $trans = $trans - 256;
+          }
+
+          echo 'current CM: ' . $new_cm . '\n';
+          if ($new_cm == 1) {
+            $sendcom = $sendcommandbase . " -k 13 -v " . dechex($trans) . " -c " . dechex($old_c);
+          }
+          else {
+            $sendcom = $sendcommandbase . " -k 03 -v " . dechex($trans) . " -c " . dechex($old_c);
+          }
+
+          echo $sendcom;
+          exec($sendcom . ' > /dev/null &');
+        }
+
+        // End Color Mode Change > /dev/null &
+
+        if ($new_cm == 0) {
+
+          // Color Mode Color
+
+          if ($new_c != $old_c || $old_cm != $new_cm) {
+
+            // Color Change
+
+            $trans = $trans + 1;
+            if ($trans >= 256) {
+              $trans = $trans - 256;
+            }
+
+            $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
+            exec($initcom);
+            echo $initcom;
+            $trans = $trans + 1;
+            if ($trans >= 256) {
+              $trans = $trans - 256;
+            }
+
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 0f -v " . dechex($trans);
+            echo $sendcom;
+            exec($sendcom . ' > /dev/null &');
+          }
+
+          // End Color Change
+
+        }
+
+        // End Color Mode Color
+
+        if ($new_b != $old_b) {
+
+          // Brightness Change
+
+          $trans = $trans + 1;
+          if ($trans >= 256) {
+            $trans = $trans - 256;
+          }
+
+          if ($new_b == 4) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(129) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 8) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(121) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 12) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(113) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 15) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(105) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 19) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(97) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 23) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(89) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 27) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(81) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 31) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(73) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 35) {
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(65) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 39) { //10
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(57) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 42) { //11
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(49) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 46) { //12
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(41) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 50) { //13
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(33) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 54) { //14
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(25) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 58) { //15
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(17) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 62) { //16
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(9) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 65) { //17
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(1) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 69) { //18
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(249) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 73) { //19
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(241) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 77) { // 20
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(233) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 81) { // 21
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(225) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 85) { // 22
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(217) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 88) { // 23
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(209) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 92) { // 24
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(201) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 96) { // 25
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(193) . " -k 0e -v " . dechex($trans);
+          }
+          else
+          if ($new_b == 100) { // 26
+            $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(185) . " -k 0e -v " . dechex($trans);
+          }
+
+          echo $sendcom;
+          exec($sendcom . ' > /dev/null &');
+        }
+
+        // End Brightness Change
+
+      }
+
+      // End Status On
+
+    }
+
+    return $trans;
+  }
 //
+
+
 function updateZone($db, $zon, $new_b,  $new_s,  $new_c,  $new_wt,  $new_cm, $tz) {
 
-	$success = true;
+	$success = TRUE;
 
 	$sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, 
 	atomik_devices.device_brightness, 
@@ -385,11 +552,11 @@ atomik_device_types.device_type_brightness=1;";
  
 	if($uzrs === false) {
 	  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $db->error, E_USER_ERROR);
-	  $success = false;
+	  $success = FALSE;
 	} else {
   		$_zone_devices = $uzrs->num_rows;
-		
 		$uzrs->data_seek(0);
+
 		while($rowuzrs = $uzrs->fetch_assoc()){ 
     		$old_b = $rowuzrs['device_brightness']; 
 			$old_s = $rowuzrs['device_status']; 
@@ -410,23 +577,29 @@ atomik_device_types.device_type_brightness=1;";
 			// Update Devices with new Properties 
 			$sql = "UPDATE atomik_devices SET device_status = ".trim($new_s).", device_colormode = ".trim($new_cm).", device_brightness = ".
 		trim($new_b).", device_rgb256 = ".trim($new_c).", device_white_temprature = ".trim($new_wt).", device_transmission = ".trim($tra)." WHERE device_id=".$dev_id.";";
-			if ($db->query($sql) === FALSE) {
-    			$success = false;
-			} 
+			if ($db->query($sql) === TRUE) {
+    			$success = TRUE;
+			} else {
+				$success = FALSE;
+			}
 		}
 		
-		$uzrs->free();
 	
 		$sql = "UPDATE atomik_zone_devices SET zone_device_last_update = CONVERT_TZ(NOW(), '".$tz."', 'UTC') WHERE zone_device_zone_id=".$zon.";";
-		if ($db->query($sql) === FALSE) {
-    		$success = false;
+		if ($db->query($sql) === TRUE) {
+    		$success = TRUE;
+		} else {
+			$success = FALSE;
 		}
 
 		$sql = "UPDATE atomik_zones SET zone_last_update = CONVERT_TZ(NOW(), '".$tz."', 'UTC') WHERE zone_id=".$zon.";";
-		if ($db->query($sql) === FALSE) {
-    		$success = false;
+		if ($db->query($sql) === TRUE) {
+   			$success = TRUE;
+		} else {
+			$success = FALSE;
 		}
 	}
+	$uzrs->free();
 	return $success;
 }
 
