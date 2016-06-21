@@ -14,11 +14,12 @@
 		$error_text = "Invalid Username Or Password!";	
 	}
 	
-	if (isset($_POST['username']) && isset($_POST['username'])) {
-	  	$username = $_POST['username'];
-  		$password_sha1 = sha1($_POST['password']);
+	if (isset($_POST["username"]) && isset($_POST["password"])) {
+	  	$username = $_POST["username"];
+  		$password_sha1 = sha1($_POST["password"]);
 		echo $username;
 		echo $password_sha1;
+		echo "U & P";
 		session_destroy();
     	session_start();
 	  	if ( $username == "admin" ) {
