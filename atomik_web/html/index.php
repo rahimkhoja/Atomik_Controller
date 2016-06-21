@@ -14,17 +14,9 @@
 		$error_text = "Invalid Username Or Password!";	
 		$_SESSION['is_error'] == 0;
 	}
-	$username = $_POST["username"];
-  		$password_sha1 = sha1($_POST["password"]);
-		echo $username;
-		echo $password_sha1;
-	echo "before";
 	if (isset($_POST["username"]) && isset($_POST["password"])) {
 	  	$username = $_POST["username"];
   		$password_sha1 = sha1($_POST["password"]);
-		echo $username;
-		echo $password_sha1;
-		echo "U & P";
 		session_destroy();
     	session_start();
 	  	if ( $username == "admin" ) {
@@ -88,13 +80,13 @@
     <thead>
       <tr>
         <td>Username: </td>
-        <td><input type="text" class="form-control" id="username" name="username" value="admin"></td>
+        <td><input type="text" class="form-control" id="username" name="username"></td>
       </tr>
     </thead>
     <tbody>
     <tr>
-        <td>Password: <span class="col-xs-5"></span></td>
-        <td><input type="password" class="form-control" id="password" name="password" value=""></td>
+        <td>Password: </td>
+        <td><input type="password" class="form-control" id="password" name="password"></td>
       </tr>
       <tr>
         <td>Save Password: </td>
