@@ -22,9 +22,7 @@
   		$password_sha1 = sha1($_POST['password']);
 
 	  	if ( $username == 'admin' ) {
-  			$sql  = "SELECT atomik_settings.id, atomik_settings.password";
-  			$sql .= "FROM atomik_settings ";
-  			$sql .= "WHERE atomik_settings.password='".$password_sha1."';";
+  			$sql  = "SELECT atomik_settings.id, atomik_settings.password FROM atomik_settings WHERE atomik_settings.password='".$password_sha1."';";
   			$rs=$conn->query($sql);
 			if($rs === false) {
   				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
