@@ -24,7 +24,7 @@
 	  	if ( $username == 'admin' ) {
   			$sql  = "SELECT atomik_settings.id, atomik_settings.password";
   			$sql .= "FROM atomik_settings ";
-  			$sql .= "WHERE atomik_settings.password=:p";
+  			$sql .= "WHERE atomik_settings.password='".$password_sha1."';";
   			$rs=$conn->query($sql);
 			if($rs === false) {
   				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
@@ -79,7 +79,7 @@
  <div class="container">
     <div class="row">
         <div class="col-xs-12"></div>
-        <div class="col-xs-5"></div>
+        <div class="col-xs-5 text-center"><img src="img/Sun_Logo_Center_450px.gif" width="350" height="350" alt=""/></div>
         <div class="col-xs-1" style="border-left:1px solid #000;height:350px"></div>
         <div class="col-xs-6"><h4><p>Login:</p></h4><BR><form id="loginfrm" name="loginfrm" enctype="multipart/form-data" action="index.php" method="post"><table class="table table-striped">
     <thead>
