@@ -105,23 +105,19 @@
   </div>
   <br><hr>
 </div>
+ </div><div class="push"></div>
   <br><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
- </div>
-<div class="FooterColor">
-     <hr>
+<div class="footer FooterColor">
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
-      </div>
-      <hr>
-    </div><script type="text/javascript">
+      </div></div><script type="text/javascript">
 	$("#loginbtn").on('click', function() {
    document.loginfrm.submit();
-});</script>
-</body><?php
+});</script></body><?php
 $rs->free();
 $conn->close();
 ?>
