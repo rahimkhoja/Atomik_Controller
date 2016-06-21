@@ -108,7 +108,7 @@
   <strong>Danger!</strong> <?php echo $error_text; ?>
 </div><?php } ?><hr>
 <div class="footer FooterColor">
-      <div class="col-xs-12 text-center">
+      <div class="col-xs-12 text-center"><BR><BR>
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div></div><script type="text/javascript">
 	$("#loginbtn").on('click', function() {
