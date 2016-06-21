@@ -101,12 +101,9 @@
   <div class="center col-xs-12">
   <div class="text-center col-xs-6"></div>
   <div class="text-center col-xs-6"><p><a id="loginbtn" class="btn-success btn">Login</a></p></div>
-  </div>
-  </div>
-  <br><hr>
+  </div></div><hr>
 </div>
- </div><div class="push"></div>
-  <br><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+ </div><div class="push"></div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> <?php echo $error_text; ?>
