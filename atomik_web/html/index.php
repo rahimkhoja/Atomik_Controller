@@ -22,6 +22,7 @@
 
 	  	if ( $username == 'admin' ) {
   			$sql  = "SELECT atomik_settings.id, atomik_settings.password FROM atomik_settings WHERE atomik_settings.password='".$password_sha1."';";
+			echo $sql;
   			$rs=$conn->query($sql);
 			if($rs === false) {
   				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
