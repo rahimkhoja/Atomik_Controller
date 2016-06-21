@@ -20,7 +20,7 @@
 	  	$username = $_POST['username'];
   		$password_sha1 = sha1($_POST['password']);
 
-	  	if ( $username == 'admin' ) {
+	  	if ( $username == "admin" ) {
   			$sql  = "SELECT atomik_settings.id, atomik_settings.password FROM atomik_settings WHERE atomik_settings.password='".$password_sha1."';";
 			echo $sql;
   			$rs=$conn->query($sql);
