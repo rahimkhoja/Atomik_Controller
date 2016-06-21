@@ -6,9 +6,7 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script><?php
 require_once 'script/config.php';
- 
-// Is the user already logged in? Redirect him/her to the private page
- 
+  
 if($_SESSION['username'])
 {
 header("Location: dashboard.php");
@@ -41,7 +39,7 @@ include_once 'script/do_login.php';
           <h3>Atomik Controller</h3>
         </div>
     </div>
-</div><?php if ( $page_success || $login_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+</div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $login_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Invalid Username Or Password!</div><?php } ?><hr>
@@ -75,7 +73,7 @@ include_once 'script/do_login.php';
   <div class="text-center col-xs-12"><p><a id="loginbtn" class="btn-success btn">Login</a></p></div>
   </div></div>
 </div>
- </div><?php if ( $page_success || $login_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+ </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $login_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Invalid Username Or Password!
