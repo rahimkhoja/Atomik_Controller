@@ -35,13 +35,13 @@
 		    	$_SESSION['signed_in'] = true;
         		$_SESSION['username'] = $username;
        			header("Location: /dashboard.php");
-  			}
-		} else {
-    		$_SESSION['is_error'] = 1;
-    		$_SESSION['signed_in'] = false;
-    		$_SESSION['username'] = null;
-    		header("Location: /index.php");
-  		}
+			} else {
+    			$_SESSION['is_error'] = 1;
+    			$_SESSION['signed_in'] = false;
+    			$_SESSION['username'] = null;
+    			header("Location: /index.php");
+			}
+		}
 	}
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
