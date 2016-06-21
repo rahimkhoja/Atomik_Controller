@@ -68,11 +68,11 @@
           <h3>Atomik Controller</h3>
         </div>
     </div>
-   </div><hr><div class="alert alert-success">
+   </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div>
+</div><?php } ?>
 <hr>
   <br>
   <div class="container">
@@ -106,11 +106,12 @@
   </div>
   <br><hr>
 </div>
-  <br><hr><div class="alert alert-success">
+  <br><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
-</div><div class="alert alert-danger">
+</div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><hr>
+</div><?php } ?>
+<hr>
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
