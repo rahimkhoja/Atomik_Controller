@@ -80,7 +80,6 @@ include_once 'script/do_login.php';
 </div><?php } ?><?php if ( $login_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Invalid Username Or Password!
 </div><?php } ?><hr>
-<div class="push"></div>
  </div>
 <div class="footer FooterColor">
      <hr>
