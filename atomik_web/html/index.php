@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Login</title>
 <link rel="stylesheet" href="css/atomik.css">
+<script src="js/jquery-1.12.3.min.js"></script>
 <?php
 
 	session_start();
@@ -68,18 +69,18 @@
           <h3>Atomik Controller</h3>
         </div>
     </div>
-   </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
+</div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div><?php } ?>
 <hr>
   <br>
-  <div class="container">
-        <div class="col-xs-5"><img src="img/Sun_Logo_Center_450px.gif" width="350" height="350" alt=""/></div>
+ <form id="loginfrm" name="loginfrm" enctype="multipart/form-data" action="index.php" method="post"> <div class="container">
+        <div class="col-xs-5"></div>
         <div class="col-xs-1"><div style="border-left:1px solid #000;height:350px"></div></div>
         <div class="col-xs-6">
-            <h4><p>Login:</p></h4>   
+          <h4><p>Login:</p></h4>   
   <table class="table table-striped">
     <thead>
       <tr>
@@ -89,7 +90,7 @@
     </thead>
     <tbody>
     <tr>
-        <td>Password: </td>
+        <td>Password: <span class="col-xs-5"><img src="img/Sun_Logo_Center_450px.gif" width="350" height="350" alt=""/></span></td>
         <td><input type="password" class="form-control" id="password" name="password" value="admin"></td>
       </tr>
       <tr>
@@ -101,11 +102,11 @@
   <hr>
   <div class="center col-xs-12">
   <div class="text-center col-xs-6"></div>
-  <div class="text-center col-xs-6"><p><a href="" class="btn-success btn">Login</a></p></div>
+  <div class="text-center col-xs-6"><p><a id="loginbtn" class="btn-success btn">Login</a></p></div>
   </div>
   </div>
   <br><hr>
-</div>
+</div></form>
   <br><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
   <strong>Success!</strong> Indicates a successful or positive action.
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
@@ -115,12 +116,14 @@
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
+    </div><script type="text/javascript">
+	$("#loginbtn").on('click', function() {
+   document.loginfrm.submit();
+});</script>
 </body>
 </html>
