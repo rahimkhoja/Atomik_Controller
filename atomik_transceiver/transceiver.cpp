@@ -62,6 +62,7 @@ uint8_t resends  =   60;
 uint64_t command = 0x00;
 
 int radiomode = 1;
+int default_radiomode = 1;
 
 const char *options = "hdsut:n:p:q:r:c:b:k:v:w:";
   
@@ -391,6 +392,7 @@ void getOptions(std::vector<std::string> args, int type)
       case 't':
         tmp = strtoll(optarg, NULL, 10);
         radiomode = (uint8_t)tmp;
+        default_radiomode = (uint8_t)tmp;
         break;
       case 's':
         do_sync = 1;
@@ -453,6 +455,7 @@ void resetVars()
   resends  =   30;
 
   command = 0x00;
+  
 }
 
 int getCommandListSize()
@@ -629,13 +632,16 @@ void send(uint8_t color, uint8_t bright, uint8_t key,
 void receive()
 { // 1
     	printf("Receiving mode, press Ctrl-C to end\n");
+        int ret = ret = mlr.setRadioMode(default_radiomode);
     	while(1)
 	{
         	// check if there are any new messages to send! 
         	if(getCommandListSize() == 0)
 		{
 			char data[50];
-			int ret = mlr.setRadioMode(radiomode);
+            if( default_radiomode != radiomode ) {
+			  ret = mlr.setRadioMode(default_radiomode);
+            }
  
 			if(ret < 0)
 			{
@@ -675,16 +681,16 @@ void receive()
             		getOptions(String2Vector(comandSTR), 1);
            
 			if ( do_sync == 1 && radiomode == 1 ) {
-               			for(int i=0; i<5; i++) {
+               			for(int i=0; i<8; i++) {
                				send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
                				usleep(350);
                			}
             		} else if ( do_desync == 1 && radiomode == 1 ) {
                			send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
 
-               			for(int i=0; i<5; i++) {
+               			for(int i=0; i<10; i++) {
                				send(0xd3, 0xe1, 0x13, remote, rem_p, prefix, seq, 30);
-               				usleep(350);
+               				usleep(5000);
                			}
 
             		} else if ( do_sync == 1 && radiomode == 2 ) {
@@ -704,7 +710,7 @@ void receive()
             		} else {
                			send(color, bright, key, remote, rem_p, prefix, seq, resends);
             		}
- 
+                     
             		removeCommand();
             		resetVars();
        		}
@@ -1047,15 +1053,15 @@ int main(int argc, char** argv)
             send(command);
         } else {
             if ( do_sync == 1 && radiomode == 1 ) {
-                for(int i=0; i<5; i++) {
+                for(int i=0; i<8; i++) {
                      send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
                      usleep(350);
                 } 
             } else if ( do_desync == 1 && radiomode == 1 ) {
                 send(0xd3, 0xe1, 0x03, remote, rem_p, prefix, seq, 30);
-                for(int i=0; i<5; i++) {
+                for(int i=0; i<10; i++) {
                      send(0xd3, 0xe1, 0x13, remote, rem_p, prefix, seq, 30);
-                     usleep(350);
+                     usleep(5000);
                 }
     
             } else if ( do_sync == 1 && radiomode == 2 ) {
