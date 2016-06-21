@@ -16,32 +16,34 @@
 	
     session_destroy();
     session_start();
-  	$username = $_POST['username'];
-  	$password_sha1 = sha1($_POST['password']);
+	if (isset($_POST['username']) && isset($_POST['username'])) {
+	  	$username = $_POST['username'];
+  		$password_sha1 = sha1($_POST['password']);
 
-  	if ( $username == 'admin' ) {
-  		$sql  = "SELECT atomik_settings.id, atomik_settings.password";
-  		$sql .= "FROM atomik_settings ";
-  		$sql .= "WHERE atomik_settings.password=:p";
-  		$rs=$conn->query($sql);
-		if($rs === false) {
-  			trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	  	if ( $username == 'admin' ) {
+  			$sql  = "SELECT atomik_settings.id, atomik_settings.password";
+  			$sql .= "FROM atomik_settings ";
+  			$sql .= "WHERE atomik_settings.password=:p";
+  			$rs=$conn->query($sql);
+			if($rs === false) {
+  				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+			} else {
+  				$db_records = $rs->num_rows;
+			}
+
+
+		    if ($db_records > 0) {
+		    	$_SESSION['signed_in'] = true;
+        		$_SESSION['username'] = $username;
+       			header("Location: /dashboard.php");
+  			}
 		} else {
-  			$db_records = $rs->num_rows;
-		}
-
-
-	    if ($db_records > 0) {
-	    	$_SESSION['signed_in'] = true;
-        	$_SESSION['username'] = $username;
-       		header("Location: /dashboard.php");
+    		$_SESSION['is_error'] = 1;
+    		$_SESSION['signed_in'] = false;
+    		$_SESSION['username'] = null;
+    		header("Location: /index.php");
   		}
-	} else {
-    	$_SESSION['is_error'] = 1;
-    	$_SESSION['signed_in'] = false;
-    	$_SESSION['username'] = null;
-    	header("Location: /index.php");
-  	}
+	}
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
