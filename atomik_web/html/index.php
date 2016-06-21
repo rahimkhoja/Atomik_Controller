@@ -6,7 +6,6 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <?php
-
 	session_start();
 	$db_records = 0; 
 	
@@ -68,11 +67,10 @@
         </div>
     </div>
 </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><?php } ?>
-<hr>
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
   <br>
  <div class="container">
     <div class="row">
@@ -99,23 +97,19 @@
   </table></form></div>
     </div>
         </div>
-
   <hr>
   <div class="center col-xs-12">
   <div class="text-center col-xs-6"></div>
   <div class="text-center col-xs-6"><p><a id="loginbtn" class="btn-success btn">Login</a></p></div>
-  
   </div>
   </div>
   <br><hr>
 </div>
   <br><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
-  <strong>Success!</strong> Indicates a successful or positive action.
+  <strong>Success!</strong> <?php echo $success_text; ?>
 </div><?php } ?><?php if ( $page_error ) { ?><div class="alert alert-danger">
-  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-</div><?php } ?>
-<hr>
-<div class="push"></div>
+  <strong>Danger!</strong> <?php echo $error_text; ?>
+</div><?php } ?><hr>
  </div>
 <div class="footer FooterColor">
      <hr>
@@ -127,5 +121,8 @@
 	$("#loginbtn").on('click', function() {
    document.loginfrm.submit();
 });</script>
-</body>
+</body><?php
+$rs->free();
+$conn->close();
+?>
 </html>
