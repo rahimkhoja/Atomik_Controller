@@ -66,7 +66,7 @@ include_once 'script/do_login.php';
         <td><input type="checkbox" class="form-control" id="autologin" name="autologin" value="1" checked></td>
       </tr>
     </tbody>
-  </table></form></div>
+  </table><input type="hidden" name="submit" value="login" id="submit"></form></div>
     </div></div>
   <hr>
   <div class="center col-xs-12">
