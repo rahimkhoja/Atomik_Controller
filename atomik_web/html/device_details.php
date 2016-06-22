@@ -162,6 +162,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				if ( $new_pos < $old_pos ) {
 					// Detect if new White Temp is 100% Warm. Issue 100% Warm White command
 					if ( $new_pos == array_search ( 2700, $WhiteTemp ) ) {
+						echo "Warmer Full";
 						$trans = IncrementTransmissionNum( $trans );
 						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0e";
 						exec($sendcom.' > /dev/null &');
@@ -171,6 +172,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 					// If not 100% Warm White, calcuate how many Warm White positions to move. Issue correct amount of commands to increase Warm White to specified level
 					} else {
 						$move = $old_pos - $new_pos;	
+						echo "Warmer Up";
 						for ($x = 0; $x <= $move; $x++) {
 							$trans = IncrementTransmissionNum( $trans );
 							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0e";
@@ -181,6 +183,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else {
 					// Detect if new White Temp is 100% Cold. Issue 100% Cold White command
 					if ( $new_pos == array_search ( 6500, $WhiteTemp ) ) {
+						echo "Colder Full";
 						$trans = IncrementTransmissionNum( $trans );
 						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0f";
 						exec($sendcom.' > /dev/null &');
@@ -189,6 +192,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 						exec($sendcom.' > /dev/null &');
 					// If not 100% Cold White, calcuate how many Cold White positions to move. Issue correct amount of commands to decrease Cold White to specified level
 					} else {
+						echo "Colder Up";
 						$move = $new_pos - $old_pos;	
 						for ($x = 0; $x <= $move; $x++) {
 							$trans = IncrementTransmissionNum( $trans );
