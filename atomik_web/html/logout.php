@@ -1,9 +1,13 @@
 <?php
 
 $atomik_heading = $_POST["logout_title"];
-
 $atomik_description = "";
 $atomik_description = $_POST["description"];
+
+session_start();
+unset($_SESSION["username"]);
+session_destroy(); // Is Used To Destroy All Sessions
+header('Refresh: 15; URL = index.php');
 
 ?><!doctype html>
 <html>
