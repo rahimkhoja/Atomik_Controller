@@ -14,73 +14,62 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-<?php 
+<?php
 
 function is_valid_mac($mac)
 {
   // 01:23:45:67:89:ab
-  if (preg_match('/^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$/', $mac))
-    return true;
+  if (preg_match('/^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$/', $mac)) return true;
   // 01-23-45-67-89-ab
-  if (preg_match('/^([a-fA-F0-9]{2}\-){5}[a-fA-F0-9]{2}$/', $mac))
-    return true;
+  if (preg_match('/^([a-fA-F0-9]{2}\-){5}[a-fA-F0-9]{2}$/', $mac)) return true;
   // 0123456789ab
-  else if (preg_match('/^[a-fA-F0-9]{12}$/', $mac))
-    return true;
+  else if (preg_match('/^[a-fA-F0-9]{12}$/', $mac)) return true;
   // 0123.4567.89ab
-  else if (preg_match('/^([a-fA-F0-9]{4}\.){2}[a-fA-F0-9]{4}$/', $mac))
-    return true;
-  else
-    return false;
+  else if (preg_match('/^([a-fA-F0-9]{4}\.){2}[a-fA-F0-9]{4}$/', $mac)) return true;
+  else return false;
 }
 
 function normalize_mac($mac)
 {
   // remove any dots
-  $mac =  str_replace(".", "", $mac);
-
+  $mac = str_replace(".", "", $mac);
   // replace dashes with colons
-  $mac =  str_replace("-", ":", $mac);
-
+  $mac = str_replace("-", ":", $mac);
   // counting colons
-  $colon_count = substr_count ($mac , ":");
-
+  $colon_count = substr_count($mac, ":");
   // insert enough colons if none exist
-  if ($colon_count == 0)
-  {
-    $mac =  substr_replace($mac, ":", 2, 0);
-    $mac =  substr_replace($mac, ":", 5, 0);
-    $mac =  substr_replace($mac, ":", 8, 0);
-    $mac =  substr_replace($mac, ":", 11, 0);
-    $mac =  substr_replace($mac, ":", 14, 0);
+  if ($colon_count == 0) {
+    $mac = substr_replace($mac, ":", 2, 0);
+    $mac = substr_replace($mac, ":", 5, 0);
+    $mac = substr_replace($mac, ":", 8, 0);
+    $mac = substr_replace($mac, ":", 11, 0);
+    $mac = substr_replace($mac, ":", 14, 0);
   }
-
   // uppercase
   $mac = strtoupper($mac);
-
   // DE:AD:BE:EF:10:24
   return $mac;
 }
 
 function processErrors($ers)
 {
-	$error_text = "";
-	$i = 0;
-	$prefix = '';
-	$len = count($ers);
-	foreach ($ers as $er)
-	{
-    	$error_text .= $prefix . $er;
-    	$prefix = ', ';
-		if ($i == $len - 2 && $len != 2) {
-       		$prefix = ', and ';
-    	} else if ($i == $len - 2 && $len == 2) {
-			$prefix = ' and ';
-		}
-		$i++;
-	}
-	$error_text .= '.';
-	return $error_text;
+  $error_text = "";
+  $i = 0;
+  $prefix = '';
+  $len = count($ers);
+  foreach($ers as $er) {
+    $error_text.= $prefix . $er;
+    $prefix = ', ';
+    if ($i == $len - 2 && $len != 2) {
+      $prefix = ', and ';
+    }
+    else if ($i == $len - 2 && $len == 2) {
+      $prefix = ' and ';
+    }
+    $i++;
+  }
+  $error_text.= '.';
+  return $error_text;
 }
 
 // Set Default Error & Success Settings
@@ -92,91 +81,100 @@ $error = "";
 // Set Command
 $command = "";
 $command = $_POST["command"];
-
-if ( isset($_POST["new_remote"]) ) {
-	$_new_remote = $_POST["new_remote"];
-} else {
-	$_new_remote = "0";
+if (isset($_POST["new_remote"])) {
+  $_new_remote = $_POST["new_remote"];
+}
+else {
+  $_new_remote = "0";
+}
+if (isset($_POST["remote_id"])) {
+  $_remote_id = $_POST["remote_id"];
+}
+else {
+  $_remote_id = "";
+}
+if (isset($_POST["remote_type"])) {
+  $_remote_type = $_POST["remote_type"];
+}
+else {
+  $_remote_type = "";
 }
 
-if ( isset($_POST["remote_id"]) ) {
-	$_remote_id = $_POST["remote_id"];
-} else {
-	$_remote_id = "";
+if ($_new_remote == 0) {
+  // Atomik Setting SQL
+  $sql = "SELECT atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_description, atomik_remotes.remote_type, atomik_remotes.remote_address1, atomik_remotes.remote_address2, atomik_remotes.remote_user, atomik_remotes.remote_mac, atomik_remote_types.remote_type_name, atomik_remote_types.remote_type_atomik, atomik_remote_types.remote_type_milight_smartphone, atomik_remote_types.remote_type_milight_radio, atomik_remote_types.remote_type_channels FROM atomik_remotes, atomik_remote_types WHERE atomik_remotes.remote_type = atomik_remote_types.remote_type_id && atomik_remotes.remote_id = " . $_remote_id . ";";
 }
-
-if ( isset($_POST["remote_type"]) ) {
-	$_remote_type = $_POST["remote_type"];
-} else {
-	$_remote_type = "";
+else {
+  $sql = "SELECT atomik_remote_types.remote_type_name, atomik_remote_types.remote_type_atomik, atomik_remote_types.remote_type_milight_smartphone, atomik_remote_types.remote_type_milight_radio, atomik_remote_types.remote_type_channels FROM atomik_remote_types WHERE atomik_remote_types.remote_type_id = " . $_remote_type . ";";
 }
-
-if ( $_new_remote == 0 ) {
-// Atomik Setting SQL
-	$sql = "SELECT atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_description, atomik_remotes.remote_type, atomik_remotes.remote_address1, atomik_remotes.remote_address2, atomik_remotes.remote_user, atomik_remotes.remote_mac, atomik_remote_types.remote_type_name, atomik_remote_types.remote_type_atomik, atomik_remote_types.remote_type_milight_smartphone, atomik_remote_types.remote_type_milight_radio, atomik_remote_types.remote_type_channels FROM atomik_remotes, atomik_remote_types WHERE atomik_remotes.remote_type = atomik_remote_types.remote_type_id && atomik_remotes.remote_id = ".$_remote_id.";";  
-
-} else { 
-	$sql = "SELECT atomik_remote_types.remote_type_name, atomik_remote_types.remote_type_atomik, atomik_remote_types.remote_type_milight_smartphone, atomik_remote_types.remote_type_milight_radio, atomik_remote_types.remote_type_channels FROM atomik_remote_types WHERE atomik_remote_types.remote_type_id = ".$_remote_type.";";
-}
-$rs=$conn->query($sql);
- 
-if($rs === false) {
+$rs = $conn->query($sql);
+if ($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-} else {
+}
+else {
   $db_records = $rs->num_rows;
 }
-
 $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 
-if ( isset($_POST["remote_name"])) {
-	$_remote_name = $_POST["remote_name"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_name = $row['remote_name'];
-	} else {
-		$_remote_name = "";
-	}
+if (isset($_POST["remote_name"])) {
+  $_remote_name = $_POST["remote_name"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_name = $row['remote_name'];
+  }
+  else {
+    $_remote_name = "";
+  }
 }
 
-if ( isset($_POST["remote_description"])) {
-	$_remote_description = $_POST["remote_description"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_description = $row['remote_description'];
-	} else {
-		$_remote_description = "";
-	}
+if (isset($_POST["remote_description"])) {
+  $_remote_description = $_POST["remote_description"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_description = $row['remote_description'];
+  }
+  else {
+    $_remote_description = "";
+  }
 }
 
-if ( isset($_POST["remote_address1"])) {
-	$_remote_address1 = $_POST["remote_address1"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_address1 = $row['remote_address1'];
-	} else {
-		$_remote_address1 = "";
-	}
+if (isset($_POST["remote_address1"])) {
+  $_remote_address1 = $_POST["remote_address1"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_address1 = $row['remote_address1'];
+  }
+  else {
+    $_remote_address1 = "";
+  }
 }
 
-if ( isset($_POST["remote_address2"])) {
-	$_remote_address2 = $_POST["remote_address2"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_address2 = $row['remote_address2'];
-	} else {
-		$_remote_address2 = "";
-	}
+if (isset($_POST["remote_address2"])) {
+  $_remote_address2 = $_POST["remote_address2"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_address2 = $row['remote_address2'];
+  }
+  else {
+    $_remote_address2 = "";
+  }
 }
 
-if ( isset($_POST["remote_type"])) {
-	$_remote_type = $_POST["remote_type"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_type = $row['remote_type'];
-	} else {
-		$_remote_type = "";
-	}
+if (isset($_POST["remote_type"])) {
+  $_remote_type = $_POST["remote_type"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_type = $row['remote_type'];
+  }
+  else {
+    $_remote_type = "";
+  }
 }
 
 $_remote_user = "";
@@ -185,435 +183,413 @@ $_current_remote_password = "";
 $_remote_password_1 = "";
 $_remote_password_2 = "";
 
-if ($_new_remote == 0 ) {
-	$_current_remote_user = $row['remote_user'];
-	$_current_remote_password = $row['remote_password'];
+if ($_new_remote == 0) {
+  $_current_remote_user = $row['remote_user'];
+  $_current_remote_password = $row['remote_password'];
 }
 
-if ( isset($_POST["remote_user"])) {
-	$_remote_user = $_POST["remote_user"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_user = $row['remote_user'];
-	} 
+if (isset($_POST["remote_user"])) {
+  $_remote_user = $_POST["remote_user"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_user = $row['remote_user'];
+  }
 }
 
-if ( isset($_POST["remote_password_1"])) {
-	$_remote_password_1 = $_POST["remote_password_1"];
-} 
-
-if ( isset($_POST["remote_password_2"])) {
-	$_remote_password_2 = $_POST["remote_password_2"];
+if (isset($_POST["remote_password_1"])) {
+  $_remote_password_1 = $_POST["remote_password_1"];
 }
 
-if ( isset($_POST["remote_mac"])) {
-	$_remote_mac = $_POST["remote_mac"];
-} else {
-	if ($_new_remote == 0 ) {
-		$_remote_mac = $row['remote_mac'];
-	} else {
-		$_remote_mac = "";
-	}
+if (isset($_POST["remote_password_2"])) {
+  $_remote_password_2 = $_POST["remote_password_2"];
+}
+
+if (isset($_POST["remote_mac"])) {
+  $_remote_mac = $_POST["remote_mac"];
+}
+else {
+  if ($_new_remote == 0) {
+    $_remote_mac = $row['remote_mac'];
+  }
+  else {
+    $_remote_mac = "";
+  }
 }
 
 $_remote_type_name = $row['remote_type_name'];
 
-
-// saveatomikbtn,
 // Save General Remote Settings [Keep Post Data, Verify Form, DB] (save_general)
-if ($command <> "" && $command !="" && $command == "save_general") 
-{	
-	$erro = array();
-	if ($_new_remote == 1 )
-	{
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-			array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_name = 1;
-		}
-		
-		if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
-			array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_description = 1;
-		}
-		
-	} else {
-		if ( $_remote_name == $row['remote_name'] && $_remote_description == $row['remote_description'] )
-		{
-			array_push($erro, "No Changes To Save");
-		} else {
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-				array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_name = 1;
-			}
-		
-			if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
-				array_push($erro, "Remote Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_description = 1;
-			}
-		}
-	}
-	
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
-	} else {
-		$_channels = 0;
-		
-		if ( $_remote_type == 1 || $_remote_type == 2 ) {
-			$_channels = 5;
-		}
-
-		if ( $_new_remote == 1 ) {
-			$sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type) VALUES ('".$_remote_name."','".$_remote_description."',".$_remote_type.")";
-			if ($conn->query($sql) === TRUE) {
-    			
-				$_new_remote = 0;
-				$_remote_id = $conn->insert_id;
-				
-								
-				if ($_channels > 0 ) {
-					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
-					if ($conn->query($sql) === TRUE) {
-    					$page_success = 1;
-						$success_text = "General Remote Details Updated!";
-					} else {
-    					$page_error = 1;
-						$error_text = "Error Inserting General Remote Channels To DB!";
-					}
-				}else {
-					$page_success = 1;
-					$success_text = "All Remote Details Updated!";
-				}
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Inserting Remote Details To DB!";
-			}
-		} else {
-			$sql = "UPDATE atomik_remotes SET remote_name='".$_remote_name."', remote_description='".$_remote_description."' WHERE remote_id=".$_remote_id.";";
-			if ($conn->query($sql) === TRUE) {
-    			$page_success = 1;
-				$success_text = "General Remote Details Updated!";
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Saving General Remote Details To DB!";
-			}
-		}
-	}		
+if ($command <> "" && $command != "" && $command == "save_general") {
+  $erro = array();
+  if ($_new_remote == 1) {
+    if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
+      array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+      $_error_remote_name = 1;
+    }
+    if (!((!empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description)) || empty($_remote_description))) {
+      array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+      $_error_remote_description = 1;
+    }
+  }
+  else {
+    if ($_remote_name == $row['remote_name'] && $_remote_description == $row['remote_description']) {
+      array_push($erro, "No Changes To Save");
+    }
+    else {
+      if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
+        array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_name = 1;
+      }
+      if (!((!empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description)) || empty($_remote_description))) {
+        array_push($erro, "Remote Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_description = 1;
+      }
+    }
+  }
+  if (count($erro) > 0) {
+    $page_error = 1;
+    $error_text = processErrors($erro);
+  }
+  else {
+    $_channels = 0;
+    if ($_remote_type == 1 || $_remote_type == 2) {
+      $_channels = 5;
+    }
+    if ($_new_remote == 1) {
+      $sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type) VALUES ('" . $_remote_name . "','" . $_remote_description . "'," . $_remote_type . ")";
+      if ($conn->query($sql) === TRUE) {
+        $_new_remote = 0;
+        $_remote_id = $conn->insert_id;
+        if ($_channels > 0) {
+          $sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (" . $_remote_id . ",0,'Master Channel'), (" . $_remote_id . ",1,'Channel 1'), (" . $_remote_id . ",2,'Channel 2'), (" . $_remote_id . ",3,'Channel 3'), (" . $_remote_id . ",4,'Channel 4')";
+          if ($conn->query($sql) === TRUE) {
+            $page_success = 1;
+            $success_text = "General Remote Details Updated!";
+          }
+          else {
+            $page_error = 1;
+            $error_text = "Error Inserting General Remote Channels To DB!";
+          }
+        }
+        else {
+          $page_success = 1;
+          $success_text = "All Remote Details Updated!";
+        }
+      }
+      else {
+        $page_error = 1;
+        $error_text = "Error Inserting Remote Details To DB!";
+      }
+    }
+    else {
+      $sql = "UPDATE atomik_remotes SET remote_name='" . $_remote_name . "', remote_description='" . $_remote_description . "' WHERE remote_id=" . $_remote_id . ";";
+      if ($conn->query($sql) === TRUE) {
+        $page_success = 1;
+        $success_text = "General Remote Details Updated!";
+      }
+      else {
+        $page_error = 1;
+        $error_text = "Error Saving General Remote Details To DB!";
+      }
+    }
+  }
 }
 
 // Save all Remote Settings [Keep Post Data, Verify Form, DB] (save_all)
-if ($command <> "" && $command !="" && $command == "save_all") 
-{	
-	$erro = array();
-	if ($_new_remote == 1 )
-	{
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-			array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_name = 1;
-		}
-		
-		if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
-			array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-			$_error_remote_description = 1;
-		}
-		
-		if ( $_remote_type == 3 ) {
-			if (strlen($_remote_user) < 5) {
-				array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
-				$_error_remote_user = 1;
-			} 		
-		
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
-				array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_user = 1;
-			}	 
-		
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
-				array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_password_2 = 1;
-				$_error_remote_password_1 = 1;
-			}	
-		
-			if ($_remote_password_1 != $_remote_password_2) {
-				array_push($erro, "Remote Passwords Do Not Match");
-				$_error_remote_password_2 = 1;
-				$_error_remote_password_1 = 1;
-			}
-		}
-			
-		if ( $_remote_type == 1 ) {
-			if (!is_valid_mac ( $_remote_mac )) {
-				array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
-				$_error_remote_mac = 1;
-			} else {
-				$_remote_mac = normalize_mac($_remote_mac);
-			}
-		}
-			
-	} else {		
-		if ( $_remote_name == $row['remote_name'] && $_remote_description == $row['remote_description'] && $_remote_user == $row['remote_user'] && $_remote_mac == $row['remote_mac'] ) {
-			array_push($erro, "No Changes To Save");
-		} else {
-
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-				array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_name = 1;
-			}
-		
-			if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
-				array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_description = 1;
-			}
-		
-			if ( $_remote_type == 3 ) {
-				if (strlen($_remote_user) < 5) {
-					array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
-					$_error_remote_user = 1;
-				}	 		
-		
-				if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
-					array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-					$_error_remote_user = 1;
-				}	 
-		
-				if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
-					array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-					$_error_remote_password_2 = 1;
-					$_error_remote_password_1 = 1;
-				}	
-		
-				if ($_remote_password_1 != $_remote_password_2) {
-					array_push($erro, "Remote Passwords Do Not Match");
-					$_error_remote_password_2 = 1;
-					$_error_remote_password_1 = 1;
-				}
-			}
-			
-			if ( $_remote_type == 1 ) {
-				if (!is_valid_mac ( $_remote_mac )) {
-					array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
-					$_error_remote_mac = 1;
-				} else {
-					$_remote_mac = normalize_mac($_remote_mac);
-				}
-			}
-		}
-	}
-	
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
-	} else {
-		if ( $_new_remote == 1 ) {
-			$sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type, remote_mac, remote_user, remote_password ) VALUES ('".$_remote_name."','".$_remote_description."',".trim($_remote_type).",'".trim($_remote_mac)."','".trim($_remote_user)."','".trim($_remote_password)."')";		
-			if ($conn->query($sql) === TRUE) {
-    			$_new_remote = 0;
-				$_remote_id = $conn->insert_id;
-				
-				$_channels = 0;
-		
-				if ( $_remote_type == 1 || $_remote_type == 2 ) {
-					$_channels = 5;
-				}
-				
-				if ($_channels > 0 ) {
-					$sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
-					if ($conn->query($sql) === TRUE) {
-    					$page_success = 1;
-						$success_text = "All Remote Details Updated!";
-					} else {
-    					$page_error = 1;
-						$error_text = "Error Inserting Remote Channels To DB!";
-					}
-				} else {
-					$page_success = 1;
-					$success_text = "All Remote Details Updated!";
-				}
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Saving All New Remote Details To DB!";
-			}
-		} else {
-			$sql = "UPDATE atomik_remotes SET remote_name='".$_remote_name."', remote_description='".$_remote_description."', remote_mac='".trim($_remote_mac)."', remote_user='".trim($_remote_user)."', remote_password='".trim($_remote_password)."' WHERE remote_id=".$_remote_id.";";
-			if ($conn->query($sql) === TRUE) {
-    			$page_success = 1;
-				$success_text = "All Remote Details Updated!";
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Saving All Remote Details To DB!";
-			}
-		}
-	}		
+if ($command <> "" && $command != "" && $command == "save_all") {
+  $erro = array();
+  if ($_new_remote == 1) {
+    if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
+      array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+      $_error_remote_name = 1;
+    }
+    if (!((!empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description)) || empty($_remote_description))) {
+      array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+      $_error_remote_description = 1;
+    }
+    if ($_remote_type == 3) {
+      if (strlen($_remote_user) < 5) {
+        array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+        $_error_remote_user = 1;
+      }
+      if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+        array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_user = 1;
+      }
+      if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+        array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_password_2 = 1;
+        $_error_remote_password_1 = 1;
+      }
+      if ($_remote_password_1 != $_remote_password_2) {
+        array_push($erro, "Remote Passwords Do Not Match");
+        $_error_remote_password_2 = 1;
+        $_error_remote_password_1 = 1;
+      }
+    }
+    if ($_remote_type == 1) {
+      if (!is_valid_mac($_remote_mac)) {
+        array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+        $_error_remote_mac = 1;
+      }
+      else {
+        $_remote_mac = normalize_mac($_remote_mac);
+      }
+    }
+  }
+  else {
+    if ($_remote_name == $row['remote_name'] && $_remote_description == $row['remote_description'] && $_remote_user == $row['remote_user'] && $_remote_mac == $row['remote_mac']) {
+      array_push($erro, "No Changes To Save");
+    }
+    else {
+      if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
+        array_push($erro, "Remote Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_name = 1;
+      }
+      if (!((!empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description)) || empty($_remote_description))) {
+        array_push($erro, "Remote Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_description = 1;
+      }
+      if ($_remote_type == 3) {
+        if (strlen($_remote_user) < 5) {
+          array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+          $_error_remote_user = 1;
+        }
+        if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+          array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+          $_error_remote_user = 1;
+        }
+        if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+          array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+          $_error_remote_password_2 = 1;
+          $_error_remote_password_1 = 1;
+        }
+        if ($_remote_password_1 != $_remote_password_2) {
+          array_push($erro, "Remote Passwords Do Not Match");
+          $_error_remote_password_2 = 1;
+          $_error_remote_password_1 = 1;
+        }
+      }
+      if ($_remote_type == 1) {
+        if (!is_valid_mac($_remote_mac)) {
+          array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+          $_error_remote_mac = 1;
+        }
+        else {
+          $_remote_mac = normalize_mac($_remote_mac);
+        }
+      }
+    }
+  }
+  if (count($erro) > 0) {
+    $page_error = 1;
+    $error_text = processErrors($erro);
+  }
+  else {
+    if ($_new_remote == 1) {
+      $sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type, remote_mac, remote_user, remote_password ) VALUES ('" . $_remote_name . "','" . $_remote_description . "'," . trim($_remote_type) . ",'" . trim($_remote_mac) . "','" . trim($_remote_user) . "','" . trim($_remote_password) . "')";
+      if ($conn->query($sql) === TRUE) {
+        $_new_remote = 0;
+        $_remote_id = $conn->insert_id;
+        $_channels = 0;
+        if ($_remote_type == 1 || $_remote_type == 2) {
+          $_channels = 5;
+        }
+        if ($_channels > 0) {
+          $sql = "INSERT INTO atomik_remote_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (" . $_remote_id . ",0,'Master Channel'), (" . $_remote_id . ",1,'Channel 1'), (" . $_remote_id . ",2,'Channel 2'), (" . $_remote_id . ",3,'Channel 3'), (" . $_remote_id . ",4,'Channel 4')";
+          if ($conn->query($sql) === TRUE) {
+            $page_success = 1;
+            $success_text = "All Remote Details Updated!";
+          }
+          else {
+            $page_error = 1;
+            $error_text = "Error Inserting Remote Channels To DB!";
+          }
+        }
+        else {
+          $page_success = 1;
+          $success_text = "All Remote Details Updated!";
+        }
+      }
+      else {
+        $page_error = 1;
+        $error_text = "Error Saving All New Remote Details To DB!";
+      }
+    }
+    else {
+      $sql = "UPDATE atomik_remotes SET remote_name='" . $_remote_name . "', remote_description='" . $_remote_description . "', remote_mac='" . trim($_remote_mac) . "', remote_user='" . trim($_remote_user) . "', remote_password='" . trim($_remote_password) . "' WHERE remote_id=" . $_remote_id . ";";
+      if ($conn->query($sql) === TRUE) {
+        $page_success = 1;
+        $success_text = "All Remote Details Updated!";
+      }
+      else {
+        $page_error = 1;
+        $error_text = "Error Saving All Remote Details To DB!";
+      }
+    }
+  }
 }
 
 // Save Password [Keep Post Data, Verify Form, DB] (save_atomik)
-if ($command <> "" && $command !="" && $command == "save_atomik") 
-{	
-	$erro = array();
-	if ( $_new_remote == 1 ) {
-		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");
-	} else {
-		if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user && $_remote_password_1 != "") {
-			array_push($erro, "No Changes To Save");
-		} else {
-			if (strlen($_remote_user) < 5) {
-				array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
-				$_error_remote_user = 1;
-			} 		
-		
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
-				array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_user = 1;
-			}	 
-		
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
-				array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_password_2 = 1;
-				$_error_remote_password_1 = 1;
-			}	
-		
-			if ($_remote_password_1 != $_remote_password_2) {
-				array_push($erro, "Remote Passwords Do Not Match");
-				$_error_remote_password_2 = 1;
-				$_error_remote_password_1 = 1;
-			}
-		}
-	}
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
-	} else {
-		$sql = "UPDATE atomik_remotes SET remote_password='".trim($_remote_password_1)."', remote_user='".trim($_remote_user)."';";
-		if ($conn->query($sql) === TRUE) {
-    		$page_success = 1;
-			$success_text = "Atomik Remote Details Updated!";
-		} else {
-    		$page_error = 1;
-			$error_text = "Error Saving Atomik Details To DB!";
-		}
-	}
+if ($command <> "" && $command != "" && $command == "save_atomik") {
+  $erro = array();
+  if ($_new_remote == 1) {
+    array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");
+  }
+  else {
+    if ($_current_remote_password == $_remote_password_1 && $_current_remote_password == $_remote_password_2 && $_current_remote_user == $_remote_user && $_remote_password_1 != "") {
+      array_push($erro, "No Changes To Save");
+    }
+    else {
+      if (strlen($_remote_user) < 5) {
+        array_push($erro, "Remote Username Must Be At Least 5 Characters Long");
+        $_error_remote_user = 1;
+      }
+      if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_user)) {
+        array_push($erro, "Remote Username Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_user = 1;
+      }
+      if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_2) || !preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_password_1)) {
+        array_push($erro, "Remote Password Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+        $_error_remote_password_2 = 1;
+        $_error_remote_password_1 = 1;
+      }
+      if ($_remote_password_1 != $_remote_password_2) {
+        array_push($erro, "Remote Passwords Do Not Match");
+        $_error_remote_password_2 = 1;
+        $_error_remote_password_1 = 1;
+      }
+    }
+  }
+  if (count($erro) > 0) {
+    $page_error = 1;
+    $error_text = processErrors($erro);
+  }
+  else {
+    $sql = "UPDATE atomik_remotes SET remote_password='" . trim($_remote_password_1) . "', remote_user='" . trim($_remote_user) . "';";
+    if ($conn->query($sql) === TRUE) {
+      $page_success = 1;
+      $success_text = "Atomik Remote Details Updated!";
+    }
+    else {
+      $page_error = 1;
+      $error_text = "Error Saving Atomik Details To DB!";
+    }
+  }
 }
 
 // Save Smartphone Remote Settings [Keep Post Data, Verify Form, DB] (save_smartphone)
-if ($command <> "" && $command !="" && $command == "save_smartphone") 
-{	
-	$erro = array();
-	if ($_new_remote == 1 )
-	{
-		array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");	
-	} else {
-		if ( $_remote_mac == $row['remote_mac'] &&  $_remote_mac != "") {
-			array_push($erro, "No Changes To Save");
-		} else {
-			if (!is_valid_mac ( $_remote_mac )) {
-				array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
-				$_error_remote_mac = 1;
-			} else {
-				$_remote_mac = normalize_mac($_remote_mac);
-			}
-		}	
-	}
-	
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
-	} else {
-		$sql = "UPDATE atomik_remotes SET remote_mac = '".trim($_remote_mac)."' WHERE remote_id=".$_remote_id.";";
-		if ($conn->query($sql) === TRUE) {
-    		$page_success = 1;
-			$success_text = "Remote Mac Address Updated!";
-		} else {
-    		$page_error = 1;
-			$error_text = "Error Saving Remote Mac Address To DB!";
-		}
-	}		
+if ($command <> "" && $command != "" && $command == "save_smartphone") {
+  $erro = array();
+  if ($_new_remote == 1) {
+    array_push($erro, "Please Save General Remote Details Before Saving Remote Properties");
+  }
+  else {
+    if ($_remote_mac == $row['remote_mac'] && $_remote_mac != "") {
+      array_push($erro, "No Changes To Save");
+    }
+    else {
+      if (!is_valid_mac($_remote_mac)) {
+        array_push($erro, "Remote MAC Address Is Invalid (Example Valid Input 48-2C-6A-1E-59-3D)");
+        $_error_remote_mac = 1;
+      }
+      else {
+        $_remote_mac = normalize_mac($_remote_mac);
+      }
+    }
+  }
+  if (count($erro) > 0) {
+    $page_error = 1;
+    $error_text = processErrors($erro);
+  }
+  else {
+    $sql = "UPDATE atomik_remotes SET remote_mac = '" . trim($_remote_mac) . "' WHERE remote_id=" . $_remote_id . ";";
+    if ($conn->query($sql) === TRUE) {
+      $page_success = 1;
+      $success_text = "Remote Mac Address Updated!";
+    }
+    else {
+      $page_error = 1;
+      $error_text = "Error Saving Remote Mac Address To DB!";
+    }
+  }
 }
 
 // Listen for Mi-Light RGB RF Remote (listen_milight)
-if ($command <> "" && $command !="" && $command == "listen_milight") 
-{	
-	$erro = array();
-	if ($_new_remote == 1 )
-	{
-		array_push($erro, "Please Save General Remote Details Before Lisening For A Remote");	
-	} 
-	
-	if (count($erro) > 0) 
-	{
-		$page_error = 1;
-		$error_text = processErrors($erro);	
-	} else {
-		
-		$sql = "SELECT command_received_ADD1, command_received_ADD2, COUNT(*) AS count  FROM atomik_commands_received as c WHERE command_received_date >= CONVERT_TZ(NOW(), 'America/Vancouver', 'UTC') - INTERVAL 15 SECOND && command_received_processed = 0 GROUP BY command_received_ADD1, command_received_ADD2;";
-		sleep(10);
-		$listenrs=$conn->query($sql);
- 
-		if($listenrs === false) {
- 		 	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-		} else {
-  			$listencount = $listenrs->num_rows;
-		}
-
-		$listenrs->data_seek(0);
-		$listenrow = $listenrs->fetch_assoc();
-		if ( $listencount > 0 ) {
-			$_remote_address1 = $listenrow['command_received_ADD1'];
-			$_remote_address2 = $listenrow['command_received_ADD2'];
-			$sql = "UPDATE atomik_remotes SET remote_address1 = ".hexdec(trim($_remote_address1)).", remote_address2 = ".hexdec(trim($_remote_address2))." WHERE remote_id=".$_remote_id.";";
-			if ($conn->query($sql) === TRUE) {
-    			$page_success = 1;
-				$success_text = "Remote Address Detected!";
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Saving Remote RF Address To DB!";
-			}
-		} else {
-			$page_error = 1;
-			$error_text = "Sorry No RF Remotes Detected!";
-			
-		}
-		$listenrs->free();
-	}		
+if ($command <> "" && $command != "" && $command == "listen_milight") {
+  $erro = array();
+  if ($_new_remote == 1) {
+    array_push($erro, "Please Save General Remote Details Before Lisening For A Remote");
+  }
+  if (count($erro) > 0) {
+    $page_error = 1;
+    $error_text = processErrors($erro);
+  }
+  else {
+    $sql = "SELECT command_received_ADD1, command_received_ADD2, COUNT(*) AS count  FROM atomik_commands_received as c WHERE command_received_date >= CONVERT_TZ(NOW(), 'America/Vancouver', 'UTC') - INTERVAL 15 SECOND && command_received_processed = 0 GROUP BY command_received_ADD1, command_received_ADD2;";
+    sleep(10);
+    $listenrs = $conn->query($sql);
+    if ($listenrs === false) {
+      trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+    }
+    else {
+      $listencount = $listenrs->num_rows;
+    }
+    $listenrs->data_seek(0);
+    $listenrow = $listenrs->fetch_assoc();
+    if ($listencount > 0) {
+      $_remote_address1 = $listenrow['command_received_ADD1'];
+      $_remote_address2 = $listenrow['command_received_ADD2'];
+      $sql = "UPDATE atomik_remotes SET remote_address1 = " . hexdec(trim($_remote_address1)) . ", remote_address2 = " . hexdec(trim($_remote_address2)) . " WHERE remote_id=" . $_remote_id . ";";
+      if ($conn->query($sql) === TRUE) {
+        $page_success = 1;
+        $success_text = "Remote Address Detected!";
+      }
+      else {
+        $page_error = 1;
+        $error_text = "Error Saving Remote RF Address To DB!";
+      }
+    }
+    else {
+      $page_error = 1;
+      $error_text = "Sorry No RF Remotes Detected!";
+    }
+    $listenrs->free();
+  }
 }
 
-
 // Delete Remote (delete_remote)
-if ($command <> "" && $command !="" && $command == "delete_remote") 
-{	
-	if ($_new_remote == 1 )
-	{
-		header('Location: remotes.php');
-	} else {
-		$sql="DELETE FROM atomik_remotes WHERE remote_id=".trim($_remote_id).";";
- 
-		if($conn->query($sql) === false) {
-			$page_error = 1;
-			$error_text = "Error Deleting Remote From Remote DB!";
-		} else {
-		
-			$sql="DELETE FROM atomik_remote_channels WHERE remote_channel_remote_id=".trim($_remote_id).";";
- 
-			if($conn->query($sql) === false) {
-				$page_error = 1;
-				$error_text = "Error Deleting Remote From Remote Channel DB!";
-			}  else {
-				$sql="DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=".trim($_remote_id).";";
- 
-				if($conn->query($sql) === false) {
-					$page_error = 1;
-					$error_text = "Error Deleting Remote From Zone DB!";
-				} else {
-		  			$page_success = 1;
-					$success_text = "Remote Deleted!";
-					header('Location: remotes.php');		
-				}	
-			}
-		}
-	}
+if ($command <> "" && $command != "" && $command == "delete_remote") {
+  if ($_new_remote == 1) {
+    header('Location: remotes.php');
+  }
+  else {
+    $sql = "DELETE FROM atomik_remotes WHERE remote_id=" . trim($_remote_id) . ";";
+    if ($conn->query($sql) === false) {
+      $page_error = 1;
+      $error_text = "Error Deleting Remote From Remote DB!";
+    }
+    else {
+      $sql = "DELETE FROM atomik_remote_channels WHERE remote_channel_remote_id=" . trim($_remote_id) . ";";
+      if ($conn->query($sql) === false) {
+        $page_error = 1;
+        $error_text = "Error Deleting Remote From Remote Channel DB!";
+      }
+      else {
+        $sql = "DELETE FROM atomik_zone_remotes WHERE zone_remote_remote_id=" . trim($_remote_id) . ";";
+        if ($conn->query($sql) === false) {
+          $page_error = 1;
+          $error_text = "Error Deleting Remote From Zone DB!";
+        }
+        else {
+          $page_success = 1;
+          $success_text = "Remote Deleted!";
+          header('Location: remotes.php');
+        }
+      }
+    }
+  }
 }
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
@@ -633,7 +609,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
         <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Logout</a> </li>
+        <li><a id="logoutbtn">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -660,7 +636,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
             <h4><p>General Remote Details:</p></h4>   
   <table class="table table-striped">
   <thead>
-    <tr>
+    <tr<?php if ( $_error_remote_name == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Remote Name: </p>
         </td>
@@ -668,7 +644,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
     </tr>  
   </thead>
     <tbody>
-    <tr>
+    <tr<?php if ( $_error_remote_description == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td><p>Remote Description: </p></td>
         <td><p><textarea name="remote_description" cols="1" rows="4" class="form-control" id="remote_description"><?php echo $_remote_description; ?></textarea></p></td>
         
@@ -701,7 +677,7 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
             <h4><p>Atomik Remote Details:</p></h4>   
   <table class="table table-striped">
   <thead>
-    <tr>
+    <tr<?php if ( $_error_remote_user == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Username: </p>
         </td>
@@ -709,11 +685,11 @@ if ($command <> "" && $command !="" && $command == "delete_remote")
     </tr>  
   </thead>
     <tbody>
-    <tr>
+    <tr<?php if ( $_error_remote_password_1 == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td><p>Password: </p></td>
         <td><p><input type="password" class="form-control" id="remote_password_1" name="remote_password_1" value="<?php echo $_remote_password_1; ?>"></p></td>
       </tr>
-      <tr>
+      <tr<?php if ( $_error_remote_password_2 == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td><p>Repeat Password: </p></td>
         <td><p><input type="password" class="form-control" id="remote_password_2" name="remote_password_2" value="<?php echo $_remote_password_2; ?>"></p></td>
       </tr>
@@ -777,7 +753,7 @@ if ($_remote_type == 1) {  ?>
             <h4><p>MiLight Smartphone Remote Details:</p></h4>   
   <table class="table table-striped">
   <thead>
-    <tr>
+    <tr<?php if ( $_error_remote_mac == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>MAC Address: </p>
         </td>
