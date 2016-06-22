@@ -82,7 +82,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		
 	if ( $cw == 1 && $ww == 1 && $rgb != 1) {
 		
-		$sendcommandbase = "/usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2)." -c 01";
+		$sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q ".dechex($add1)." -r ".dechex($add2)." -c 01";
 		
 		// White Bulb Details
 		$Brightness = array(9,18,27,36,45,54,63,72,81,90,100);
@@ -195,7 +195,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		}
 			
 	} else if ( $cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1 ) {
-		$sendcommandbase = "/usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
+		$sendcommandbase = "sudo /usr/bin/transceiver -t 1 -q ".dechex($add1)." -r ".dechex($add2);
 		
 	// RGBWW and RGBCW	
 		if ($new_s != $old_s) {
@@ -496,9 +496,9 @@ if ($_device_white_temprature <= 2700) {
 	$_device_white_temprature = 6120;
 } else if ($_device_white_temprature <= 6500) {
 	$_device_white_temprature = 6500;
+} else if ($_device_white_temprature > 6500) {
+	$_device_white_temprature = 6500;
 } 
-
-
 
 if ($_device_type_warm_white == 1 && $_device_type_cold_white == 1 ) {
 	if ($_device_brightness <= 9) {
@@ -830,9 +830,9 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 		
 			// Run Sync Device Command
 			if ($_device_type_warm_white && $_device_type_cold_white) {
-				$sendcom = "/usr/bin/transceiver -s -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+				$sendcom = "sudo /usr/bin/transceiver -s -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
 			} else {
-				$sendcom = "/usr/bin/transceiver -s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+				$sendcom = "sudo /usr/bin/transceiver -s -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
 			}
 			
 			exec($sendcom.' > /dev/null &');
@@ -868,9 +868,9 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 		
 			// Run Sync Device Command
 			if ($_device_type_warm_white && $_device_type_cold_white) {
-				$sendcom = "/usr/bin/transceiver -u -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+				$sendcom = "sudo /usr/bin/transceiver -u -t 2 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
 			} else {
-				$sendcom = "/usr/bin/transceiver -u -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
+				$sendcom = "sudo /usr/bin/transceiver -u -t 1 -q ".dechex($_device_address1)." -r ".dechex($_device_address2)." -v ".dechex($_device_transmission);
 			}
 			
 			exec($sendcom.' > /dev/null &');

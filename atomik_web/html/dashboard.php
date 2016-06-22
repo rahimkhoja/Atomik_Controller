@@ -314,7 +314,7 @@ function getTimeZone() {
     </thead>
     <tbody>
       <tr>
-        <td>Atomik API Service: </td>
+        <td>Atomik Controller Service: </td>
         <td><?php getService('atomik-server'); ?></td>
       </tr>
     <tr>
