@@ -163,7 +163,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 					// Detect if new White Temp is 100% Warm. Issue 100% Warm White command
 					
 						$move = $old_pos - $new_pos;	
-						echo "Warmer Up";
 						for ($x = 0; $x <= $move; $x++) {
 							$trans = IncrementTransmissionNum( $trans );
 							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0e";
@@ -737,7 +736,12 @@ if ($command <> "" && $command !="" && $command == "save_all")
 				$error_text = "Error Saving All New Device Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature)." WHERE device_id=".$_device_id.";";
+			
+			
+			$_device_transmission = transmit($_device_brightness, $row['device_brightness'], $_device_status, $row['device_status'], $_device_rgb256, $row['device_rgb256'], $_device_white_temprature, $row['device_white_temprature'], $_device_colormode, $row['device_colormode'], $_device_address1, $_device_address2, $_device_transmission, $_device_type_rgb256, $_device_type_warm_white, $_device_type_cold_white);
+		$sql = "UPDATE atomik_devices SET device_name='".$_device_name."', device_description='".$_device_description."', device_status = ".trim($_device_status).", device_colormode = ".trim($_device_colormode).", device_brightness = ".
+		trim($_device_brightness).", device_rgb256 = ".trim($_device_rgb256).", device_white_temprature = ".trim($_device_white_temprature).", device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
+		
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
 				$success_text = "All Device Details Updated!";
@@ -872,10 +876,8 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 			} else {
     			$page_error = 1;
 				$error_text = "Device De-Synced , but DB Error!";
-			}
-			
+			}	
 	}	
-	
 }
 
 // Delete Device (delete_device)
