@@ -5,6 +5,7 @@ var fs = require('fs');
 var async = require('async');
 var exec = require('child_process').exec;
 var system_timezone = require('system-timezone');
+var request = require('request');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -20,6 +21,24 @@ connection.connect(function (err){
       console.log("Error connecting to the Database ... \n\n");  
   }
 }); 
+
+
+log2system(text) {
+  request({
+    url: 'http://localhost:42002/log', //URL to hit
+    qs: {from: 'Atomik_Server', time: +new Date()}, //Query string data
+    method: 'POST',
+    headers: {
+        'Content-Type': 'text/html',
+        'Custom-Header': 'Atomik'
+    },
+    body: text //Set the body as a string
+  }, function(error, response, body){
+    if(error) {
+        console.log(error);
+    }
+  });
+};
 
 var app = express();
 
@@ -47,10 +66,7 @@ function log_tra_no_execute(channel, date, rec_data, status, colormode, color, w
   connection.query(sql, function(err, rows, fields) {
     if (!err) {
       console.log('The solution is: ', rows);
-      fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql+"\n", function (err) {
-      if (err) throw err;
-        console.log('The "data to append" was appended to file!');
-      });
+      log2system(sql);
     } else {
       console.log('Error while performing Query.');
     }
@@ -67,10 +83,7 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
   connection.query(sql, function(err, rows, fields) {
     if (!err) {
       console.log('The solution is: ', rows);
-      fs.appendFile('/var/log/atomik/AtomikServerJSON.log', sql+"\n", function (err) {
-      if (err) throw err;
-        console.log('The "data to append" was appended to file!');
-      });
+      log2system(sql);
     } else {
       console.log('Error while performing Query.');
     }
