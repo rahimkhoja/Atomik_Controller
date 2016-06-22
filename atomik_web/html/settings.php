@@ -656,7 +656,7 @@ if ($command <> "" && $command !="" && $command == "refresh_ssid")
                  </thead>
                  <tbody>
                    <tr>
-                     <td>Atomik API Service: </td>
+                     <td>Atomik Controller Service: </td>
                      <td><input type="checkbox" class="form-control" id="atomik_api" name="atomik_api" value="1" <?php if ($_atomik_api == "1" ) { ?>checked <?php }; ?>></td>
                    </tr>
                    <tr>
