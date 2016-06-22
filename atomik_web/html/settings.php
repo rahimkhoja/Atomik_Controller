@@ -97,8 +97,6 @@ if ( $command != "" && $command <> "") {
 	} else {
 		$_atomik_api = 0;
 	}
-} else {
-	$_atomik_api = $row['atomik_api'];	
 }
 
 if ( $command != "" && $command <> "") {
@@ -107,8 +105,6 @@ if ( $command != "" && $command <> "") {
 	} else {
 		$_atomik_emulator = 0;
 	}
-} else {
-	$_atomik_emulator = $row['atomik_emulator'];
 }
 
 if ( $command != "" && $command <> "") {
@@ -117,8 +113,6 @@ if ( $command != "" && $command <> "") {
 	} else {
 		$_atomik_transceiver = 0;
 	}
-} else {
-	$_atomik_transceiver = $row['atomik_transceiver'];
 }
 
 // Password POST Data
@@ -323,14 +317,18 @@ if ($command <> "" && $command !="" && $command == "save_system")
 		}
 		
 		// enable or disable atomik transceiver, set service enabled or disabled on boot 
+		echo "Enable/Disable Transciver";
 		if ( $_atomik_transceiver != $row['atomik_transceiver'] && $_atomik_transceiver = 1 ) {
+			echo "Enable Transciver";
 			$transceiver_service_enable_on_boot = shell_exec("sudo /bin/systemctl enable atomik-transceiver.service 2>&1");
+			echo "sudo /bin/systemctl enable atomik-transceiver.service 2>&1";
 			$transceiver_service_start = shell_exec("sudo /usr/sbin/service atomik-transceiver start 2>&1");
 		} else if ( $_atomik_transceiver != $row['atomik_transceiver'] && $_atomik_transceiver = 0 ) {
+			echo "Disable Transciver";	
 			$transceiver_service_disable_on_boot = shell_exec("sudo /bin/systemctl disable atomik-transceiver.service 2>&1");
 			$transceiver_service_stop = shell_exec("sudo /usr/sbin/service atomik-transceiver stop 2>&1");
 		}
-		
+			
 		// enable or disable atomik server, set service enabled or disabled on boot 
 		if ( $_atomik_api != $row['atomik_api'] && $_atomik_api = 1 ) {
 			$atomik_service_enable_on_boot = shell_exec("sudo /bin/systemctl enable atomik-server.service 2>&1");
