@@ -10,12 +10,11 @@ if ( isset($_POST["count"]) ) {
 	$atomik_count = 15;
 }
 
-
 session_start();
 unset($_SESSION["username"]);
 session_destroy(); // Is Used To Destroy All Sessions
 setcookie("atomikAuth", "", time()-3600);
-header('Refresh: '.+$atomik_count+.'; URL = index.php');
+header('Refresh: '.$atomik_count.'; URL = index.php');
 
 ?><!doctype html>
 <html>
