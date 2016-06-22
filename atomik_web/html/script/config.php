@@ -14,7 +14,7 @@ header('Pragma: no-cache');
  
 // ---------- Login Info ---------- //
  
-$config_username = "";
+$config_username = "admin";
 $config_password = "";
  
 // ---------- Cookie Info ---------- //

@@ -13,7 +13,7 @@ header("Location: dashboard.php");
 exit;
 }
  
-if(isSet($_POST['submit']))
+if(isSet($_POST["submit"]))
 {
 $do_login = true;
 include_once 'script/do_login.php';
