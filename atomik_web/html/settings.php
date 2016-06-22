@@ -325,10 +325,10 @@ if ($command <> "" && $command !="" && $command == "save_system")
 if ($command <> "" && $command !="" && $command == "save_password") 
 {	
 	$erro = array();
-	if ($_real_password == $_new_password_1 && $_real_password == $_new_password_2 ) {
+	if ($_real_password == sha1($_new_password_1) && $_real_password == sha1($_new_password_2)) {
 		array_push($erro, "No Changes To Save");
 	} else {
-		if ($_real_password != $_current_password) {
+		if ($_real_password != sha1($_current_password)) {
 			array_push($erro, "Invalid Current Password");
 			$_error_current_password = 1;
 		} 
@@ -344,7 +344,7 @@ if ($command <> "" && $command !="" && $command == "save_password")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$sql = "UPDATE atomik_settings SET password='".$_new_password_1."';";
+		$sql = "UPDATE atomik_settings SET password='".sha1(trim($_new_password_1))."';";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Password Settings Updated!";

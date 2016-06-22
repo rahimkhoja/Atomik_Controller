@@ -675,7 +675,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 		}
 			
 		if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
-			if (!Check0to255 ( $_device_rgb256)) {
+			if (Check0to255 ( $_device_rgb256 ) != 1) {
 				array_push($erro, "Device Color Must Be A Number Between 0 and 255");
 				$_error_device_rgb256 = 1;
 			}
@@ -710,7 +710,7 @@ if ($command <> "" && $command !="" && $command == "save_all")
 			}
 			
 			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0) {
-				if (!Check0to255 ( $_device_rgb256)) {
+				if (Check0to255 ( $_device_rgb256 ) != 1) {
 					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
 					$_error_device_rgb256 = 1;
 				}
@@ -779,7 +779,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 			}
 			
 			if ( $_device_type_rgb256 == 1 && $_device_colormode == 0 ) {
-				if (!Check0to255 ( $_device_rgb256)) {
+				if (Check0to255 ( $_device_rgb256 ) != 1) {
 					array_push($erro, "Device Color Must Be A Number Between 0 and 255");
 					$_error_device_rgb256 = 1;
 				}
