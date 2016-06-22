@@ -1,11 +1,4 @@
-<?php
-  session_start();
-  if(!$_SESSION['username'])
-  {
-    header("Location: /index.php");
-    exit; // IMPORTANT: Be sure to exit here!
-  }
-?><?php include 'script/database.php';?><!doctype html>
+<strong></strong><?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
