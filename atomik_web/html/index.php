@@ -74,7 +74,7 @@ include_once 'script/do_login.php';
     </div></div>
   <hr>
   <div class="center col-xs-12">
-  <div class="text-center col-xs-12"><p><a name="loginbtn" class="btn-success btn" id="loginbtn">Login</a></p>
+  <div class="text-center col-xs-12"><p><a class="btn-success btn" id="loginbtn">Login</a></p>
   </div>
   </div></div>
 </div>
