@@ -91,9 +91,9 @@ function getService($servicename) {
 	$command = "service ".$servicename." status | grep 'Active: '";
 	exec($command, $output);
 		if (strpos($output[0],'running') !== false) {
-			echo "Running";
+			echo "<b><font color=green>Running</font></b>";
 		} else {
-		    echo "Stopped";
+		    echo "<b><font color=red>Stopped</font></b>";
 		};
 }
 

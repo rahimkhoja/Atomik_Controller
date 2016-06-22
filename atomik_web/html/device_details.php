@@ -15,6 +15,13 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+function IncrementTransmissionNum( $number ) {
+	$trans = $number + 1;
+	if ( $trans >= 256 ) {
+		$trans = $trans - 256;
+	}
+	return $trans;
+}
 
 function Check0to255( $input )
 {
@@ -83,16 +90,12 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		
 		if ($new_s != $old_s) {
 			// Status Changed
-			$trans = $trans + 1;
-			if ( $trans >= 256 ) {
-				$trans = $trans - 256;
-			}
+			$trans = IncrementTransmissionNum( $trans );
 			if ($new_s == 1 ) {
 				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
 			} else {
 				$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0B";
 			}
-			echo $sendcom;
 			exec($sendcom.' > /dev/null &');	
 		} // End Status Change
 		
@@ -100,10 +103,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		// Status On
 			
 			if ( $old_cm != $new_cm ) {
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
+				$trans = IncrementTransmissionNum( $trans );
 				echo 'current CM: '.$new_cm.'\n';
 				// Color Mode Change
 				if ( $new_cm == 1 ) {
@@ -111,45 +111,41 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else {
 					$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 08";
 				}
-				echo $sendcom;
 				exec($sendcom.' > /dev/null &');	
 			}
 			
 			if ($new_b != $old_b || $old_cm != $new_cm ) {
 			// Brightness Change
+				
+				// Search Arrays for brightness values, reteieve Array positions of each Brightness value
 				$old_pos = array_search ( $old_b, $Brightness );
 				$new_pos = array_search ( $new_b, $Brightness );
 				
+				// Detect if there is a change to become Brighter
 				if ( $new_pos > $old_pos ) {
+					
+					// Detect if brightness is being changed to 100% brightness. Issue 100% Brithgtness command
 					if ( $new_pos == array_search ( 100, $Brightness ) ) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
+						$trans = IncrementTransmissionNum( $trans );
 						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 18";
-						echo $sendcom;
 						exec($sendcom.' > /dev/null &');
+					
 					} else {
+					// If not 100% brightness, calcuate how many Brightness positions to move. Issue correct amount of commands to increase Brightness to specified level
 						$move = $new_pos - $old_pos;	
 						for ($x = 0; $x <= $move; $x++) {
-							$trans = $trans + 1;
-							if ( $trans >= 256 ) {
-								$trans = $trans - 256;
-							}
+							$trans = IncrementTransmissionNum( $trans );
 							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0C";
-							echo $sendcom;
 							exec($sendcom.' > /dev/null &');
 						}
 					}
+				// Lower Brightness Detected	
 				} else {
+					// calcuate how many Brightness positions to move. Issue correct amount of commands to decrease Brightness to specified level
 					$move = $old_pos - $new_pos;	
 					for ($x = 0; $x <= $move; $x++) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
+						$trans = IncrementTransmissionNum( $trans );
 						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 04";
-						echo $sendcom;
 						exec($sendcom.' > /dev/null &');
 					}
 				}	
@@ -157,48 +153,40 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			
 			if ($new_wt != $old_wt ) {
 			// White Temp Change
+				
+				// Search Arrays for White Temp values, reteieve Array positions of each White Temp value
 				$old_pos = array_search ( $old_wt, $WhiteTemp );
 				$new_pos = array_search ( $new_wt, $WhiteTemp );
 				
-				if ( $new_pos > $old_pos ) {
+				// Detect if White Temprature is getting warm
+				if ( $new_pos < $old_pos ) {
+					// Detect if new White Temp is 100% Warm. Issue 100% Warm White command
 					if ( $new_pos == array_search ( 2700, $WhiteTemp ) ) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
+						$trans = IncrementTransmissionNum( $trans );
 						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 1f";
-						echo $sendcom;
 						exec($sendcom.' > /dev/null &');
+					// If not 100% Warm White, calcuate how many Warm White positions to move. Issue correct amount of commands to increase Warm White to specified level
 					} else {
 						$move = $new_pos - $old_pos;	
 						for ($x = 0; $x <= $move; $x++) {
-							$trans = $trans + 1;
-							if ( $trans >= 256 ) {
-								$trans = $trans - 256;
-							}
+							$trans = IncrementTransmissionNum( $trans );
 							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0f";
-							echo $sendcom;
 							exec($sendcom.' > /dev/null &');
 						}
 					}
+				// Else White Temprature is getting colder
 				} else {
+					// Detect if new White Temp is 100% Cold. Issue 100% Cold White command
 					if ( $new_pos == array_search ( 6500, $WhiteTemp ) ) {
-						$trans = $trans + 1;
-						if ( $trans >= 256 ) {
-							$trans = $trans - 256;
-						}
+						$trans = IncrementTransmissionNum( $trans );
 						$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 1e";
-						echo $sendcom;
 						exec($sendcom.' > /dev/null &');
+					// If not 100% Cold White, calcuate how many Cold White positions to move. Issue correct amount of commands to decrease Cold White to specified level
 					} else {
 						$move = $old_pos - $new_pos;	
 						for ($x = 0; $x <= $move; $x++) {
-							$trans = $trans + 1;
-							if ( $trans >= 256 ) {
-								$trans = $trans - 256;
-							}
+							$trans = IncrementTransmissionNum( $trans );
 							$sendcom = $sendcommandbase." -k ".dechex((255-$trans))." -v ".dechex($trans)." -b 0e";
-							echo $sendcom;
 							exec($sendcom.' > /dev/null &');
 						}
 					}	
@@ -212,16 +200,12 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 	// RGBWW and RGBCW	
 		if ($new_s != $old_s) {
 		// Status Changed
-			$trans = $trans + 1;
-			if ( $trans >= 256 ) {
-				$trans = $trans - 256;
-			}
+			$trans = IncrementTransmissionNum( $trans );
 			if ($new_s == 1 ) {	
 				$sendcom = $sendcommandbase." -k 03 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 			} else {
 				$sendcom = $sendcommandbase." -k 04 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 			}
-			echo $sendcom;
 			exec($sendcom.' > /dev/null &');	
 		}
 		// End Status Change
@@ -231,10 +215,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			
 			if ( $old_cm != $new_cm ) {
 				// Color Mode Change
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
+				$trans = IncrementTransmissionNum( $trans );
 				echo 'current CM: '.$new_cm.'\n';
 				
 				if ( $new_cm == 1 ) {
@@ -242,7 +223,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else {
 					$sendcom = $sendcommandbase." -k 03 -c ".dechex($old_c)." -b ".dechex($old_b)." -v ".dechex($trans);
 				}
-				echo $sendcom;
 				exec($sendcom.' > /dev/null &');	
 			}
 			// End Color Mode Change
@@ -251,20 +231,12 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 			// Color Mode Color
 				if ($new_c != $old_c || $old_cm != $new_cm) {
 					// Color Change
-					$trans = $trans + 1;
-					if ( $trans >= 256 ) {
-						$trans = $trans - 256;
-					}
+					$trans = IncrementTransmissionNum( $trans );
 				
 					$initcom = $sendcommandbase." -c ".dechex($new_c)." -k 03 -v ".dechex($trans);
-					exec($initcom);
-					echo $initcom;	
-					$trans = $trans + 1;
-					if ( $trans >= 256 ) {
-						$trans = $trans - 256;
-					}
+					exec($initcom.' > /dev/null &');
+					$trans = IncrementTransmissionNum( $trans );
 					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -k 0f -v ".dechex($trans);
-					echo $sendcom;
 					exec($sendcom.' > /dev/null &');	
 					
 				}
@@ -274,10 +246,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		
 			if ($new_b != $old_b ) {
 				// Brightness Change
-				$trans = $trans + 1;
-				if ( $trans >= 256 ) {
-					$trans = $trans - 256;
-				}
+				$trans = IncrementTransmissionNum( $trans );
 				if ($new_b == 4) {
 					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(129)." -k 0e -v ".dechex($trans);
 				} else if ($new_b == 8) {
@@ -331,13 +300,11 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 				} else if ($new_b == 100) { // 26
 					$sendcom = $sendcommandbase." -c ".dechex($new_c)." -b ".dechex(185)." -k 0e -v ".dechex($trans);
 				}
-				echo $sendcom;
 				exec($sendcom.' > /dev/null &');	
 			}
 			// End Brightness Change
 		}
 		// End Status On
-	
 	} 
 	return $trans;
 }
@@ -869,7 +836,6 @@ if ($command <> "" && $command !="" && $command == "sync_device")
 			}
 			
 			exec($sendcom.' > /dev/null &');
-			echo $sendcom;
 			$_device_transmission = $_device_transmission + 5;
 			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission)." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
@@ -908,7 +874,6 @@ if ($command <> "" && $command !="" && $command == "desync_device")
 			}
 			
 			exec($sendcom.' > /dev/null &');
-			echo $sendcom;
 			$_device_transmission = $_device_transmission + 5;
 			$sql = "UPDATE atomik_devices SET device_transmission = ".trim($_device_transmission )." WHERE device_id=".$_device_id.";";
 			if ($conn->query($sql) === TRUE) {
@@ -1000,7 +965,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
             <h4><p>General Device Details:</p></h4>   
   <table class="table table-striped">
   <thead>
-    <tr>
+    <tr<?php if ( $_error_device_name == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Device Name: </p>
         </td>
@@ -1008,7 +973,7 @@ if ($command <> "" && $command !="" && $command == "delete_device")
     </tr>  
   </thead>
     <tbody>
-    <tr>
+    <tr<?php if ( $_error_device_description == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td><p>Device Description: </p></td>
         <td><p><textarea class="form-control" rows="4" cols="1" name="device_description" id="device_description"><?php echo $_device_description; ?></textarea></p></td>
       </tr>
@@ -1063,19 +1028,19 @@ if ($command <> "" && $command !="" && $command == "delete_device")
         </td>
         <td><input type="hidden" name="device_colormode" id="device_colormode" value="<?php echo $_device_colormode; ?>"><p><center><b>White Mode</b></center></p></td>
     </tr> <?php }; ?>
-    <?php if ( $_device_type_brightness == 1 ) { ?><tr>
+    <?php if ( $_device_type_brightness == 1 ) { ?><tr<?php if ( $_error_device_brightness == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Device Brightness (0-100): </p>
         </td>
         <td><p><input type="text" class="form-control" id="device_brightness" name="device_brightness" value="<?php echo $_device_brightness; ?>"></p></td>
     </tr> <?php }; ?>
-    <?php if ( $_device_type_rgb256 == 1 ) { ?><tr>
+    <?php if ( $_device_type_rgb256 == 1 ) { ?><tr<?php if ( $_error_device_rgb256 == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Device Color (0-255): </p>
         </td>
         <td><p><input type="text" class="form-control" id="device_rgb256" name="device_rgb256" value="<?php echo $_device_rgb256; ?>"></p></td>
     </tr><?php }; ?>
-    <?php if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 ) { ?><tr>
+    <?php if ( $_device_type_cold_white == 1 && $_device_type_warm_white == 1 ) { ?><tr<?php if ( $_error_device_white_temprature == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Device White Temperature (2700-6500):</p>
         </td>
