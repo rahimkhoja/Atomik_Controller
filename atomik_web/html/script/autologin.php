@@ -8,7 +8,7 @@ if(isSet($_COOKIE[$cookie_name]))
  
     // Make a verification
  
-    if(($usr == $config_username) && ($hash == sha1($config_password)))
+    if(($usr == $config_username) && ($hash == $config_password))
         {
         // Register the session
         $_SESSION['username'] = $config_username;
