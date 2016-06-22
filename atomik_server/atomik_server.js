@@ -25,7 +25,7 @@ connection.connect(function (err){
 
 function log2system(text) {
   request({
-    url: 'http://localhost:42002/log', //URL to hit
+    url: 'http://localhost:42002/atomiklog', //URL to hit
     qs: {from: 'Atomik_Server', time: +new Date()}, //Query string data
     method: 'POST',
     headers: {
