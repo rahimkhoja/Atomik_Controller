@@ -5,6 +5,10 @@
 <title>Atomik Controller - Login</title>
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script><?php
+
+echo isSet($_POST["submit"]);
+echo $_POST["username"];
+
 require_once 'script/config.php';
   
 if($_SESSION['username'])
