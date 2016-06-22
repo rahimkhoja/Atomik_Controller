@@ -91,7 +91,7 @@ include_once 'script/do_login.php';
       <hr>
     </div><script type="text/javascript">
 	$("#loginbtn").on('click', function() {
-   document.forms["loginfrm"].submit();
+   document.loginfrm.submit();
 });</script></body><?php
 $rs->free();
 $conn->close();
