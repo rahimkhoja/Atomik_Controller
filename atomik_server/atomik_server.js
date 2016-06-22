@@ -23,7 +23,7 @@ connection.connect(function (err){
 }); 
 
 
-log2system(text) {
+function log2system(text) {
   request({
     url: 'http://localhost:42002/log', //URL to hit
     qs: {from: 'Atomik_Server', time: +new Date()}, //Query string data
