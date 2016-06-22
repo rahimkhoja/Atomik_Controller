@@ -12,11 +12,6 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 // HTTP/1.0
 header('Pragma: no-cache');
  
-// ---------- Login Info ---------- //
- 
-$config_username = "admin";
-$config_password = "";
- 
 // ---------- Cookie Info ---------- //
  
 $cookie_name = 'siteAuth';

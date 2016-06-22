@@ -8,8 +8,27 @@ $post_password = trim($_POST["password"]);
  
 $post_autologin = $_POST["autologin"];
  
-if(($post_username == $config_username) && ($post_password == $config_password))
+ // ---------- Login Info ---------- //
+ 
+$config_username = "admin";
+
+
+$db_records = 0;
+if ( $username == 'admin' ) {
+  $sql  = "SELECT atomik_settings.id, atomik_settings.password FROM atomik_settings WHERE atomik_settings.password='".sha1($post_password)."';";
+  $rs=$conn->query($sql);
+	if($rs === false) {
+  		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+  		$db_records = $rs->num_rows;
+	}
+}
+ 
+if($db_records > 0)
 {
+	$rs->data_seek(0);
+	$row = $rs->fetch_assoc();
+	$config_password = $row['password'];
 $login_ok = true;
  
 $_SESSION['username'] = $config_username;
@@ -30,4 +49,6 @@ else
 {
 $login_error = true;
 }
+$rs->free();
+$conn->close();
 ?>

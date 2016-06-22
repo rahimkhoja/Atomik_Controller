@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Login</title>
 <link rel="stylesheet" href="css/atomik.css">
-<script src="js/jquery-1.12.3.min.js"></script><?php print_r($_POST); ?><?php
+<script src="js/jquery-1.12.3.min.js"></script><?php
 
 require_once 'script/config.php';
   
@@ -90,8 +90,5 @@ include_once 'script/do_login.php';
     </div><script type="text/javascript">
 	$("#loginbtn").on('click', function() {
 		$('#loginfrm').submit();
-		});</script></body><?php
-$rs->free();
-$conn->close();
-?>
+		});</script></body>
 </html>
