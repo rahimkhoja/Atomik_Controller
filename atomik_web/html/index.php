@@ -53,7 +53,7 @@ include_once 'script/do_login.php';
         <div class="col-xs-12"></div>
         <div class="col-xs-5 text-center"><img src="img/Sun_Logo_Center_450px.gif" width="350" height="350" alt=""/></div>
         <div class="col-xs-1" style="border-left:1px solid #000;height:350px"></div>
-        <div class="col-xs-6"><h4><p>Login:</p></h4><BR><form id="loginfrm" name="loginfrm" action="index.php" method="post"><table class="table table-striped">
+        <div class="col-xs-6"><h4><p>Login:</p></h4><BR><form id="loginfrm" name="loginfrm" action="/index.php" method="post"><table class="table table-striped">
     <thead>
       <tr>
         <td>Username: </td>
@@ -74,7 +74,8 @@ include_once 'script/do_login.php';
     </div></div>
   <hr>
   <div class="center col-xs-12">
-  <div class="text-center col-xs-12"><p><a id="loginbtn" class="btn-success btn">Login</a></p></div>
+  <div class="text-center col-xs-12"><p><a name="loginbtn" class="btn-success btn" id="loginbtn">Login</a></p>
+  </div>
   </div></div>
 </div>
  </div><?php if ( $page_success || $page_error ) { ?><hr><?php } ?><?php if ( $page_success ) { ?><div class="alert alert-success">
