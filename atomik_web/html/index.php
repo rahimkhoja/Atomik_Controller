@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Atomik Controller - Login</title>
 <link rel="stylesheet" href="css/atomik.css">
-<script src="js/jquery-1.12.3.min.js"></script><?php
+<script src="js/jquery-1.12.3.min.js"></script><?php print_r($_POST); ?><?php
 
 echo isSet($_POST["submit"]);
 echo $_POST["username"];
