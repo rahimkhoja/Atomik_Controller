@@ -50,7 +50,7 @@ include_once 'script/do_login.php';
         <div class="col-xs-12"></div>
         <div class="col-xs-5 text-center" style="overflow:hidden"><img src="img/Sun_Logo_Center_450px.gif" width="300" height="300" alt=""/></div>
         <div class="col-xs-1" style="border-left:1px solid #000;height:350px"></div>
-        <div class="col-xs-6 glyphicon-option-vertical"><h4><p>Login:</p></h4><BR><form id="loginfrm" name="loginfrm" action="/index.php" method="post"><table class="table table-striped">
+        <div class="col-xs-6"><BR><BR><BR><h4><p>Login:</p></h4><BR><form id="loginfrm" name="loginfrm" action="/index.php" method="post"><table class="table table-striped">
     <thead>
       <tr>
         <td>Username: </td>
