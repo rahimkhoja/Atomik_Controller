@@ -33,7 +33,7 @@ $conn->close();
  
 // ---------- Cookie Info ---------- //
  
-$cookie_name = 'siteAuth';
+$cookie_name = 'atomikAuth';
 $cookie_time = (3600 * 24 * 30); // 30 days
  
 // ---------- Invoke Auto-Login if no session is registered ---------- //

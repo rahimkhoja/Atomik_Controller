@@ -12,7 +12,8 @@
 <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
 <title>Atomik Controller - Dashboard</title>
 <link rel="stylesheet" href="css/atomik.css">
-<?php
+<script src="js/jquery-1.12.3.min.js"></script>
+<script src="js/jquery.redirect.min.js"></script><?php
 
 $atomik_version = "0.8 Alpha";
 
@@ -245,7 +246,7 @@ function getTimeZone() {
         <li><a href="tasks.php">Scheduled Tasks</a> </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="logout.php">Logout</a> </li>
+        <li><a id="logoutbtn">Logout</a> </li>
       </ul>
     </div>
     <!-- /.navbar-collapse --> 
@@ -435,7 +436,9 @@ function getTimeZone() {
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>
       </div>
       <hr>
-    </div>
+    </div><script type="text/javascript">$("#logoutbtn").on('click', function() {
+	$().redirect('logout.php', {'logout_title': 'Logout', 'description': 'You are now logged out of the Atomik Controller.'});
+});</script>
 </body>
 </html><?php 
 $conn->close();

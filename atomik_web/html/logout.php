@@ -4,10 +4,18 @@ $atomik_heading = $_POST["logout_title"];
 $atomik_description = "";
 $atomik_description = $_POST["description"];
 
+if ( isset($_POST["count"]) ) {
+	$atomik_count = $_POST["count"];
+} else {
+	$atomik_count = 15;
+}
+
+
 session_start();
 unset($_SESSION["username"]);
 session_destroy(); // Is Used To Destroy All Sessions
-header('Refresh: 15; URL = index.php');
+setcookie("atomikAuth", "", time()-3600);
+header('Refresh: '.+$atomik_count+.'; URL = index.php');
 
 ?><!doctype html>
 <html>
