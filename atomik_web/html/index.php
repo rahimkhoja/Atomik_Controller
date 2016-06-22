@@ -92,6 +92,7 @@ include_once 'script/do_login.php';
       <hr>
     </div><script type="text/javascript">
 	$("#loginbtn").on('click', function() {
+		alert('working');
    document.loginfrm.submit();
 });</script></body><?php
 $rs->free();
