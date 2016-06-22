@@ -6,9 +6,6 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script><?php print_r($_POST); ?><?php
 
-echo isSet($_POST["submit"]);
-echo $_POST["username"];
-
 require_once 'script/config.php';
   
 if($_SESSION['username'])
@@ -17,7 +14,7 @@ header("Location: dashboard.php");
 exit;
 }
  
-if(isSet($_POST["submit"]))
+if( isSet( $_POST["username"] ) && isSet( $_POST["password"]) )
 {
 $do_login = true;
 include_once 'script/do_login.php';
