@@ -91,6 +91,7 @@ if ( $_POST["hostname"] != $row['hostname'] && isset($_POST["hostname"])) {
 	$_hostname = $row['hostname'];
 }
 
+$_atomik_api = $row['atomik_api'];
 if ( $command != "" && $command <> "") {
 	if ( isset($_POST["atomik_api"]) ) {
 		$_atomik_api = 1;
@@ -99,6 +100,7 @@ if ( $command != "" && $command <> "") {
 	}
 }
 
+$_atomik_emulator = $row['atomik_emulator'];
 if ( $command != "" && $command <> "") {
 	if ( isset($_POST["atomik_emulator"]) ) {
 		$_atomik_emulator = 1;
@@ -107,6 +109,7 @@ if ( $command != "" && $command <> "") {
 	}
 }
 
+$_atomik_transceiver = $row['atomik_transceiver'];
 if ( $command != "" && $command <> "") {
 	if ( isset($_POST["atomik_transceiver"]) ) {
 		$_atomik_transceiver = 1;
