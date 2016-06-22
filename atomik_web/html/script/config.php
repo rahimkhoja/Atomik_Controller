@@ -12,6 +12,25 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 // HTTP/1.0
 header('Pragma: no-cache');
  
+// ---------- Login Info ---------- //
+
+$sql  = "SELECT atomik_settings.id, atomik_settings.password FROM atomik_settings;";
+$rs=$conn->query($sql);
+if($rs === false) {
+	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+  	$db_records = $rs->num_rows;
+}
+$rs->data_seek(0);
+$row = $rs->fetch_assoc();
+
+$config_username = "admin";
+$config_password = $row['password'];
+$db_records = 0;
+
+$rs->free();
+$conn->close();
+ 
 // ---------- Cookie Info ---------- //
  
 $cookie_name = 'siteAuth';
