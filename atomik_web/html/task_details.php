@@ -268,7 +268,7 @@ if($zlrs === false) {
 	$zlrs->data_seek(0);	
 }
 
-if ( $_new_task == 0 ) {	
+if ( $_task_zone != 0 ) {	
 	
 // Atomik Setting SQL
 
