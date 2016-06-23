@@ -246,7 +246,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $old_pos = array_search($old_wt, $WhiteTemp);
           $new_pos = array_search($new_wt, $WhiteTemp);
           if ($new_pos > $old_pos) {
-            if ($new_pos == array_search(2700, $WhiteTemp)) {
+            if ($new_pos == array_search(6500, $WhiteTemp)) {
               $trans = IncrementTransmissionNum($trans);
 
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
@@ -265,7 +265,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             }
           }
           else {
-            if ($new_pos == array_search(6500, $WhiteTemp)) {
+            if ($new_pos == array_search(2700, $WhiteTemp)) {
               $trans = IncrementTransmissionNum($trans);
 
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
