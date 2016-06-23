@@ -262,7 +262,7 @@ if ($_task_white_temprature <= 2700) {
 
 echo $_task_white_temprature;
 if ( isset($_POST["task_brightness"])) {
-	$_task_brightness = $_POST["task_brightness"];
+	$_task_brightness = intval($_POST["task_brightness"]);
 } else {
 	if ($_new_task == 0 ) {
 		$_task_brightness = intval($row['task_brightness']);
