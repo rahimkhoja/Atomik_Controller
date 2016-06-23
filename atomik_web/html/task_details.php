@@ -259,7 +259,8 @@ if($zlrs === false) {
 	if ($_new_task == 1) {
 		$zlrs->data_seek(0);	
 		$_task_zone = 0;
-		if ( $zlrs->num_rows >= 1 ) {
+		$totalZones = $zlrs->num_rows;
+		if ( $totalZones >= 1 ) {
 			$zlrow = $zlrs->fetch_assoc();
 		 	$_task_zone = $zlrow['zone_id'];
 		}
@@ -382,6 +383,11 @@ if ($command <> "" && $command !="" && $command == "save_general")
 			$_error_task_description = 1;
 		}
 		
+		if ( $totalZones == 0 ) {
+			array_push($erro, "No Zone Avaialble! Please Create A Zone Before Creating A Task");
+			$_error_task_no_zone = 1;
+		}
+		
 	} else {
 		if ( $_task_name == $row['task_name'] && $_task_description == $row['task_description'] )
 		{
@@ -428,7 +434,57 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		}
 	}		
 }
+
+// Update Task Propeties [Keep Post Data, Verify Form, DB] (save_properties)
+if ($command <> "" && $command !="" && $command == "save_properties") 
+{	
+	$erro = array();
+	if ($_new_task == 1 )
+	{
+		array_push($erro, "Please Save General Task Details Before Saving Task Properties");	
+	} else {
+		if ( $_task_zone_id == $row['task_zone_id'] && $_task_status == $row['task_status'] && $_task_colormode == $row['task_colormode'] && $_task_brightness == $row['task_brightness'] && $_task_rgb256 == $row['task_rgb256'] && $_task_white_temprature == $row['task_white_temprature'] ) {
+			array_push($erro, "No Changes To Save");
+		} else {
+			if ( $_zone_type_brightness == 1 ) {
+				if (!Check0to100 ( $_task_brightness )) {
+					array_push($erro, "Task Brightness Must Be A Number Between 0 and 100");
+					$_error_task_brightness = 1;
+				}
+			}
+			
+			if ( $_zone_type_rgb256 == 1 && $_task_colormode == 0 ) {
+				if (!Check0to255 ( $_task_rgb256)) {
+					array_push($erro, "Task Color Must Be A Number Between 0 and 255");
+					$_error_task_rgb256 = 1;
+				}
+			}
+			
+			if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 && $_task_colormode == 1 ) {
+				if (!Check2700to6500 ( $_task_white_temprature )) {
+					array_push($erro, "Task White Temprature Must Be A Number Between 2700 and 6500");
+					$_error_task_white_temprature = 1;
+				}
+			}	
+		}	
+	}
 	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		
+		$sql = "UPDATE atomik_tasks SET task_zone_id=".$_task_zone.", task_status=".$_task_status.", task_colormode=".$_task_colormode.", task_brightness=".$_task_brightness.", task_rgb256=".$_task_rgb256.", task_white_temprature=".$_task_white_temprature."  WHERE task_id=".$_task_id.";";
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Task Properties Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Task Properties To DB!";
+		}
+	}		
+}	
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -506,8 +562,13 @@ if ($command <> "" && $command !="" && $command == "save_general")
         <div class="col-xs-2"></div>
         <div class="col-xs-8"><hr>
             <h4><p>Task Properties:</p></h4>
-  <table class="table table-striped">
+  <table class="table table-striped"><?php if ($totalZones == 0 ) { ?> 
   <thead>
+    <tr>
+        <td class="text-center" colspan="2"><p><b>No Zones Available</b></p></td>
+    </tr> 
+  </thead><?php } else { ?>
+ <thead>
     <tr>
         <td width="250">
           <p>Task Zone: </p>
@@ -560,7 +621,7 @@ if ($command <> "" && $command !="" && $command == "save_general")
         <td><input type="text" class="form-control" id="task_white_temprature" name="task_white_temprature" value="<?php echo $_task_white_temprature; ?>"></td>
     </tr><?php }; ?>
       </tbody>
-  </table>
+ <?php } ?> </table>
 </div>
 <div class="col-xs-2"></div></div>
 <div class="container">
