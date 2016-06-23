@@ -249,7 +249,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             if ($new_pos == array_search(2700, $WhiteTemp)) {
               $trans = IncrementTransmissionNum($trans);
 
-              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
               echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
@@ -258,7 +258,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
               for ($x = 0; $x <= $move; $x++) {
                 $trans = IncrementTransmissionNum($trans);
 
-                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
                 echo $sendcom;
                 exec($sendcom . ' > /dev/null &');
               }
@@ -268,7 +268,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             if ($new_pos == array_search(6500, $WhiteTemp)) {
               $trans = IncrementTransmissionNum($trans);
 
-              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
               echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
@@ -277,7 +277,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
               for ($x = 0; $x <= $move; $x++) {
                 $trans = IncrementTransmissionNum($trans);
 
-                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
                 echo $sendcom;
                 exec($sendcom . ' > /dev/null &');
               }
@@ -509,7 +509,7 @@ function updateZone($db, $zon, $new_b,  $new_s,  $new_c,  $new_wt,  $new_cm, $tz
 	WHERE 
 	atomik_zone_devices.zone_device_zone_id=".$zon." && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
 atomik_devices.device_type=atomik_device_types.device_type_id && 
-atomik_device_types.device_type_brightness=1;";	
+atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";	
 
 	$uzrs=$db->query($sql);
  
@@ -1206,15 +1206,22 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 						$page_error = 1;
 						$error_text = "Error Deleting Atomik Remote Channels From Zone DB!";
 					} else {
-						$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
+						$sql="DELETE FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".$_zone_id.";";
  
 						if($conn->query($sql) === false) {
 							$page_error = 1;
-							$error_text = "Error Removing MiLight Remotes From Zone DB!";
-						}  else {
-		  					$page_success = 1;
-							$success_text = "Zone Deleted!";
-							header('Location: zones.php');		
+							$error_text = "Error Deleting Atomik Zone from Atomik Tasks DB!";
+						} else {
+							$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
+ 
+							if($conn->query($sql) === false) {
+								$page_error = 1;
+								$error_text = "Error Removing MiLight Remotes From Zone DB!";
+							}  else {
+		  						$page_success = 1;
+								$success_text = "Zone Deleted!";
+								header('Location: zones.php');		
+							}
 						}
 					}
 				}
