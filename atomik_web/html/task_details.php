@@ -246,6 +246,84 @@ if ( isset($_POST["task_month"])) {
 	}
 }
 
+if ($_task_white_temprature <= 2700) {
+	$_task_white_temprature = 2700;
+} else if ($_task_white_temprature <= 3080) {
+	$_task_white_temprature = 3080;
+} else if ($_task_white_temprature <= 3460) {
+	$_task_white_temprature = 3460;
+} else if ($_task_white_temprature <= 3840) {
+	$_task_white_temprature = 3840;
+} else if ($_task_white_temprature <= 4220) {
+	$_task_white_temprature = 4220;
+} else if ($_task_white_temprature <= 4600) {
+	$_task_white_temprature = 4600;
+} else if ($_task_white_temprature <= 4980) {
+	$_task_white_temprature = 4980;
+} else if ($_task_white_temprature <= 5360) {
+	$_task_white_temprature = 5360;
+} else if ($_task_white_temprature <= 5740) {
+	$_task_white_temprature = 5740;
+} else if ($_task_white_temprature <= 6120) {
+	$_task_white_temprature = 6120;
+} else if ($_task_white_temprature <= 6500) {
+	$_task_white_temprature = 6500;
+} 
+
+if ($_task_brightness <= 4) {
+	$_task_brightness = 4;
+} else if ($_task_brightness <= 8) {
+	$_task_brightness = 8;
+} else if ($_task_brightness <= 12) {
+	$_task_brightness = 12;
+} else if ($_task_brightness <= 15) {
+	$_task_brightness = 15;
+} else if ($_task_brightness <= 19) {
+	$_task_brightness = 19;
+} else if ($_task_brightness <= 23) {
+	$_task_brightness = 23;
+} else if ($_task_brightness <= 27) {
+	$_task_brightness = 27;
+} else if ($_task_brightness <= 31) {
+	$_task_brightness = 31;
+} else if ($_task_brightness <= 35) {
+	$_task_brightness = 35;
+} else if ($_task_brightness <= 39) {
+	$_task_brightness = 39;
+} else if ($_task_brightness <= 42) {
+	$_task_brightness = 42;
+} else if ($_task_brightness <= 46) {
+	$_task_brightness = 46;
+} else if ($_task_brightness <= 50) {
+	$_task_brightness = 50;
+} else if ($_task_brightness <= 54) {
+	$_task_brightness = 54;
+} else if ($_task_brightness <= 58) {
+	$_task_brightness = 58;
+} else if ($_task_brightness <= 62) {
+	$_task_brightness = 62;
+} else if ($_task_brightness <= 65) {
+	$_task_brightness = 65;
+} else if ($_task_brightness <= 69) {
+	$_task_brightness = 69;
+} else if ($_task_brightness <= 73) {
+	$_task_brightness = 73;
+} else if ($_task_brightness <= 77) {
+	$_task_brightness = 77;
+} else if ($_task_brightness <= 81) {
+	$_task_brightness = 81;
+} else if ($_task_brightness <= 85) {
+	$_task_brightness = 85;
+} else if ($_task_brightness <= 88) {
+	$_task_brightness = 88;
+} else if ($_task_brightness <= 92) {
+	$_task_brightness = 92;
+} else if ($_task_brightness <= 96) {
+	$_task_brightness = 96;
+} else if ($_task_brightness <= 100) {
+	$_task_brightness = 100;
+} 
+
 // Atomik Zone List
 
 $sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id FROM atomik_zones;";  
