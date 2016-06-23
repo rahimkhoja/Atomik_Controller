@@ -15,6 +15,7 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+
 function Check0to255( $input )
 {
 	if (preg_match("/^[0-9]+$/", $input)) {
@@ -356,18 +357,18 @@ if($zlrs === false) {
 }
 	
 	
-// Save General Remote Settings [Keep Post Data, Verify Form, DB] (save_general)
+// Save General Task Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
 {	
 	$erro = array();
 	if ($_new_task == 1 )
 	{
-		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
+		if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_task_name)) {
 			array_push($erro, "Task Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_task_name = 1;
 		}
 		
-		if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
+		if ( !( ( !empty($_task_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_task_description) ) || empty($_task_description) ) ) {
 			array_push($erro, "Task Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 			$_error_task_description = 1;
 		}
@@ -379,10 +380,10 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		} else {
 			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
 				array_push($erro, "Task Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_remote_name = 1;
+				$_error_task_name = 1;
 			}
 		
-			if ( !( ( !empty($_remote_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_description) ) || empty($_remote_description) ) ) {
+			if ( !( ( !empty($_task_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_task_description) ) || empty($_task_description) ) ) {
 				array_push($erro, "Task Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
 				$_error_task_description = 1;
 			}
@@ -394,45 +395,26 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
-		$_channels = 0;
 		
-		if ( $_task_type == 1 || $_task_type == 2 ) {
-			$_channels = 5;
-		}
-
-		if ( $_new_remote == 1 ) {
-			$sql = "INSERT INTO atomik_remotes (remote_name, remote_description, remote_type) VALUES ('".$_task_name."','".$_task_description."',".$_task_type.")";
+		if ( $_new_task == 1 ) {
+			$sql = "INSERT INTO atomik_tasks (task_name, task_description, task_zone_id) VALUES ('".$_task_name."','".$_task_description."', ".$_task_zone.")";
 			if ($conn->query($sql) === TRUE) {
     			
 				$_new_task = 0;
 				$_task_id = $conn->insert_id;
-				
 								
-				if ($_channels > 0 ) {
-					$sql = "INSERT INTO atomik_task_channels (remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".$_remote_id.",0,'Master Channel'), (".$_remote_id.",1,'Channel 1'), (".$_remote_id.",2,'Channel 2'), (".$_remote_id.",3,'Channel 3'), (".$_remote_id.",4,'Channel 4')";
-					if ($conn->query($sql) === TRUE) {
-    					$page_success = 1;
-						$success_text = "General Remote Details Updated!";
-					} else {
-    					$page_error = 1;
-						$error_text = "Error Inserting General Remote Channels To DB!";
-					}
-				}else {
-					$page_success = 1;
-					$success_text = "All Remote Details Updated!";
-				}
 			} else {
     			$page_error = 1;
-				$error_text = "Error Inserting Remote Details To DB!";
+				$error_text = "Error Inserting Task Details To DB!";
 			}
 		} else {
-			$sql = "UPDATE atomik_remotes SET remote_name='".$_remote_name."', remote_description='".$_remote_description."' WHERE remote_id=".$_remote_id.";";
+			$sql = "UPDATE atomik_tasks SET task_name='".$_task_name."', task_description='".$_task_description."', task_zone_id=".$_task_zone." WHERE task_id=".$_task_id.";";
 			if ($conn->query($sql) === TRUE) {
     			$page_success = 1;
-				$success_text = "General Remote Details Updated!";
+				$success_text = "General Task Details Updated!";
 			} else {
     			$page_error = 1;
-				$error_text = "Error Saving General Remote Details To DB!";
+				$error_text = "Error Saving General Task Details To DB!";
 			}
 		}
 	}		

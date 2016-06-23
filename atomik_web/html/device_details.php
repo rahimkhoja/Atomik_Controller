@@ -22,7 +22,6 @@ function IncrementTransmissionNum($number)
   if ($trans >= 256) {
     $trans = $trans - 256;
   }
-
   return $trans;
 }
 

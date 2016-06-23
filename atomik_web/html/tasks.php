@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-</head><?php 
+</head><div id="overlay"></div><?php 
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
@@ -93,8 +93,12 @@ $rs->data_seek(0);
         <td><center><p><?php echo $row['zone_name']; ?></p></center></td>
         <td onclick="event.cancelBubble=true;"><form id="taskform<?php echo $row['task_id']; ?>" name="taskform<?php echo $row['task_id']; ?>" action="tasks.php" method="post"><input type="hidden" name="item" id="item" value="<?php echo $row['task_id']; ?>" ><center><p><a id="delete<?php echo $row['task_id']; ?>" class="btn-danger btn">Delete Task</a></p></center></form></td>
         <script type="text/javascript">
-	$("#delete<?php echo $row['task_id']; ?>").on('click', function() {
-   document.taskform<?php echo $row['task_id']; ?>.submit();
+$("#delete<?php echo $row['task_id']; ?>").on('click', function() {
+   $("#overlay").show();
+	if (window.confirm("Are You Sure You Want To Delete This Task?")) {
+    	$().redirect('task_details.php', {'task_id': '<?php echo $row['task_id']; ?>', 'command': 'delete_task'});
+	}
+	$("#overlay").hide();
 });
 $("#task<?php echo $row['task_id']; ?>").on('click', function() {
    $().redirect('task_details.php', {'task_id': '<?php echo $row['task_id']; ?>'});

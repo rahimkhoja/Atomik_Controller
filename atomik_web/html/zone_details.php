@@ -60,7 +60,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 {
   $trans = $tra;
   if ($cw == 1 && $ww == 1 && $rgb != 1) {
-    $sendcommandbase = "/usr/bin/transceiver -t 2 -q " . dechex($add1) . " -r " . dechex($add2) . " -c 01";
+    $sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q " . dechex($add1) . " -r " . dechex($add2) . " -c 01";
 
     // White Bulb Details
 
@@ -246,51 +246,28 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $old_pos = array_search($old_wt, $WhiteTemp);
           $new_pos = array_search($new_wt, $WhiteTemp);
           if ($new_pos > $old_pos) {
-            if ($new_pos == array_search(6500, $WhiteTemp)) {
+            $move = $new_pos - $old_pos;
+            for ($x = 0; $x <= $move; $x++) {
               $trans = IncrementTransmissionNum($trans);
-
-              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
               echo $sendcom;
               exec($sendcom . ' > /dev/null &');
-            }
-            else {
-              $move = $new_pos - $old_pos;
-              for ($x = 0; $x <= $move; $x++) {
-                $trans = IncrementTransmissionNum($trans);
-
-                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
-                echo $sendcom;
-                exec($sendcom . ' > /dev/null &');
-              }
             }
           }
           else {
-            if ($new_pos == array_search(2700, $WhiteTemp)) {
+            $move = $old_pos - $new_pos;
+            for ($x = 0; $x <= $move; $x++) {
               $trans = IncrementTransmissionNum($trans);
-
-              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
               echo $sendcom;
               exec($sendcom . ' > /dev/null &');
-            }
-            else {
-              $move = $old_pos - $new_pos;
-              for ($x = 0; $x <= $move; $x++) {
-                $trans = IncrementTransmissionNum($trans);
-
-                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
-                echo $sendcom;
-                exec($sendcom . ' > /dev/null &');
-              }
             }
           }
         }
       }
 	  
-	  
-	  
-	  
   } else if ($cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1) {
-      $sendcommandbase = "/usr/bin/transceiver -t 1 -q " . dechex($add1) . " -r " . dechex($add2);
+      $sendcommandbase = "sudo /usr/bin/transceiver -t 1 -q " . dechex($add1) . " -r " . dechex($add2);
 
       // RGBWW and RGBCW
 
@@ -1303,7 +1280,7 @@ $dzrs->data_seek(0);
             <h4><p>General Zone Details:</p></h4>   
   <table class="table table-striped">
   <thead>
-    <tr>
+    <tr<?php if ( $_error_zone_name == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Zone Name: </p>
         </td>
@@ -1311,7 +1288,7 @@ $dzrs->data_seek(0);
     </tr>  
   </thead>
     <tbody>
-    <tr>
+    <tr<?php if ( $_error_zone_description == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td><p>Zone Description: </p></td>
         <td><p><textarea class="form-control" id="zone_description" name="zone_description" rows="4" cols="1"><?php echo $_zone_description; ?></textarea></p></td>
       </tr>
@@ -1363,19 +1340,19 @@ $dzrs->data_seek(0);
         </td>
         <td><input type="hidden" name="zone_colormode" id="zone_colormode" value="<?php echo $_zone_colormode; ?>"><p><center><b>White Mode</b></center></p></td>
     </tr> <?php }; ?>
-    <?php if ( $_zone_type_brightness == 1 ) { ?><tr>
+    <?php if ( $_zone_type_brightness == 1 ) { ?><tr<?php if ( $_error_zone_brightness == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Zone Brightness (0-100): </p>
         </td>
         <td><p><input type="text" class="form-control" id="zone_brightness" name="zone_brightness" value="<?php echo $_zone_brightness; ?>"></p></td>
     </tr> <?php }; ?>
-    <?php if ( $_zone_type_rgb256 == 1 ) { ?><tr>
+    <?php if ( $_zone_type_rgb256 == 1 ) { ?><tr<?php if ( $_error_zone_rgb256 == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Zone Color (0-255): </p>
         </td>
         <td><p><input type="text" class="form-control" id="zone_rgb256" name="zone_rgb256" value="<?php echo $_zone_rgb256; ?>"></p></td>
     </tr><?php }; ?>
-    <?php if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 ) { ?><tr>
+    <?php if ( $_zone_type_cold_white == 1 && $_zone_type_warm_white == 1 ) { ?><tr<?php if ( $_error_zone_white_temprature == 1 ) { ?> class="text-danger"<?php }; ?>>
         <td>
           <p>Zone White Temperature (2700-6500):</p>
         </td>
