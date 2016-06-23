@@ -263,14 +263,7 @@ if ($_task_white_temprature <= 2700) {
 echo $_task_white_temprature;
 if ( isset($_POST["task_brightness"])) {
 	$_task_brightness = intval($_POST["task_brightness"]);
-} else {
-	if ($_new_task == 0 ) {
-		$_task_brightness = intval($row['task_brightness']);
-	} else {
-		$_task_brightness = 0;
-	}
-}
-if ($_task_brightness <= 4) {
+	if ($_task_brightness <= 4) {
 	$_task_brightness = 4;
 } else if ($_task_brightness <= 8) {
 	$_task_brightness = 8;
@@ -323,6 +316,14 @@ if ($_task_brightness <= 4) {
 } else if ($_task_brightness < 100) {
 	$_task_brightness = 100;
 } 
+} else {
+	if ($_new_task == 0 ) {
+		$_task_brightness = intval($row['task_brightness']);
+	} else {
+		$_task_brightness = 0;
+	}
+}
+
 echo $_task_brightness;
 // Atomik Zone List
 
