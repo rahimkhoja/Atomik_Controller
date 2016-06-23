@@ -262,7 +262,11 @@ if($zlrs === false) {
 		
 		if ( $totalZones >= 1 ) {
 			$zlrow = $zlrs->fetch_assoc();
-		 	$_task_zone = $zlrow['zone_id'];
+			if ( isset($_POST["task_zone_id"])) {
+				$_task_zone = $_POST["task_zone_id"];
+			} else {
+				$_task_zone = $zlrow['zone_id'];
+			}
 		}
 		
 	}
