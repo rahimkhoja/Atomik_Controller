@@ -246,7 +246,28 @@ if ( isset($_POST["task_month"])) {
 	}
 }
 
-if ( $_new_task == 0 ) {
+// Atomik Zone List
+
+$sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id FROM atomik_zones;";  
+
+$zlrs=$conn->query($sql);
+ 
+if($zlrs === false) {
+	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+} else {
+	
+	if ($_new_task == 1) {
+		$_task_zone = 0;
+		$zlrs->data_seek(0);	
+		if ( $zlrs->num_rows > 0 ) {
+			$zlrow = $zlrs->fetch_assoc();
+		 	$_task_zone = $zlrow['zone_id'];
+		}
+	}
+	$zlrs->data_seek(0);	
+}
+
+if ( $_new_task == 0 ) {	
 	
 // Atomik Setting SQL
 
@@ -344,19 +365,6 @@ atomik_device_types.device_type_rgb256=1;";
 	$brs->free();
 }
 
-// Atomik Zone List
-
-$sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id FROM atomik_zones;";  
-
-$zlrs=$conn->query($sql);
- 
-if($zlrs === false) {
-	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-} else {
-	$zlrs->data_seek(0);	
-}
-	
-	
 // Save General Task Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
 {	
