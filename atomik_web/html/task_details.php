@@ -166,16 +166,6 @@ if ( isset($_POST["task_colormode"])) {
 	}
 }
 
-if ( isset($_POST["task_brightness"])) {
-	$_task_brightness = $_POST["task_brightness"];
-} else {
-	if ($_new_task == 0 ) {
-		$_task_brightness = $row['task_brightness'];
-	} else {
-		$_task_brightness = 0;
-	}
-}
-
 if ( isset($_POST["task_rgb256"])) {
 	$_task_rgb256 = $_POST["task_rgb256"];
 } else {
@@ -270,6 +260,16 @@ if ($_task_white_temprature <= 2700) {
 	$_task_white_temprature = 6500;
 } 
 
+
+if ( isset($_POST["task_brightness"])) {
+	$_task_brightness = $_POST["task_brightness"];
+} else {
+	if ($_new_task == 0 ) {
+		$_task_brightness = $row['task_brightness'];
+	} else {
+		$_task_brightness = 0;
+	}
+}
 if ($_task_brightness <= 4) {
 	$_task_brightness = 4;
 } else if ($_task_brightness <= 8) {
