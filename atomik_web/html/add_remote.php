@@ -31,10 +31,9 @@ if($rs === false) {
 } else {
   $db_records = $rs->num_rows;
 }
-$rs->data_seek(0);
 
-?>
-</head>
+$rs->data_seek(0);
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -124,7 +123,6 @@ $rs->data_seek(0);
 <div class="push"></div>
  </div>
 <div class="footer FooterColor">
-  
      <hr>
       <div class="col-xs-12 text-center">
         <p>Copyright © Atomik Technologies Inc. All rights reserved.</p>

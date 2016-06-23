@@ -14,211 +14,199 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-<?php 
+<?php
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
-
 // Timezone
-
 $sql = "SELECT timezone FROM atomik_settings;";
-$rs=$conn->query($sql);
-if($rs === false) {
+$rs = $conn->query($sql);
+if ($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-} else {
+}
+else {
   $db_records = $rs->num_rows;
 }
 $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 $timezone = $row['timezone'];
 $rs->free();
-
 // Set Command
 $command = "";
 $command = $_POST["command"];
-
-if ( isset($_POST["zone_id"]) ) {
-	$_zone_id = $_POST["zone_id"];
-} else {
-	$_zone_id = "";
+if (isset($_POST["zone_id"])) {
+  $_zone_id = $_POST["zone_id"];
 }
-
-if ( isset($_POST["remote_id"]) ) {
-	$_remote_id = $_POST["remote_id"];
-} else {
-	$_remote_id = "";
+else {
+  $_zone_id = "";
+}
+if (isset($_POST["remote_id"])) {
+  $_remote_id = $_POST["remote_id"];
+}
+else {
+  $_remote_id = "";
 }
 
 // Add Remote to Zone (add_remote)
-if ($command <> "" && $command !="" && $command == "add_remote") 
-{	
-	$erro = array();
+if ($command <> "" && $command != "" && $command == "add_remote") {
+  $erro = array();
+
+  // addr_row will hold addr_rs. Information About The Remote
+  $sql = "SELECT atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes WHERE atomik_remotes.remote_id=" . $_remote_id . ";";
+  $addr_rs = $conn->query($sql);
+  if ($addr_rs === false) {
+    trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+  }
+  else {
+    $addr_rs->data_seek(0);
+    $addr_row = $addr_rs->fetch_assoc();
 	
-	// addr_row will hold addr_rs. Information About The Remote
-	$sql = "SELECT atomik_remotes.remote_id, atomik_remotes.remote_name, atomik_remotes.remote_type FROM atomik_remotes WHERE atomik_remotes.remote_id=".$_remote_id.";";
-	$addr_rs=$conn->query($sql);
-	
-	if($addr_rs === false) {
-		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-	} else {
-		$addr_rs->data_seek(0);
-		$addr_row = $addr_rs->fetch_assoc();
-		if ( !($addr_row['remote_type'] == 3) ) {
-			// This is where the MiLight RF & Smartphone Remote Code Goes
-			
-			$sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_number FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=".$_remote_id." && atomik_remote_channels.remote_channel_zone_id=0 ORDER BY atomik_remote_channels.remote_channel_number ASC;";
-			 
-			$chn_num_rs=$conn->query($sql);
-			
-			if($chn_num_rs === false) {
-				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-			} else {
-				$chn_num_rs->data_seek(0);
-				$chn_num_row = $chn_num_rs->fetch_assoc();
-				
-				// Th
-				$_remote_channel = $chn_num_row['remote_channel_number'];
-				$sql = "UPDATE atomik_remote_channels SET remote_channel_zone_id=".$_zone_id." WHERE remote_channel_number=".$_remote_channel." && remote_channel_remote_id=".$_remote_id.";";
-				 
-				if ($conn->query($sql) === TRUE) {
-    				$page_success = 1;
-					$success_text = "Remote Channel Updated Updated!";
-					$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".trim($_remote_channel).", CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
-					
-					if ($conn->query($sql) === TRUE) {
-						$page_success = 1;
-						$success_text = "Atomik Zone Remote Added To Zone DB!";
-						echo "<BR>";
-						echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
-					} else {
-    					$page_error = 1;
-						$error_text = "Error Adding Atomik Remote To Zone DB!";
-					}	
-				} else {
-    				$page_error = 1;
-					$error_text = "Error Saving Remote Channel Details To DB!";
-				}
-			}
-			
-		} else {
-			// This is where the ATOMIK API Remote Code Goes
-			
-			
-			// Get Remote Channel Data
-			$sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_number FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=".$_remote_id." ORDER BY atomik_remote_channels.remote_channel_number ASC;";
-	 
-			$chn_num_rs=$conn->query($sql);
-			
-			if($chn_num_rs === false) {
-				trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-			} else {
-				$chn_num_rs->data_seek(0);
-				$_channels_used = $chn_num_rs->num_rows;
-				$chn_num_row = $chn_num_rs->fetch_assoc();
-				
-				// If No Channel Entries for Remote Add First Channel Entry (Atomik API)
-				if ( $chn_num_row == 0 ) {
-					$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",0,'Atomik Remote Channel 1');";
-					 
-					if ($conn->query($sql) === TRUE) {
-						$page_success = 1;
-						$success_text = "Remote Channel Updated Updated!";
-						$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",0 , CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
-						
-						if ($conn->query($sql) === TRUE) {
-							$page_success = 1;
-							$success_text = "Atomik Zone Remote Added To Zone DB!";
-							echo "<BR>";
-							echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
-						} else {
-    						$page_error = 1;
-							$error_text = "Error Adding Atomik Remote To Zone DB!";
-						}	
-					} else {
-    					$page_error = 1;
-						$error_text = "Error Adding Device To Zone DB!";
-					}
-				
-				} else {
-					// Already Channel Entries. Find The Lowest Possible Number For Channel
-					// Find Gaps
-					$sql = "SELECT a AS remote_channel_number, b AS next_id, (b - a) -1 AS missing_inbetween FROM ( SELECT a1.remote_channel_number AS a , MIN(a2.remote_channel_number) AS b FROM atomik_remote_channels AS a1 LEFT JOIN atomik_remote_channels AS a2 ON a2.remote_channel_number > a1.remote_channel_number WHERE a1.remote_channel_number <= 100 && a2.remote_channel_remote_id=".trim($_remote_id)." GROUP BY a1.remote_channel_number) AS tab WHERE b > a + 1";
-					 
-					$avl_chn_rs=$conn->query($sql);
-					if($avl_chn_rs === false) {
-						trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-					} else {
-						$avl_chn_rs->data_seek(0);
-						$_used_channels = $avl_chn_rs->num_rows;
-						$avl_chn_row = $avl_chn_rs->fetch_assoc();
-						// Gap Found Intest Based On First Gap in Channel Sequence
-						if ( $_used_channels > 0 ) {
-						
-							// figure out what number to use
-							$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).",'Atomik Remote Channel ".($avl_chn_row['remote_channel_number']+2)."');";// here
-							 
-							if ($conn->query($sql) === TRUE) {
-								$page_success = 1;
-								$success_text = "Atomik Zone Remote Channel Added To Zone DB!";
-								
-								$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".($avl_chn_row['remote_channel_number']+1).", CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
-								
-								if ($conn->query($sql) === TRUE) {
-									$page_success = 1;
-									$success_text = "Atomik Zone Remote Added To Zone DB!";
-									echo "<BR>";
-									echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
-								} else {
-    								$page_error = 1;
-									$error_text = "Error Adding Atomik Remote  To Zone DB!";
-								}	
-							
-							} else {
-    							$page_error = 1;
-								$error_text = "Error Adding Atomik Remote Channel To Zone DB!";
-							}
-						
-						} else {
-							// Use the Next Channel Number
-							$sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (".trim($_zone_id).",".trim($_remote_id).",".$_channels_used.",'Atomik Remote Channel ".($_channels_used+1)."');";
-							if ($conn->query($sql) === TRUE) {
-								$page_success = 1;
-								$success_text = "Atomik Zone Remote Channel Added To Zone DB!";
-								
-								$sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (".trim($_zone_id).",".trim($_remote_id).",".$_channels_used.", CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
-								
-								if ($conn->query($sql) === TRUE) {
-									$page_success = 1;
-									$success_text = "Atomik Zone Remote Added To Zone DB!";
-									echo "<BR>";
-									echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
-								} else {
-    								$page_error = 1;
-									$error_text = "Error Adding Atomik Remote  To Zone DB!";
-								}	
-							} else {
-    							$page_error = 1;
-								$error_text = "Error Adding Atomik Remote Channel To Zone DB!";
-							}
-							
-						}
-					}
-				}
-			}
-		}
-	}	
+	// Mi-Light RF and Smart Phone Remotes
+    if (!($addr_row['remote_type'] == 3)) {
+
+      $sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_number FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=" . $_remote_id . " && atomik_remote_channels.remote_channel_zone_id=0 ORDER BY atomik_remote_channels.remote_channel_number ASC;";
+      $chn_num_rs = $conn->query($sql);
+      if ($chn_num_rs === false) {
+        trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+      }
+      else {
+        $chn_num_rs->data_seek(0);
+        $chn_num_row = $chn_num_rs->fetch_assoc();
+        
+        $_remote_channel = $chn_num_row['remote_channel_number'];
+        $sql = "UPDATE atomik_remote_channels SET remote_channel_zone_id=" . $_zone_id . " WHERE remote_channel_number=" . $_remote_channel . " && remote_channel_remote_id=" . $_remote_id . ";";
+        if ($conn->query($sql) === TRUE) {
+          $page_success = 1;
+          $success_text = "Remote Channel Updated Updated!";
+          $sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . "," . trim($_remote_channel) . ", CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
+          if ($conn->query($sql) === TRUE) {
+            $page_success = 1;
+            $success_text = "Atomik Zone Remote Added To Zone DB!";
+            echo "<br />";
+            echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+          }
+          else {
+            $page_error = 1;
+            $error_text = "Error Adding Atomik Remote To Zone DB!";
+          }
+        }
+        else {
+          $page_error = 1;
+          $error_text = "Error Saving Remote Channel Details To DB!";
+        }
+      }
+    } else {
+		
+		
+    // Atomik Remotes   
+      // Get Remote Channel Data
+      $sql = "SELECT atomik_remote_channels.remote_channel_id, atomik_remote_channels.remote_channel_number FROM atomik_remote_channels WHERE atomik_remote_channels.remote_channel_remote_id=" . $_remote_id . " ORDER BY atomik_remote_channels.remote_channel_number ASC;";
+      $chn_num_rs = $conn->query($sql);
+      if ($chn_num_rs === false) {
+        trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+      }
+      else {
+        $chn_num_rs->data_seek(0);
+        $_channels_used = $chn_num_rs->num_rows;
+        $chn_num_row = $chn_num_rs->fetch_assoc();
+   
+        // If No Channel Entries for Remote Add First Channel Entry (Atomik API)
+        if ($chn_num_row == 0) {
+          $sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . ",0,'Atomik Remote Channel 1');";
+          if ($conn->query($sql) === TRUE) {
+            $page_success = 1;
+            $success_text = "Remote Channel Updated Updated!";
+            $sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . ",0 , CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
+            if ($conn->query($sql) === TRUE) {
+              $page_success = 1;
+              $success_text = "Atomik Zone Remote Added To Zone DB!";
+              echo "<br />";
+              echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+            }
+            else {
+              $page_error = 1;
+              $error_text = "Error Adding Atomik Remote To Zone DB!";
+            }
+          }
+          else {
+            $page_error = 1;
+            $error_text = "Error Adding Device To Zone DB!";
+          }
+        }
+        else {
+          // Already Channel Entries. Find The Lowest Possible Number For Channel
+          // Find Gaps
+          $sql = "SELECT a AS remote_channel_number, b AS next_id, (b - a) -1 AS missing_inbetween FROM ( SELECT a1.remote_channel_number AS a , MIN(a2.remote_channel_number) AS b FROM atomik_remote_channels AS a1 LEFT JOIN atomik_remote_channels AS a2 ON a2.remote_channel_number > a1.remote_channel_number WHERE a1.remote_channel_number <= 100 && a2.remote_channel_remote_id=" . trim($_remote_id) . " GROUP BY a1.remote_channel_number) AS tab WHERE b > a + 1";
+          $avl_chn_rs = $conn->query($sql);
+          if ($avl_chn_rs === false) {
+            trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+          }
+          else {
+            $avl_chn_rs->data_seek(0);
+            $_used_channels = $avl_chn_rs->num_rows;
+            $avl_chn_row = $avl_chn_rs->fetch_assoc();
+            // Gap Found Intest Based On First Gap in Channel Sequence
+            if ($_used_channels > 0) {
+              // figure out what number to use
+              $sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . "," . ($avl_chn_row['remote_channel_number'] + 1) . ",'Atomik Remote Channel " . ($avl_chn_row['remote_channel_number'] + 2) . "');"; // here
+              if ($conn->query($sql) === TRUE) {
+                $page_success = 1;
+                $success_text = "Atomik Zone Remote Channel Added To Zone DB!";
+                $sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . "," . ($avl_chn_row['remote_channel_number'] + 1) . ", CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
+                if ($conn->query($sql) === TRUE) {
+                  $page_success = 1;
+                  $success_text = "Atomik Zone Remote Added To Zone DB!";
+                  echo "<br />";
+                  echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+                }
+                else {
+                  $page_error = 1;
+                  $error_text = "Error Adding Atomik Remote  To Zone DB!";
+                }
+              }
+              else {
+                $page_error = 1;
+                $error_text = "Error Adding Atomik Remote Channel To Zone DB!";
+              }
+            }
+            else {
+              // Use the Next Channel Number
+              $sql = "INSERT INTO atomik_remote_channels (remote_channel_zone_id, remote_channel_remote_id, remote_channel_number, remote_channel_name) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . "," . $_channels_used . ",'Atomik Remote Channel " . ($_channels_used + 1) . "');";
+              if ($conn->query($sql) === TRUE) {
+                $page_success = 1;
+                $success_text = "Atomik Zone Remote Channel Added To Zone DB!";
+                $sql = "INSERT INTO atomik_zone_remotes (zone_remote_zone_id, zone_remote_remote_id, zone_remote_channel_number, zone_remote_last_update) VALUES (" . trim($_zone_id) . "," . trim($_remote_id) . "," . $_channels_used . ", CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
+                if ($conn->query($sql) === TRUE) {
+                  $page_success = 1;
+                  $success_text = "Atomik Zone Remote Added To Zone DB!";
+                  echo "<br />";
+                  echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+                }
+                else {
+                  $page_error = 1;
+                  $error_text = "Error Adding Atomik Remote  To Zone DB!";
+                }
+              }
+              else {
+                $page_error = 1;
+                $error_text = "Error Adding Atomik Remote Channel To Zone DB!";
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
-?>
-</head>
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
       <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
-    
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">

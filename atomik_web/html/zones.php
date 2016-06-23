@@ -32,7 +32,6 @@ if($rs === false) {
 }
 $rs->data_seek(0);
 
-
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 

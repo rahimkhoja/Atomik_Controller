@@ -14,84 +14,78 @@
 <link rel="stylesheet" href="css/atomik.css">
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
-<?php 
+<?php
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
 $success_text = "";
 $error = "";
-
 // Timezone
-
 $sql = "SELECT timezone FROM atomik_settings;";
-$rs=$conn->query($sql);
-if($rs === false) {
+$rs = $conn->query($sql);
+if ($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-} else {
+}
+else {
   $db_records = $rs->num_rows;
 }
 $rs->data_seek(0);
 $row = $rs->fetch_assoc();
 $timezone = $row['timezone'];
 $rs->free();
-
 // Set Command
 $command = "";
 $command = $_POST["command"];
-
-if ( isset($_POST["zone_id"]) ) {
-	$_zone_id = $_POST["zone_id"];
-} else {
-	$_zone_id = "";
+if (isset($_POST["zone_id"])) {
+  $_zone_id = $_POST["zone_id"];
 }
-
-if ( isset($_POST["zone_device"]) ) {
-	$_zone_device = $_POST["zone_device"];
-} else {
-	$_zone_device = "";
+else {
+  $_zone_id = "";
 }
-
-if ( isset($_POST["update_zone"]) ) {
-	$_update_zone = $_POST["update_zone"];
-} else {
-	$_update_zone = 1;
+if (isset($_POST["zone_device"])) {
+  $_zone_device = $_POST["zone_device"];
 }
-
+else {
+  $_zone_device = "";
+}
+if (isset($_POST["update_zone"])) {
+  $_update_zone = $_POST["update_zone"];
+}
+else {
+  $_update_zone = 1;
+}
 // Add Device to Zone (add_device)
-if ($command <> "" && $command !="" && $command == "add_device") 
-{	
-	$erro = array();
-	$sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (".trim($_zone_id).",".trim($_zone_device).",CONVERT_TZ(NOW(), '".$timezone."', 'UTC') );";
-	
-	if ($conn->query($sql) === TRUE) {
-    	if ($_update_zone > 0 ) {
-		//	Run Command To Update Device
-		//  $updatecmd = shell_exec("echo 'hello world' > /dev/null &");	
-		}
-		$page_success = 1;
-		$success_text = "Zone Device Added To Zone DB!";
-		echo "<BR>";
-		echo '<script type="text/javascript">'."$().redirect('zone_details.php', {'zone_id': ".trim($_zone_id)."});</script>";	
-	} else {
-    	$page_error = 1;
-		$error_text = "Error Adding Device To Zone DB!";
-	}	
+if ($command <> "" && $command != "" && $command == "add_device") {
+  $erro = array();
+  $sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (" . trim($_zone_id) . "," . trim($_zone_device) . ",CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
+  if ($conn->query($sql) === TRUE) {
+    if ($_update_zone > 0) {
+      //	Run Command To Update Device
+      //  $updatecmd = shell_exec("echo 'hello world' > /dev/null &");
+    }
+    $page_success = 1;
+    $success_text = "Zone Device Added To Zone DB!";
+    echo "<br />";
+    echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+  }
+  else {
+    $page_error = 1;
+    $error_text = "Error Adding Device To Zone DB!";
+  }
 }
 
 // Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices WHERE device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";  
-
-$rs=$conn->query($sql);
- 
-if($rs === false) {
+$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices WHERE device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
+$rs = $conn->query($sql);
+if ($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-} else {
+}
+else {
   $db_records = $rs->num_rows;
 }
-$rs->data_seek(0);
 
-?>
-</head>
+$rs->data_seek(0);
+?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->

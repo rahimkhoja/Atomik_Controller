@@ -21,7 +21,6 @@ $page_success = 0;
 $success_text = "";
 $error = "";
 
-
 // Atomik Setting SQL
 $sql = "SELECT atomik_device_types.device_type_name, atomik_device_types.device_type_id FROM atomik_device_types;";  
 
@@ -32,8 +31,8 @@ if($rs === false) {
 } else {
   $db_records = $rs->num_rows;
 }
-$rs->data_seek(0);
 
+$rs->data_seek(0);
 ?>
 </head>
 <nav class="navbar navbar-default navbar-inverse">
