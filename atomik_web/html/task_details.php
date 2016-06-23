@@ -257,12 +257,13 @@ if($zlrs === false) {
 } else {
 	
 	if ($_new_task == 1) {
-		$_task_zone = 0;
 		$zlrs->data_seek(0);	
-		if ( $zlrs->num_rows > 0 ) {
+		$_task_zone = 0;
+		if ( $zlrs->num_rows >= 1 ) {
 			$zlrow = $zlrs->fetch_assoc();
 		 	$_task_zone = $zlrow['zone_id'];
 		}
+		
 	}
 	$zlrs->data_seek(0);	
 }
