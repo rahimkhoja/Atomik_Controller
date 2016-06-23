@@ -480,8 +480,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		
-		$sql = "UPDATE atomik_tasks SET task_zone_id=".$_task_zone.", task_status=".$_task_status.", task_colormode=".$_task_colormode.", task_brightness=".$_task_brightness.", task_rgb256=".$_task_rgb256.", task_white_temprature=".$_task_white_temprature."  WHERE task_id=".$_task_id.";";
-		echo $sql;
+		$sql = "UPDATE atomik_tasks SET task_zone_id=".$_task_zone.", task_status=".$_task_status.", task_color_mode=".$_task_colormode.", task_brightness=".$_task_brightness.", task_rgb256=".$_task_rgb256.", task_white_temprature=".$_task_white_temprature."  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Task Properties Updated!";
