@@ -259,13 +259,14 @@ if($zlrs === false) {
 	if ($_new_task == 1) {
 		$zlrs->data_seek(0);	
 		$_task_zone = 0;
-		$totalZones = $zlrs->num_rows;
+		
 		if ( $totalZones >= 1 ) {
 			$zlrow = $zlrs->fetch_assoc();
 		 	$_task_zone = $zlrow['zone_id'];
 		}
 		
 	}
+	$totalZones = $zlrs->num_rows;
 	$zlrs->data_seek(0);	
 }
 
