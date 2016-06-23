@@ -266,7 +266,7 @@ if ($_task_white_temprature <= 2700) {
 	$_task_white_temprature = 5740;
 } else if ($_task_white_temprature <= 6120) {
 	$_task_white_temprature = 6120;
-} else if ($_task_white_temprature <= 6500) {
+} else if ($_task_white_temprature < 6500) {
 	$_task_white_temprature = 6500;
 } 
 
