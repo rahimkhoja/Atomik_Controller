@@ -260,7 +260,7 @@ if ($_task_white_temprature <= 2700) {
 	$_task_white_temprature = 6500;
 } 
 
-
+echo $_task_white_temprature;
 if ( isset($_POST["task_brightness"])) {
 	$_task_brightness = $_POST["task_brightness"];
 } else {
@@ -320,10 +320,10 @@ if ($_task_brightness <= 4) {
 	$_task_brightness = 92;
 } else if ($_task_brightness <= 96) {
 	$_task_brightness = 96;
-} else if ($_task_brightness <= 100) {
+} else if ($_task_brightness < 100) {
 	$_task_brightness = 100;
 } 
-
+echo $_task_brightness;
 // Atomik Zone List
 
 $sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id FROM atomik_zones;";  
