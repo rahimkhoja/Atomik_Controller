@@ -265,7 +265,7 @@ if ( isset($_POST["task_brightness"])) {
 	$_task_brightness = $_POST["task_brightness"];
 } else {
 	if ($_new_task == 0 ) {
-		$_task_brightness = $row['task_brightness'];
+		$_task_brightness = intval($row['task_brightness']);
 	} else {
 		$_task_brightness = 0;
 	}
