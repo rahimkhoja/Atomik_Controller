@@ -255,7 +255,7 @@ $zlrs=$conn->query($sql);
 if($zlrs === false) {
 	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
 } else {
-	
+	$totalZones = $zlrs->num_rows;
 	if ($_new_task == 1) {
 		$zlrs->data_seek(0);	
 		$_task_zone = 0;
@@ -266,7 +266,7 @@ if($zlrs === false) {
 		}
 		
 	}
-	$totalZones = $zlrs->num_rows;
+	
 	$zlrs->data_seek(0);	
 }
 
