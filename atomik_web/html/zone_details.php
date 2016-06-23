@@ -15,6 +15,16 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+
+function IncrementTransmissionNum($number)
+{
+  $trans = $number + 1;
+  if ($trans >= 256) {
+    $trans = $trans - 256;
+  }
+  return $trans;
+}
+
 function Check0to255( $input )
 {
 	if (preg_match("/^[0-9]+$/", $input)) {
@@ -54,19 +64,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
     // White Bulb Details
 
-    $Brightness = array(
-      9,
-      18,
-      27,
-      36,
-      45,
-      54,
-      63,
-      72,
-      81,
-      90,
-      100
-    );
+    $Brightness = array(9, 18, 27, 36, 45, 54, 63, 72, 81, 90, 100);
     $WhiteTemp = array(
       2700,
       3080,
@@ -84,10 +82,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
       // Status Changed
 
-      $trans = $trans + 1;
-      if ($trans >= 256) {
-        $trans = $trans - 256;
-      }
+      $trans = IncrementTransmissionNum($trans);
 
       if ($new_s == 1) {
         $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
@@ -104,10 +99,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
       // Status On
 
       if ($old_cm != $new_cm) {
-        $trans = $trans + 1;
-        if ($trans >= 256) {
-          $trans = $trans - 256;
-        }
+        $trans = IncrementTransmissionNum($trans);
 
         // Color Mode Change
 
@@ -218,10 +210,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $new_pos = array_search($new_b, $Brightness);
           if ($new_pos > $old_pos) {
             if ($new_pos == array_search(100, $Brightness)) {
-              $trans = $trans + 1;
-              if ($trans >= 256) {
-                $trans = $trans - 256;
-              }
+              $trans = IncrementTransmissionNum($trans);
 
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
               echo $sendcom;
@@ -230,10 +219,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             else {
               $move = $new_pos - $old_pos;
               for ($x = 0; $x <= $move; $x++) {
-                $trans = $trans + 1;
-                if ($trans >= 256) {
-                  $trans = $trans - 256;
-                }
+                $trans = IncrementTransmissionNum($trans);
 
                 $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0C";
                 echo $sendcom;
@@ -244,10 +230,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           else {
             $move = $old_pos - $new_pos;
             for ($x = 0; $x <= $move; $x++) {
-              $trans = $trans + 1;
-              if ($trans >= 256) {
-                $trans = $trans - 256;
-              }
+              $trans = IncrementTransmissionNum($trans);
 
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 04";
               echo $sendcom;
@@ -264,24 +247,18 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $new_pos = array_search($new_wt, $WhiteTemp);
           if ($new_pos > $old_pos) {
             if ($new_pos == array_search(2700, $WhiteTemp)) {
-              $trans = $trans + 1;
-              if ($trans >= 256) {
-                $trans = $trans - 256;
-              }
+              $trans = IncrementTransmissionNum($trans);
 
-              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
               echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
             else {
               $move = $new_pos - $old_pos;
               for ($x = 0; $x <= $move; $x++) {
-                $trans = $trans + 1;
-                if ($trans >= 256) {
-                  $trans = $trans - 256;
-                }
+                $trans = IncrementTransmissionNum($trans);
 
-                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
                 echo $sendcom;
                 exec($sendcom . ' > /dev/null &');
               }
@@ -289,24 +266,18 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           }
           else {
             if ($new_pos == array_search(6500, $WhiteTemp)) {
-              $trans = $trans + 1;
-              if ($trans >= 256) {
-                $trans = $trans - 256;
-              }
+              $trans = IncrementTransmissionNum($trans);
 
-              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1e";
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 1f";
               echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
             else {
               $move = $old_pos - $new_pos;
               for ($x = 0; $x <= $move; $x++) {
-                $trans = $trans + 1;
-                if ($trans >= 256) {
-                  $trans = $trans - 256;
-                }
+                $trans = IncrementTransmissionNum($trans);
 
-                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
+                $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
                 echo $sendcom;
                 exec($sendcom . ' > /dev/null &');
               }
@@ -327,10 +298,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
         // Status Changed
 
-        $trans = $trans + 1;
-        if ($trans >= 256) {
-          $trans = $trans - 256;
-        }
+        $trans = IncrementTransmissionNum($trans);
 
         if ($new_s == 1) {
           $sendcom = $sendcommandbase . " -k 03 -v " . dechex($trans);
@@ -353,10 +321,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
           // Color Mode Change
 
-          $trans = $trans + 1;
-          if ($trans >= 256) {
-            $trans = $trans - 256;
-          }
+          $trans = IncrementTransmissionNum($trans);
 
           echo 'current CM: ' . $new_cm . '\n';
           if ($new_cm == 1) {
@@ -380,18 +345,12 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
             // Color Change
 
-            $trans = $trans + 1;
-            if ($trans >= 256) {
-              $trans = $trans - 256;
-            }
+            $trans = IncrementTransmissionNum($trans);
 
             $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
-            exec($initcom);
+            exec($initcom . ' > /dev/null &');
             echo $initcom;
-            $trans = $trans + 1;
-            if ($trans >= 256) {
-              $trans = $trans - 256;
-            }
+            $trans = IncrementTransmissionNum($trans);
 
             $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 0f -v " . dechex($trans);
             echo $sendcom;
@@ -408,10 +367,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
           // Brightness Change
 
-          $trans = $trans + 1;
-          if ($trans >= 256) {
-            $trans = $trans - 256;
-          }
+          $trans = IncrementTransmissionNum($trans);
 
           if ($new_b == 4) {
             $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(129) . " -k 0e -v " . dechex($trans);
@@ -599,7 +555,10 @@ atomik_device_types.device_type_brightness=1;";
 			$success = FALSE;
 		}
 
-		$sql = "UPDATE atomik_zones SET zone_last_update = CONVERT_TZ(NOW(), '".$tz."', 'UTC') WHERE zone_id=".$zon.";";
+
+
+		$sql = "UPDATE atomik_zones SET zone_status = ".trim($new_s).", zone_colormode = ".trim($new_cm).", zone_brightness = ".
+		trim($new_b).", zone_rgb256 = ".trim($new_c).", zone_white_temprature = ".trim($new_wt).",zone_last_update = CONVERT_TZ(NOW(), '".$tz."', 'UTC') WHERE zone_id=".$zon.";";
 		if ($db->query($sql) === TRUE) {
    			$success = TRUE;
 		} else {
@@ -1078,15 +1037,11 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$error_text = processErrors($erro);	
 	} else {
 		if (updateZone($conn, $_zone_id, $_zone_brightness, $_zone_status, $_zone_rgb256, $_zone_white_temprature, $_zone_colormode, $timezone)) {
-			$sql = "UPDATE atomik_zones SET zone_status = ".trim($_zone_status).", zone_colormode = ".trim($_zone_colormode).", zone_brightness = ".
-		trim($_zone_brightness).", zone_rgb256 = ".trim($_zone_rgb256).", zone_white_temprature = ".trim($_zone_white_temprature).", zone_last_update = CONVERT_TZ(NOW(), '".$timezone."', 'UTC') WHERE zone_id=".$_zone_id.";";
-			if ($conn->query($sql) === TRUE) {
-		   		$page_success = 1;
-				$success_text = "Zone Properties Updated!";
-			} else {
-    			$page_error = 1;
-				$error_text = "Error Saving Zone Properties To DB!";
-			}
+			$page_success = 1;
+			$success_text = "Zone Properties Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Updateing and Saving Zone Properties To DB!";
 		}
 	}		
 }
