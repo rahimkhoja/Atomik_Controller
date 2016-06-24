@@ -216,7 +216,7 @@ if ( isset($_POST["task_weekday"])) {
 		echo 'Weekday No New Task Data(UNSer): ' + $_task_weekday;
 	} else {
 		$_task_weekday = array();
-		echo 'Weekday New Task Data: ' + $_task_weekday;
+		echo 'Weekday New Task Data: ' + print_r($_task_weekday);
 	}
 }
 
