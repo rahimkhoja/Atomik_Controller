@@ -606,7 +606,10 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 					$_error_task_weekday = 1;
 					$_error_task_day = 1;
 			}
-			
+			echo sizeof($_task_day);
+			echo sizeof($_task_weekday);
+
+
 			if ( sizeof($_task_day) > 0 && sizeof($_task_weekday) > 0 ) {
 					array_push($erro, "Please Only Select Either The Task Day Or The Task Weekday Input.");
 					$_error_task_weekday = 1;
