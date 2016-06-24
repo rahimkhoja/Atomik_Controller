@@ -690,6 +690,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 			} else {
 				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." ".implode(",", unserialize($row['task_day']))." ".implode(",", unserialize($row['task_month']))." *  sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
 			}
+			echo $jobcron;
 			deleteCRON($jobcron);
 		
 		
@@ -732,6 +733,7 @@ if ($command <> "" && $command !="" && $command == "delete_task")
 			} else {
 				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." ".implode(",", unserialize($row['task_day']))." ".implode(",", unserialize($row['task_month']))." *  sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
 			}
+			echo $jobcron;
 			deleteCRON($jobcron);
 			$page_success = 1;
 			$success_text = "Task Deleted!";
