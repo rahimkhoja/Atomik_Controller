@@ -693,25 +693,18 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				} else {
 					$cronwt = $row['task_white_temprature'];	
 				}
-				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php\t".$row['task_zone_id']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$cronwt;
+				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php\t".trim($row['task_zone_id'])." ".trim($row['task_status'])." ".trim($row['task_color_mode'])." ".trim($row['task_brightnesss'])." ".trim($row['task_rgb256'])." ".trim($cronwt);
 				
 			if ( sizeof(unserialize($row['task_cron_weekday'])) > 0 ) {
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']));
-				echo $jobcron;
-				echo "Here";
 				$jobcron = $jobcroncommand.$jobcron;
 			} else {
 				
-				
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." ".implode(",", unserialize($row['task_cron_day']))." ".implode(",", unserialize($row['task_cron_month'])).' *';
-				echo $jobcron;
-				echo "No Here";
+				
 				$jobcron = $jobcroncommand.$jobcron;
 			}
-			echo $jobcron;
 			deleteCRON($jobcron);
-		
-		
 		
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
