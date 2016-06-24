@@ -26,7 +26,7 @@ function deleteCRON( $jobcron) {
 		
 		//Copy cron tab and remove string
 		$newcron = str_replace($cronjob,"",$output);
-	
+		$newcron = str_replace($newcron,"\n","\n\n\n");
 		file_put_contents('/tmp/crontab.txt', $newcron.PHP_EOL);
 		exec('crontab /tmp/crontab.txt');
 	}
