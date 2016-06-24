@@ -15,6 +15,35 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
+function deleteCRON( $jobcron) {
+	//get contents of cron tab
+	$output = shell_exec('crontab -l');
+	echo "<pre>$output</pre>";
+
+	//Find string
+	$cronjob = ($jobcron);
+	if (strstr($output, $cronjob)) {
+		
+		echo 'Deleting CRON';
+		
+		//Copy cron tab and remove string
+		$newcron = str_replace($cronjob,"",$output);
+		echo "<pre>$newcron</pre>";
+
+		file_put_contents('/tmp/crontab.txt', $newcron.PHP_EOL);
+		echo exec('crontab /tmp/crontab.txt');
+	}
+	
+}
+
+function addCRON( $jobcron ) {
+
+	$output = shell_exec('crontab -l');
+	file_put_contents('/tmp/crontab.txt', $output.$jobcron.PHP_EOL);
+	echo exec('crontab /tmp/crontab.txt');
+	
+}
+
 
 function Check0to255( $input )
 {
@@ -655,17 +684,27 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 		$error_text = processErrors($erro);	
 	} else {
 		
+		$jobcron = "";
+			if ( sizeof(unserialize($row['task_weekday'])) > 0 ) {
+				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." * ".implode(",", unserialize($row['task_month']))." ".implode(",", unserialize($row['task_weekday']))." sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+			} else {
+				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." ".implode(",", unserialize($row['task_day']))." ".implode(",", unserialize($row['task_month']))." *  sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+			}
+			deleteCRON($jobcron);
+		
+		
+		
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Task Schedule Updated!";
-			
+			$jobcron = "";
 			if ( sizeof($_task_weekday) > 0 ) {
-				echo implode(",", $_task_minute)." ".implode(",", $_task_hour)." * ".implode(",", $_task_month)." ".implode(",", $_task_weekday)." php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightnesss." ".$_task_rgb256." ".$_task_white_temprature;
+				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." * ".implode(",", $_task_month)." ".implode(",", $_task_weekday)." sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightnesss." ".$_task_rgb256." ".$_task_white_temprature;
 			} else {
-				echo implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *"." php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightnesss." ".$_task_rgb256." ".$_task_white_temprature;;	
+				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *"." sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightnesss." ".$_task_rgb256." ".$_task_white_temprature;
 			}
-			
+			addCRON($jobcron);
 		} else {
     		$page_error = 1;
 			$error_text = "Error Saving Task Schedule To DB!";
@@ -688,6 +727,12 @@ if ($command <> "" && $command !="" && $command == "delete_task")
 			$page_error = 1;
 			$error_text = "Error Deleting Task From Task DB!";
 		} else {
+			if ( sizeof(unserialize($row['task_weekday'])) > 0 ) {
+				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." * ".implode(",", unserialize($row['task_month']))." ".implode(",", unserialize($row['task_weekday']))." sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+			} else {
+				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." ".implode(",", unserialize($row['task_day']))." ".implode(",", unserialize($row['task_month']))." *  sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+			}
+			deleteCRON($jobcron);
 			$page_success = 1;
 			$success_text = "Task Deleted!";
 			header('Location: tasks.php');		
@@ -1131,9 +1176,6 @@ echo 'selected';
     <option value="*" <?php if ( in_array('*', $_task_day, true) ) { 
 echo 'selected'; 
  }; ?>>Everyday</option>
-  <option value="0" <?php if ( in_array('0', $_task_day, true) ) { 
-echo 'selected'; 
- }; ?>>0</option>
   <option value="1" <?php if ( in_array('1', $_task_day, true) ) { 
 echo 'selected'; 
  }; ?>>1</option>
