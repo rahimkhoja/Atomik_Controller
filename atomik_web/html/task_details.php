@@ -685,10 +685,19 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 	} else {
 		
 		$jobcron = "";
+		if ($row['task_white_temprature'] < 2700) {
+					$cronwt = 2700;
+				} else if ($row['task_white_temprature'] > 6500) {
+					$cronwt = 6500;
+				} else {
+					$cronwt = $row['task_white_temprature'];	
+				}
 			if ( sizeof(unserialize($row['task_weekday'])) > 0 ) {
-				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']))." sudo /usr/bin/php /usr/atomik/updateatomikzone.php\t".$row['task_zone_id']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+				$jobcron = implode(",", unserialize($row['task_cron_minute']))."1 ".implode(",", unserialize($row['task_cron_hour']))."2 *3 ".implode(",", unserialize($row['task_cron_month']))."4 ".implode(",", unserialize($row['task_cron_weekday']))."5 sudo /usr/bin/php /usr/atomik/updateatomikzone.php\t".$row['task_zone_id']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$cronwt;
 			} else {
-				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." ".implode(",", unserialize($row['task_cron_day']))." ".implode(",", unserialize($row['task_cron_month']))." *\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+				
+				
+				$jobcron = implode(",", unserialize($row['task_cron_minute']))."1 ".implode(",", unserialize($row['task_cron_hour']))."2 ".implode(",", unserialize($row['task_cron_day']))."3 ".implode(",", unserialize($row['task_cron_month']))."4 *5\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone_id']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$cronwt;
 			}
 			echo $jobcron;
 			deleteCRON($jobcron);
