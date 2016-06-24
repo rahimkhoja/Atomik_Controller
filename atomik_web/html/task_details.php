@@ -702,7 +702,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." ".implode(",", unserialize($row['task_cron_day']))." ".implode(",", unserialize($row['task_cron_month'])).' *';
 				
-				$jobcron = $jobcroncommand.$jobcron;
+				$jobcron = $jobcron.$jobcroncommand;
 			}
 			echo "DeleteCron: ".$jobcron;
 			deleteCRON($jobcron);
