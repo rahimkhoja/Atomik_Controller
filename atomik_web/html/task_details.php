@@ -208,12 +208,11 @@ if ( isset($_POST["task_day"])) {
 
 if ( isset($_POST["task_weekday"])) {
 	$_task_weekday = $_POST["task_weekday"];
-	echo 'Weekday Post Task Data: ' + $_task_weekday;
+	echo 'Weekday Post Task Data:';
 } else {
 	if ($_new_task == 0 ) {
 		echo 'Weekday No New Task Data(Ser): ' + $row['task_cron_weekday'];
 		$_task_weekday = unserialize($row['task_cron_weekday']);
-		echo 'Weekday No New Task Data(UNSer): ' + $_task_weekday;
 	} else {
 		$_task_weekday = array();
 		echo 'New Array';
