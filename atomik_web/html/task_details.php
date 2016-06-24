@@ -693,7 +693,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				} else {
 					$cronwt = $row['task_white_temprature'];	
 				}
-				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php\t".trim($row['task_zone_id'])." ".trim($row['task_status'])." ".trim($row['task_color_mode'])." ".trim($row['task_brightness'])." ".trim($row['task_rgb256'])." ".trim($cronwt);
+				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".trim($row['task_zone_id'])." ".trim($row['task_status'])." ".trim($row['task_color_mode'])." ".trim($row['task_brightness'])." ".trim($row['task_rgb256'])." ".trim($cronwt);
 				
 			if ( sizeof(unserialize($row['task_cron_weekday'])) > 0 ) {
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']));
@@ -704,6 +704,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				
 				$jobcron = $jobcroncommand.$jobcron;
 			}
+			echo "DeleteCron: ".$jobcron;
 			deleteCRON($jobcron);
 		
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
@@ -714,8 +715,9 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 			if ( sizeof($_task_weekday) > 0 ) {
 				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." * ".implode(",", $_task_month)." ".implode(",", $_task_weekday)."\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightness." ".$_task_rgb256." ".$_task_white_temprature;
 			} else {
-				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *"."\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightness." ".$_task_rgb256." ".$_task_white_temprature;
+				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightness." ".$_task_rgb256." ".$_task_white_temprature;
 			}
+			echo "AddCron: ".$jobcron;
 			addCRON($jobcron);
 		} else {
     		$page_error = 1;
