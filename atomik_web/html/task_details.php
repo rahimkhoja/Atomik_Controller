@@ -695,7 +695,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				}
 				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php\t".$row['task_zone_id']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$cronwt;
 				
-			if ( sizeof(unserialize($row['task_weekday'])) > 0 ) {
+			if ( sizeof(unserialize($row['task_cron_weekday'])) > 0 ) {
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']));
 				echo $jobcron;
 				echo "Here";
