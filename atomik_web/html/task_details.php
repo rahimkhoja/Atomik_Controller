@@ -518,7 +518,8 @@ if ($command <> "" && $command !="" && $command == "save_general")
     			
 				$_new_task = 0;
 				$_task_id = $conn->insert_id;
-								
+				$page_success = 1;
+				$success_text = "General Task Details Updated!";			
 			} else {
     			$page_error = 1;
 				$error_text = "Error Inserting Task Details To DB!";
@@ -657,8 +658,14 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
-			echo implode(", ", $_task_minute)." ".implode(", ", $_task_hour)." ".implode(", ", $_task_day)." ".implode(", ", $_task_month)." ".implode(", ", $_task_weekday);
 			$success_text = "Task Schedule Updated!";
+			
+			if ( sizeof($_task_weekday) > 0 ) {
+				echo implode(",", $_task_minute)." ".implode(",", $_task_hour)." * ".implode(",", $_task_month)." ".implode(",", $_task_weekday)." php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightnesss." ".$_task_rgb256." ".$_task_white_temprature;
+			} else {
+				echo implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *"." php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightnesss." ".$_task_rgb256." ".$_task_white_temprature;;	
+			}
+			
 		} else {
     		$page_error = 1;
 			$error_text = "Error Saving Task Schedule To DB!";
