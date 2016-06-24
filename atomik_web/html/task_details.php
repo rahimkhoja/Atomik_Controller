@@ -273,7 +273,6 @@ if ($_task_white_temprature <= 2700) {
 	$_task_white_temprature = 6500;
 } 
 
-echo $_task_white_temprature;
 if ( isset($_POST["task_brightness"])) {
 	$_task_brightness = intval($_POST["task_brightness"]);
 	if ($_task_brightness <= 4) {
@@ -339,7 +338,6 @@ if ( isset($_POST["task_brightness"])) {
 	}
 }
 
-echo $_task_brightness;
 // Atomik Zone List
 
 $sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_id FROM atomik_zones;";  
@@ -612,14 +610,31 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 					$_error_task_month = 1;
 			}
 			
+			if ( in_array('*', $_task_weekday, true) && sizeof($_task_weekday) > 1 ) {
+					array_push($erro, "Task Weekday Cannot Have Every Weekday As Well As Other Weekdays Selected.");
+					$_error_task_weekday = 1;
+			}
+			
+			if ( in_array('*', $_task_day, true) && sizeof($_task_day) > 1 ) {
+					array_push($erro, "Task Day Cannot Have Everyday As Well As Other Days Selected.");
+					$_error_task_day = 1;
+			}
+			
+			if ( in_array('*', $_task_hour, true) && sizeof($_task_hour) > 1 ) {
+					array_push($erro, "Task Hour Cannot Have Every Hour As Well As Other Hours Selected.");
+					$_error_task_hour = 1;
+			}
+			
+			if ( in_array('*', $_task_month, true) && sizeof($_task_month) > 1 ) {
+					array_push($erro, "Task Month Cannot Have Every Month As Well As Other Months Selected.");
+					$_error_task_month = 1;
+			}			
+			
 			if ( sizeof($_task_day) == 0 && sizeof($_task_weekday) == 0 ) {
 					array_push($erro, "Either Task Day Or Task Weekday Is A Required Input.");
 					$_error_task_weekday = 1;
 					$_error_task_day = 1;
 			}
-			echo sizeof($_task_day);
-			echo sizeof($_task_weekday);
-
 
 			if ( sizeof($_task_day) > 0 && sizeof($_task_weekday) > 0 ) {
 					array_push($erro, "Please Only Select Either The Task Day Or The Task Weekday Input.");
@@ -636,7 +651,6 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 	} else {
 		
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
-		echo $sql;
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
 			$success_text = "Task Schedule Updated!";
