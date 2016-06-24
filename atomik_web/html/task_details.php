@@ -657,7 +657,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
-			echo implode(", ", $_task_minute).+." ".+implode(", ", $_task_hour).+." ".+implode(", ", $_task_day).+." ".+implode(", ", $_task_month).+." ".+implode(", ", $_task_weekday);
+			echo implode(", ", $_task_minute)." ".implode(", ", $_task_hour)." ".implode(", ", $_task_day)." ".implode(", ", $_task_month)." ".implode(", ", $_task_weekday);
 			$success_text = "Task Schedule Updated!";
 		} else {
     		$page_error = 1;
