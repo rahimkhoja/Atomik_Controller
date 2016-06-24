@@ -96,7 +96,7 @@ $command = $_POST["command"];
 if ( isset($_POST["new_task"]) ) {
 	$_new_task = $_POST["new_task"];
 } else {
-	$_new_task = "0";
+	$_new_task = 0;
 }
 
 if ( isset($_POST["task_id"]) ) {
