@@ -198,24 +198,31 @@ if ( isset($_POST["task_hour"])) {
 
 if ( isset($_POST["task_day"])) {
 	$_task_day = $_POST["task_day"];
+	if (empty($_task_day)) {
+		$_task_day = array();
+	}
 } else {
+	$_task_day = "";
 	if ($_new_task == 0 ) {
-		$_task_day = unserialize($row['task_cron_day']);
-	} else {
-		$_task_day = "";
+		$_task_day = unserialize($row['task_cron_day']);	
+	} 
+	if (empty($_task_day)) {
+		$_task_day = array();
 	}
 }
 
 if ( isset($_POST["task_weekday"])) {
 	$_task_weekday = $_POST["task_weekday"];
-	echo 'Weekday Post Task Data:';
-} else {
-	if ($_new_task == 0 ) {
-		echo 'Weekday No New Task Data(Ser): ' + $row['task_cron_weekday'];
-		$_task_weekday = unserialize($row['task_cron_weekday']);
-	} else {
+	if (empty($_task_weekday)) {
 		$_task_weekday = array();
-		echo 'New Array';
+	} 
+} else {
+	$_task_weekday = "";
+	if ($_new_task == 0 ) {
+		$_task_weekday = unserialize($row['task_cron_weekday']);
+	} 
+	if (empty($_task_weekday)) {
+		$_task_weekday = array();
 	}
 }
 
