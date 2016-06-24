@@ -657,6 +657,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
+			echo implode(", ", $_task_minute).+." ".+implode(", ", $_task_hour).+." ".+implode(", ", $_task_day).+." ".+implode(", ", $_task_month).+." ".+implode(", ", $_task_weekday);
 			$success_text = "Task Schedule Updated!";
 		} else {
     		$page_error = 1;
@@ -1329,11 +1330,11 @@ echo 'selected';
   </div>
   <div class="col-xs-1"><a href="tasks.php" class="btn-warning btn">Cancel</a>
   </div>
-  <div class="col-xs-1"><a id="deltaskbtn" class="btn-danger btn">Delete Scheduled Task</a>
+  <div class="col-xs-1">
   </div>
   <div class="col-xs-4">
   </div>
-  <div class="col-xs-2 text-right"><a id="saveallbtn" class="btn-success btn">Save All Task Details</a>
+  <div class="col-xs-2 text-right"><a id="deltaskbtn" class="btn-danger btn">Delete Scheduled Task</a>
   </div>
   <div class="col-xs-2">
   </div>
@@ -1370,10 +1371,6 @@ $("#deltaskbtn").on('click', function() {
    		document.taskfrm.submit();
 	}
 	$("#overlay").hide();
-});
-$("#saveallbtn").on('click', function() {
-   document.forms["taskfrm"].command.value = "save_all";
-   document.taskfrm.submit();
 });
 $("#task_zone_id").on('change', function() {
    document.taskfrm.submit();
