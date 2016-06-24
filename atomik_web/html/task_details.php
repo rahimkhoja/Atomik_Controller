@@ -698,12 +698,14 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 			if ( sizeof(unserialize($row['task_weekday'])) > 0 ) {
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']));
 				echo $jobcron;
+				echo "Here";
 				$jobcron = $jobcroncommand.$jobcron;
 			} else {
 				
 				
-				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." ".implode(",", unserialize($row['task_cron_day']))." ".implode(",", unserialize($row['task_cron_month']))." *";
+				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." ".implode(",", unserialize($row['task_cron_day']))." ".implode(",", unserialize($row['task_cron_month'])).' *';
 				echo $jobcron;
+				echo "No Here";
 				$jobcron = $jobcroncommand.$jobcron;
 			}
 			echo $jobcron;
