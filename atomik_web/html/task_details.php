@@ -686,9 +686,9 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 		
 		$jobcron = "";
 			if ( sizeof(unserialize($row['task_weekday'])) > 0 ) {
-				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." * ".implode(",", unserialize($row['task_month']))." ".implode(",", unserialize($row['task_weekday']))." sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']))." sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone_id']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
 			} else {
-				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." ".implode(",", unserialize($row['task_day']))." ".implode(",", unserialize($row['task_month']))." *  sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_colormode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
+				$jobcron = implode(",", unserialize($row['task_minute']))." ".implode(",", unserialize($row['task_hour']))." ".implode(",", unserialize($row['task_day']))." ".implode(",", unserialize($row['task_month']))." *  sudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$row['task_zone']." ".$row['task_status']." ".$row['task_color_mode']." ".$row['task_brightnesss']." ".$row['task_rgb256']." ".$row['task_white_temprature'];
 			}
 			echo $jobcron;
 			deleteCRON($jobcron);
