@@ -202,7 +202,7 @@ if ( isset($_POST["task_day"])) {
 	if ($_new_task == 0 ) {
 		$_task_day = unserialize($row['task_cron_day']);
 	} else {
-		$_task_day = array();
+		$_task_day = "";
 	}
 }
 
@@ -212,7 +212,7 @@ if ( isset($_POST["task_weekday"])) {
 	if ($_new_task == 0 ) {
 		$_task_weekday = unserialize($row['task_cron_weekday']);
 	} else {
-		$_task_weekday = array();
+		$_task_weekday = "";
 	}
 }
 
