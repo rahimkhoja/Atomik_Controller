@@ -256,7 +256,9 @@ if ($_task_white_temprature <= 2700) {
 	$_task_white_temprature = 5740;
 } else if ($_task_white_temprature <= 6120) {
 	$_task_white_temprature = 6120;
-} else if ($_task_white_temprature < 6500) {
+} else if ($_task_white_temprature <= 6500) {
+	$_task_white_temprature = 6500;
+} else if ($_task_white_temprature > 6500) {
 	$_task_white_temprature = 6500;
 } 
 
@@ -313,7 +315,9 @@ if ( isset($_POST["task_brightness"])) {
 	$_task_brightness = 92;
 } else if ($_task_brightness <= 96) {
 	$_task_brightness = 96;
-} else if ($_task_brightness < 100) {
+} else if ($_task_brightness <= 100) {
+	$_task_brightness = 100;
+} else if ($_task_brightness > 100) {
 	$_task_brightness = 100;
 } 
 } else {
@@ -569,6 +573,66 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		}
 	}		
 }	
+
+// Update Task Schedule [Keep Post Data, Verify Form, DB] (save_schedule)
+if ($command <> "" && $command !="" && $command == "save_schedule") 
+{	
+	$erro = array();
+	if ($_new_task == 1 )
+	{
+		array_push($erro, "Please Save General Task Details Before Saving Task Schedule");	
+	} else {
+		if ( serialize($_task_minute) == $row['task_minute'] && serialize($_task_hour) == $row['task_hour'] && serialize($_task_day) == $row['task_day'] && serialize($_task_weekday) == $row['task_weekday'] && serialize($_task_year) == $row['task_year'] && serialize($_task_month) == $row['task_month'] ) {
+			array_push($erro, "No Changes To Save");
+		} else {
+			if (  sizeof($_task_minute) == 0 ) {
+					array_push($erro, "Task Minute Is A Required Input.");
+					$_error_task_minute = 1;
+				
+			}
+			
+			if ( sizeof($_task_hour) == 0 ) {
+					array_push($erro, "Task Hour Is A Required Input.");
+					$_error_task_hour = 1;
+			}
+			
+			if ( sizeof($_task_month) == 0 ) {
+					array_push($erro, "Task Month Is A Required Input.");
+					$_error_task_month = 1;
+			}
+			
+			if ( sizeof($_task_day) == 0 && sizeof($_task_weekday) == 0 ) {
+					array_push($erro, "Either Task Day Or Task Weekday Is A Required Input.");
+					$_error_task_weekday = 1;
+					$_error_task_day = 1;
+			}
+			
+			if ( sizeof($_task_day) > 0 && sizeof($_task_weekday) > 0 ) {
+					array_push($erro, "Please Only Select Either The Task Day Or The Task Weekday Input.");
+					$_error_task_weekday = 1;
+					$_error_task_day = 1;
+			}
+		}	
+	}
+	
+	if (count($erro) > 0) 
+	{
+		$page_error = 1;
+		$error_text = processErrors($erro);	
+	} else {
+		
+		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
+		echo $sql;
+		if ($conn->query($sql) === TRUE) {
+    		$page_success = 1;
+			$success_text = "Task Schedule Updated!";
+		} else {
+    		$page_error = 1;
+			$error_text = "Error Saving Task Schedule To DB!";
+		}
+	}		
+}	
+
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
