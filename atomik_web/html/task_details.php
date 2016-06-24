@@ -88,8 +88,12 @@ $success_text = "";
 $error = "";
 
 // Set Command
-$command = "";
-$command = $_POST["command"];
+
+if ( isset($_POST["command"]) ) {
+	$command = $_POST["command"];
+} else {
+	$command = "";
+}
 
 // Set Post Variables
 
@@ -661,6 +665,27 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 	}		
 }	
 
+
+// Delete Task (delete_task)
+if ($command <> "" && $command !="" && $command == "delete_task") 
+{	
+
+	if ($_new_task == 1 )
+	{
+		header('Location: tasks.php');
+	} else {
+		$sql="DELETE FROM atomik_tasks WHERE task_id=".trim($_task_id).";";
+ 
+		if($conn->query($sql) === false) {
+			$page_error = 1;
+			$error_text = "Error Deleting Task From Task DB!";
+		} else {
+			$page_success = 1;
+			$success_text = "Task Deleted!";
+			header('Location: tasks.php');		
+		}
+	}
+}
 ?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
@@ -1302,7 +1327,7 @@ echo 'selected';
   <div class="container center">
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-1"><a href="tasks.php"  class="btn-warning btn">Cancel</a>
+  <div class="col-xs-1"><a href="tasks.php" class="btn-warning btn">Cancel</a>
   </div>
   <div class="col-xs-1"><a id="deltaskbtn" class="btn-danger btn">Delete Scheduled Task</a>
   </div>

@@ -1,4 +1,11 @@
-<strong></strong><?php include 'script/database.php';?><!doctype html>
+<?php
+  session_start();
+  if(!$_SESSION['username'])
+  {
+    header("Location: /index.php");
+    exit; // IMPORTANT: Be sure to exit here!
+  }
+?><?php include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -62,8 +69,12 @@ $success_text = "";
 $error = "";
 
 // Set Command
-$command = "";
-$command = $_POST["command"];
+
+if ( isset($_POST["command"]) ) {
+	$command = $_POST["command"];
+} else {
+	$command = "";
+}
 
 // Atomik Setting SQL
 $sql = "SELECT * FROM atomik_settings LIMIT 1"; // Select ONLY one, instead of all

@@ -461,8 +461,11 @@ $error = "";
 
 // Set Command
 
-$command = "";
-$command = $_POST["command"];
+if ( isset($_POST["command"]) ) {
+	$command = $_POST["command"];
+} else {
+	$command = "";
+}
 
 if (isset($_POST["new_device"])) {
   $_new_device = $_POST["new_device"];

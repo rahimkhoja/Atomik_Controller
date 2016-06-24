@@ -34,8 +34,12 @@ $row = $rs->fetch_assoc();
 $timezone = $row['timezone'];
 $rs->free();
 // Set Command
-$command = "";
-$command = $_POST["command"];
+
+if ( isset($_POST["command"]) ) {
+	$command = $_POST["command"];
+} else {
+	$command = "";
+}
 if (isset($_POST["zone_id"])) {
   $_zone_id = $_POST["zone_id"];
 }

@@ -79,8 +79,12 @@ $success_text = "";
 $error = "";
 
 // Set Command
-$command = "";
-$command = $_POST["command"];
+
+if ( isset($_POST["command"]) ) {
+	$command = $_POST["command"];
+} else {
+	$command = "";
+}
 if (isset($_POST["new_remote"])) {
   $_new_remote = $_POST["new_remote"];
 }
