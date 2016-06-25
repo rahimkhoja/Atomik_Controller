@@ -969,7 +969,7 @@ if ($_zone_white_temprature <= 2700) {
 	$_zone_white_temprature = 6500;
 } 
 
-$_zone_brightness = colorBrightness($_zone_brightness);
+$_zone_brightness = colorBright($_zone_brightness);
 
 // Save General Zone Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
