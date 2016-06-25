@@ -1229,14 +1229,13 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 								} else {
 
 									$ztrs->data_seek(0);
-									$ztrs_row = $ztrs->fetch_assoc();
 	
 									 while($ztrs_row = $ztrs->fetch_assoc()){
 										deleteCRON ($ztrs_row['task_id']);
 	 								}
 									$page_success = 1;
 									$success_text = "Zone Deleted!";
-									header('Location: zones.php');	
+									//header('Location: zones.php');	
 								}
 							}
 						}
