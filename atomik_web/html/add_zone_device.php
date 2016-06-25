@@ -503,8 +503,8 @@ if ($command <> "" && $command != "" && $command == "add_device") {
 		if ($conn->query($sql) === TRUE) {
 			$page_success = 1;
     		$success_text = "Zone Device Added To Zone DB!";
-    		echo "<br />";
-    		echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+    		//echo "<br />";
+    		//echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
   		}
 	}	
     
