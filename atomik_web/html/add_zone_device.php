@@ -497,7 +497,15 @@ if ($command <> "" && $command != "" && $command == "add_device") {
   $sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (" . trim($_zone_id) . "," . trim($_zone_device) . ",CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
   if ($conn->query($sql) === TRUE) {
     if ($_update_zone > 0) {
-		$row = $rs->fetch_assoc();
+		
+		$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && atomik_devices.device_id=". trim($_zone_device) .";";
+$drs = $conn->query($sql);
+if ($drs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+}
+$drs->data_seek(0);
+		
+		$row = $drs->fetch_assoc();
 		$tra = transmit($zrow['zone_brightness'], $row['device_brightness'], $zrow['zone_status'], $row['device_status'], $zrow['zone_rgb256'], $row['device_rgb256'], $zrow['zone_white_temprature'], $row['device_white_temprature'], $zrow['zone_colormode'], $row['device_colormode'], $row['device_address1'], $row['device_address2'], $row['device_transmission'], $row['device_type_rgb256'], $row['device_type_cold_white'], $row['device_type_warm_white']);
 		
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($zrow['zone_status']).", device_colormode = ".trim($zrow['zone_colormode']).", device_brightness = ".
