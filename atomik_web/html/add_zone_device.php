@@ -15,6 +15,325 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php
+function IncrementTransmissionNum($number)
+{
+  $trans = $number + 1;
+  if ($trans >= 256) {
+    $trans = $trans - 256;
+  }
+  return $trans;
+}
+
+function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww)
+{
+  $trans = $tra;
+  if ($cw == 1 && $ww == 1 && $rgb != 1) {
+    $sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q " . dechex($add1) . " -r " . dechex($add2) . " -c 01";
+
+    // White Bulb Details
+
+    $Brightness = array(
+      9,
+      18,
+      27,
+      36,
+      45,
+      54,
+      63,
+      72,
+      81,
+      90,
+      100
+    );
+    $WhiteTemp = array(
+      2700,
+      3080,
+      3460,
+      3840,
+      4220,
+      4600,
+      4980,
+      5360,
+      5740,
+      6120,
+      6500
+    );
+    if ($new_s != $old_s) {
+
+      // Status Changed
+
+      $trans = IncrementTransmissionNum($trans);
+      if ($new_s == 1) {
+        $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
+      }
+      else {
+        $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0B";
+      }
+
+      exec($sendcom . ' > /dev/null &');
+    } // End Status Change
+    if ($new_s == 1) {
+
+      // Status On
+
+      if ($old_cm != $new_cm) {
+        $trans = IncrementTransmissionNum($trans);
+        echo 'current CM: ' . $new_cm . '\n';
+
+        // Color Mode Change
+
+        if ($new_cm == 1) {
+          $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
+        }
+        else {
+          $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
+        }
+
+        exec($sendcom . ' > /dev/null &');
+      }
+
+      if ($new_b != $old_b || $old_cm != $new_cm) {
+
+        // Brightness Change
+        // Search Arrays for brightness values, reteieve Array positions of each Brightness value
+
+        $old_pos = array_search($old_b, $Brightness);
+        $new_pos = array_search($new_b, $Brightness);
+
+        // Detect if there is a change to become Brighter
+
+        if ($new_pos > $old_pos) {
+
+          // Detect if brightness is being changed to 100% brightness. Issue 100% Brithgtness command
+
+          if ($new_pos == array_search(100, $Brightness)) {
+            $trans = IncrementTransmissionNum($trans);
+            $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
+            exec($sendcom . ' > /dev/null &');
+          } else {
+            // If not 100% brightness, calcuate how many Brightness positions to move. Issue correct amount of commands to increase Brightness to specified level
+
+            $move = $new_pos - $old_pos;
+            for ($x = 0; $x <= $move; $x++) {
+              $trans = IncrementTransmissionNum($trans);
+              $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0C";
+              exec($sendcom . ' > /dev/null &');
+            }
+          }
+          // Lower Brightness Detected
+        } else {
+          // calcuate how many Brightness positions to move. Issue correct amount of commands to decrease Brightness to specified level
+
+          $move = $old_pos - $new_pos;
+          for ($x = 0; $x <= $move; $x++) {
+            $trans = IncrementTransmissionNum($trans);
+            $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 04";
+            exec($sendcom . ' > /dev/null &');
+          }
+        }
+      }
+
+      if ($new_wt != $old_wt) {
+        // White Temp Change
+        // Search Arrays for White Temp values, reteieve Array positions of each White Temp value
+
+        $old_pos = array_search($old_wt, $WhiteTemp);
+        $new_pos = array_search($new_wt, $WhiteTemp);
+        // Detect if White Temprature is getting warm
+
+        if ($new_pos < $old_pos) {
+          // Detect if new White Temp is 100% Warm. Issue 100% Warm White command
+
+          $move = $old_pos - $new_pos;
+          for ($x = 0; $x <= $move; $x++) {
+            $trans = IncrementTransmissionNum($trans);
+            $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
+            exec($sendcom . ' > /dev/null &');
+          }
+          // Else White Temprature is getting colder
+
+        }
+        else {
+          // Detect if new White Temp is 100% Cold. Issue 100% Cold White command
+
+          $move = $new_pos - $old_pos;
+          for ($x = 0; $x <= $move; $x++) {
+            $trans = IncrementTransmissionNum($trans);
+            $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
+            exec($sendcom . ' > /dev/null &');
+          }
+        }
+      }
+    }
+  }
+  else
+  if ($cw == 1 && $rgb == 1 || $ww == 1 && $rgb == 1) {
+    $sendcommandbase = "sudo /usr/bin/transceiver -t 1 -q " . dechex($add1) . " -r " . dechex($add2);
+    // RGBWW and RGBCW
+
+    if ($new_s != $old_s) {
+      // Status Changed
+
+      $trans = IncrementTransmissionNum($trans);
+      if ($new_s == 1) {
+        $sendcom = $sendcommandbase . " -k 03 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
+      }
+      else {
+        $sendcom = $sendcommandbase . " -k 04 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
+      }
+      exec($sendcom . ' > /dev/null &');
+    }
+
+    // End Status Change
+    if ($new_s == 1) {
+      // Status On
+
+      if ($old_cm != $new_cm) {
+        // Color Mode Change
+
+        $trans = IncrementTransmissionNum($trans);
+        echo 'current CM: ' . $new_cm . '\n';
+        if ($new_cm == 1) {
+          $sendcom = $sendcommandbase . " -k 13 -b " . dechex($old_b) . " -v " . dechex($trans);
+        }
+        else {
+          $sendcom = $sendcommandbase . " -k 03 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
+        }
+        exec($sendcom . ' > /dev/null &');
+      }
+      // End Color Mode Change
+
+      if ($new_cm == 0) {
+        // Color Mode Color
+        if ($new_c != $old_c || $old_cm != $new_cm) {
+          // Color Change
+          $trans = IncrementTransmissionNum($trans);
+          $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
+          exec($initcom . ' > /dev/null &');
+          $trans = IncrementTransmissionNum($trans);
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 0f -v " . dechex($trans);
+          exec($sendcom . ' > /dev/null &');
+        }
+        // End Color Change
+      }
+
+      // End Color Mode Color
+      if ($new_b != $old_b) {
+        // Brightness Change
+
+        $trans = IncrementTransmissionNum($trans);
+        if ($new_b == 4) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(129) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 8) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(121) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 12) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(113) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 15) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(105) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 19) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(97) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 23) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(89) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 27) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(81) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 31) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(73) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 35) {
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(65) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 39) { //10
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(57) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 42) { //11
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(49) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 46) { //12
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(41) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 50) { //13
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(33) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 54) { //14
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(25) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 58) { //15
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(17) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 62) { //16
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(9) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 65) { //17
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(1) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 69) { //18
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(249) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 73) { //19
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(241) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 77) { // 20
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(233) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 81) { // 21
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(225) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 85) { // 22
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(217) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 88) { // 23
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(209) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 92) { // 24
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(201) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 96) { // 25
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(193) . " -k 0e -v " . dechex($trans);
+        }
+        else
+        if ($new_b == 100) { // 26
+          $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(185) . " -k 0e -v " . dechex($trans);
+        }
+        exec($sendcom . ' > /dev/null &');
+      }
+      // End Brightness Change
+    }
+    // End Status On
+  }
+  return $trans;
+}
+
 // Set Default Error & Success Settings
 $page_error = 0;
 $page_success = 0;
@@ -58,6 +377,19 @@ if (isset($_POST["update_zone"])) {
 else {
   $_update_zone = 1;
 }
+
+// Atomik Setting SQL
+$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_brightness, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
+$rs = $conn->query($sql);
+if ($rs === false) {
+  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+}
+else {
+  $db_records = $rs->num_rows;
+}
+
+$rs->data_seek(0);
+
 // Add Device to Zone (add_device)
 if ($command <> "" && $command != "" && $command == "add_device") {
   $erro = array();
@@ -78,25 +410,14 @@ if ($command <> "" && $command != "" && $command == "add_device") {
   }
 }
 
-// Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id FROM atomik_devices WHERE device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
-$rs = $conn->query($sql);
-if ($rs === false) {
-  trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-}
-else {
-  $db_records = $rs->num_rows;
-}
 
-$rs->data_seek(0);
 ?></head>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
-    
+      <a class="navbar-brand" id="atomikLogo"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
