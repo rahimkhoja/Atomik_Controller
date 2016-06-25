@@ -473,7 +473,7 @@ else {
 }
 echo $_update_zone;
 // Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
+$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
 $rs = $conn->query($sql);
 if ($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
@@ -500,7 +500,8 @@ if ($command <> "" && $command != "" && $command == "add_device") {
     if ($_update_zone > 0) {
 		$row = $rs->fetch_assoc();
 		echo "trasnmit running";
-		$tra = transmit($zrow['zone_brightness'], $row['device_brightness'], $zrow['zone_status'], $row['device_status'], $zrow['zone_rgb256'], $row['device_rgb256'], $zrow['zone_white_temprature'], $row['device_white_temprature'], $zrow['zone_colormode'], $row['device_colormode'], $row['device_address1'], $row['device_address2'], $row['device_transmission'], $row['$device_type_rgb256'], $row['device_type_cold_white'], $row['device_type_warm_white']);
+		echo $row['device_type_rgb256'];
+		$tra = transmit($zrow['zone_brightness'], $row['device_brightness'], $zrow['zone_status'], $row['device_status'], $zrow['zone_rgb256'], $row['device_rgb256'], $zrow['zone_white_temprature'], $row['device_white_temprature'], $zrow['zone_colormode'], $row['device_colormode'], $row['device_address1'], $row['device_address2'], $row['device_transmission'], $row['device_type_rgb256'], $row['device_type_cold_white'], $row['device_type_warm_white']);
 		
 		$sql = "UPDATE atomik_devices SET device_status = ".trim($zrow['zone_status']).", device_colormode = ".trim($zrow['zone_colormode']).", device_brightness = ".
 		trim($zrow['zone_brightness']).", device_rgb256 = ".trim($zrow['zone_rgb256']).", device_white_temprature = ".trim($zrow['zone_white_temprature']).", device_transmission=".trim($tra)." WHERE device_id=".$_zone_device.";";
