@@ -16,19 +16,26 @@
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
 function deleteCRON( $task_id ) {
+	
+	// Text to Match
+	$word = " Atomik: ".$task_id;
+	
 	//get contents of cron tab
-	$output = shell_exec('crontab -l');
+	$content = shell_exec('crontab -l');
+	
+	
+ 
 	//Find string
-	if (strstr($output, $cronjob)) {
-		$wordlist = " Atomik: ".$task_id;
-		$newcron = preg_replace("/^.*".$wordlist.".*$/", "", $output);
-
+	if (strstr($content, $cronjob)) {
+		
 		echo 'Deleting CRON';
 		
+		$newcontent = str_replace($word, "", "$content");
+				
 		//Copy cron tab and remove string
-		$newcron = str_replace($cronjob,"",$output);
-		$newcron = str_replace("\n\n\n","\n",$newcron);
-		file_put_contents('/tmp/crontab.txt', $newcron.PHP_EOL);
+		$newcontent = str_replace("\n\n\n","\n",$newcontent);
+		
+		file_put_contents('/tmp/crontab.txt', $newcontent.PHP_EOL);
 		exec('crontab /tmp/crontab.txt');
 	}
 	
