@@ -1207,36 +1207,35 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 						$page_error = 1;
 						$error_text = "Error Deleting Atomik Remote Channels From Zone DB!";
 					} else {
-						$sql="DELETE FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".$_zone_id.";";
+						$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
  
-						if($conn->query($sql) === false) {
+ 						if($conn->query($sql) === false) {
 							$page_error = 1;
-							$error_text = "Error Deleting Atomik Zone from Atomik Tasks DB!";
+							$error_text = "Error Removing MiLight Remotes From Zone DB!";
 						} else {
-							$sql="UPDATE atomik_remote_channels set remote_channel_zone_id=0 WHERE remote_channel_zone_id=".$_zone_id.";";
+							
+							$sql = "SELECT atomik_tasks.task_id FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".trim($_zone_id).";";
+							$ztrs=$conn->query($sql);
  
-							if($conn->query($sql) === false) {
-								$page_error = 1;
-								$error_text = "Error Removing MiLight Remotes From Zone DB!";
-							}  else {
-								
-								$sql = "SELECT atomik_tasks.task_id FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".trim($_zone_id).";";
-								echo $sql;
-								$ztrs=$conn->query($sql);
- 
-								if($ztrs === false) {
-  									trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-								} else {
-
-									$ztrs->data_seek(0);
+							if($ztrs === false) {
+								trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+							} else {
+								$ztrs->data_seek(0);
 	
-									 while($ztrs_row = $ztrs->fetch_assoc()){
-										deleteCRON ($ztrs_row['task_id']);
-										echo $ztrs_row['task_id'];
-	 								}
+								 while($ztrs_row = $ztrs->fetch_assoc()){
+									deleteCRON ($ztrs_row['task_id']);
+								}
+								$ztrs->free();
+								
+								$sql="DELETE FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".$_zone_id.";";
+ 
+								if($conn->query($sql) === false) {
+									$page_error = 1;
+									$error_text = "Error Deleting Atomik Zone from Atomik Tasks DB!";
+								} else {
 									$page_success = 1;
 									$success_text = "Zone Deleted!";
-									//header('Location: zones.php');	
+									header('Location: zones.php');	
 								}
 							}
 						}
