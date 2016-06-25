@@ -118,6 +118,8 @@ function whiteBrightness( $bri ) {
 
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww)
 {
+	
+	echo $new_b.", ". $old_b.", ". $new_s.", ". $old_s.", ". $new_c.", ". $old_c.", ". $new_wt.", ". $old_wt.", ". $new_cm.", ". $old_cm.", ". $add1.", ". $add2.", ". $tra.", ". $rgb.", ". $cw.", ". $ww;
   $trans = $tra;
   if ($cw == 1 && $ww == 1 && $rgb != 1) {
     $sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q " . dechex($add1) . " -r " . dechex($add2) . " -c 01";
