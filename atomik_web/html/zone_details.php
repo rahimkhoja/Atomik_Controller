@@ -1232,6 +1232,7 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 	
 									 while($ztrs_row = $ztrs->fetch_assoc()){
 										deleteCRON ($ztrs_row['task_id']);
+										echo $ztrs_row['task_id'];
 	 								}
 									$page_success = 1;
 									$success_text = "Zone Deleted!";
