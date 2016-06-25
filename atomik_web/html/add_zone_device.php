@@ -119,6 +119,8 @@ function whiteBrightness( $bri ) {
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww)
 {
 	
+	echo $new_b.", ". $old_b.", ". $new_s.", ". $old_s.", ". $new_c.", ". $old_c.", ". $new_wt.", ". $old_wt.", ". $new_cm.", ". $old_cm.", ". $add1.", ". $add2.", ". $tra.", ". $rgb.", ". $cw.", ". $ww;
+  $trans = $tra;
   if ($cw == 1 && $ww == 1 && $rgb != 1) {
     $sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q " . dechex($add1) . " -r " . dechex($add2) . " -c 01";
 
@@ -467,6 +469,7 @@ if (!isset($_POST["update_zone"])) {
 else {
   $_update_zone = 1;
 }
+
 // Atomik Setting SQL
 $sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
 $rs = $conn->query($sql);
@@ -501,8 +504,8 @@ if ($command <> "" && $command != "" && $command == "add_device") {
 		if ($conn->query($sql) === TRUE) {
 			$page_success = 1;
     		$success_text = "Zone Device Added To Zone DB!";
-    		echo "<br />";
-    		echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+    		//echo "<br />";
+    		//echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
   		}
 	}	
     
