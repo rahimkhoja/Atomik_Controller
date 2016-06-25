@@ -120,7 +120,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
       if ($old_cm != $new_cm) {
         $trans = IncrementTransmissionNum($trans);
-
+	  
         // Color Mode Change
 
         if ($new_cm == 1) {
@@ -338,7 +338,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
           // Color Mode Color
 
-          if ($new_c != $old_c || $old_cm != $new_cm) {
+          if ($new_c != $old_c ) {
 
             // Color Change
 
