@@ -843,6 +843,97 @@ if ( isset($_POST["zone_rgb256"])) {
 	}
 }
 
+function colorBright ( $bri ) {
+	$bright = $bri;
+	
+  	if ($bright <= 4) {
+    	$bright = 4;
+	} else if ($bright <= 8) {
+    	$bright = 8;
+	} else if ($bright <= 12) {
+    	$bright = 12;
+	} else if ($bright <= 15) {
+    	$bright = 15;
+	} else if ($bright <= 19) {
+    	$bright = 19;
+	} else if ($bright <= 23) {
+    	$bright = 23;
+	} else if ($bright <= 27) {
+    	$bright = 27;
+	} else if ($bright <= 31) {
+    	$bright = 31;
+	} else if ($bright <= 35) {
+    	$bright = 35;
+	} else if ($bright <= 39) {
+    	$bright = 39;
+	} else if ($bright <= 42) {
+    	$bright = 42;
+	} else if ($bright <= 46) {
+    	$bright = 46;
+	} else if ($bright <= 50) {
+    	$bright = 50;
+	} else if ($bright <= 54) {
+    	$bright = 54;
+	} else if ($bright <= 58) {
+    	$bright = 58;
+	} else if ($bright <= 62) {
+    	$bright = 62;
+	} else if ($bright <= 65) {
+    	$bright = 65;
+	} else if ($bright <= 69) {
+    	$bright = 69;
+	} else if ($bright <= 73) {
+    	$bright = 73;
+	} else if ($bright <= 77) {
+    	$bright = 77;
+	} else if ($bright <= 81) {
+    	$bright = 81;
+	} else if ($bright <= 85) {
+    	$bright = 85;
+	} else if ($bright <= 88) {
+    	$bright = 88;
+	} else if ($bright <= 92) {
+    	$bright = 92;
+	} else if ($bright <= 96) {
+    	$bright = 96;
+	} else if ($bright <= 100) {
+	    $bright = 100;
+	} else {
+		$bright = 100;
+	}
+  
+	return $bright;
+}
+
+function whiteBrightness( $bri ) {
+	$bright = $bri;
+	if ($bright <= 9) {
+	    $bright = 9;
+	} else if ($bright <= 18) {
+    	$bright = 18;
+  	} else if ($bright <= 27) {
+   	 	$bright = 27;
+  	} else if ($bright <= 36) {
+    	$bright = 36;
+  	} else if ($bright <= 45) {
+    	$bright = 45;
+  	} else if ($bright <= 54) {
+    	$bright = 54;
+  	} else if ($bright <= 63) {
+    	$bright = 63;
+  	} else if ($bright <= 72) {
+    	$bright = 72;
+  	} else if ($bright <= 81) {
+    	$bright = 81;
+  	} else if ($bright <= 90) {
+    	$bright = 90;
+  	} else if ($bright <= 100) {
+    	$bright = 100;
+  	} else {
+		$bright = 100;
+  	}
+	return $bright;
+}
 
 if ( isset($_POST["zone_white_temprature"])) {
 	$_zone_white_temprature = $_POST["zone_white_temprature"];
@@ -878,59 +969,7 @@ if ($_zone_white_temprature <= 2700) {
 	$_zone_white_temprature = 6500;
 } 
 
-if ($_zone_brightness <= 4) {
-	$_zone_brightness = 4;
-} else if ($_zone_brightness <= 8) {
-	$_zone_brightness = 8;
-} else if ($_zone_brightness <= 12) {
-	$_zone_brightness = 12;
-} else if ($_zone_brightness <= 15) {
-	$_zone_brightness = 15;
-} else if ($_zone_brightness <= 19) {
-	$_zone_brightness = 19;
-} else if ($_zone_brightness <= 23) {
-	$_zone_brightness = 23;
-} else if ($_zone_brightness <= 27) {
-	$_zone_brightness = 27;
-} else if ($_zone_brightness <= 31) {
-	$_zone_brightness = 31;
-} else if ($_zone_brightness <= 35) {
-	$_zone_brightness = 35;
-} else if ($_zone_brightness <= 39) {
-	$_zone_brightness = 39;
-} else if ($_zone_brightness <= 42) {
-	$_zone_brightness = 42;
-} else if ($_zone_brightness <= 46) {
-	$_zone_brightness = 46;
-} else if ($_zone_brightness <= 50) {
-	$_zone_brightness = 50;
-} else if ($_zone_brightness <= 54) {
-	$_zone_brightness = 54;
-} else if ($_zone_brightness <= 58) {
-	$_zone_brightness = 58;
-} else if ($_zone_brightness <= 62) {
-	$_zone_brightness = 62;
-} else if ($_zone_brightness <= 65) {
-	$_zone_brightness = 65;
-} else if ($_zone_brightness <= 69) {
-	$_zone_brightness = 69;
-} else if ($_zone_brightness <= 73) {
-	$_zone_brightness = 73;
-} else if ($_zone_brightness <= 77) {
-	$_zone_brightness = 77;
-} else if ($_zone_brightness <= 81) {
-	$_zone_brightness = 81;
-} else if ($_zone_brightness <= 85) {
-	$_zone_brightness = 85;
-} else if ($_zone_brightness <= 88) {
-	$_zone_brightness = 88;
-} else if ($_zone_brightness <= 92) {
-	$_zone_brightness = 92;
-} else if ($_zone_brightness <= 96) {
-	$_zone_brightness = 96;
-} else if ($_zone_brightness <= 100) {
-	$_zone_brightness = 100;
-} 
+$_zone_brightness = colorBrightness($_zone_brightness);
 
 // Save General Zone Settings [Keep Post Data, Verify Form, DB] (save_general)
 if ($command <> "" && $command !="" && $command == "save_general") 
@@ -1037,6 +1076,9 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 		$page_error = 1;
 		$error_text = processErrors($erro);	
 	} else {
+		if($_zone_colormode == 1 && $row['zone_colormode'] == 0) {
+				$_zone_brightness = 100;
+		}
 		if (updateZone($conn, $_zone_id, $_zone_brightness, $_zone_status, $_zone_rgb256, $_zone_white_temprature, $_zone_colormode, $timezone)) {
 			$page_success = 1;
 			$success_text = "Zone Properties Updated!";

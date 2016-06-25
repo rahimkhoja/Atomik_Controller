@@ -185,7 +185,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         exec($sendcom . ' > /dev/null &');
       }
 
-      if ($new_b != $old_b || $old_cm != $new_cm) {
+      if ($new_b != $old_b) {
 
         // Brightness Change
         // Search Arrays for brightness values, reteieve Array positions of each Brightness value
@@ -285,6 +285,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         // Color Mode Change
 
         $trans = IncrementTransmissionNum($trans);
+		
         if ($new_cm == 1) {
           $sendcom = $sendcommandbase . " -k 13 -b " . dechex($old_b) . " -v " . dechex($trans);
         }
@@ -297,7 +298,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
       if ($new_cm == 0) {
         // Color Mode Color
-        if ($new_c != $old_c || $old_cm != $new_cm) {
+        if ($new_c != $old_c || $new_cm != 1) {
           // Color Change
           $trans = IncrementTransmissionNum($trans);
           $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
