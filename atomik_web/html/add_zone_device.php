@@ -464,11 +464,12 @@ else {
   $_zone_device = "";
 }
 if (!isset($_POST["update_zone"])) {
+	
   	$_update_zone = 0; }
 else {
   $_update_zone = 1;
 }
-
+echo $_update_zone;
 // Atomik Setting SQL
 $sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
 $rs = $conn->query($sql);
