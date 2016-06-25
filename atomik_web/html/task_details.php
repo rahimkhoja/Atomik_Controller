@@ -19,7 +19,6 @@ function deleteCRON( $task_id ) {
 	
 	// Text to Match
 	$word = " Atomik: ".$task_id."-";
-	echo $word;
 	$com = "crontab -l | sed -e '/".$word."/d'";
 	//get contents of cron tab without reference to deleted cron
 	$content = shell_exec($com);
@@ -624,7 +623,6 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 				
 				$jobcron = $jobcron.$jobcroncommand;
 			}
-			echo "DeleteCron: ".$jobcron;
 			deleteCRON($_task_id);
 		$sql = "UPDATE atomik_tasks SET task_zone_id=".$_task_zone.", task_status=".$_task_status.", task_color_mode=".$_task_colormode.", task_brightness=".$_task_brightness.", task_rgb256=".$_task_rgb256.", task_white_temprature=".$_task_white_temprature."  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
@@ -636,7 +634,6 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 			} else {
 				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightness." ".$_task_rgb256." ".$_task_white_temprature." # Atomik: ".$_task_id."-";
 			}
-			echo "AddCron: ".$jobcron;
 			addCRON($jobcron);
 			
 		} else {
@@ -736,7 +733,6 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				
 				$jobcron = $jobcron.$jobcroncommand;
 			}
-			echo "DeleteCron: ".$jobcron;
 			deleteCRON($_task_id);
 		
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
@@ -749,7 +745,6 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 			} else {
 				$jobcron = implode(",", $_task_minute)." ".implode(",", $_task_hour)." ".implode(",", $_task_day)." ".implode(",", $_task_month)." *\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".$_task_zone." ".$_task_status." ".$_task_colormode." ".$_task_brightness." ".$_task_rgb256." ".$_task_white_temprature." # Atomik: ".$_task_id."-";
 			}
-			echo "AddCron: ".$jobcron;
 			addCRON($jobcron);
 		} else {
     		$page_error = 1;
@@ -791,7 +786,6 @@ if ($command <> "" && $command !="" && $command == "delete_task")
 				
 				$jobcron = $jobcron.$jobcroncommand;
 			}
-			echo "DeleteCron: ".$jobcron;
 			deleteCRON($_task_id);
 			$page_success = 1;
 			$success_text = "Task Deleted!";
@@ -805,7 +799,7 @@ if ($command <> "" && $command !="" && $command == "delete_task")
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
+      <a class="navbar-brand" id="atomikLogo"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">

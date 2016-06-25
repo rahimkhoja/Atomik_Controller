@@ -16,6 +16,25 @@
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
 
+function deleteCRON( $task_id ) {
+	
+	// Text to Match
+	$word = " Atomik: ".$task_id."-";
+	$com = "crontab -l | sed -e '/".$word."/d'";
+	//get contents of cron tab without reference to deleted cron
+	$content = shell_exec($com);
+	
+	// Get Rid Of New Lines
+	$content = str_replace("\n\n\n","\n",$content);
+	
+	// Save New Crontab To File
+	file_put_contents('/tmp/crontab.txt', $content.PHP_EOL);
+	
+	// Save Cron
+	exec('crontab /tmp/crontab.txt');
+ 
+}
+
 function IncrementTransmissionNum($number)
 {
   $trans = $number + 1;
@@ -1199,9 +1218,30 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 								$page_error = 1;
 								$error_text = "Error Removing MiLight Remotes From Zone DB!";
 							}  else {
+								
+								
+								$sql = "SELECT atomik_tasks.task_id FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".trim($_zone_id).";";
+	
+	$ztrs=$conn->query($sql);
+ 
+	if($ztrs === false) {
+  	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	} else {
+
+		$ztrs->data_seek(0);
+		$ztrs_row = $ztrs->fetch_assoc();
+	
+	 while($ztrs_row = $ztrs->fetch_assoc()){
+								deleteCRON ($ztrs_row['task_id']);
+	 }
+								
+								
+								
+								
 		  						$page_success = 1;
 								$success_text = "Zone Deleted!";
-								header('Location: zones.php');		
+								header('Location: zones.php');	
+	}
 							}
 						}
 					}
@@ -1245,7 +1285,7 @@ $dzrs->data_seek(0);
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
+      <a class="navbar-brand" id="atomikLogo"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
