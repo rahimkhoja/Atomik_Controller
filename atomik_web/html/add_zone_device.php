@@ -291,6 +291,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         }
         else {
           $sendcom = $sendcommandbase . " -k 03 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
+		  $old_b = 0;
         }
         exec($sendcom . ' > /dev/null &');
       }
@@ -298,7 +299,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
       if ($new_cm == 0) {
         // Color Mode Color
-        if ($new_c != $old_c || $new_cm != 1) {
+        if ($new_c != $old_c) {
           // Color Change
           $trans = IncrementTransmissionNum($trans);
           $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);

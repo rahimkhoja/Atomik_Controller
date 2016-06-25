@@ -276,6 +276,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         }
         else {
           $sendcom = $sendcommandbase . " -k 03 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
+		  $old_b = 0;
         }
 
         exec($sendcom . ' > /dev/null &');
@@ -287,7 +288,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
         // Color Mode Color
 
-        if ($new_c != $old_c || $old_cm != $new_cm) {
+        if ($new_c != $old_c ) {
 
           // Color Change
 

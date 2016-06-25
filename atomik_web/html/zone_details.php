@@ -326,6 +326,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           }
           else {
             $sendcom = $sendcommandbase . " -k 03 -v " . dechex($trans) . " -c " . dechex($old_c);
+			$old_b = 0;
           }
 
           echo $sendcom;
