@@ -19,7 +19,7 @@ function deleteCRON( $task_id ) {
 	
 	// Text to Match
 	$word = "# Atomik: ".$task_id."-";
-	
+	echo $word;
 	//get contents of cron tab without reference to deleted cron
 	$content = shell_exec("crontab -l | sed -e '/".$word."/d'");
 	
