@@ -24,6 +24,98 @@ function IncrementTransmissionNum($number)
   return $trans;
 }
 
+function colorBright ( $bri ) {
+	$bright = $bri;
+	
+  	if ($bright <= 4) {
+    	$bright = 4;
+	} else if ($bright <= 8) {
+    	$bright = 8;
+	} else if ($bright <= 12) {
+    	$bright = 12;
+	} else if ($bright <= 15) {
+    	$bright = 15;
+	} else if ($bright <= 19) {
+    	$bright = 19;
+	} else if ($bright <= 23) {
+    	$bright = 23;
+	} else if ($bright <= 27) {
+    	$bright = 27;
+	} else if ($bright <= 31) {
+    	$bright = 31;
+	} else if ($bright <= 35) {
+    	$bright = 35;
+	} else if ($bright <= 39) {
+    	$bright = 39;
+	} else if ($bright <= 42) {
+    	$bright = 42;
+	} else if ($bright <= 46) {
+    	$bright = 46;
+	} else if ($bright <= 50) {
+    	$bright = 50;
+	} else if ($bright <= 54) {
+    	$bright = 54;
+	} else if ($bright <= 58) {
+    	$bright = 58;
+	} else if ($bright <= 62) {
+    	$bright = 62;
+	} else if ($bright <= 65) {
+    	$bright = 65;
+	} else if ($bright <= 69) {
+    	$bright = 69;
+	} else if ($bright <= 73) {
+    	$bright = 73;
+	} else if ($bright <= 77) {
+    	$bright = 77;
+	} else if ($bright <= 81) {
+    	$bright = 81;
+	} else if ($bright <= 85) {
+    	$bright = 85;
+	} else if ($bright <= 88) {
+    	$bright = 88;
+	} else if ($bright <= 92) {
+    	$bright = 92;
+	} else if ($bright <= 96) {
+    	$bright = 96;
+	} else if ($bright <= 100) {
+	    $bright = 100;
+	} else {
+		$bright = 100;
+	}
+  
+	return $bright;
+}
+
+function whiteBrightness( $bri ) {
+	$bright = $bri;
+	if ($bright <= 9) {
+	    $bright = 9;
+	} else if ($bright <= 18) {
+    	$bright = 18;
+  	} else if ($bright <= 27) {
+   	 	$bright = 27;
+  	} else if ($bright <= 36) {
+    	$bright = 36;
+  	} else if ($bright <= 45) {
+    	$bright = 45;
+  	} else if ($bright <= 54) {
+    	$bright = 54;
+  	} else if ($bright <= 63) {
+    	$bright = 63;
+  	} else if ($bright <= 72) {
+    	$bright = 72;
+  	} else if ($bright <= 81) {
+    	$bright = 81;
+  	} else if ($bright <= 90) {
+    	$bright = 90;
+  	} else if ($bright <= 100) {
+    	$bright = 100;
+  	} else {
+		$bright = 100;
+  	}
+	return $bright;
+}
+
 function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww)
 {
   $trans = $tra;
@@ -371,15 +463,14 @@ if (isset($_POST["zone_device"])) {
 else {
   $_zone_device = "";
 }
-if (isset($_POST["update_zone"])) {
-  $_update_zone = $_POST["update_zone"];
-}
+if (!isset($_POST["update_zone"])) {
+  	$_update_zone = 0; }
 else {
   $_update_zone = 1;
 }
 
 // Atomik Setting SQL
-$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_brightness, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
+$sql = "SELECT atomik_devices.device_name, atomik_devices.device_id, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_status, atomik_devices.device_type,  atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_devices.device_transmission FROM atomik_devices, atomik_device_types WHERE atomik_devices.device_type = atomik_device_types.device_type_id && device_id NOT IN (SELECT zone_device_device_id FROM atomik_zone_devices);";
 $rs = $conn->query($sql);
 if ($rs === false) {
   trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
@@ -392,17 +483,31 @@ $rs->data_seek(0);
 
 // Add Device to Zone (add_device)
 if ($command <> "" && $command != "" && $command == "add_device") {
-  $erro = array();
+	$sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id = ".$_zone_id.";";
+	$zrs = $conn->query($sql);
+	if ($zrs === false) {
+  		trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+	}
+
+	$zrs->data_seek(0);
+	$zrow = $zrs->fetch_assoc();
+	
   $sql = "INSERT INTO atomik_zone_devices (zone_device_zone_id, zone_device_device_id, zone_device_last_update) VALUES (" . trim($_zone_id) . "," . trim($_zone_device) . ",CONVERT_TZ(NOW(), '" . $timezone . "', 'UTC') );";
   if ($conn->query($sql) === TRUE) {
     if ($_update_zone > 0) {
-      //	Run Command To Update Device
-      //  $updatecmd = shell_exec("echo 'hello world' > /dev/null &");
-    }
-    $page_success = 1;
-    $success_text = "Zone Device Added To Zone DB!";
-    echo "<br />";
-    echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+		$row = $rs->fetch_assoc();
+		$tra = transmit($zrow['zone_brightness'], $row['device_brightness'], $zrow['zone_status'], $row['device_status'], $zrow['zone_rgb256'], $row['device_rgb256'], $zrow['zone_white_temprature'], $row['device_white_temprature'], $zrow['zone_colormode'], $row['device_colormode'], $row['device_address1'], $row['device_address2'], $row['device_transmission'], $rgb, $cw, $ww);
+		
+		$sql = "UPDATE atomik_devices SET device_status = ".trim($zrow['zone_status']).", device_colormode = ".trim($zrow['zone_colormode']).", device_brightness = ".
+		trim($zrow['zone_brightness']).", device_rgb256 = ".trim($zrow['zone_rgb256']).", device_white_temprature = ".trim($zrow['zone_white_temprature']).", device_transmission=".trim($tra)." WHERE device_id=".$_zone_device.";";
+		if ($conn->query($sql) === TRUE) {
+			$page_success = 1;
+    		$success_text = "Zone Device Added To Zone DB!";
+    		echo "<br />";
+    		echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
+  		}
+	}	
+    
   }
   else {
     $page_error = 1;
