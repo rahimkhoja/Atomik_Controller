@@ -24,6 +24,7 @@ function deleteCRON( $task_id ) {
 	//get contents of cron tab without reference to deleted cron
 	$content = shell_exec($com);
 	
+	echo "Deleteing Crons!";
 	// Get Rid Of New Lines
 	$content = str_replace("\n\n\n","\n",$content);
 	
