@@ -21,7 +21,7 @@ function deleteCRON( $task_id ) {
 	//Find string
 	if (strstr($output, $cronjob)) {
 		$wordlist = "# Atomik: ".$task_id;
-		$newcron = preg_replace("/($wordlist)/ie", "", $output);
+		$newcron = preg_replace("/^.*".$wordlist.".*$/", "", $output);
 
 		echo 'Deleting CRON';
 		
