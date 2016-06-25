@@ -1220,29 +1220,24 @@ if ($command <> "" && $command !="" && $command == "delete_zone")
 								$error_text = "Error Removing MiLight Remotes From Zone DB!";
 							}  else {
 								
-								
 								$sql = "SELECT atomik_tasks.task_id FROM atomik_tasks WHERE atomik_tasks.task_zone_id=".trim($_zone_id).";";
-	
-	$ztrs=$conn->query($sql);
+								echo $sql;
+								$ztrs=$conn->query($sql);
  
-	if($ztrs === false) {
-  	trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
-	} else {
+								if($ztrs === false) {
+  									trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->error, E_USER_ERROR);
+								} else {
 
-		$ztrs->data_seek(0);
-		$ztrs_row = $ztrs->fetch_assoc();
+									$ztrs->data_seek(0);
+									$ztrs_row = $ztrs->fetch_assoc();
 	
-	 while($ztrs_row = $ztrs->fetch_assoc()){
-								deleteCRON ($ztrs_row['task_id']);
-	 }
-								
-								
-								
-								
-		  						$page_success = 1;
-								$success_text = "Zone Deleted!";
-								header('Location: zones.php');	
-	}
+									 while($ztrs_row = $ztrs->fetch_assoc()){
+										deleteCRON ($ztrs_row['task_id']);
+	 								}
+									$page_success = 1;
+									$success_text = "Zone Deleted!";
+									header('Location: zones.php');	
+								}
 							}
 						}
 					}
