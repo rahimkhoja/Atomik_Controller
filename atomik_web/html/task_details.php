@@ -653,7 +653,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 		array_push($erro, "Please Save General Task Details Before Saving Task Schedule");	
 		
 	} else {
-		if ( $_task_zone == $row['task_zone_id'] && $_task_status == $row['task_status'] && $_task_colormode == $row['task_color_mode'] && $_task_brightness == $row['task_brightness'] && $_task_rgb256 == $row['task_rgb256'] && $_task_white_temprature == $row['task_white_temprature']) {
+		if ( !( $_task_zone == $row['task_zone_id'] && $_task_status == $row['task_status'] && $_task_colormode == $row['task_color_mode'] && $_task_brightness == $row['task_brightness'] && $_task_rgb256 == $row['task_rgb256'] && $_task_white_temprature == $row['task_white_temprature']) ) {
 			array_push($erro, "Please Save Changes To Task Properties Before Saving Task Schedule");	
 		} else {
 			if ( serialize($_task_minute) == $row['task_minute'] && serialize($_task_hour) == $row['task_hour'] && serialize($_task_day) == $row['task_day'] && serialize($_task_weekday) == $row['task_weekday'] && serialize($_task_year) == $row['task_year'] && serialize($_task_month) == $row['task_month'] ) {
