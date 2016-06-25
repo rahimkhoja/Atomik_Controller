@@ -15,13 +15,14 @@
 <script src="js/jquery-1.12.3.min.js"></script>
 <script src="js/jquery.redirect.min.js"></script>
 <?php 
-function deleteCRON( $jobcron) {
+function deleteCRON( $task_id ) {
 	//get contents of cron tab
 	$output = shell_exec('crontab -l');
 	//Find string
-	$cronjob = ($jobcron);
 	if (strstr($output, $cronjob)) {
-		
+		$wordlist = "# Atomik: ".$task_id;
+		$newcron = preg_replace("/($wordlist)/ie", "", $output);
+
 		echo 'Deleting CRON';
 		
 		//Copy cron tab and remove string
@@ -611,7 +612,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 				} else {
 					$cronwt = $row['task_white_temprature'];	
 				}
-				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".trim($row['task_zone_id'])." ".trim($row['task_status'])." ".trim($row['task_color_mode'])." ".trim($row['task_brightness'])." ".trim($row['task_rgb256'])." ".trim($cronwt);
+				$jobcroncommand = "\tsudo /usr/bin/php /usr/atomik/updateatomikzone.php ".trim($row['task_zone_id'])." ".trim($row['task_status'])." ".trim($row['task_color_mode'])." ".trim($row['task_brightness'])." ".trim($row['task_rgb256'])." ".trim($cronwt)." # Atomik: ".$_task_id;
 				
 			if ( sizeof(unserialize($row['task_cron_weekday'])) > 0 ) {
 				$jobcron = implode(",", unserialize($row['task_cron_minute']))." ".implode(",", unserialize($row['task_cron_hour']))." * ".implode(",", unserialize($row['task_cron_month']))." ".implode(",", unserialize($row['task_cron_weekday']));
@@ -623,7 +624,7 @@ if ($command <> "" && $command !="" && $command == "save_properties")
 				$jobcron = $jobcron.$jobcroncommand;
 			}
 			echo "DeleteCron: ".$jobcron;
-			deleteCRON($jobcron);
+			deleteCRON($_task_id);
 		$sql = "UPDATE atomik_tasks SET task_zone_id=".$_task_zone.", task_status=".$_task_status.", task_color_mode=".$_task_colormode.", task_brightness=".$_task_brightness.", task_rgb256=".$_task_rgb256.", task_white_temprature=".$_task_white_temprature."  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
     		$page_success = 1;
@@ -735,7 +736,7 @@ if ($command <> "" && $command !="" && $command == "save_schedule")
 				$jobcron = $jobcron.$jobcroncommand;
 			}
 			echo "DeleteCron: ".$jobcron;
-			deleteCRON($jobcron);
+			deleteCRON($_task_id);
 		
 		$sql = "UPDATE atomik_tasks SET task_cron_minute='".serialize($_task_minute)."', task_cron_hour='".serialize($_task_hour)."', task_cron_month='".serialize($_task_month)."', task_cron_day='".serialize($_task_day)."', task_cron_weekday='".serialize($_task_weekday)."'  WHERE task_id=".$_task_id.";";
 		if ($conn->query($sql) === TRUE) {
@@ -790,7 +791,7 @@ if ($command <> "" && $command !="" && $command == "delete_task")
 				$jobcron = $jobcron.$jobcroncommand;
 			}
 			echo "DeleteCron: ".$jobcron;
-			deleteCRON($jobcron);
+			deleteCRON($_task_id);
 			$page_success = 1;
 			$success_text = "Task Deleted!";
 			header('Location: tasks.php');		
