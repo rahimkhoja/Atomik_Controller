@@ -24,7 +24,6 @@ function deleteCRON( $task_id ) {
 	//get contents of cron tab without reference to deleted cron
 	$content = shell_exec($com);
 	
-	echo "Deleteing Crons!";
 	// Get Rid Of New Lines
 	$content = str_replace("\n\n\n","\n",$content);
 	
@@ -111,7 +110,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0B";
       }
 
-      echo $sendcom;
       exec($sendcom . ' > /dev/null &');
     } // End Status Change
     
@@ -130,7 +128,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
         }
 
-        echo $sendcom;
         exec($sendcom . ' > /dev/null &');
 
 	  }
@@ -233,7 +230,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
               $trans = IncrementTransmissionNum($trans);
 
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
-              echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
             else {
@@ -242,7 +238,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
                 $trans = IncrementTransmissionNum($trans);
 
                 $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0C";
-                echo $sendcom;
                 exec($sendcom . ' > /dev/null &');
               }
             }
@@ -253,7 +248,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
               $trans = IncrementTransmissionNum($trans);
 
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 04";
-              echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
           }
@@ -270,7 +264,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             for ($x = 0; $x <= $move; $x++) {
               $trans = IncrementTransmissionNum($trans);
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
-              echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
           }
@@ -279,7 +272,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             for ($x = 0; $x <= $move; $x++) {
               $trans = IncrementTransmissionNum($trans);
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
-              echo $sendcom;
               exec($sendcom . ' > /dev/null &');
             }
           }
@@ -303,8 +295,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         else {
           $sendcom = $sendcommandbase . " -k 04 -v " . dechex($trans);
         }
-
-        echo $sendcom;
         exec($sendcom . ' > /dev/null &');
       }
 
@@ -320,7 +310,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
           $trans = IncrementTransmissionNum($trans);
 
-          echo 'current CM: ' . $new_cm . '\n';
           if ($new_cm == 1) {
             $sendcom = $sendcommandbase . " -k 13 -v " . dechex($trans) . " -c " . dechex($old_c);
           }
@@ -328,8 +317,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             $sendcom = $sendcommandbase . " -k 03 -v " . dechex($trans) . " -c " . dechex($old_c);
 			$old_b = 0;
           }
-
-          echo $sendcom;
           exec($sendcom . ' > /dev/null &');
         }
 
@@ -347,11 +334,9 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
             $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
             exec($initcom . ' > /dev/null &');
-            echo $initcom;
             $trans = IncrementTransmissionNum($trans);
 
             $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 0f -v " . dechex($trans);
-            echo $sendcom;
             exec($sendcom . ' > /dev/null &');
           }
 
@@ -470,8 +455,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           if ($new_b == 100) { // 26
             $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(185) . " -k 0e -v " . dechex($trans);
           }
-
-          echo $sendcom;
           exec($sendcom . ' > /dev/null &');
         }
 
