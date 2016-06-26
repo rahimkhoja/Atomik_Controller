@@ -490,17 +490,18 @@ if (mysqli_connect_errno())
 
 if ($argc != 7 ) {
         echo "Command Requires 6 Integer arguments\n";
-        echo $argv[0].' Zone_id Zone_Status Zone_Brightness Zone_ColorMode Zone_Color Zone_WhiteTemp'."\n";
+        echo $argv[0].' Zone_id Zone_Status Zone_ColorMode Zone_Brightness Zone_Color Zone_WhiteTemp'."\n";
  exit;
     } else {
         $zone = $argv[1];
-        $b_new = $argv[3];
+        $b_new = $argv[4];
         $c_new = $argv[5];
         $s_new = $argv[2];
         $wt_new = $argv[6];
-        $cm_new = $argv[4];
+        $cm_new = $argv[3];
         echo "Updating Zone ".$zone." To: ";
 	echo "Status: ".$s_new." - Brightness: ".$b_new."% - Color Mode: ".$cm_new." - Color: ".$c_new." - White Temp: ".$wt_new;        
+e.php 22 1 1 100 0 2700 # Atomik: 13-
 
  updateZone($con, $zone, colorBright($b_new),  $s_new,  $c_new,  $wt_new,  $cm_new, $timezone);
     }
