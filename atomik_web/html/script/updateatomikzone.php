@@ -1,4 +1,4 @@
-<?php
+
 if (PHP_SAPI != "cli") {
     exit;
 }
@@ -524,4 +524,3 @@ if ($argc != 7 ) {
 	updateZone($conn, $zone, $b_new,  $s_new,  $c_new,  $wt_new,  $cm_new, $timezone);
 }
 
-?>
