@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 	function IncrementTransmissionNum($number){
         $trans = $number + 1;
