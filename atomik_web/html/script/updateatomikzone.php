@@ -393,8 +393,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
     return $trans;
 }
 
-
-
 function updateZone($db, $zon, $new_b,  $new_s,  $new_c,  $new_wt,  $new_cm, $tz) {
 
 	$success = TRUE;
@@ -464,8 +462,6 @@ atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type
 			$success = FALSE;
 		}
 
-
-
 		$sql = "UPDATE atomik_zones SET zone_status = ".trim($new_s).", zone_colormode = ".trim($new_cm).", zone_brightness = ".
 		trim($new_b).", zone_rgb256 = ".trim($new_c).", zone_white_temprature = ".trim($new_wt).",zone_last_update = CONVERT_TZ(NOW(), '".$tz."', 'UTC') WHERE zone_id=".$zon.";";
 		if ($db->query($sql) === TRUE) {
@@ -477,7 +473,6 @@ atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type
 	$uzrs->free();
 	return $success;
 }
-
 
 $DBServer = '127.0.0.1'; // e.g 'localhost' or '192.168.1.100'
 $DBUser   = 'root';  // change this as some point
@@ -518,9 +513,8 @@ if ($argc != 7 ) {
 	$s_new = $argv[2];
 	$wt_new = $argv[6];
 	$cm_new = $argv[4]; 
+	echo "running update";
 	
-	
-	updateZone($conn, $zone, $b_new,  $s_new,  $c_new,  $wt_new,  $cm_new, $timezone);
+	// updateZone($conn, $zone, $b_new,  $s_new,  $c_new,  $wt_new,  $cm_new, $timezone);
 }
-
 ?>
