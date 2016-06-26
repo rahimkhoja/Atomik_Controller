@@ -533,6 +533,10 @@ atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type
 			$dev_id = $rowuzrs['device_id']; 
 			
 			// Transmit New Commands to each Device in Zone
+			if ( $cw == 1 & $ww == 1 ) {
+				$new_b = whiteBright($new_b);	
+			}
+			
 			$tra = transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_wt, $new_cm, $old_cm, $add1, $add2, $tra, $rgb, $cw, $ww);
 			
 			// Update Devices with new Properties 
@@ -906,7 +910,7 @@ function colorBright ( $bri ) {
 	return $bright;
 }
 
-function whiteBrightness( $bri ) {
+function whiteBright( $bri ) {
 	$bright = $bri;
 	if ($bright <= 9) {
 	    $bright = 9;
