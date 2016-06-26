@@ -1,20 +1,5 @@
 #!/usr/bin/php
 <?php
-if (PHP_SAPI != "cli") {
-    exit;
-}
-
-$DBServer = '127.0.0.1'; // e.g 'localhost' or '192.168.1.100'
-$DBUser   = 'root';  // change this as some point
-$DBPass   = 'raspberry';
-$DBName   = 'atomik_controller';
-
-$conn = new mysqli($DBServer, $DBUser, $DBPass, $DBName);
- 
-// check connection
-if ($conn->connect_error) {
-  trigger_error('Database connection failed: '  . $conn->connect_error, E_USER_ERROR);
-}
 
 function IncrementTransmissionNum($number)
 {
@@ -491,6 +476,19 @@ atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type
 	}
 	$uzrs->free();
 	return $success;
+}
+
+
+$DBServer = '127.0.0.1'; // e.g 'localhost' or '192.168.1.100'
+$DBUser   = 'root';  // change this as some point
+$DBPass   = 'raspberry';
+$DBName   = 'atomik_controller';
+
+$conn = new mysqli($DBServer, $DBUser, $DBPass, $DBName);
+ 
+// check connection
+if ($conn->connect_error) {
+  trigger_error('Database connection failed: '  . $conn->connect_error, E_USER_ERROR);
 }
 
 // Timezone
