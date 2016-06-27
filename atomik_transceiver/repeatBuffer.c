@@ -29,7 +29,7 @@ private:
 };
 
 repeatBuffer::repeatBuffer() {
-  std::cout << "Repeat Buffer Initiated" << endl;
+  std::cout << "Repeat Buffer Initiated" << std::endl;
 };
 
 bool repeatBuffer::compare_trans( const transmissionData & e1, const transmissionData & e2) {
@@ -54,7 +54,7 @@ void repeatBuffer::removeOldTransmissions() {
 
 
 void repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt, int command);
-  std::cout << "Adding Tramsission to Buffer!" << endl;
+  std::cout << "Adding Tramsission to Buffer!" << std::endl;
   bool returnVal = false;
   transmissionData newTrans;
   newTrans.add1 = add1;
