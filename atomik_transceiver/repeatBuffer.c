@@ -4,12 +4,12 @@
 #include <chrono>
 
 struct transmissionData {
-  std::int add1;
-  std::int add2;  
-  std::int command;
-  std::int color;
-  std::int bright;
-  std::int whitetemp;
+  int add1;
+  int add2;  
+  int command;
+  int color;
+  int bright;
+  int whitetemp;
 };
 
 struct transmission {
@@ -54,7 +54,7 @@ void repeatBuffer::removeOldTransmissions() {
 
 void repeatBuffer::addTransmission(std::int add1, std::int add2, std::int col, std::int bri, std::int wt, std::int command);
   std::cout << "Adding Tramsission to Buffer!" << endl;
-  std::bool returnVal = false;
+  bool returnVal = false;
   transmissionData newTrans;
   newTrans.add1 = add1;
   newTrans.add2 = add2;
