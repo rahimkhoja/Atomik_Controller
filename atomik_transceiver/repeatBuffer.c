@@ -4,19 +4,19 @@
 #include <chrono>
 #include <algorithm>
 
-struct {
+struct transmissionData {
   int add1;
   int add2;  
   int command;
   int color;
   int bright;
   int whitetemp;
-} transmissionData;
+};
 
-struct {
+struct transmission{
   struct transmissionData data;
   std::chrono::high_resolution_clock timestamp;
-} transmission;
+};
 
 class repeatBuffer {
 public:
@@ -39,12 +39,11 @@ bool repeatBuffer::compare_trans( const transmissionData & e1, const transmissio
 };
 
 void repeatBuffer::removeOldTransmissions() {
-
-    std::chrono::high_resolution_clock currentTime;
     
-    currentTime = std::chrono::high_resolution_clock::now();
+    auto currentTime = now.time_since_epoch();
+
     for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
-        auto elapsedTime = elapsed - timestamp;
+        auto elapsedTime = currentTime - it.timestamp;
         long  elapsedTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
         if ( elapsedTimeMicroSeconds > 350000 ) {
             trans.erase(it);
