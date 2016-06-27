@@ -20,7 +20,7 @@ struct transmission {
 class repeatBuffer {
 public:
   repeatBuffer();
-  std::bool addTransmission(std::int add1, std::int add2, std::int col, std::int bri, std::int wt, std::int command);
+  bool addTransmission(std::int add1, std::int add2, std::int col, std::int bri, std::int wt, std::int command);
 private:
   void removeOldTransmissions();
   bool compare_trans( const transmissionData & e1, const transmissionData & e2);
