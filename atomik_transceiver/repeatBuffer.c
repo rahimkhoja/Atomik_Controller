@@ -4,19 +4,19 @@
 #include <chrono>
 #include <algorithm>
 
-struct transmissionData {
+struct {
   int add1;
   int add2;  
   int command;
   int color;
   int bright;
   int whitetemp;
-};
+} transmissionData;
 
-struct transmission {
+struct {
   struct transmissionData data;
   std::chrono::high_resolution_clock timestamp;
-};
+} transmission;
 
 class repeatBuffer {
 public:
