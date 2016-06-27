@@ -83,6 +83,129 @@ function updateCurrentChannel(channel, remote_id ) {
 }
 
 
+function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
+
+  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_MAC, command_received_IP) VALUES ("Emulator", '+cha+', "'+date+'", "'+rec_data+'", '+sta+', '+cm+', '+col+', '+wt+', '+bri+', 0, "'+mac+'", "'+ip+'")'; 
+ 
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
+  });
+} 
+
+function updateDevice (status, colormode, brightness, color, whitetemp, transmission, device_id) {
+  console.log('Running -- updateDevice');
+  
+  var sql = "UPDATE atomik_devices SET device_status = "+status+", device_colormode = "+colormode+", device_brightness = "+brightness+", device_rgb256 = "+color+", device_white_temprature = "+whitetemp+", device_transmission = "+transmission+" WHERE device_id="+device_id+";";
+  
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
+  });
+} 
+
+
+function lastUpdate_ZoneDevice(zone_id) {
+  console.log('Running -- lastUpdate_ZoneDevice');
+  
+  var tz = system_timezone();
+  
+  var sql = "UPDATE atomik_zone_devices SET zone_device_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_device_zone_id="+zone_id+";"; 
+  pool.getConnection(function(err,connection){
+   if (err) {
+     connection.release();
+     console.log('{"code" : 100, "status" : "Error in connection database"}');
+     return;
+   }   
+
+   console.log('connected as id ' + connection.threadId);
+   console.log('SQL inside: ' + sql);
+   connection.query(sql,function(err,rows){
+     connection.release();
+     if (!err) {
+       console.log('Zone Device- Last Update Set');
+     } else {
+       console.log('Error while performing Query.');
+     } 
+    });
+
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
+  });
+} 
+
+
+function lastUpdate_Zone(zone_id) {
+  console.log('Running -- lastUpdate_Zone');
+  
+  var tz = system_timezone();
+  
+  var sql = "UPDATE atomik_zones SET zone_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_id="+zone_id+";"; 
+  
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
+  });
+} 
 
 
 
@@ -91,16 +214,30 @@ function log_tra_no_execute(channel, date, rec_data, status, colormode, color, w
 
   var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES ("Radio", '+channel+', "'+date+'", "'+rec_data+'", '+status+', '+colormode+', '+color+', '+whitetemp+', '+bright+', 0, "'+add1+'", "'+add2+'")';
 
-  console.log(sql);
-  connection.query(sql, function(err, rows, fields) {
-    if (!err) {
-      console.log('The solution is: ', rows);
-      log2system(sql);
-    } else {
-      console.log('Error while performing Query.');
-    }
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
   });
-}
+} 
 
 
 function log_tra_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
@@ -301,17 +438,7 @@ function validRFAddressCheck( add1, add2, callback ) {
       });
 	});
 }
-function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
 
-  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_MAC, command_received_IP) VALUES ("Emulator", '+cha+', "'+date+'", "'+rec_data+'", '+sta+', '+cm+', '+col+', '+wt+', '+bri+', 0, "'+mac+'", "'+ip+'")'; 
-  console.log(sql);
-  connection.query(sql, function(err, rows, fields) {
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query.');
-  });
-} 
 
 app.use(bodyParser.json());
 
@@ -495,58 +622,6 @@ function updateZone(req, zoneID) {
     });
   })(req);
 }
-
-function updateDevice (status, colormode, brightness, color, whitetemp, transmission, device_id) {
-  console.log('Running -- updateDevice');
-  
-  var sql = "UPDATE atomik_devices SET device_status = "+status+", device_colormode = "+colormode+", device_brightness = "+brightness+", device_rgb256 = "+color+", device_white_temprature = "+whitetemp+", device_transmission = "+transmission+" WHERE device_id="+device_id+";";
-  
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Device- Update Details');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
-}
-
-
-function lastUpdate_ZoneDevice(zone_id) {
-  console.log('Running -- lastUpdate_ZoneDevice');
-  
-  var tz = system_timezone();
-  
-  var sql = "UPDATE atomik_zone_devices SET zone_device_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_device_zone_id="+zone_id+";"; 
-  
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Zone Device- Last Update Set');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
-}
-
-
-function lastUpdate_Zone(zone_id) {
-  console.log('Running -- lastUpdate_Zone');
-  
-  var tz = system_timezone();
-  
-  var sql = "UPDATE atomik_zones SET zone_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_id="+zone_id+";"; 
-  
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Zone - Last Update Set');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
-}
-
 
 function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_cm, old_cm, add1, add2, tra, rgb, cw, ww) {
    console.log('Running -- Transmit');
