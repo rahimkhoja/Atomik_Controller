@@ -77,7 +77,7 @@ function updateCurrentChannel(channel, remote_id ) {
         }   
 
         console.log('connected as id ' + connection.threadId);
-
+      console.log('SQL inside: ' + sql);
         connection.query(sql,function(err,rows){
             connection.release();
             if (!err) {
@@ -91,7 +91,7 @@ function updateCurrentChannel(channel, remote_id ) {
               console.log('{"code" : 100, "status" : "Error in connection database"}');
               return;     
         });
-  })(sql);
+  });
 }
 
 
