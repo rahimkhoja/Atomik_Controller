@@ -44,7 +44,7 @@ void repeatBuffer::removeOldTransmissions() {
     auto currentTime = std::chrono::system_clock::now().time_since_epoch();
 
     for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
-        auto elapsedTime = currentTime - it.timestamp;
+        auto elapsedTime = currentTime - (it*).timestamp;
         long  elapsedTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
         if ( elapsedTimeMicroSeconds > 350000 ) {
             trans.erase(it);
