@@ -4,7 +4,14 @@
 #include <chrono>
 #include <algorithm>
 
-struct transmissionData {
+
+
+class repeatBuffer {
+public:
+  repeatBuffer();
+  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
+private:
+  struct transmissionData {
   int add1;
   int add2;  
   int command;
@@ -17,12 +24,6 @@ struct transmission{
   struct transmissionData data;
   std::chrono::high_resolution_clock timestamp;
 };
-
-class repeatBuffer {
-public:
-  repeatBuffer();
-  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
-private:
   void removeOldTransmissions();
   bool compare_trans( const transmissionData & e1, const transmissionData & e2);
   std::vector<transmission> trans;
