@@ -53,7 +53,7 @@ var app = express();
 
 var PORT = 4200;
 
-function updateCurrentChannel( channel, remote_id ) {
+function updateCurrentChannel2( channel, remote_id ) {
   console.log('Running -- updateCurrentChannel');
   var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
   console.log(sql);
@@ -66,7 +66,7 @@ function updateCurrentChannel( channel, remote_id ) {
   });
 } 
 
-function updateCurrentChannel2(channel, remote_id ) {
+function updateCurrentChannel(channel, remote_id ) {
   console.log('Running -- updateCurrentChannel');
      var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
     pool.getConnection(function(err,connection){
