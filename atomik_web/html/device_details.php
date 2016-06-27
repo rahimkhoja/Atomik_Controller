@@ -126,6 +126,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
       $trans = IncrementTransmissionNum($trans);
       if ($new_s == 1) {
         $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
+		$old_b = 9;
       }
       else {
         $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0B";
@@ -142,12 +143,13 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         echo 'current CM: ' . $new_cm . '\n';
 
         // Color Mode Change
-
+		$old_b = 9;
         if ($new_cm == 1) {
           $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
         }
         else {
           $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
+		  
         }
 
         exec($sendcom . ' > /dev/null &');
@@ -247,10 +249,11 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
     if ($new_s != $old_s) {
 
       // Status Changed
-
       $trans = IncrementTransmissionNum($trans);
       if ($new_s == 1) {
         $sendcom = $sendcommandbase . " -k 03 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
+		$old_cm = -1;
+		  $old_b = 0;
       }
       else {
         $sendcom = $sendcommandbase . " -k 04 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
