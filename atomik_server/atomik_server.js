@@ -53,18 +53,6 @@ var app = express();
 
 var PORT = 4200;
 
-function updateCurrentChannel2( channel, remote_id ) {
-  console.log('Running -- updateCurrentChannel');
-  var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Channel Updated');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
-} 
 
 function updateCurrentChannel(channel, remote_id ) {
   console.log('Running -- updateCurrentChannel');
@@ -229,7 +217,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
 	  sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
 	  updateChannel = true;
   	}
-	
+	console.log("Valid Address");
   	console.log(sql);
     
   	pool.getConnection(function(err,connection){
@@ -268,6 +256,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
       });
     });
   } else {
+  console.log("Invalid Address");
 	  invalidRF(fnreq);
   }
 }
@@ -298,12 +287,13 @@ function validRFAddressCheck( add1, add2 ) {
           }
         } 
       });
-
+      console.log("Valid(in pool func):"+valid);
       connection.on('error', function(err) {      
         console.log('{"code" : 100, "status" : "Error in connection database"}');
         return;     
       });
 	});
+    console.log("Valid(End of Func):"+valid);
 	return valid;
 }
 
