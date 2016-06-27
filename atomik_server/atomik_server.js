@@ -203,15 +203,16 @@ function invalidRF(req){
 
 function checkRFJSON ( address1, address2, channel, req ) {
   
+  var channel = channel;
   var addint1 = parseInt(address1, 16);
   var addint2 = parseInt(address2, 16);
   var sql = "";
   var updateChannel = false;
   var fnreq = req;
   
-  if ( validRFAddressCheck ( addint1, addint2, function(response){ return response; }) == true  ) {
-  
-  	if (typeof channel == 'undefined') {
+  validRFAddressCheck ( addint1, addint2, function(response){  
+    if (response == true) {
+      if (typeof channel == 'undefined') {
 	  sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
   	} else {
 	  sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
@@ -256,10 +257,14 @@ function checkRFJSON ( address1, address2, channel, req ) {
         return;     
       });
     });
-  } else {
-	  invalidRF(fnreq);
-  }
-}
+    } else {
+    
+    invalidRF(fnreq);
+    }
+  
+  });
+  
+ }
 
 function validRFAddressCheck( add1, add2, callback ) {
 
