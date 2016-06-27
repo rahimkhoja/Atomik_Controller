@@ -211,38 +211,41 @@ function checkRFJSON ( address1, address2, channel, req ) {
   var fnreq = req;
   
   validRFAddressCheck ( addint1, addint2, function(response){  
+    var updatechannel = false;
+    
     if (response == true) {
       if (typeof channel == 'undefined') {
-	  sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
-  	} else {
-	  sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
-	  updateChannel = true;
-  	}
+	    sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
+  	  } else {
+	    sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
+	    updateChannel = true;
+  	  }
 	
-  	console.log(sql);
+  	  console.log(sql);
     
-  	pool.getConnection(function(err,connection){
-	  if (err) {
-        connection.release();
-        console.log('{"code" : 100, "status" : "Error in connection database"}');
-        return;
-	  }
+  	  pool.getConnection(function(err,connection){
+	    if (err) {
+          connection.release();
+          console.log('{"code" : 100, "status" : "Error in connection database"}');
+          return;
+	    }
 
-      console.log('connected as id ' + connection.threadId);
-      connection.query(sql,function(err,rows){
+        console.log('connected as id ' + connection.threadId);
+        connection.query(sql,function(err,rows){
 			
-        console.log('SQL inside: ' + sql);
-        connection.release();
-        if (err) throw err;
+          console.log('SQL inside: ' + sql);
+          connection.release();
+          if (err) throw err;
    
-        if ( rows.length > 0) {
-          if ( rows ) {
-            console.log("Valid Command");
-            console.log("Row Zone_ID:" + rows[0].zone_id );
-            validRF(rows[0].zone_id, fnreq);
-          }
-        }  else {
+          if ( rows.length > 0) {
+            if ( rows ) {
+              console.log("Valid Command");
+              console.log("Row Zone_ID:" + rows[0].zone_id );
+              validRF(rows[0].zone_id, fnreq);
+            }
+         }  else {
           invalidRF(fnreq);
+          updateChannel = true;
           
         }
 	  
@@ -257,11 +260,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
         return;     
       });
     });
-    } else {
-    
-    invalidRF(fnreq);
-    }
-  
+    }   
   });
   
  }
