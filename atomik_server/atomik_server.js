@@ -209,7 +209,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
   var updateChannel = false;
   var fnreq = req;
   
-  if ( validRFAddressCheck ( addint1, addint2) == true  ) {
+  if ( validRFAddressCheck ( addint1, addint2, function(response){ return response; }) == true  ) {
   
   	if (typeof channel == 'undefined') {
 	  sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
@@ -217,7 +217,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
 	  sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
 	  updateChannel = true;
   	}
-	console.log("Valid Address");
+	
   	console.log(sql);
     
   	pool.getConnection(function(err,connection){
@@ -256,16 +256,14 @@ function checkRFJSON ( address1, address2, channel, req ) {
       });
     });
   } else {
-  console.log("Invalid Address");
 	  invalidRF(fnreq);
   }
 }
 
-function validRFAddressCheck( add1, add2 ) {
+function validRFAddressCheck( add1, add2, callback ) {
 
 	var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+add1+" && atomik_remotes.remote_address2="+add2+";"; 
     console.log(sql);
-	var valid = false;
 	
 	pool.getConnection(function(err,connection){
 	  if (err) {
@@ -283,20 +281,19 @@ function validRFAddressCheck( add1, add2 ) {
         if ( rows.length > 0) {
           if ( rows ) {
             console.log("Valid RF Remote");
-            valid = true;
+			callback(true);
           }
-        } 
+        } else {
+			callback(false);
+		}
       });
-      console.log("Valid(in pool func):"+valid);
+
       connection.on('error', function(err) {      
         console.log('{"code" : 100, "status" : "Error in connection database"}');
         return;     
       });
 	});
-    console.log("Valid(End of Func):"+valid);
-	return valid;
 }
-
 function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
 
   var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_MAC, command_received_IP) VALUES ("Emulator", '+cha+', "'+date+'", "'+rec_data+'", '+sta+', '+cm+', '+col+', '+wt+', '+bri+', 0, "'+mac+'", "'+ip+'")'; 
