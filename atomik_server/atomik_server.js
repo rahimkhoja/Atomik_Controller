@@ -14,6 +14,15 @@ var connection = mysql.createConnection({
   database: 'atomik_controller'
 });
 
+var pool      =    mysql.createPool({
+    connectionLimit : 20, //important
+    host     : 'localhost',
+    user     : 'root',
+    password : 'raspberry',
+    database : 'atomik_controller',
+    debug    :  false
+});
+
 connection.connect(function (err){
   if(!err) {
       console.log("Database is connected ... \n\n");  
@@ -56,6 +65,38 @@ function updateCurrentChannel( channel, remote_id ) {
     }
   });
 } 
+
+function updateCurrentChannel2(channel, remote_id ) {
+  console.log('Running -- updateCurrentChannel');
+     var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
+    pool.getConnection(function(err,connection){
+        if (err) {
+          connection.release();
+          console.log('{"code" : 100, "status" : "Error in connection database"}');
+          return;
+        }   
+
+        console.log('connected as id ' + connection.threadId);
+
+        connection.query(sql,function(err,rows){
+            connection.release();
+            if (!err) {
+     console.log('Channel Updated');
+   } else {
+     console.log('Error while performing Query.');
+    }         
+        });
+
+        connection.on('error', function(err) {      
+              console.log('{"code" : 100, "status" : "Error in connection database"}');
+              return;     
+        });
+  })(sql);
+}
+
+
+
+
 
 
 function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
