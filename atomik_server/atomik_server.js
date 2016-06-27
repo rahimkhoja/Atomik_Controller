@@ -217,63 +217,95 @@ function checkRFJSON ( address1, address2, channel, req ) {
   
   var addint1 = parseInt(address1, 16);
   var addint2 = parseInt(address2, 16);
+  var sql = "";
+  var updateChannel = false;
+  var fnreq = req;
   
-  if (typeof channel == 'undefined') {
-    (function(req) {
-    var sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
-    console.log(sql);
+  if ( validRFAddressCheck ( addint1, addint2) == true  ) {
+  
+  	if (typeof channel == 'undefined') {
+	  sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
+  	} else {
+	  sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
+	  updateChannel = true;
+  	}
+	
+  	console.log(sql);
     
-    connection.query(sql, function(err, rows ) {
-    if (err) throw err;
-   
-      if ( rows.length > 0) {
-        if ( rows ) {
-          console.log("Valid Command");
-          console.log("Row Zone_ID:" + rows[0].zone_id );
-          validRF(rows[0].zone_id, req);
-          
-        }
-      }  else {
-        invalidRF(req);
-      }
-    });
-    })(req);
-    
-  } else {
-    (function(req) {
-      var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
-      console.log(sql);
-    
-      connection.query(sql, function(err, rows ) {
+  	pool.getConnection(function(err,connection){
+	  if (err) {
+        connection.release();
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;
+	  }
+
+      console.log('connected as id ' + connection.threadId);
+      connection.query(sql,function(err,rows){
+			
+        console.log('SQL inside: ' + sql);
+        connection.release();
         if (err) throw err;
- 
+   
         if ( rows.length > 0) {
-          if (rows ) {
-            console.log("Valid Command and Updating Channel");
+          if ( rows ) {
+            console.log("Valid Command");
             console.log("Row Zone_ID:" + rows[0].zone_id );
-            validRF(rows[0].zone_id, req);
-            updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+            validRF(rows[0].zone_id, fnreq);
           }
         }  else {
-          // Check if valid remote addresses without valid channel, if so update channel for remote
-          var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+";"; 
-          console.log(sql);
-          connection.query(sql, function(err, rows ) {
-            if (err) throw err;
-        
-            if ( rows.length > 0) {
-              if (rows ) {
-                updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
-              }
-            }
-          });
-          invalidRF(req);
+          invalidRF(fnreq);
         }
+	  
+	    if (updateChannel == true) {
+		   console.log("Updating Channel");
+		   updateCurrentChannel(fnreq.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+	    }
+	  });
+
+      connection.on('error', function(err) {      
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;     
       });
-    })(req);
+    });
+  } else {
+	  invalidRF(fnreq);
   }
 }
 
+function validRFAddressCheck( add1, add2 ) {
+
+	var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+add1+" && atomik_remotes.remote_address2="+add2+";"; 
+    console.log(sql);
+	var valid = false;
+	
+	pool.getConnection(function(err,connection){
+	  if (err) {
+        connection.release();
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;
+      }   
+
+      console.log('connected as id ' + connection.threadId);
+      connection.query(sql,function(err,rows){
+			
+        connection.release();
+        if (err) throw err;
+   
+        if ( rows.length > 0) {
+          if ( rows ) {
+            console.log("Valid RF Remote");
+            valid = true;
+          }
+        } 
+      });
+
+      connection.on('error', function(err) {      
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;     
+      });
+	});
+	return valid;
+}
 
 function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
 
