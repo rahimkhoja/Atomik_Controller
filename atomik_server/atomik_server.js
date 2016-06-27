@@ -242,6 +242,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
           }
         }  else {
           invalidRF(fnreq);
+          
         }
 	  
 	    if (updateChannel == true) {
@@ -281,9 +282,11 @@ function validRFAddressCheck( add1, add2, callback ) {
         if ( rows.length > 0) {
           if ( rows ) {
             console.log("Valid RF Remote");
+            console.log("Callback: True\n");  
 			callback(true);
           }
         } else {
+        console.log("Callback: False\n");  
 			callback(false);
 		}
       });
