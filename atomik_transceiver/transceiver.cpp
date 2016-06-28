@@ -664,7 +664,7 @@ void receive()
                			{
                  			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                                std::printf(addTransmission(packet[0], packet[1], packet[2], packet[3], packet[4], packet[5]));
+                                std::printf(transBuffer.addTransmission(packet[0], packet[1], packet[2], packet[3], packet[4], packet[5]));
                     			JSONfilewrite(output);
                     			sendJSON(output);
                     			consoleWrite(output);
