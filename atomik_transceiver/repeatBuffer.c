@@ -38,7 +38,7 @@ bool repeatBuffer::compare_trans( const repeatBuffer::transmissionData & e1, con
   return false;
 };
 
-void repeatBuffer::removeOldTransmissions() {
+void repeatBuffer::repeatBuffer::removeOldTransmissions() {
     
     timeval tv;
     gettimeofday (&tv, NULL);
