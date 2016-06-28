@@ -644,11 +644,6 @@ function updateZone(req, zoneID) {
                     lastUpdate_Zone(zoneID);
                 }
             }
-
-            if (updateChannel == true) {
-                console.log("Updating Channel");
-                updateCurrentChannel(fnreq.body.Configuration.Channel, rows[0].zone_remote_remote_id);
-            }
         });
 
         connection.on('error', function(err) {
