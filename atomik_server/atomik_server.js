@@ -635,7 +635,7 @@ function updateZone(req, zoneID) {
         lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
         
       }
-      lastUpdate_Zone(results[i].zone_device_zone_id);
+      lastUpdate_Zone(zoneID);
     });
   })(req);
 }
