@@ -74,7 +74,7 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
    timeval tv;
     gettimeofday (&tv, NULL);
     newTra.timestamp = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
-    std::printf(newTra.timestamp);
+    std::cout << newTra.timestamp << std::endl;
   trans.push_back(newTra);
   return returnVal;
   
