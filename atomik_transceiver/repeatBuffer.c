@@ -56,7 +56,7 @@ void repeatBuffer::removeOldTransmissions() {
 bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
   std::cout << "Adding Tramsission to Buffer!" << std::endl;
   bool returnVal = false;
-  repeatBuffer::transmissionData newTrans;
+  transmissionData newTrans;
   newTrans.add1 = add1;
   newTrans.add2 = add2;
   newTrans.bright = bri;
