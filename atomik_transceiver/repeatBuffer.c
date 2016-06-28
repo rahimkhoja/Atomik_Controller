@@ -40,7 +40,7 @@ void removeOldTransmissions() {
     double currentTime = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
     
 
-   for (auto it = trans.begin(); it != trans.end(); )
+   for (auto it = trans.begin(); it != trans.end(); ) {
         double elapsedTime = currentTime - (*it).timestamp;
         std::cout << std::fixed << (*it).timestamp << std::endl;
         
@@ -71,7 +71,7 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   newTrans.prefix = pf;
   newTrans.command = command;
   removeOldTransmissions();
-  for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
+  for (auto it = trans.begin(); it != trans.end(); ) {
       if (compare_trans(newTrans, (*it).data)) {
           trans.erase(it);
           returnVal = true;
