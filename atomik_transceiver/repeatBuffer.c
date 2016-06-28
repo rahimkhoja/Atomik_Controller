@@ -44,9 +44,9 @@ void repeatBuffer::removeOldTransmissions() {
 
     for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
         double elapsedTime = currentTime - (*it).timestamp;
-        std::cout << (*it) << std:endl;
+        std::cout << (*it) << std::endl;
         if ( elapsedTime > 350000 ) {
-            std::cout << "deleted: " << (*it) << std:endl;
+            std::cout << "deleted: " << (*it) << std::endl;
             trans.erase(it);
         }
     }
