@@ -29,7 +29,7 @@ private:
 };
 
 
-bool repeatBuffer::compare_trans( const repeatBuffer::transmissionData & e1, const repeatBuffer::transmissionData & e2) {
+bool repeatBuffer::compare_trans( const transmissionData & e1, const transmissionData & e2) {
   if( e1.add1 == e2.add1 &&  e1.add2 == e2.add2 && e1.color == e2.color && e1.bright == e2.bright && e1.whitetemp == e2.whitetemp)
     return true;
   return false;
