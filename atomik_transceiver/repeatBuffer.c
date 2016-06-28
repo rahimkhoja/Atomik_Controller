@@ -82,13 +82,14 @@ public:
     auto it = trans.begin ();
     std::cout << "Check for matching transmission" << std::endl;
     while (it != trans.end ())
-      {
-	if (compare_trans (newTrans, (*it).data))
+    {
+	  if (compare_trans (newTrans, (*it).data))
 	  {
 	    returnVal = true;
-	    it++;
 	  }
-      }
+    
+      it++;
+    }
     std::cout << "check loop complete!" << std::endl;
     transmission newTra;
     newTra.data = newTrans;
