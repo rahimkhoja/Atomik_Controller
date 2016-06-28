@@ -41,7 +41,7 @@ bool repeatBuffer::compare_trans( const repeatBuffer::transmissionData & e1, con
 
 void repeatBuffer::removeOldTransmissions() {
     
-    auto currentTime = std::chrono::system_clock::now().time_since_epoch();
+    auto currentTime = std::chrono::system_clock::now();
 
     for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
         auto elapsedTime = currentTime - (*it).timestamp;
