@@ -11,7 +11,7 @@ struct transmissionData {
   int command;
   int color;
   int bright;
-  int whitetemp;
+  int prefix;
 };
 
 struct transmission{
@@ -28,7 +28,7 @@ private:
 
 
 bool compare_trans( const transmissionData & e1, const transmissionData & e2) {
-  if( e1.add1 == e2.add1 &&  e1.add2 == e2.add2 && e1.color == e2.color && e1.bright == e2.bright && e1.whitetemp == e2.whitetemp)
+  if( e1.add1 == e2.add1 &&  e1.add2 == e2.add2 && e1.color == e2.color && e1.bright == e2.bright && e1.prefix == e2.prefix)
     return true;
   return false;
 };
@@ -52,7 +52,7 @@ void removeOldTransmissions() {
 
 public:
   
-bool addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
+bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) {
   std::cout << "Adding Tramsission to Buffer!" << std::endl;
   bool returnVal = false;
   transmissionData newTrans;
@@ -60,7 +60,7 @@ bool addTransmission(int add1, int add2, int col, int bri, int wt, int command) 
   newTrans.add2 = add2;
   newTrans.bright = bri;
   newTrans.color = col;
-  newTrans.whitetemp = wt;
+  newTrans.prefix = pf;
   newTrans.command = command;
   for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
       if (compare_trans(newTrans, (*it).data)) {
@@ -74,6 +74,7 @@ bool addTransmission(int add1, int add2, int col, int bri, int wt, int command) 
    timeval tv;
     gettimeofday (&tv, NULL);
     newTra.timestamp = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
+    std::printf(newTra.timestamp);
   trans.push_back(newTra);
   return returnVal;
   
