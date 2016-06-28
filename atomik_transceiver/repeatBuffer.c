@@ -65,6 +65,7 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   newTrans.color = col;
   newTrans.prefix = pf;
   newTrans.command = command;
+  removeOldTransmissions();
   for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
       if (compare_trans(newTrans, (*it).data)) {
           trans.erase(it);
