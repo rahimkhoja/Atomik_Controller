@@ -20,13 +20,12 @@ struct transmission{
 };
 
 class repeatBuffer {
-public:
-  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
+
 private:
   void removeOldTransmissions();
   bool compare_trans( const transmissionData & e1, const transmissionData & e2);
   std::vector<transmission> trans;
-};
+
 
 
 bool repeatBuffer::compare_trans( const transmissionData & e1, const transmissionData & e2) {
@@ -52,7 +51,9 @@ void repeatBuffer::removeOldTransmissions() {
     }
 };
 
-
+public:
+  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
+  
 bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
   std::cout << "Adding Tramsission to Buffer!" << std::endl;
   bool returnVal = false;
@@ -78,4 +79,5 @@ bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt,
   trans.push_back(newTra);
   return returnVal;
   
+}
 }
