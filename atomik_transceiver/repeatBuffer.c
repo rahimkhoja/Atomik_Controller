@@ -74,8 +74,9 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
     if (compare_trans(newTrans, (*it).data)) {
       returnVal = true;
       trans.erase(it);
-    } 
-    it++;
+    } else {
+      it++;
+    }
   }
   std::cout << "check loop compete!" << std::endl;
   transmission newTra;
