@@ -65,7 +65,7 @@ bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt,
   newTrans.whitetemp = wt;
   newTrans.command = command;
   for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
-      if (compare_trans(newTrans, (*it).data){
+      if (compare_trans(newTrans, (*it).data)) {
           trans.erase(it);
           returnVal = true;
           break;
@@ -75,7 +75,7 @@ bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt,
   newTra.data = newTrans;
    timeval tv;
     gettimeofday (&tv, NULL);
-    double newTra.timestamp = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
+    newTra.timestamp = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
   trans.push_back(newTra);
   return returnVal;
   
