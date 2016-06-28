@@ -38,7 +38,7 @@ bool repeatBuffer::compare_trans( const repeatBuffer::transmissionData & e1, con
   return false;
 };
 
-void repeatBuffer::repeatBuffer::removeOldTransmissions() {
+void repeatBuffer::removeOldTransmissions() {
     
     timeval tv;
     gettimeofday (&tv, NULL);
@@ -54,7 +54,7 @@ void repeatBuffer::repeatBuffer::removeOldTransmissions() {
 };
 
 
-bool addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
+bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
   std::cout << "Adding Tramsission to Buffer!" << std::endl;
   bool returnVal = false;
   repeatBuffer::transmissionData newTrans;
