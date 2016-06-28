@@ -46,7 +46,7 @@ void removeOldTransmissions() {
         
         std::cout << std::fixed << currentTime << std::endl;
         std::cout << std::fixed << elapsedTime << std::endl;
-        if ( elapsedTime > 350000 ) {
+        if ( elapsedTime > 0.350000 ) {
             std::cout << std::fixed << "deleted: " << (*it).timestamp << std::endl;
             trans.erase(it);
         }
