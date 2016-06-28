@@ -22,19 +22,18 @@ struct transmission{
 class repeatBuffer {
 
 private:
-  void removeOldTransmissions();
-  bool compare_trans( const transmissionData & e1, const transmissionData & e2);
+ 
   std::vector<transmission> trans;
 
 
 
-bool repeatBuffer::compare_trans( const transmissionData & e1, const transmissionData & e2) {
+bool compare_trans( const transmissionData & e1, const transmissionData & e2) {
   if( e1.add1 == e2.add1 &&  e1.add2 == e2.add2 && e1.color == e2.color && e1.bright == e2.bright && e1.whitetemp == e2.whitetemp)
     return true;
   return false;
 };
 
-void repeatBuffer::removeOldTransmissions() {
+void removeOldTransmissions() {
     
     timeval tv;
     gettimeofday (&tv, NULL);
@@ -52,9 +51,8 @@ void repeatBuffer::removeOldTransmissions() {
 };
 
 public:
-  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
   
-bool repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
+bool addTransmission(int add1, int add2, int col, int bri, int wt, int command) {
   std::cout << "Adding Tramsission to Buffer!" << std::endl;
   bool returnVal = false;
   transmissionData newTrans;
