@@ -73,8 +73,6 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   while (it != trans.end()) {
     if (compare_trans(newTrans, (*it).data)) {
       returnVal = true;
-      trans.erase(it);
-    } else {
       it++;
     }
   }
@@ -85,7 +83,9 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   gettimeofday (&tv, NULL);
   newTra.timestamp = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
   std::cout << newTra.timestamp << std::endl;
+  if ( returnVal = false ) {
   trans.push_back(newTra);
+  }
   return returnVal;
   
 };
