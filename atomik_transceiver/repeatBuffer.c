@@ -77,5 +77,5 @@ bool addTransmission(int add1, int add2, int col, int bri, int wt, int command) 
   trans.push_back(newTra);
   return returnVal;
   
-}
-}
+};
+};
