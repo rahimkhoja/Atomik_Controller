@@ -52,7 +52,7 @@ double elapsedTime = currentTime - (*it).timestamp;
       } else {
         it++;
       }
- 
+  std::cout << "Finished Delete Loop" << std::endl;  
     } 
         
         
@@ -71,11 +71,16 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   newTrans.prefix = pf;
   newTrans.command = command;
   removeOldTransmissions();
-  for (auto it = trans.begin(); it != trans.end(); ) {
+   auto it = trans.begin();
+   std::cout << "Check fro trans" << std::endl;
+    while (it != trans.end()) {
       if (compare_trans(newTrans, (*it).data)) {
           returnVal = true;
       } 
+      
+        it++;
   }
+  std::cout << "check loop compete!" << std::endl;
   transmission newTra;
   newTra.data = newTrans;
    timeval tv;
