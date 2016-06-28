@@ -27,7 +27,6 @@
 #include "PL1167_nRF24.h"
 #include "MiLightRadio.h"
 #include "../atomik_cypher/atomikCypher.h"
-#include "repeatBuffer.c"
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
