@@ -576,61 +576,88 @@ function increaseTrans(tra) {
 }
 
 function updateZone(req, zoneID) {
-  console.log('Running -- updatezone');
-  (function (req) {
-    var sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission, atomik_zone_devices.zone_device_zone_id FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+zoneID+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1;";	
-    console.log(sql);
-    
-    connection.query(sql, function(err, results ) {
-      if (err) throw err;
-   
-      for (var i=0; i < results.length; i++) { 
-     
-        if (typeof req.body.Configuration.Status == 'undefined') {
-          sta = results[i].device_status;
-        } else if ( req.body.Configuration.Status == "On" ) {
-          sta = 1;
-        } else if ( req.body.Configuration.Status == "Off" ) {
-          sta = 0;
-        } else {
-          sta = '"'+req.body.Configuration.Status+'"';
-        }
-                
-        if (typeof req.body.Configuration.ColorMode == 'undefined') {
-          cm = results[i].device_colormode;
-        } else if ( req.body.Configuration.ColorMode == "RGB256" ) {
-          cm = 0;
-        } else if ( req.body.Configuration.ColorMode == "White" ) {
-          cm = 1;
-        }
-    
-        if (typeof req.body.Configuration.Color == 'undefined') {
-          col = results[i].device_rgb256;
-        } else {
-          col = req.body.Configuration.Color;
+    console.log('Running -- updatezone');
+
+    var zoneID = zoneID;
+    var req = req;
+    var sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission, atomik_zone_devices.zone_device_zone_id FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id=" + zoneID + " && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1;";
+
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            connection.release();
+            console.log('{"code" : 100, "status" : "Error in connection database"}');
+            return;
         }
 
-        if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
-          wt = results[i].device_white_temprature;
-        } else {
-          wt = req.body.Configuration.WhiteTemp;
-        }
-  
-        if (typeof req.body.Configuration.Brightness == 'undefined') {
-          bri = results[i].device_brightness;
-        } else {
-              bri = req.body.Configuration.Brightness;
-        }
-         console.log('Transmit Address: '+results[i].device_address1+' ('+parseInt(results[i].device_address1, 16)+') '+results[i].device_address2+' ('+parseInt(results[i].device_address2, 16)+')');
-        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, results[i].device_address1, results[i].device_address2, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
-        
-        updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
-      }
-      lastUpdate_ZoneDevice(zoneID);
-      lastUpdate_Zone(zoneID);
+        console.log('connected as id ' + connection.threadId);
+        connection.query(sql, function(err, rows) {
+
+            console.log('SQL inside: ' + sql);
+            connection.release();
+            if (err) throw err;
+
+            if (rows.length > 0) {
+                if (rows) {
+                    for (var i = 0; i < results.length; i++) {
+
+                        if (typeof req.body.Configuration.Status == 'undefined') {
+                            sta = results[i].device_status;
+                        } else if (req.body.Configuration.Status == "On") {
+                            sta = 1;
+                        } else if (req.body.Configuration.Status == "Off") {
+                            sta = 0;
+                        } else {
+                            sta = '"' + req.body.Configuration.Status + '"';
+                        }
+
+                        if (typeof req.body.Configuration.ColorMode == 'undefined') {
+                            cm = results[i].device_colormode;
+                        } else if (req.body.Configuration.ColorMode == "RGB256") {
+                            cm = 0;
+                        } else if (req.body.Configuration.ColorMode == "White") {
+                            cm = 1;
+                        }
+
+                        if (typeof req.body.Configuration.Color == 'undefined') {
+                            col = results[i].device_rgb256;
+                        } else {
+                            col = req.body.Configuration.Color;
+                        }
+
+                        if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
+                            wt = results[i].device_white_temprature;
+                        } else {
+                            wt = req.body.Configuration.WhiteTemp;
+                        }
+
+                        if (typeof req.body.Configuration.Brightness == 'undefined') {
+                            bri = results[i].device_brightness;
+                        } else {
+                            bri = req.body.Configuration.Brightness;
+                        }
+                        console.log('Transmit Address: ' + results[i].device_address1 + ' (' + parseInt(results[i].device_address1, 16) + ') ' + results[i].device_address2 + ' (' + parseInt(results[i].device_address2, 16) + ')');
+                        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, results[i].device_address1, results[i].device_address2, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
+
+                        updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
+                    }
+                    lastUpdate_ZoneDevice(zoneID);
+                    lastUpdate_Zone(zoneID);
+                }
+            }
+
+            if (updateChannel == true) {
+                console.log("Updating Channel");
+                updateCurrentChannel(fnreq.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+            }
+        });
+
+        connection.on('error', function(err) {
+            console.log('{"code" : 100, "status" : "Error in connection database"}');
+            return;
+        });
     });
-  })(req);
 }
+
 
 function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_cm, old_cm, add1, add2, tra, rgb, cw, ww) {
    console.log('Running -- Transmit');
