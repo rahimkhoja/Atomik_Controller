@@ -70,7 +70,6 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
       if (compare_trans(newTrans, (*it).data)) {
           trans.erase(it);
           returnVal = true;
-          break;
       }
   }
   transmission newTra;
