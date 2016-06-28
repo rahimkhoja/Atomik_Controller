@@ -3,6 +3,7 @@
 #include <vector>
 #include <chrono>
 #include <algorithm>
+#include <sys/time.h>
 
 
 
@@ -22,6 +23,15 @@ private:
 
 struct transmission{
   struct transmissionData data;
+  double timestamp;
+  
+  
+
+
+
+  
+  
+  
   std::chrono::high_resolution_clock timestamp;
 };
   void removeOldTransmissions();
@@ -41,12 +51,14 @@ bool repeatBuffer::compare_trans( const repeatBuffer::transmissionData & e1, con
 
 void repeatBuffer::removeOldTransmissions() {
     
-    auto currentTime = std::chrono::high_resolution_clock::now();
+    timeval tv;
+    gettimeofday (&tv, NULL);
+    double currentTime = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
+    
 
     for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
-        auto elapsedTime = currentTime - (*it).timestamp;
-        long  elapsedTimeMicroSeconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsedTime).count();
-        if ( elapsedTimeMicroSeconds > 350000 ) {
+        double elapsedTime = currentTime - (*it).timestamp;
+        if ( elapsedTime > 350000 ) {
             trans.erase(it);
         }
     }
@@ -72,7 +84,9 @@ void repeatBuffer::addTransmission(int add1, int add2, int col, int bri, int wt,
   }
   transmission newTra;
   newTra.data = newTrans;
-  newTra.timestamp = std::chrono::high_resolution_clock::now();
+   timeval tv;
+    gettimeofday (&tv, NULL);
+    double newTra.timestamp = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
   trans.push_back(newTra);
   retrun returnVal;
   
