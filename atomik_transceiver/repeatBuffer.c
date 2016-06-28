@@ -75,7 +75,6 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   removeOldTransmissions();
   for (auto it = trans.begin(); it != trans.end(); ) {
       if (compare_trans(newTrans, (*it).data)) {
-          trans.erase(it++);
           returnVal = true;
       } 
   }
