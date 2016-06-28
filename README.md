@@ -1,9 +1,17 @@
 # Atomik Controller README #
 
-# Version 0.5a
+# Version 0.8 Alpha
 
-The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The Atomik controller will boast a Web GUI for system management, a radio transceiver for lightening and transmitting with a Nrf24l01+ 2.4 GHz radio, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, A backed server that manages all of the components while providing a REST like interface for custom remotes and devices. In the future the Atomik Controller will add blue tooth connectivity and devices, and other WiFi and TCP devices. 
+The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The Atomik controller will boast a Web GUI for system management, a radio transceiver for listening and transmitting with a Nrf24l01+ 2.4 GHz radio, Mi-Light RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, and a task scheduling system to control light zones. 
 
+Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
+
+* Maximum of 65,280 Uniquely Addressable Mi-Light RGB Devices ( But an unlimited amount of devices can be Sync to an address) 
+* Maximum of 65,280 Uniquely Addressable Mi-Light CCT Devices ( But an unlimited amount of devices can be Sync to an address) 
+* Unlimited Amount of Mi-Light Smartphone Remotes ( Assigned Based on MAC Address )
+* Maximum of 256 Mi-Light RGB RF Remotes
+* Unlimited amount of Zones
+* Zones can include ANY Mix of Devices and Remotes
 
 ### How do I get set up? ###
 
@@ -31,7 +39,8 @@ The Atomik Controller manages automated and smart lights. Initially The Atomik C
  * Nginx
  * PHP
  * LibCurl
- * MySQL ( but soon to be SQLite )
+ * MariaDB (MySQL Fork) - Cuz we all love Microseconds
+ * G++
 
 
  **Install Instructions:**
@@ -42,10 +51,7 @@ The Atomik Controller manages automated and smart lights. Initially The Atomik C
 
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install wget git libcurl4-openssl-dev g++ nginx php5-fpm
-sudo apt-get install mysql-server --fix-missing
 
-addgroup atomik
-adduser -g atomik -M atomik 
 
 sudo mkdir /var/log/atomik
 sudo chown atomik:atomik /var/log/atomik
