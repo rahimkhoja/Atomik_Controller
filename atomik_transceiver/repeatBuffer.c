@@ -5,8 +5,6 @@
 #include <algorithm>
 #include <sys/time.h>
 
-
-
 class repeatBuffer {
 public:
   repeatBuffer();
@@ -24,15 +22,6 @@ private:
 struct transmission{
   struct transmissionData data;
   double timestamp;
-  
-  
-
-
-
-  
-  
-  
-  std::chrono::high_resolution_clock timestamp;
 };
   void removeOldTransmissions();
   bool compare_trans( const transmissionData & e1, const transmissionData & e2);
