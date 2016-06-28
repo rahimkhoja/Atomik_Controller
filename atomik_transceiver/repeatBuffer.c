@@ -40,17 +40,22 @@ void removeOldTransmissions() {
     double currentTime = (tv.tv_sec) + 0.0000001 * tv.tv_usec;
     
 
-    for(std::vector<transmission>::iterator it = trans.begin(); it != trans.end(); ++it) {
+   for (auto it = trans.begin(); it != trans.end(); )
         double elapsedTime = currentTime - (*it).timestamp;
         std::cout << std::fixed << (*it).timestamp << std::endl;
         
         std::cout << std::fixed << currentTime << std::endl;
         std::cout << std::fixed << elapsedTime << std::endl;
-        if ( elapsedTime > 0.350000 ) {
-            std::cout << std::fixed << "deleted: " << (*it).timestamp << std::endl;
-            trans.erase(it++);
-        }
-    }
+        
+            
+           
+        
+        
+    if ( elapsedTime > 0.350000 ) { std::cout << std::fixed << "deleted: " << (*it).timestamp << std::endl;  ss.trans(it++); }
+    else         { ++it;           }
+}
+        
+        
 };
 
 public:
