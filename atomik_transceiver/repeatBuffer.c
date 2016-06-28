@@ -51,8 +51,10 @@ void removeOldTransmissions() {
            
         
         
-    if ( elapsedTime > 0.350000 ) { std::cout << std::fixed << "deleted: " << (*it).timestamp << std::endl;  trans.erase(it++); }
-    else         { ++it;           }
+    if ( elapsedTime > 0.350000 ) { 
+         std::cout << std::fixed << "deleted: " << (*it).timestamp << std::endl;  
+         trans.erase(it++); 
+    } 
 }
         
         
@@ -75,9 +77,7 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
       if (compare_trans(newTrans, (*it).data)) {
           trans.erase(it++);
           returnVal = true;
-      } else {
-        ++it;
-      }
+      } 
   }
   transmission newTra;
   newTra.data = newTrans;
