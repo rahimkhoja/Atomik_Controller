@@ -22,7 +22,7 @@
 #include <iterator>
 #include <curl/curl.h>
 
-#include <mysql++.h>
+#include <mysql.h>
 
 #include "repeatBuffer.c"
 #include <mutex>
