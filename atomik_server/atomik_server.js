@@ -598,10 +598,10 @@ function updateZone(req, zoneID) {
 
             if (rows.length > 0) {
                 if (rows) {
-                    for (var i = 0; i < results.length; i++) {
+                    for (var i = 0; i < rows.length; i++) {
 
                         if (typeof req.body.Configuration.Status == 'undefined') {
-                            sta = results[i].device_status;
+                            sta = rows[i].device_status;
                         } else if (req.body.Configuration.Status == "On") {
                             sta = 1;
                         } else if (req.body.Configuration.Status == "Off") {
@@ -611,7 +611,7 @@ function updateZone(req, zoneID) {
                         }
 
                         if (typeof req.body.Configuration.ColorMode == 'undefined') {
-                            cm = results[i].device_colormode;
+                            cm = rows[i].device_colormode;
                         } else if (req.body.Configuration.ColorMode == "RGB256") {
                             cm = 0;
                         } else if (req.body.Configuration.ColorMode == "White") {
@@ -619,26 +619,26 @@ function updateZone(req, zoneID) {
                         }
 
                         if (typeof req.body.Configuration.Color == 'undefined') {
-                            col = results[i].device_rgb256;
+                            col = rows[i].device_rgb256;
                         } else {
                             col = req.body.Configuration.Color;
                         }
 
                         if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
-                            wt = results[i].device_white_temprature;
+                            wt = rows[i].device_white_temprature;
                         } else {
                             wt = req.body.Configuration.WhiteTemp;
                         }
 
                         if (typeof req.body.Configuration.Brightness == 'undefined') {
-                            bri = results[i].device_brightness;
+                            bri = rows[i].device_brightness;
                         } else {
                             bri = req.body.Configuration.Brightness;
                         }
-                        console.log('Transmit Address: ' + results[i].device_address1 + ' (' + parseInt(results[i].device_address1, 16) + ') ' + results[i].device_address2 + ' (' + parseInt(results[i].device_address2, 16) + ')');
-                        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, results[i].device_address1, results[i].device_address2, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
+                        console.log('Transmit Address: ' + rows[i].device_address1 + ' (' + parseInt(rows[i].device_address1, 16) + ') ' + rows[i].device_address2 + ' (' + parseInt(rows[i].device_address2, 16) + ')');
+                        traNumber = transmit(bri, rows[i].device_brightness, sta, rows[i].device_status, col, rows[i].device_rgb256, wt, rows[i].device_white_temprature, cm, rows[i].device_colormode, rows[i].device_address1, rows[i].device_address2, rows[i].device_transmission, rows[i].device_type_rgb256, rows[i].device_type_cold_white, rows[i].device_type_warm_white);
 
-                        updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
+                        updateDevice(sta, cm, bri, col, wt, traNumber, rows[i].device_id);
                     }
                     lastUpdate_ZoneDevice(zoneID);
                     lastUpdate_Zone(zoneID);
