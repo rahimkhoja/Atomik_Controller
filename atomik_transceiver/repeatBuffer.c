@@ -50,7 +50,7 @@ private:
     while (it != trans.end ())
       {
 	double elapsedTime = currentTime - (*it).timestamp;
-	if (elapsedTime > 0.450000)
+	if (elapsedTime > 0.950000)
 	  {
 	    std::cout << std::fixed << "deleted: " << (*it).
 	      timestamp << std::endl;
