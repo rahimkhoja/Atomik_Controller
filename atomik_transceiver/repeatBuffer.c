@@ -42,10 +42,7 @@ void removeOldTransmissions() {
     auto it = trans.begin();
     while (it != trans.end()) {
       double elapsedTime = currentTime - (*it).timestamp;
-      std::cout << std::fixed << (*it).timestamp << std::endl;
-      std::cout << std::fixed << currentTime << std::endl;
-      std::cout << std::fixed << elapsedTime << std::endl;
-      if ( elapsedTime > 0.350000 ) { 
+      if ( elapsedTime > 0.450000 ) { 
         std::cout << std::fixed << "deleted: " << (*it).timestamp << std::endl;  
         trans.erase(it);
       } else {
@@ -69,14 +66,14 @@ bool addTransmission(int add1, int add2, int col, int bri, int pf, int command) 
   newTrans.command = command;
   removeOldTransmissions();
   auto it = trans.begin();
-  std::cout << "Check fro trans" << std::endl;
+  std::cout << "Check for matching transmission" << std::endl;
   while (it != trans.end()) {
     if (compare_trans(newTrans, (*it).data)) {
       returnVal = true;
       it++;
     }
   }
-  std::cout << "check loop compete!" << std::endl;
+  std::cout << "check loop complete!" << std::endl;
   transmission newTra;
   newTra.data = newTrans;
   timeval tv;
