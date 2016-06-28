@@ -244,17 +244,33 @@ function log_tra_execute(channel, date, rec_data, status, colormode, color, whit
 
   var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES ("Radio", '+channel+', "'+date+'", "'+rec_data+'", '+status+', '+colormode+', '+color+', '+whitetemp+', '+bright+', 1, "'+add1+'", "'+add2+'")';
 
-  console.log(sql);
 
-  connection.query(sql, function(err, rows, fields) {
-    if (!err) {
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
       console.log('The solution is: ', rows);
       log2system(sql);
     } else {
       console.log('Error while performing Query.');
     }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
   });
-}
+} 
+
 
 function validRF(zoneID, req){
   console.log('Valid Command!:');
@@ -617,8 +633,9 @@ function updateZone(req, zoneID) {
         
         updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
         lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
-        lastUpdate_Zone(results[i].zone_device_zone_id);
+        
       }
+      lastUpdate_Zone(results[i].zone_device_zone_id);
     });
   })(req);
 }
