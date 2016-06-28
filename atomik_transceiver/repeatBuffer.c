@@ -5,12 +5,7 @@
 #include <algorithm>
 #include <sys/time.h>
 
-class repeatBuffer {
-public:
-  repeatBuffer();
-  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
-private:
-  struct transmissionData {
+struct transmissionData {
   int add1;
   int add2;  
   int command;
@@ -23,14 +18,16 @@ struct transmission{
   struct transmissionData data;
   double timestamp;
 };
+
+class repeatBuffer {
+public:
+  bool addTransmission(int add1, int add2, int col, int bri, int wt, int command);
+private:
   void removeOldTransmissions();
   bool compare_trans( const transmissionData & e1, const transmissionData & e2);
   std::vector<transmission> trans;
 };
 
-repeatBuffer::repeatBuffer() {
-  std::cout << "Repeat Buffer Initiated" << std::endl;
-};
 
 bool repeatBuffer::compare_trans( const repeatBuffer::transmissionData & e1, const repeatBuffer::transmissionData & e2) {
   if( e1.add1 == e2.add1 &&  e1.add2 == e2.add2 && e1.color == e2.color && e1.bright == e2.bright && e1.whitetemp == e2.whitetemp)
