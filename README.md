@@ -3,9 +3,10 @@
 # Version 0.8 Alpha
 By Rahim Khoja
 
-     The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The goal is to create a drop in replacement for the Mi-Light wifi bridge, that breaks the zone and device limitations, while providing a more robust home lighting controller. The Atomik controller will boast a Web GUI for system management, a Nrf24l01+ 2.4 GHz transceiver for listening and transmitting, Mi-Light RF RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, an API for 3rd party integration, and a task scheduling system to control light zones. 
+The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The goal is to create a drop in replacement for the Mi-Light wifi bridge, that breaks the zone and device limitations, while providing a more robust home lighting controller. The Atomik controller will boast a Web GUI for system management, a Nrf24l01+ 2.4 GHz transceiver for listening and transmitting, Mi-Light RF RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, an API for 3rd party integration, and a task scheduling system to control light zones. 
 
-     Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
+Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
+
 
  **Features:**
 
@@ -22,7 +23,6 @@ By Rahim Khoja
  * Drop-in replacement for the Mi-Light WiFi Bridge 
 
 ### How do I get set up? ###
-
 
  **Required Hardware:**
 
@@ -53,7 +53,7 @@ By Rahim Khoja
  7. Login to the Atomik Controller with (Username: admin, Password: admin) 
  
 
- ###Atomik Controller Technical Details###
+### Atomik Controller Technical Details ###
 
  **Operating System:**
  
