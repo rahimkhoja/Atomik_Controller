@@ -1,10 +1,11 @@
 # Atomik Controller README #
 
 # Version 0.8 Alpha
+By Rahim Khoja
 
-The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The goal is to create a drop in replacement for the Mi-Light wifi bridge, that breaks the zone and device limitations, while providing a more robust home lighting controller. The Atomik controller will boast a Web GUI for system management, a Nrf24l01+ 2.4 GHz transceiver for listening and transmitting, Mi-Light RF RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, an API for 3rd party integration, and a task scheduling system to control light zones. 
+     The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The goal is to create a drop in replacement for the Mi-Light wifi bridge, that breaks the zone and device limitations, while providing a more robust home lighting controller. The Atomik controller will boast a Web GUI for system management, a Nrf24l01+ 2.4 GHz transceiver for listening and transmitting, Mi-Light RF RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, an API for 3rd party integration, and a task scheduling system to control light zones. 
 
-Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
+     Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
 
  **Features:**
 
@@ -32,16 +33,33 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * (Optional) A USB Bluetooth Adapter
  * (Optional) Apple or Android Smartphone with Mi-Light Software
  * Mi-Light or Compatible RGB or CCT Bulbs
+ * Local Area Network Access
+ * A Web Browser
 
+
+ **Hardware Setup:**
+
+![raspberry_pi_nrf24l01_small.jpg](https://bitbucket.org/repo/z4EyAd/images/989963794-raspberry_pi_nrf24l01_small.jpg)
+
+
+ **Install Instructions:**
  
- **Operating System Requirements:**
+ 1. Download the ISO of the Atomik Controller (link)
+ 2. Write the ISO to a SD Card
+ 3. Put the SD Card into the Raspberry Pi that has been modified
+ 3. Set your systems Ethernet adapter's IP to 192.168.1.1 
+ 4. Plug the Atomik Controller into your lan and power it up
+ 6. After 2 Minutes go to http://192.168.1.100 in your web browser
+ 7. Login to the Atomik Controller with (Username: admin, Password: admin) 
+ 
 
+ ###Atomik Controller Technical Details###
+
+ **Operating System:**
  
  * Raspbian (jessie)
 
-
  **Software Dependencies:**
-
 
  * RF24 Driver ( https://tmrh20.github.io/RF24/RPi.html )
  * Node.js 4.0+ ( https://nodejs.org/en/download/ )
@@ -50,29 +68,6 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * LibCurl
  * MariaDB (MySQL Fork) - Cuz we all love Microseconds
  * G++
-
-
- **Install Instructions:**
-
- 
-```
-#!bash
-
-sudo apt-get update && sudo apt-get upgrade
-sudo apt-get install wget git libcurl4-openssl-dev g++ nginx php5-fpm
-
-
-sudo mkdir /var/log/atomik
-sudo chown atomik:atomik /var/log/atomik
-sudo mkdir /var/working
-sudo chown atomik:atomik /var/working
-
-```
-
-### Hardware Setup ###
-
-
-![raspberry_pi_nrf24l01_small.jpg](https://bitbucket.org/repo/z4EyAd/images/989963794-raspberry_pi_nrf24l01_small.jpg)
 
 ### References & Thanks ###
 
