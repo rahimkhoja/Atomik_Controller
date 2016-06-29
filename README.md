@@ -8,6 +8,7 @@ The Atomik Controller manages automated and smart lights. Initially The Atomik C
 Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
 
 
+
  **Features:**
 
  * Fully featured web administration GUI
@@ -24,6 +25,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### How do I get set up? ###
 
+
  **Required Hardware:**
 
  
@@ -37,7 +39,9 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * A Web Browser
 
 
+
  **Hardware Setup:**
+
 
 ![raspberry_pi_nrf24l01_small.jpg](https://bitbucket.org/repo/z4EyAd/images/989963794-raspberry_pi_nrf24l01_small.jpg)
 
@@ -55,11 +59,15 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### Atomik Controller Technical Details ###
 
+
  **Operating System:**
+
  
  * Raspbian (jessie)
 
+
  **Software Dependencies:**
+
 
  * RF24 Driver ( https://tmrh20.github.io/RF24/RPi.html )
  * Node.js 4.0+ ( https://nodejs.org/en/download/ )
@@ -68,6 +76,8 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * LibCurl
  * MariaDB (MySQL Fork) - Cuz we all love Microseconds
  * G++
+ * MySQL C++ Connector
+
 
 ### References & Thanks ###
 
