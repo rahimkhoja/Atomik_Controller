@@ -67,6 +67,9 @@ sudo chown atomik:atomik /var/working
 
 ```
 
+### Hardware Setup ###
+
+![raspberry_pi_nrf24l01.jpg](https://bitbucket.org/repo/z4EyAd/images/1806452303-raspberry_pi_nrf24l01.jpg)
 
 ### References & Thanks ###
 
