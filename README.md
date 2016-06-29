@@ -30,6 +30,8 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * A Nrf24l01+ Radio Module
  * A USB Wifi Adapter
  * (Optional) A USB Bluetooth Adapter
+ * (Optional) Apple or Android Smartphone with Mi-Light Software
+ * Mi-Light or Compatible RGB or CCT Bulbs
 
  
  **Operating System Requirements:**
