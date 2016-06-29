@@ -6,12 +6,18 @@ The Atomik Controller manages automated and smart lights. Initially The Atomik C
 
 Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
 
-* Maximum of 65,280 Uniquely Addressable Mi-Light RGB Devices ( But an unlimited amount of devices can be Sync to an address) 
-* Maximum of 65,280 Uniquely Addressable Mi-Light CCT Devices ( But an unlimited amount of devices can be Sync to an address) 
-* Unlimited Amount of Mi-Light Smartphone Remotes ( Assigned Based on MAC Address )
+ **Features:**
+
+* Fully featured web administration GUI
+* Maximum of 65,280 uniquely addressable Mi-Light RGB Devices ( But an unlimited amount of Devices can be Synced to a single address ) 
+* Maximum of 65,280 uniquely addressable Mi-Light CCT Devices ( But an unlimited amount of Devices can be Synced to a single address ) 
+* Unlimited amount of Mi-Light Smartphone Remotes ( Secured by MAC Address )
 * Maximum of 256 Mi-Light RGB RF Remotes
-* Unlimited amount of Zones
+* Unilimited amount of Atomik API Remotes ( for 3rd party integration )
+* Unlimited amount of Device Zones
 * Zones can include ANY Mix of Devices and Remotes
+* Unlimited amount of scheduled zone tasks
+* WiFi and Ethernet connectivity
 
 ### How do I get set up? ###
 
