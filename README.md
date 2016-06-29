@@ -3,7 +3,7 @@
 # Version 0.8 Alpha
 By Rahim Khoja
 
-The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The goal is to create a drop in replacement for the Mi-Light wifi bridge, that breaks the zone and device limitations, while providing a more robust home lighting controller. The Atomik controller will boast a Web GUI for system management, a Nrf24l01+ 2.4 GHz transceiver for listening and transmitting, Mi-Light RF RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, an API for 3rd party integration, and a task scheduling system to control light zones. 
+The Atomik Controller manages automated and smart lights. Initially The Atomik Controller will manage Mi-Light brand lights and Remotes, but it will expand to other Atomik and third party smart devices. The goal is to create a drop in replacement for the Mi-Light wifi bridge, that expands the zone and device limitations, while providing a more robust home lighting controller. The Atomik controller will boast a Web GUI for system management, a Nrf24l01+ 2.4 GHz transceiver for listening and transmitting, Mi-Light RF RGB remote compatibility, a Mi-Light Smartphone server emulator that allows use of the Mi-Light Smartphone app as a remote, an API for 3rd party integration, and a task scheduling system to control light zones. 
 
 Hopefully in the future the Atomik Controller will add blue tooth connectivity, additional devices from a variety of manufacturers, Zigbee compatibility, Z-Wave compatibility, OpenHAB compatibility, a simple light io scripting interface, a fully documented API for 3rd party compatibility, and other types of devices and sensors. 
 
@@ -18,8 +18,8 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * Maximum of 256 Mi-Light RGB RF Remotes
  * Unlimited amount of Atomik API Remotes ( for 3rd party integration )
  * Unlimited amount of Device Zones
- * Zones can include ANY Mix of Devices and Remotes
- * Unlimited amount of scheduled zone tasks
+ * Zones can include ANY mix of Devices and Remotes
+ * Unlimited amount of scheduled Zone Tasks
  * WiFi and Ethernet connectivity
  * Drop-in replacement for the Mi-Light WiFi Bridge 
 
