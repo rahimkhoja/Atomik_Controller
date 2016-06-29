@@ -11,7 +11,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
  **Features:**
 
- * Fully featured web administration GUI
+ * Full featured web administration GUI
  * Maximum of 65,280 uniquely addressable Mi-Light RGB Devices ( But an unlimited amount of Devices can be Synced to a single address ) 
  * Maximum of 65,280 uniquely addressable Mi-Light CCT Devices ( But an unlimited amount of Devices can be Synced to a single address ) 
  * Unlimited amount of Mi-Light Smartphone Remotes ( Secured by MAC Address )
