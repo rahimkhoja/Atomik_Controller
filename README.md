@@ -34,6 +34,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * A USB Wifi Adapter
  * (Optional) A USB Bluetooth Adapter
  * (Optional) Apple or Android Smartphone with Mi-Light Software
+ * 8GB or Greater SD Card
  * Mi-Light or Compatible RGB or CCT Bulbs
  * Local Area Network Access
  * A Web Browser
@@ -49,7 +50,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  **Install Instructions:**
  
  1. Download the ISO of the Atomik Controller (link)
- 2. Write the ISO to a SD Card
+ 2. Write the ISO to an SD Card (Must fit in your Raspberry Pi)
  3. Put the SD Card into the Raspberry Pi that has been modified
  3. Set your systems Ethernet adapter's IP to 192.168.1.1 
  4. Plug the Atomik Controller into your lan and power it up
