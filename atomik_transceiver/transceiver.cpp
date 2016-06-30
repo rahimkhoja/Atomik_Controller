@@ -119,6 +119,351 @@ struct connection_details
     char *database;
 };
 
+// Set Color Brightness to Valid Value
+int colorBright ( int bri ) {
+	int bright = bri;
+	
+  	if (bright <= 4) {
+    	bright = 4;
+	} else if (bright <= 8) {
+    	bright = 8;
+	} else if (bright <= 12) {
+    	bright = 12;
+	} else if (bright <= 15) {
+    	bright = 15;
+	} else if (bright <= 19) {
+    	bright = 19;
+	} else if (bright <= 23) {
+    	bright = 23;
+	} else if (bright <= 27) {
+    	bright = 27;
+	} else if (bright <= 31) {
+    	bright = 31;
+	} else if (bright <= 35) {
+    	bright = 35;
+	} else if (bright <= 39) {
+    	bright = 39;
+	} else if (bright <= 42) {
+    	bright = 42;
+	} else if (bright <= 46) {
+    	bright = 46;
+	} else if (bright <= 50) {
+    	bright = 50;
+	} else if (bright <= 54) {
+    	bright = 54;
+	} else if (bright <= 58) {
+    	bright = 58;
+	} else if (bright <= 62) {
+    	bright = 62;
+	} else if (bright <= 65) {
+    	bright = 65;
+	} else if (bright <= 69) {
+    	bright = 69;
+	} else if (bright <= 73) {
+    	bright = 73;
+	} else if (bright <= 77) {
+    	bright = 77;
+	} else if (bright <= 81) {
+    	bright = 81;
+	} else if (bright <= 85) {
+    	bright = 85;
+	} else if (bright <= 88) {
+    	bright = 88;
+	} else if (bright <= 92) {
+    	bright = 92;
+	} else if (bright <= 96) {
+    	bright = 96;
+	} else if (bright <= 100) {
+	    bright = 100;
+	} else {
+		bright = 100;
+	}
+  
+	return bright;
+}
+
+// Set White Brightness To Valid Value
+int whiteBright( int bri ) {
+	int bright = bri;
+	if (bright <= 9) {
+	    bright = 9;
+	} else if (bright <= 18) {
+    	bright = 18;
+  	} else if (bright <= 27) {
+   	 	bright = 27;
+  	} else if (bright <= 36) {
+    	bright = 36;
+  	} else if (bright <= 45) {
+    	bright = 45;
+  	} else if (bright <= 54) {
+    	bright = 54;
+  	} else if (bright <= 63) {
+    	bright = 63;
+  	} else if (bright <= 72) {
+    	bright = 72;
+  	} else if (bright <= 81) {
+    	bright = 81;
+  	} else if (bright <= 90) {
+    	bright = 90;
+  	} else if (bright <= 100) {
+    	bright = 100;
+  	} else {
+		bright = 100;
+  	}
+	return bright;
+}
+
+// Increment Transmission Number Between 0 and 255
+int IncrementTransmissionNum( int number ){
+	int trans = number + 1;
+
+	if (trans >= 256) {
+		trans = trans - 256;
+	}
+	return trans;
+}
+
+// Transmits Commands To Bulbs
+int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, int new_wt, int old_wt, int new_cm, int old_cm, int add1, int add2, int tra, int rgb, int cw, int ww) {
+
+	std:string sendcom;
+	std:string sendcommandbase;
+	int trans = tra;
+  
+	
+	if (cw == 1 && ww == 1 && rgb != 1) {
+    sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q " + int2hex(add1) + " -r " + int2hex(add2) + " -c 01";
+
+    // White Bulb Details
+
+	int Brightness[] = {9, 18, 27, 36, 45, 54, 63, 72, 81, 90, 100};  // 11 Elements
+    int WhiteTemp[] = {2700, 3080, 3460, 3840, 4220, 4600, 4980, 5360, 5740, 6120, 6500}; // 11 Elements 
+	
+    if (new_s != old_s) {
+      // Status Changed
+
+      trans = IncrementTransmissionNum(trans);
+
+      if (new_s == 1) {
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
+		old_b = 9;
+      } else {
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B";
+      }
+
+      printf(sendcom + ' > /dev/null &');
+    } // End Status Change
+    
+	if (new_s == 1) {
+      // Status On
+
+      if (old_cm != new_cm) {
+        trans = IncrementTransmissionNum(trans);
+	  
+        // Color Mode Change
+		old_b = 9;
+        if (new_cm == 1) {
+          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
+		  
+        } else {
+          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
+        }
+
+        printf(sendcom + ' > /dev/null &');
+
+	  }
+
+	if (new_b != old_b) {
+		// Brightness Change
+		new_b = whiteBright( new_b );
+		int move;
+		int old_pos = std::distance(Brightness, std::find(Brightness, Brightness + 11, old_b));    //   array_search(old_b, Brightness);
+		int new_pos = std::distance(Brightness, std::find(Brightness, Brightness + 11, new_b));    //   array_search(new_b, Brightness);
+		
+		if (new_pos > old_pos) {
+			if (new_pos == std::distance(Brightness, std::find(Brightness, Brightness + 11, 100)) ) {
+				trans = IncrementTransmissionNum(trans);
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
+				printf(sendcom + ' > /dev/null &');
+            } else {
+				move = new_pos - old_pos;
+				for (x = 0; x <= move; x++) {
+					trans = IncrementTransmissionNum(trans);
+					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C";
+					printf(sendcom + ' > /dev/null &');
+				}
+			}
+		} else {
+			move = old_pos - new_pos;
+			for (x = 0; x <= move; x++) {
+				trans = IncrementTransmissionNum(trans);
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04";
+				printf(sendcom + ' > /dev/null &');
+			}
+		}
+	}
+
+	
+	
+	if (new_wt != old_wt) {
+
+		// White Temp Change
+
+		old_pos = array_search(old_wt, WhiteTemp);
+		new_pos = array_search(new_wt, WhiteTemp);
+		
+		if (new_pos > old_pos) {
+			move = new_pos - old_pos;
+			
+			for (x = 0; x <= move; x++) {
+				trans = IncrementTransmissionNum(trans);
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f";
+				printf(sendcom + ' > /dev/null &');
+			}
+		} else {
+			move = old_pos - new_pos;
+            for (x = 0; x <= move; x++) {
+              trans = IncrementTransmissionNum(trans);
+              sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e";
+              printf(sendcom + ' > /dev/null &');
+            }
+          }
+        }
+      }
+	  
+  } else if (cw == 1 && rgb == 1 || ww == 1 && rgb == 1) {
+      sendcommandbase = "sudo /usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2);
+      // RGBWW and RGBCW
+
+      if (new_s != old_s) {
+
+        // Status Changed
+
+        trans = IncrementTransmissionNum(trans);
+
+        if (new_s == 1) {
+          sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans);
+		  old_cm = -1;
+		  old_b = 0;
+		  
+        }        else {
+          sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans);
+        }
+        printf(sendcom + ' > /dev/null &');
+      }
+      // End Status Change
+
+      if (new_s == 1) {
+
+        // Status On
+
+        if (old_cm != new_cm) {
+
+          // Color Mode Change
+
+          trans = IncrementTransmissionNum(trans);
+
+          if (new_cm == 1) {
+            sendcom = sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+			
+          }          else {
+            sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+			old_b = 0;
+          }
+          printf(sendcom + ' > /dev/null &');
+        }
+
+        // End Color Mode Change > /dev/null &
+
+        if (new_cm == 0) {
+          // Color Mode Color
+
+          if (new_c != old_c ) {
+            // Color Change
+
+            trans = IncrementTransmissionNum(trans);
+
+            initcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans);
+            printf(initcom + ' > /dev/null &');
+            trans = IncrementTransmissionNum(trans);
+
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans);
+            printf(sendcom + ' > /dev/null &');
+          }
+          // End Color Change
+
+        }
+        // End Color Mode Color
+
+        if (new_b != old_b) {
+          // Brightness Change
+
+          trans = IncrementTransmissionNum(trans);
+
+          if (new_b == 4) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(129) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 8) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(121) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 12) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(113) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 15) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(105) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 19) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(97) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 23) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(89) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 27) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(81) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 31) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(73) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 35) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(65) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 39) { //10
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(57) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 42) { //11
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(49) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 46) { //12
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(41) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 50) { //13
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(33) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 54) { //14
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(25) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 58) { //15
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(17) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 62) { //16
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(9) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 65) { //17
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(1) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 69) { //18
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(249) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 73) { //19
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(241) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 77) { // 20
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(233) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 81) { // 21
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(225) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 85) { // 22
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(217) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 88) { // 23
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(209) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 92) { // 24
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(201) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 96) { // 25
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(193) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 100) { // 26
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(185) + " -k 0e -v " + int2hex(trans);
+          }
+          printf(sendcom + ' > /dev/null &');
+        }
+
+        // End Brightness Change
+      }
+
+      // End Status On
+    }
+    return trans;
+  }
+
 void sendJSON(std::string jsonstr)
 {
   
