@@ -281,7 +281,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 	if (new_b != old_b) {
 		// Brightness Change
 		new_b = whiteBright( new_b );
-		int move;
 		int old_pos = std::distance(Brightness, std::find(Brightness, Brightness + 11, old_b));    //   array_search(old_b, Brightness);
 		int new_pos = std::distance(Brightness, std::find(Brightness, Brightness + 11, new_b));    //   array_search(new_b, Brightness);
 		
@@ -292,7 +291,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 				printf(sendcom.c_str());
             } else {
 				move = new_pos - old_pos;
-				for (x = 0; x <= move; x++) {
+				for (int x = 0; x <= move; x++) {
 					trans = IncrementTransmissionNum(trans);
 					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C" + " > /dev/null &";
 					printf(sendcom.c_str());
@@ -300,7 +299,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 			}
 		} else {
 			move = old_pos - new_pos;
-			for (x = 0; x <= move; x++) {
+			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
 				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04" + " > /dev/null &";
 				printf(sendcom.c_str());
@@ -311,20 +310,21 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 	if (new_wt != old_wt) {
 		// White Temp Change
 
-		old_pos = array_search(old_wt, WhiteTemp);
-		new_pos = array_search(new_wt, WhiteTemp);
+		int old_pos = std::distance(WhiteTemp, std::find(WhiteTemp, WhiteTemp + 11, old_wt));    //   array_search(old_wt, WhiteTemp);
+        
+		int new_pos = std::distance(WhiteTemp, std::find(WhiteTemp, WhiteTemp + 11, new_wt));    //   array_search(new_wt, WhiteTemp);
 		
 		if (new_pos > old_pos) {
 			move = new_pos - old_pos;
 			
-			for (x = 0; x <= move; x++) {
+			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
 				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f" + " > /dev/null &";
 				printf(sendcom.c_str());
 			}
 		} else {
 			move = old_pos - new_pos;
-            for (x = 0; x <= move; x++) {
+            for (int x = 0; x <= move; x++) {
               trans = IncrementTransmissionNum(trans);
               sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e" + " > /dev/null &";
               printf(sendcom.c_str());
