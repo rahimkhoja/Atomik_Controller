@@ -226,8 +226,8 @@ int IncrementTransmissionNum( int number ){
 // Transmits Commands To Bulbs
 int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, int new_wt, int old_wt, int new_cm, int old_cm, int add1, int add2, int tra, int rgb, int cw, int ww) {
 
-	std:string sendcom;
-	std:string sendcommandbase;
+	std::string sendcom;
+	std::string sendcommandbase;
 	int trans = tra;
   
 	
@@ -245,13 +245,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
       trans = IncrementTransmissionNum(trans);
 
       if (new_s == 1) {
-        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08" + " > /dev/null &";
 		old_b = 9;
       } else {
-        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B";
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B" + " > /dev/null &";
       }
 
-      printf(sendcom + ' > /dev/null &');
+      printf(sendcom);
     } // End Status Change
     
 	if (new_s == 1) {
@@ -263,14 +263,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         // Color Mode Change
 		old_b = 9;
         if (new_cm == 1) {
-          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
+          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18" + " > /dev/null &";
 		  
         } else {
-          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
+          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08" + " > /dev/null &";
         }
 
-        printf(sendcom + ' > /dev/null &');
-
+        printf(sendcom);
 	  }
 
 	if (new_b != old_b) {
@@ -283,30 +282,27 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 		if (new_pos > old_pos) {
 			if (new_pos == std::distance(Brightness, std::find(Brightness, Brightness + 11, 100)) ) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
-				printf(sendcom + ' > /dev/null &');
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18" + " > /dev/null &";
+				printf(sendcom);
             } else {
 				move = new_pos - old_pos;
 				for (x = 0; x <= move; x++) {
 					trans = IncrementTransmissionNum(trans);
-					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C";
-					printf(sendcom + ' > /dev/null &');
+					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C" + " > /dev/null &";
+					printf(sendcom);
 				}
 			}
 		} else {
 			move = old_pos - new_pos;
 			for (x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04";
-				printf(sendcom + ' > /dev/null &');
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04" + " > /dev/null &";
+				printf(sendcom);
 			}
 		}
 	}
 
-	
-	
 	if (new_wt != old_wt) {
-
 		// White Temp Change
 
 		old_pos = array_search(old_wt, WhiteTemp);
@@ -317,15 +313,15 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 			
 			for (x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f";
-				printf(sendcom + ' > /dev/null &');
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f" + " > /dev/null &";
+				printf(sendcom);
 			}
 		} else {
 			move = old_pos - new_pos;
             for (x = 0; x <= move; x++) {
               trans = IncrementTransmissionNum(trans);
-              sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e";
-              printf(sendcom + ' > /dev/null &');
+              sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e" + " > /dev/null &";
+              printf(sendcom);
             }
           }
         }
@@ -342,14 +338,14 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         trans = IncrementTransmissionNum(trans);
 
         if (new_s == 1) {
-          sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans);
+          sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " > /dev/null &";
 		  old_cm = -1;
 		  old_b = 0;
 		  
         }        else {
-          sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans);
+          sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans) + " > /dev/null &";
         }
-        printf(sendcom + ' > /dev/null &');
+        printf(sendcom);
       }
       // End Status Change
 
@@ -364,13 +360,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
           trans = IncrementTransmissionNum(trans);
 
           if (new_cm == 1) {
-            sendcom = sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+            sendcom = sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c) + " > /dev/null &";
 			
           }          else {
-            sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+            sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c) + " > /dev/null &";
 			old_b = 0;
           }
-          printf(sendcom + ' > /dev/null &');
+          printf(sendcom);
         }
 
         // End Color Mode Change > /dev/null &
@@ -383,12 +379,12 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 
             trans = IncrementTransmissionNum(trans);
 
-            initcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans);
-            printf(initcom + ' > /dev/null &');
+            initcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans) + " > /dev/null &";
+            printf(initcom);
             trans = IncrementTransmissionNum(trans);
 
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans);
-            printf(sendcom + ' > /dev/null &');
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans) + " > /dev/null &";
+            printf(sendcom);
           }
           // End Color Change
 
@@ -453,7 +449,8 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
            } else if ( new_b == 100) { // 26
             sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(185) + " -k 0e -v " + int2hex(trans);
           }
-          printf(sendcom + ' > /dev/null &');
+          sendcom = sendcom +  + " > /dev/null &";
+          printf(sendcom);
         }
 
         // End Brightness Change
