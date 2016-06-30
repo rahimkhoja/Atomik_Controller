@@ -22,8 +22,6 @@
 #include <iterator>
 #include <curl/curl.h>
 
-#include <mysql.h>
-
 #include "repeatBuffer.c"
 #include <mutex>
 
@@ -68,16 +66,6 @@ uint64_t command = 0x00;
 
 int radiomode = 1;
 int default_radiomode = 1;
-
-MYSQL *conn;      // the connection
-MYSQL_RES *res;   // the results
-MYSQL_ROW row;    // the results row (line by line)
-
-struct connection_details mysqlD;
-mysqlD.server = "localhost";  // where the mysql database is
-mysqlD.user = "root";     // the root user of mysql   
-mysqlD.password = "123"; // the password of the root user in mysql
-mysqlD.database = "mysql";    // the databse to 
 
 const char *options = "hdsut:n:p:q:r:c:b:k:v:w:";
   
@@ -130,49 +118,6 @@ struct connection_details
     char *password;
     char *database;
 };
-
-MYSQL* mysql_connection_setup(struct connection_details mysql_details)
-{
-     // first of all create a mysql instance and initialize the variables within
-    MYSQL *connection = mysql_init(NULL);
-
-    // connect to the database with the details attached.
-    if (!mysql_real_connect(connection,mysql_details.server, mysql_details.user, mysql_details.password, mysql_details.database, 0, NULL, 0)) {
-      printf("Conection error : %s\n", mysql_error(connection));
-      exit(1);
-    }
-    return connection;
-}
-
-MYSQL_RES* mysql_perform_query(MYSQL *connection, char *sql_query)
-{
-   // send the query to the database
-   if (mysql_query(connection, sql_query))
-   {
-      printf("MySQL query error : %s\n", mysql_error(connection));
-      exit(1);
-   }
-
-   return mysql_use_result(connection);
-}
-
-void testDB() {
-
-// connect to the mysql database
-  conn = mysql_connection_setup(mysqlD);
-
-  // assign the results return to the MYSQL_RES pointer
-  dbres = mysql_perform_query(conn, "show tables");
-
-  printf("MySQL Tables in mysql database:\n");
-  while ((row = mysql_fetch_row(dbres)) !=NULL)
-      printf("%s\n", row[0]);
-   // clean up the database result set 
-  mysql_free_result(dbres);
-  // clean up the database link 
-  mysql_close(conn);
-
-}
 
 void sendJSON(std::string jsonstr)
 {
@@ -734,7 +679,6 @@ void receive()
                                   std::printf("\n -- Transmit --\n");
                          		  sendJSON(output);
                                 }
-                                testDB();
                     			JSONfilewrite(output);
                     			consoleWrite(output);
                 		}
