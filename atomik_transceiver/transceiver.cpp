@@ -110,14 +110,19 @@ option_code hashit (std::string inString) {
     if (inString == "-w") return w;
 }
 
-// DB Stuff
-struct connection_details
+std::string int2hex(int x)
 {
-    char *server;
-    char *user;
-    char *password;
-    char *database;
-};
+    char out[2];
+    sprintf(out, "%02X", x);
+    return std::string(out);
+}
+
+std::string int2int(int x)
+{
+    std::stringstream ss;
+    ss << x;
+    return ss.str();
+}
 
 // Set Color Brightness to Valid Value
 int colorBright ( int bri ) {
@@ -552,21 +557,6 @@ void usage(const char *arg, const char *options){
   printf("   -u                       De-Sync Bulb ( Requires options -q and -r )\n");
   printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
   printf("\n");
-}
-
-
-std::string int2hex(int x)
-{
-    char out[2];
-    sprintf(out, "%02X", x);
-    return std::string(out);
-}
-
-std::string int2int(int x)
-{
-    std::stringstream ss;
-    ss << x;
-    return ss.str();
 }
 
 void getOptions(std::vector<std::string> args, int type)
