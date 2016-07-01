@@ -29,6 +29,13 @@
 #include "MiLightRadio.h"
 #include "../atomik_cypher/atomikCypher.h"
 
+#include "mysql_connection.h"
+
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
 repeatBuffer transBuffer;
@@ -122,6 +129,40 @@ std::string int2int(int x)
     std::stringstream ss;
     ss << x;
     return ss.str();
+}
+
+void updateZoneProperties(int zone, int bright, int status, int color, int whitetemp, int colormode, int timezone) {
+	
+	std::string sql_update;
+	
+	sql_update = "UPDATE atomik_zones SET zone_status = "+status+", zone_colormode = "+colormode+", zone_brightness = "+bright+", zone_rgb256 = "+color+", zone_white_temprature = "+whitetemp+.",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+zone+";";
+	
+    try {
+        sql::Driver *driver;
+        sql::Connection *con;
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        /* Create a connection */
+        driver = get_driver_instance();
+        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
+        /* Connect to the MySQL test database */
+        con->setSchema("atomik_controller");
+
+        stmt = con->createStatement();
+        recordsUpdated = stmt->executeUpdate(sql_update);
+  
+        std::cout << " Updated " << recordsUpdated << " Records in Zone Table" << std::endl;
+    
+        delete stmt;
+        delete con;
+
+    } catch (sql::SQLException &e) {
+        cout << "# ERR: SQLException in " << __FILE__;
+        cout << "# ERR: " << e.what();
+        cout << " (MySQL error code: " << e.getErrorCode();
+        cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+    }
 }
 
 // Set Color Brightness to Valid Value
