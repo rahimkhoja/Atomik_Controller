@@ -81,9 +81,6 @@ int socketPort = 5000;
 std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
 
-sql::Driver *driver;
-sql::Connection *con;
-
 enum option_code {
     h,
     d,
@@ -143,12 +140,6 @@ void log2db (sql::Connection *con, int channel, std::string date, std::string re
         
         sql::Statement *stmt;
         int recordsUpdated;
-
-        /* Create a connection */
-        driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
-        /* Connect to the MySQL test database */
-        con->setSchema("atomik_controller");
 
         stmt = con->createStatement();
         recordsUpdated = stmt->executeUpdate(sql_update);
