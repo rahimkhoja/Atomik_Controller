@@ -1399,13 +1399,13 @@ int main(int argc, char** argv)
 {
     try {
      sql::Driver *driver;
-        driver = sql::Driver * get_driver_instance();
+        driver = get_driver_instance();
     } catch (sql::SQLException &e) {
-  cout << "# ERR: SQLException in " << __FILE__;
-  cout << "# ERR: " << e.what();
-  cout << " (MySQL error code: " << e.getErrorCode();
-  cout << ", SQLState: " << e.getSQLState() << " )" << endl;
-}
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
     
     
     all_args = std::vector<std::string>(argv, argv + argc);
