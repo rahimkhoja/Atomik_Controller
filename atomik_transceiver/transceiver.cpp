@@ -131,11 +131,11 @@ std::string int2int(int x)
     return ss.str();
 }
 
-void updateZoneProperties(int zone, int bright, int status, int color, int whitetemp, int colormode, int timezone) {
+void updateZoneProperties(int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
 	
 	std::string sql_update;
 	
-	sql_update = "UPDATE atomik_zones SET zone_status = "+status+", zone_colormode = "+colormode+", zone_brightness = "+bright+", zone_rgb256 = "+color+", zone_white_temprature = "+whitetemp+.",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+zone+";";
+	sql_update = "UPDATE atomik_zones SET zone_status="+int2int(status)+", zone_colormode="+int2int(colormode)+", zone_brightness="+int2int(bright)+", zone_rgb256="+int2int(color)+", zone_white_temprature="+int2int(whitetemp)+.",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+int2int(zone)+";";
 	
     try {
         sql::Driver *driver;
@@ -158,10 +158,10 @@ void updateZoneProperties(int zone, int bright, int status, int color, int white
         delete con;
 
     } catch (sql::SQLException &e) {
-        cout << "# ERR: SQLException in " << __FILE__;
-        cout << "# ERR: " << e.what();
-        cout << " (MySQL error code: " << e.getErrorCode();
-        cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
     }
 }
 
