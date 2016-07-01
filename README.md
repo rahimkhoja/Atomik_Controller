@@ -94,7 +94,20 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### Screenshots of Web GUI ###
 
- * [Zone Details](https://i.imgsafe.org/6f1c079e18.png) 
+ * [Zone List Screen](https://i.imgsafe.org/6f1bf11c52.png)
+ * [Zone Details Screen](https://i.imgsafe.org/6f1c079e18.png) 
+ * [Device List Screen](https://i.imgsafe.org/6f1b373281.png)
+ * [Device Details (White) Screen](https://i.imgsafe.org/6f1ad91fc0.png)
+ * [Device Details (RGBW) Screen](https://i.imgsafe.org/6f1ae13f74.png)
+ * [Login Screen](https://i.imgsafe.org/6f1bc9b8b6.png)
+ * [Logout Screen](https://i.imgsafe.org/6f1b87a10d.png)
+ * [Dashboard Screen](https://i.imgsafe.org/6f1ac5725d.png)
+ * [Settings Screen](https://i.imgsafe.org/6f1bce3dd7.png)
+ * [Remote List Screen](https://i.imgsafe.org/6f1be38077.png)
+ * [Remote Details (Smartphone) Screen](https://i.imgsafe.org/6f1b349821.png)
+ * [Remote Details (RGB RF) Screen](https://i.imgsafe.org/6f1bcc02db.png)
+ * [Scheduled Task Details Screen](https://i.imgsafe.org/6f1b93bb37.png)
+
 
 
 ### Who do I talk to? ###
