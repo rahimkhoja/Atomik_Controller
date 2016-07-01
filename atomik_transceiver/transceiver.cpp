@@ -36,6 +36,9 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 
+using namespace std;
+using namespace sql;
+
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
 repeatBuffer transBuffer;
