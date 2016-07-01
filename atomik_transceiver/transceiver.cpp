@@ -185,6 +185,76 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
     }
 }
 
+void updateCurrentChannel(sql::Connection *con, int channel, int remote) {
+
+    std::string sql_update;
+	
+	sql_update = "UPDATE atomik_remotes SET remote_current_channel="+int2int(channel)+" WHERE remote_id="+int2int(remote)+";"; 
+    
+    try {
+        
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        stmt = con->createStatement();
+        recordsUpdated = stmt->executeUpdate(sql_update);
+  
+        std::cout << " updateCurrentChannel: ( Remote: " << remote << " ) " << std::endl;
+    
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+}
+
+
+
+bool validRFAddressCheck(sql::Connection *con, int add1, int add2 ) {
+    
+    bool success;
+    
+	std::string sql_select;
+	
+	sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+";"; 
+    
+    try {
+        
+        sql::Statement *stmt;
+        int records;
+        sql::ResultSet *res;
+
+        stmt = con->createStatement();
+        res = stmt->executeQuery(sql_select);
+        
+        records = res -> rowsCount();
+        
+        std::cout << " validRFAddressCheck: ( RF: " << add1 << " , " << add2 << " ) "; 
+        
+        if ( records > 0 ) {
+            success = true;
+            std::cout << " VALID" << std::endl;
+        } else {
+            success = false;
+            std::cout << " NOT VALID" << std::endl;
+        }
+        
+        delete res;
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        success = false;
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+    return success;
+}
+	
 
 void updateDeviceProperties(sql::Connection *con, int status, int colormode, int brightness, int rgb256, int whitetemp, int transnum, int device) {
 
