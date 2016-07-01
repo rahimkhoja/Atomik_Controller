@@ -81,6 +81,9 @@ int socketPort = 5000;
 std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
 
+sql::Driver *driver;
+sql::Connection *con;
+
 enum option_code {
     h,
     d,
