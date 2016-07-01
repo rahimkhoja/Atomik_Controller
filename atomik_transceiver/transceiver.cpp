@@ -159,25 +159,134 @@ void log2db (sql::Connection *con, int channel, std::string date, std::string re
     }
 }
 
+void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string timezone) {
+
+    std::string sql_update;
+	
+	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=CONVERT_TZ(NOW(), '"+timezone++"', 'UTC') WHERE zone_device_zone_id="+int2int(zone)+";";
+
+    try {
+        
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        stmt = con->createStatement();
+        recordsUpdated = stmt->executeUpdate(sql_update);
+  
+        std::cout << " updateZoneDevicesProperties: ( Zone: " << zone << " ) " << recordsUpdated << " Records Updated!" << std::endl;
+    
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+}
 
 
-void updateZoneProperties(int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
+void updateDeviceProperties(sql::Connection *con, int status, int colormode, int brightness, int rgb256, int whitetemp, int transnum, int device) {
+
+    std::string sql_update;
+	
+	sql_update = "UPDATE atomik_devices SET device_status="+int2int(status)+", device_colormode="+int2int(colormode)+", device_brightness="+int2int(bright)+", device_rgb256="+int2int(rgb256)+", device_white_temprature="+int2int(whitetemp)+", device_transmission="+int2int(transnum)+" WHERE device_id="+int2int(device)+";";
+	
+    try {
+        
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        stmt = con->createStatement();
+        recordsUpdated = stmt->executeUpdate(sql_update);
+  
+        std::cout << " updateDeviceProperties: ( Device: " << device << " ) " << std::endl;
+    
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+}
+
+
+bool updateZone(sql::Connection *con, int status, int colormode, int brightness, int rgb256, int whitetemp, int zone, std::string timezone) {
+    
+    bool success = TRUE;
+    int new_s = status;
+    int new_cm = colormode;
+    int new_c = rgb256;
+    int new_b = brightness;
+    int new_wt = whitetemp;
+    
+    std:string sql_select;
+    
+    sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
+        
+	try {
+        
+        sql::Statement *stmt;
+        sql::ResultSet *res;
+
+        stmt = con->createStatement();
+        res = stmt->executeQuery(sql_select);
+          
+        while (res->next()) {
+            cout << "\tUpdating Devices... " << endl;
+            /* Access column data by alias or column name */
+            cout << "Device ID: " << res->getInt("device_id") << endl;
+            
+            int old_status        = res->getInt("device_status");
+            int old_colormode     = res->getInt("device_colormode");
+            int old_brightness    = res->getInt("device_brightness");
+            int old_color         = res->getInt("device_rgb256"); 
+            int old_whitetemp     = res->getInt("device_white_temprature"); 
+            int old_trans_id      = res->getInt("device_transmission");
+            int address1          = res->getInt("device_address1");
+            int address2          = res->getInt("device_address2"); 
+            int type_rgb          = res->getInt("device_type_rgb256");
+            int type_ww           = res->getInt("device_type_warm_white");
+            int type_cw           = res->getInt("device_type_cold_white");
+            int dev_id            = res->getInt("device_id"); 
+            
+            if ( type_cw == 1 & type_ww == 1 ) {
+                new_b = whiteBright(new_b);
+            }
+            
+            int trans_id = transmit(new_b, old_brightness, new_s, old_status, new_c, old_color, new_wt, old_whitetemp, new_cm, old_colormode, address1, address2, old_trans_id, type_rgb, type_cw, type_ww);
+            updateDeviceProperties(con, new_s, new_cm, new_b, new_c, new_wt, trans_id, dev_id);
+        }
+        
+        updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm);
+        updateZoneDevicesProperties(con, zone, timezone);
+        
+        std::cout << " updateZone: ( Zone: " << zone << " ) " << std::endl;
+    
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        success = FALSE;
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+}
+
+
+void updateZoneProperties(sql::Connection *con, int zone, int bright, int status, int color, int whitetemp, int colormode) {
 	
 	std::string sql_update;
 	
 	sql_update = "UPDATE atomik_zones SET zone_status="+int2int(status)+", zone_colormode="+int2int(colormode)+", zone_brightness="+int2int(bright)+", zone_rgb256="+int2int(color)+", zone_white_temprature="+int2int(whitetemp)+",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+int2int(zone)+";";
 	
     try {
-        sql::Driver *driver;
-        sql::Connection *con;
+        
         sql::Statement *stmt;
         int recordsUpdated;
-
-        /* Create a connection */
-        driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
-        /* Connect to the MySQL test database */
-        con->setSchema("atomik_controller");
 
         stmt = con->createStatement();
         recordsUpdated = stmt->executeUpdate(sql_update);
@@ -185,7 +294,6 @@ void updateZoneProperties(int zone, int bright, int status, int color, int white
         std::cout << " Updated " << recordsUpdated << " Records in Zone Table" << std::endl;
     
         delete stmt;
-        delete con;
 
     } catch (sql::SQLException &e) {
         std::cout << "# ERR: SQLException in " << __FILE__;
