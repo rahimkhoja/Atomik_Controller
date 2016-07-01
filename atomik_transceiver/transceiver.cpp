@@ -36,8 +36,6 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 
-using namespace std;
-using namespace sql;
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
@@ -134,20 +132,20 @@ std::string int2int(int x)
     return ss.str();
 }
 
-void updateZoneProperties(sql::Driver *drvr, int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
+void updateZoneProperties(int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
 	
 	std::string sql_update;
 	
 	sql_update = "UPDATE atomik_zones SET zone_status="+int2int(status)+", zone_colormode="+int2int(colormode)+", zone_brightness="+int2int(bright)+", zone_rgb256="+int2int(color)+", zone_white_temprature="+int2int(whitetemp)+",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+int2int(zone)+";";
 	
     try {
-        sql::Driver *driver = drvr;
+        sql::Driver *driver;
         sql::Connection *con;
         sql::Statement *stmt;
         int recordsUpdated;
 
         /* Create a connection */
-      
+        driver = get_driver_instance();
         con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
         /* Connect to the MySQL test database */
         con->setSchema("atomik_controller");
@@ -1400,17 +1398,7 @@ void socketCommand ( std::atomic<bool> & quit )
 
 int main(int argc, char** argv)
 {
-    try {
-     sql::Driver *driver;
-        driver = get_driver_instance();
-    } catch (sql::SQLException &e) {
-        std::cout << "# ERR: SQLException in " << __FILE__;
-        std::cout << "# ERR: " << e.what();
-        std::cout << " (MySQL error code: " << e.getErrorCode();
-        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
-    }
-    
-    
+        
     all_args = std::vector<std::string>(argv, argv + argc);
     
     do_receive = 1;
