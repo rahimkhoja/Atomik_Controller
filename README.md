@@ -92,6 +92,11 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  Oh and StackExchange
 
 
+### Screenshots of Web GUI ###
+
+ * [Zone Details](https://i.imgsafe.org/6f1c079e18.png) 
+
+
 ### Who do I talk to? ###
 
 * Managed by Rahim Khoja (rahimk@khojacorp.com)
