@@ -133,7 +133,7 @@ std::string int2int(int x)
 }
 
 
-void log2db (sql::Connection con, int channel, std::string date, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
+void log2db (sql::Connection *con, int channel, std::string date, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
 	
 	std::string sql_update;
 	
