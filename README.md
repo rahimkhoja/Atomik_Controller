@@ -34,6 +34,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * A USB Wifi Adapter
  * (Optional) A USB Bluetooth Adapter
  * (Optional) Apple or Android Smartphone with Mi-Light Software
+ * (Optional) Mi-Light RGB RF Remote
  * 8GB or Greater SD Card
  * Mi-Light or Compatible RGB or CCT Bulbs
  * Local Area Network Access
