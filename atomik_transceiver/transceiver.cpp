@@ -81,6 +81,9 @@ int socketPort = 5000;
 std::vector<std::string> all_args;
 std::vector<std::string> socket_args;
 
+sql::Driver *driver;
+sql::Connection *con;
+
 enum option_code {
     h,
     d,
@@ -130,15 +133,14 @@ std::string int2int(int x)
 }
 
 
-void log2db (int channel, std::string date, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
+void log2db (sql::Connection con, int channel, std::string date, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
 	
 	std::string sql_update;
 	
 	sql_update = "INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES (\""+source+"\", "+int2int(channel)+", \""+date+"\", \""+rec_data+"\", "+int2int(status)+", "+int2int(colormode)+", "+int2int(color)+", "+int2int(whitetemp)+", "+int2int(bright)+", "+int2int(processed)+", \""+add1+"\", \""+add2+"\")";
 
     try {
-        sql::Driver *driver;
-        sql::Connection *con;
+        
         sql::Statement *stmt;
         int recordsUpdated;
 
@@ -154,7 +156,6 @@ void log2db (int channel, std::string date, std::string rec_data, int status, in
         std::cout << " log2db: ( " << date << " ) " << recordsUpdated << " Records Updated!" << std::endl;
     
         delete stmt;
-        delete con;
 
     } catch (sql::SQLException &e) {
         std::cout << "# ERR: SQLException in " << __FILE__;
@@ -1080,7 +1081,7 @@ void receive()
                			{
                  			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                                log2db (0, getTime(), data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
+                                log2db (con, 0, getTime(), data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
                                 sendJSON(output);
                                 JSONfilewrite(output);
                     			consoleWrite(output);
@@ -1428,6 +1429,25 @@ void socketCommand ( std::atomic<bool> & quit )
 int main(int argc, char** argv)
 {
         
+        
+    try {
+        
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        /* Create a connection */
+        driver = get_driver_instance();
+        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
+        /* Connect to the MySQL test database */
+        con->setSchema("atomik_controller");    
+    
+     } catch (sql::SQLException &e) {
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+    
     all_args = std::vector<std::string>(argv, argv + argc);
     
     do_receive = 1;
@@ -1512,6 +1532,7 @@ int main(int argc, char** argv)
         socketServerThread.join();
     }
     
+    delete con;
     return 0;
 }
 
