@@ -36,7 +36,7 @@ std::string getLocalTimezone() {
 	char buff[512];
 
 	if(!(in = popen("cat /etc/timezone", "r"))){
-		return 1;
+		return "";
 	}
 
 	while(fgets(buff, sizeof(buff), in)!=NULL){
