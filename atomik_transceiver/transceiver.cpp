@@ -22,7 +22,6 @@
 #include <iterator>
 #include <curl/curl.h>
 
-#include "repeatBuffer.c"
 #include <mutex>
 
 #include "PL1167_nRF24.h"
@@ -1047,13 +1046,8 @@ void receive()
                  			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
                                 
-                                if (transBuffer.addTransmission(packet[0], packet[1], packet[2], packet[3], packet[4], packet[5])) {
-                                  std::printf("\n-- Not Transmitting --\n"); 
-                                } else {
-                                  std::printf("\n -- Transmit --\n");
-                         		  sendJSON(output);
-                                }
-                    			JSONfilewrite(output);
+                                sendJSON(output);
+                                JSONfilewrite(output);
                     			consoleWrite(output);
                 		}
            		}
