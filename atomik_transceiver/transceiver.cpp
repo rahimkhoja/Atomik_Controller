@@ -131,20 +131,20 @@ std::string int2int(int x)
     return ss.str();
 }
 
-void updateZoneProperties(int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
+void updateZoneProperties(sql::Driver *drvr, int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
 	
 	std::string sql_update;
 	
 	sql_update = "UPDATE atomik_zones SET zone_status="+int2int(status)+", zone_colormode="+int2int(colormode)+", zone_brightness="+int2int(bright)+", zone_rgb256="+int2int(color)+", zone_white_temprature="+int2int(whitetemp)+",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+int2int(zone)+";";
 	
     try {
-        sql::Driver *driver;
+        sql::Driver *driver = drvr;
         sql::Connection *con;
         sql::Statement *stmt;
         int recordsUpdated;
 
         /* Create a connection */
-        driver = sql::Driver * get_driver_instance();
+      
         con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
         /* Connect to the MySQL test database */
         con->setSchema("atomik_controller");
@@ -1397,6 +1397,16 @@ void socketCommand ( std::atomic<bool> & quit )
 
 int main(int argc, char** argv)
 {
+    try {
+     sql::Driver *driver;
+        driver = sql::Driver * get_driver_instance();
+    } catch (sql::SQLException &e) {
+  cout << "# ERR: SQLException in " << __FILE__;
+  cout << "# ERR: " << e.what();
+  cout << " (MySQL error code: " << e.getErrorCode();
+  cout << ", SQLState: " << e.getSQLState() << " )" << endl;
+}
+    
     
     all_args = std::vector<std::string>(argv, argv + argc);
     
