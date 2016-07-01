@@ -1,3 +1,18 @@
+#include <iostream>
+#include <string>
+#include <stdio.h>
+#include <algorithm> 
+#include "mysql_connection.h"
+
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
+
+sql::Driver *driver;
+sql::Connection *con;
+
 std::string int2hex(int x)
 {
     char out[2];
@@ -496,4 +511,30 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
     }
+}
+
+int main(int argc, char** argv)
+{
+        
+        
+    try {
+        
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        /* Create a connection */
+        driver = get_driver_instance();
+        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
+        /* Connect to the MySQL test database */
+        con->setSchema("atomik_controller");    
+    
+     } catch (sql::SQLException &e) {
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+    
+    delete con;
+    return 0;
 }
