@@ -2,6 +2,8 @@
 #include <string>
 #include <stdio.h>
 #include <algorithm> 
+#include <sstream>
+#include <fstream>
 #include "mysql_connection.h"
 
 #include <cppconn/driver.h>
@@ -27,6 +29,22 @@ std::string int2int(int x)
     return ss.str();
 }
 
+
+std::string getLocalTimezone() {
+
+    FILE *in;
+	char buff[512];
+
+	if(!(in = popen("ls -sail", "r"))){
+		return 1;
+	}
+
+	while(fgets(buff, sizeof(buff), in)!=NULL){
+		cout << buff;
+	}
+	pclose(in);
+    return std::string str(buff);
+}
 
 void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string timezone) {
 
@@ -516,7 +534,6 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
 int main(int argc, char** argv)
 {
         
-        
     try {
         
         sql::Statement *stmt;
@@ -533,6 +550,25 @@ int main(int argc, char** argv)
         std::cout << "# ERR: " << e.what();
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+    
+    if ($argc != 7 ) {
+        std::cout <<  "Command Requires 6 Integer arguments\n" << std::endl;
+        std::cout <<  $argv[0] << " Zone_id Zone_Status Zone_Brightness Zone_ColorMode Zone_Color Zone_WhiteTemp\n" << std::endl;
+        exit;
+    } else {
+        zone = atoi(argv[1]);
+        b_new = atoi(argv[3]);
+        c_new = atoi(argv[5]);
+        s_new = atoi(argv[2]);
+        wt_new = atoi(argv[6]);
+        cm_new = atoi(argv[4]);
+         
+	    std::string outputTXT = "Updating Zone "+int2int(zone)+" To: Status: "+int2int(s_new)+" - Brightness: "+int2int(b_new)+"% - Color Mode: "+int2int(cm_new)+" - Color: "+int2int(c_new)+" - White Temp: "+int2int(wt_new);      
+        std::cout << outputTXT << std::endl;
+        if (updateZone(con, zone, colorBright(b_new), s_new, c_new, wt_new, cm_new, getLocalTimezone())) {
+            std::cout << "Zone Updated" << std::endl;
+        };
     }
     
     delete con;
