@@ -144,7 +144,7 @@ void updateZoneProperties(int zone, int bright, int status, int color, int white
         int recordsUpdated;
 
         /* Create a connection */
-        driver = ::sql::mysql::get_driver_instance();
+        driver = sql::Driver * get_driver_instance();
         con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
         /* Connect to the MySQL test database */
         con->setSchema("atomik_controller");
