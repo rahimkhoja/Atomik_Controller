@@ -88,8 +88,8 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * https://github.com/bakkerr/openmilight_pi  - Roy Bakker
  * https://hackaday.io/project/5888-reverse-engineering-the-milight-on-air-protocol  - Henryk Plötz
  * https://gist.github.com/jpawlowski/5359556  - Julian Pawlowski
- 
- Oh and StackExchange
+
+ * http://stackexchange.com/ 
 
 
 ### Screenshots of Web GUI ###
