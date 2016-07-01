@@ -569,7 +569,7 @@ int main(int argc, char** argv)
          
 	    std::string outputTXT = "Updating Zone "+int2int(zone)+" To: Status: "+int2int(s_new)+" - Brightness: "+int2int(b_new)+"% - Color Mode: "+int2int(cm_new)+" - Color: "+int2int(c_new)+" - White Temp: "+int2int(wt_new);      
         std::cout << outputTXT << std::endl;
-        if (updateZone(con, zone, colorBright(b_new), s_new, c_new, wt_new, cm_new, getLocalTimezone())) {
+        if ( updateZone(con, s_new, cm_new, colorBright(b_new), c_new, wt_new, zone, getLocalTimezone()) ) {
             std::cout << "Zone Updated" << std::endl;
         };
     }
