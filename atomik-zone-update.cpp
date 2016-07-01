@@ -481,7 +481,9 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     std::string sql_select;
     
     sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
-        
+       
+    std::cout << sql_select << std::endl;
+       
 	try {
         
         sql::Statement *stmt;
