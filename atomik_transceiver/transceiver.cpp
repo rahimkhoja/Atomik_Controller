@@ -260,7 +260,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
             updateDeviceProperties(con, new_s, new_cm, new_b, new_c, new_wt, trans_id, dev_id);
         }
         
-        updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm);
+        updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm, timezone);
         updateZoneDevicesProperties(con, zone, timezone);
         
         std::cout << " updateZone: ( Zone: " << zone << " ) " << std::endl;
@@ -277,7 +277,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
 }
 
 
-void updateZoneProperties(sql::Connection *con, int zone, int bright, int status, int color, int whitetemp, int colormode) {
+void updateZoneProperties(sql::Connection *con, int zone, int bright, int status, int color, int whitetemp, int colormode, std::string timezone) {
 	
 	std::string sql_update;
 	
