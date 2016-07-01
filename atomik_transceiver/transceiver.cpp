@@ -163,7 +163,7 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
 
     std::string sql_update;
 	
-	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=CONVERT_TZ(NOW(), '"+timezone++"', 'UTC') WHERE zone_device_zone_id="+int2int(zone)+";";
+	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_device_zone_id="+int2int(zone)+";";
 
     try {
         
