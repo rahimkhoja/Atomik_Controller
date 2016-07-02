@@ -1,3 +1,5 @@
+// sudo g++ -std=c++11 -pthread -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik-zone-update.cpp -o atomik-zone-update
+
 #include <iostream>
 #include <string>
 #include <stdio.h>
