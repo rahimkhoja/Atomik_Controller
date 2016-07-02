@@ -38,7 +38,7 @@ void runCommand(std::string command) {
 	char buff[512];
 
 	if(!(in = popen(command, "r"))){
-		return "";
+		return;
 	}
 
 	while(fgets(buff, sizeof(buff), in)!=NULL){
