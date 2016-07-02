@@ -1,4 +1,4 @@
-//  sudo g++ -std=c++11 -lrf24-bcm -lcurl -pthread atomik_transceiver/PL1167_nRF24.cpp atomik_transceiver/MiLightRadio.cpp atomik_transceiver/transceiver.cpp atomik_cypher/atomikCypher.cpp -o transceiver
+//  sudo g++ -std=c++11 -lrf24-bcm -lcurl -pthread -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik_transceiver/PL1167_nRF24.cpp atomik_transceiver/MiLightRadio.cpp atomik_transceiver/transceiver.cpp atomik_cypher/atomikCypher.cpp -o transceiver
 
 #include <cstdlib>
 #include <iostream>
