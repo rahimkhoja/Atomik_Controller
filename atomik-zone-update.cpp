@@ -40,10 +40,7 @@ void runCommand(std::string command) {
 	if(!(in = popen(command.c_str(), "r"))){
 		return;
 	}
-
-	while(fgets(buff, sizeof(buff), in)!=NULL){
-		std::cout << buff << std::endl;
-	}
+    
 	pclose(in);
 }
 
@@ -71,7 +68,6 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
     std::string sql_update;
 	
 	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_device_zone_id="+int2int(zone)+";";
-std::cout << sql_update << std::endl;
     try {
         
         sql::Statement *stmt;
@@ -278,7 +274,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B";
       }
 
-      printf(sendcom.c_str());
       runCommand(sendcom);
     } // End Status Change
     
@@ -297,7 +292,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
           sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
         }
 
-        printf(sendcom.c_str());
         runCommand(sendcom);
 	  }
 
@@ -311,14 +305,12 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 			if (new_pos == std::distance(Brightness, std::find(Brightness, Brightness + 11, 100)) ) {
 				trans = IncrementTransmissionNum(trans);
 				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
-				printf(sendcom.c_str());
                 runCommand(sendcom);
             } else {
 				move = new_pos - old_pos;
 				for (int x = 0; x <= move; x++) {
 					trans = IncrementTransmissionNum(trans);
 					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C";
-					printf(sendcom.c_str());
                     runCommand(sendcom);
 				}
 			}
@@ -327,7 +319,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
 				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04";
-				printf(sendcom.c_str());
                 runCommand(sendcom);
 			}
 		}
@@ -346,7 +337,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
 				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f";
-				printf(sendcom.c_str());
                 runCommand(sendcom);
 			}
 		} else {
@@ -354,7 +344,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
             for (int x = 0; x <= move; x++) {
               trans = IncrementTransmissionNum(trans);
               sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e";
-              printf(sendcom.c_str());
               runCommand(sendcom);
             }
           }
@@ -378,7 +367,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         }        else {
           sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans);
         }
-        printf(sendcom.c_str());
         runCommand(sendcom);
       }
       // End Status Change
@@ -400,7 +388,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
             sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c);
 			old_b = 0;
           }
-          printf(sendcom.c_str());
           runCommand(sendcom);
         }
 
@@ -414,7 +401,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
             trans = IncrementTransmissionNum(trans);
 
             initcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans);
-            printf(initcom.c_str());
             runCommand(initcom);
             trans = IncrementTransmissionNum(trans);
 
@@ -485,7 +471,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
             sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(185) + " -k 0e -v " + int2hex(trans);
           }
           runCommand(sendcom);
-          printf(sendcom.c_str());
         }
 
         // End Brightness Change
@@ -510,9 +495,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     
     sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
        
-    std::cout << sql_select << std::endl;
-       
-	try {
+    try {
         
         sql::Statement *stmt;
         sql::ResultSet *res;
