@@ -37,7 +37,7 @@ void runCommand(std::string command) {
     FILE *in;
 	char buff[512];
 
-	if(!(in = popen(command, "r"))){
+	if(!(in = popen(command.c_str(), "r"))){
 		return;
 	}
 
