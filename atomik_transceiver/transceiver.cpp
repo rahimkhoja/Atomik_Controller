@@ -858,6 +858,7 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
     	
     try {
     
+        sql::Statement *stmt;
         sql::ResultSet *res;
         stmt = con->createStatement();
         res = stmt->executeQuery(sql_select);
