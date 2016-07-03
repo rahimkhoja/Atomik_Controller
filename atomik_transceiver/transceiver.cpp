@@ -34,6 +34,10 @@
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/reader.h>
+#include <jsoncpp/json/writer.h>
+#include <jsoncpp/json/value.h>
 
 
 RF24 radio(RPI_V2_GPIO_P1_22, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
@@ -132,6 +136,43 @@ std::string int2int(int x)
     return ss.str();
 }
 
+int hex2int(std::string hexnum) {
+
+        int x = std::strtol(hexnum.c_str(), NULL, 16);
+        return x;
+}
+
+
+void runCommand(std::string command) {
+
+    FILE *in;
+	char buff[512];
+
+	if(!(in = popen(command.c_str(), "r"))){
+		return;
+	}
+    
+	pclose(in);
+}
+
+
+std::string getLocalTimezone() {
+
+    FILE *in;
+	char buff[512];
+
+	if(!(in = popen("cat /etc/timezone", "r"))){
+		return "";
+	}
+
+	while(fgets(buff, sizeof(buff), in)!=NULL){
+		std::cout << buff << std::endl;
+	}
+	pclose(in);
+    std::string str(buff);
+    str.erase(str.find_last_not_of(" \n\r\t")+1);
+    return str;
+}
 
 void log2db (sql::Connection *con, int channel, std::string date, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
 	
@@ -164,7 +205,6 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
     std::string sql_update;
 	
 	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_device_zone_id="+int2int(zone)+";";
-
     try {
         
         sql::Statement *stmt;
@@ -260,7 +300,7 @@ void updateDeviceProperties(sql::Connection *con, int status, int colormode, int
 
     std::string sql_update;
 	
-	sql_update = "UPDATE atomik_devices SET device_status="+int2int(status)+", device_colormode="+int2int(colormode)+", device_brightness="+int2int(bright)+", device_rgb256="+int2int(rgb256)+", device_white_temprature="+int2int(whitetemp)+", device_transmission="+int2int(transnum)+" WHERE device_id="+int2int(device)+";";
+	sql_update = "UPDATE atomik_devices SET device_status="+int2int(status)+", device_colormode="+int2int(colormode)+", device_brightness="+int2int(brightness)+", device_rgb256="+int2int(rgb256)+", device_white_temprature="+int2int(whitetemp)+", device_transmission="+int2int(transnum)+" WHERE device_id="+int2int(device)+";";
 	
     try {
         
@@ -435,13 +475,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
       trans = IncrementTransmissionNum(trans);
 
       if (new_s == 1) {
-        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08" + " > /dev/null &";
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
 		old_b = 9;
       } else {
-        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B" + " > /dev/null &";
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B";
       }
 
-      printf(sendcom.c_str());
+      runCommand(sendcom);
     } // End Status Change
     
 	if (new_s == 1) {
@@ -453,13 +493,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         // Color Mode Change
 		old_b = 9;
         if (new_cm == 1) {
-          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18" + " > /dev/null &";
+          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
 		  
         } else {
-          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08" + " > /dev/null &";
+          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
         }
 
-        printf(sendcom.c_str());
+        runCommand(sendcom);
 	  }
 
 	if (new_b != old_b) {
@@ -471,25 +511,246 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 		if (new_pos > old_pos) {
 			if (new_pos == std::distance(Brightness, std::find(Brightness, Brightness + 11, 100)) ) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18" + " > /dev/null &";
-				printf(sendcom.c_str());
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
+                runCommand(sendcom);
             } else {
 				move = new_pos - old_pos;
 				for (int x = 0; x <= move; x++) {
 					trans = IncrementTransmissionNum(trans);
-					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C" + " > /dev/null &";
-					printf(sendcom.c_str());
+					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C";
+                    runCommand(sendcom);
 				}
 			}
 		} else {
 			move = old_pos - new_pos;
 			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04" + " > /dev/null &";
-				printf(sendcom.c_str());
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04";
+                runCommand(sendcom);
 			}
 		}
 	}
+
+	if (new_wt != old_wt) {
+		// White Temp Change
+
+		int old_pos = std::distance(WhiteTemp, std::find(WhiteTemp, WhiteTemp + 11, old_wt));    //   array_search(old_wt, WhiteTemp);
+        
+		int new_pos = std::distance(WhiteTemp, std::find(WhiteTemp, WhiteTemp + 11, new_wt));    //   array_search(new_wt, WhiteTemp);
+		
+		if (new_pos > old_pos) {
+			move = new_pos - old_pos;
+			
+			for (int x = 0; x <= move; x++) {
+				trans = IncrementTransmissionNum(trans);
+				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f";
+                runCommand(sendcom);
+			}
+		} else {
+			move = old_pos - new_pos;
+            for (int x = 0; x <= move; x++) {
+              trans = IncrementTransmissionNum(trans);
+              sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e";
+              runCommand(sendcom);
+            }
+          }
+        }
+      }
+	  
+  } else if (cw == 1 && rgb == 1 || ww == 1 && rgb == 1) {
+      sendcommandbase = "sudo /usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2);
+      // RGBWW and RGBCW
+
+      if (new_s != old_s) {
+
+        // Status Changed
+        trans = IncrementTransmissionNum(trans);
+
+        if (new_s == 1) {
+          sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans);
+		  old_cm = -1;
+		  old_b = 0;
+		  
+        }        else {
+          sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans);
+        }
+        runCommand(sendcom);
+      }
+      // End Status Change
+
+      if (new_s == 1) {
+
+        // Status On
+
+        if (old_cm != new_cm) {
+
+          // Color Mode Change
+
+          trans = IncrementTransmissionNum(trans);
+
+          if (new_cm == 1) {
+            sendcom = sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+			
+          }          else {
+            sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+			old_b = 0;
+          }
+          runCommand(sendcom);
+        }
+
+        // End Color Mode Change > /dev/null &
+
+        if (new_cm == 0) {
+          // Color Mode Color
+
+          if (new_c != old_c ) {
+            // Color Change
+            trans = IncrementTransmissionNum(trans);
+
+            initcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans);
+            runCommand(initcom);
+            trans = IncrementTransmissionNum(trans);
+
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans);
+            runCommand(sendcom);
+          }
+          // End Color Change
+
+        }
+        // End Color Mode Color
+
+        if (new_b != old_b) {
+          // Brightness Change
+
+          trans = IncrementTransmissionNum(trans);
+
+          if (new_b == 4) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(129) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 8) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(121) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 12) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(113) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 15) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(105) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 19) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(97) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 23) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(89) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 27) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(81) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 31) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(73) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 35) {
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(65) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 39) { //10
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(57) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 42) { //11
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(49) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 46) { //12
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(41) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 50) { //13
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(33) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 54) { //14
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(25) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 58) { //15
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(17) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 62) { //16
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(9) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 65) { //17
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(1) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 69) { //18
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(249) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 73) { //19
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(241) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 77) { // 20
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(233) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 81) { // 21
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(225) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 85) { // 22
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(217) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 88) { // 23
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(209) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 92) { // 24
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(201) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 96) { // 25
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(193) + " -k 0e -v " + int2hex(trans);
+           } else if ( new_b == 100) { // 26
+            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(185) + " -k 0e -v " + int2hex(trans);
+          }
+          runCommand(sendcom);
+        }
+
+        // End Brightness Change
+      }
+
+      // End Status On
+    }
+    return trans;
+  }
+
+
+bool updateZone(sql::Connection *con, int status, int colormode, int brightness, int rgb256, int whitetemp, int zone, std::string timezone) {
+    
+    bool success = true;
+    int new_s = status;
+    int new_cm = colormode;
+    int new_c = rgb256;
+    int new_b = brightness;
+    int new_wt = whitetemp;
+    
+    std::string sql_select;
+    
+    sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
+       
+    try {
+        
+        sql::Statement *stmt;
+        sql::ResultSet *res;
+
+        stmt = con->createStatement();
+        res = stmt->executeQuery(sql_select);
+          
+        while (res->next()) {
+            std::cout << "\tUpdating Devices... " << std::endl;
+            /* Access column data by alias or column name */
+            std::cout << "Device ID: " << res->getInt("device_id") << std::endl;
+            
+            int old_status        = res->getInt("device_status");
+            int old_colormode     = res->getInt("device_colormode");
+            int old_brightness    = res->getInt("device_brightness");
+            int old_color         = res->getInt("device_rgb256"); 
+            int old_whitetemp     = res->getInt("device_white_temprature"); 
+            int old_trans_id      = res->getInt("device_transmission");
+            int address1          = res->getInt("device_address1");
+            int address2          = res->getInt("device_address2"); 
+            int type_rgb          = res->getInt("device_type_rgb256");
+            int type_ww           = res->getInt("device_type_warm_white");
+            int type_cw           = res->getInt("device_type_cold_white");
+            int dev_id            = res->getInt("device_id"); 
+            
+            if ( type_cw == 1 & type_ww == 1 ) {
+                new_b = whiteBright(new_b);
+            }
+            
+            int trans_id = transmit(new_b, old_brightness, new_s, old_status, new_c, old_color, new_wt, old_whitetemp, new_cm, old_colormode, address1, address2, old_trans_id, type_rgb, type_cw, type_ww);
+            updateDeviceProperties(con, new_s, new_cm, new_b, new_c, new_wt, trans_id, dev_id);
+        }
+        
+        updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm, timezone);
+        updateZoneDevicesProperties(con, zone, timezone);
+        
+        std::cout << " updateZone: ( Zone: " << zone << " ) " << std::endl;
+    
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        success = false;
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+}
 
 	if (new_wt != old_wt) {
 		// White Temp Change
