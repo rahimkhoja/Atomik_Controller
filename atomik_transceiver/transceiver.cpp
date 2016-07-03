@@ -876,7 +876,7 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
         }
         
         if ( chan != -1 ) {
-            updateCurrentChannel(con, channel, add1, add2); 
+            updateCurrentChannel(con, chan, add1, add2); 
         }
         
         delete res;
