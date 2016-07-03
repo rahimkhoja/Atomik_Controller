@@ -875,6 +875,10 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
             std::cout << " NOT VALID" << std::endl;
         }
         
+        if ( chan != -1 ) {
+            updateCurrentChannel(con, channel, add1, add2); 
+        }
+        
         delete res;
         delete stmt;
 
@@ -897,9 +901,6 @@ bool validateJSON (std::string JSONstr) {
     if( validateRFChannel(con, add1 , add2, channel ) ) {
         // check if Valid
         valid = true;
-        if ( channel != -1 ) {
-            updateCurrentChannel(con, channel, add1, add2); 
-        }
     } 
     return valid;
 }
