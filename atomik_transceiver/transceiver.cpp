@@ -897,7 +897,7 @@ bool validateJSON (std::string JSONstr) {
     if( validateRFChannel(con, add1 , add2, channel ) ) {
         // check if Valid
         valid = true;
-        if ( channel == -1 ) {
+        if ( channel != -1 ) {
             updateCurrentChannel(con, channel, add1, add2); 
         }
     } 
