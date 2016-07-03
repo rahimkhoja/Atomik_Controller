@@ -156,6 +156,99 @@ void runCommand(std::string command) {
 }
 
 
+int getAtomikJSONValue(std::string name, std::string atomikJSON) {
+
+        Json::Value root;
+        Json::Value conf;
+        std::stringstream buffer;
+        Json::Reader reader;
+
+        bool parsingSuccessful = reader.parse( atomikJSON.c_str(), root );     //parse process
+        if ( !parsingSuccessful )
+        {
+                std::cout  << "Failed to parse"
+                << reader.getFormattedErrorMessages();
+                return -1;
+        }
+
+        buffer << root.get("Configuration", "error" ) << std::endl;
+
+        parsingSuccessful = reader.parse( buffer, conf );     //parse process
+        if ( !parsingSuccessful )
+        {
+                std::cout  << "Failed to parse"
+               << reader.getFormattedErrorMessages();
+                return -1;
+        }
+
+        if (name == "Address1") {
+                std::string output = root.get("Address1", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else {
+                        return hex2int(output);
+                }
+        } else if (name == "Address2") {
+                std::string output = root.get("Address2", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else {
+                        return hex2int(output);
+                }
+        } else if (name == "ColorMode") {
+                std::string output = conf.get("ColorMode", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else if (output == "RGB256") {
+                        return 0;
+                } else if (output == "White") {
+                        return 1;
+                }
+        } else if (name == "Color") {
+                std::string output = conf.get("Color", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else {
+                        return std::stoi(output);
+                }
+        } else if (name == "Brightness") {
+                std::string output = conf.get("Brightness", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else if ( output == "Max" ) {
+                        return 100;
+                } else if ( output == "Nightlight" ) {
+                        return 4;
+                } else {
+                        return std::stoi(output);
+                }
+        } else if ( name == "Status") {
+                std::string output = conf.get("Status", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else if (output == "On") {
+                        return 1;
+                } else if (output == "Off") {
+                        return 0;
+                }
+        } else if ( name == "Channel") {
+                std::string output = conf.get("Channel", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else {
+                        return std::stoi(output);
+                }
+        }
+
+}
+
 std::string getLocalTimezone() {
 
     FILE *in;
@@ -225,11 +318,11 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
     }
 }
 
-void updateCurrentChannel(sql::Connection *con, int channel, int remote) {
+void updateCurrentChannel(sql::Connection *con, int channel, int add1, int add2) {
 
     std::string sql_update;
 	
-	sql_update = "UPDATE atomik_remotes SET remote_current_channel="+int2int(channel)+" WHERE remote_id="+int2int(remote)+";"; 
+	sql_update = "UPDATE atomik_remotes SET remote_current_channel="+int2int(channel)+" WHERE remote_address1="+int2int(add1)+" && remote_address2="+int2int(add2)+";"; 
     
     try {
         
@@ -750,6 +843,64 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
     }
+}
+
+bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
+    bool success = false;
+    std::string sql_select;
+    int records;
+	
+    if ( chan == -1 ) {
+	    sql_select = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
+    } else {
+        sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+" && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
+    }
+    	
+    try {
+    
+        sql::ResultSet *res;
+        stmt = con->createStatement();
+        res = stmt->executeQuery(sql_select);
+        
+        records = res -> rowsCount();
+        
+        std::cout << " validateRFChannel: "; 
+        
+        if ( records > 0 ) {
+            success = true;
+            std::cout << " VALID" << std::endl;
+        } else {
+            success = false;
+            std::cout << " NOT VALID" << std::endl;
+        }
+        
+        delete res;
+        delete stmt;
+
+    } catch (sql::SQLException &e) {
+        success = false;
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+    return success;
+}
+    
+bool validateJSON (std::string JSONstr) {
+    bool valid == false;
+    int channel = getAtomikJSONValue("Channel", JSONstr);
+    int add1 = getAtomikJSONValue("Address1", JSONstr);
+    int add2 = getAtomikJSONValue("Address2", JSONstr);
+    
+    if( validateRFChannel(con, add1 , add2, channel ) ) {
+        // check if Valid
+        valid = true;
+        if ( channel == -1 ) {
+            updateCurrentChannel(con, channel, add1, add2); 
+        }
+    } 
+    return valid;
 }
 
 void sendJSON(std::string jsonstr)
