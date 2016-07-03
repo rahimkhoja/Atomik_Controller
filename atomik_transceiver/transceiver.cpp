@@ -888,7 +888,7 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
 }
     
 bool validateJSON (std::string JSONstr) {
-    bool valid == false;
+    bool valid = false;
     int channel = getAtomikJSONValue("Channel", JSONstr);
     int add1 = getAtomikJSONValue("Address1", JSONstr);
     int add2 = getAtomikJSONValue("Address2", JSONstr);
@@ -1441,7 +1441,9 @@ void receive()
                			{
                  			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                                log2db (con, 0, getTime(), data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
+                                if (!validateJSON (output) ) {
+                                        log2db (con, 0, getTime(), data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
+                                }
                                 sendJSON(output);
                                 JSONfilewrite(output);
                     			consoleWrite(output);
