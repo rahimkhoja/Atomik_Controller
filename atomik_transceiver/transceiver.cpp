@@ -782,6 +782,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
   }
 
 
+
 bool updateZone(sql::Connection *con, int status, int colormode, int brightness, int rgb256, int whitetemp, int zone, std::string timezone) {
     
     bool success = true;
@@ -792,6 +793,50 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     int new_wt = whitetemp;
     
     std::string sql_select;
+    
+    sql_select = "SELECT atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id="+int2int(zone)+";";
+    
+    try {
+        
+        sql::Statement *stmt;
+        sql::ResultSet *res;
+
+        stmt = con->createStatement();
+        res = stmt->executeQuery(sql_select);
+          
+        
+            std::cout << "Loading Current Zone Data ... " << std::endl;
+            /* Access column data by alias or column name */
+            std::cout << "Device ID: " << res->getInt("device_id") << std::endl;
+            
+            if (new_s == -1 ) {
+                    new_s        = res->getInt("zone_status");
+            }
+            if (new_cm == -1 ) {
+                    new_cm     = res->getInt("zone_colormode");
+            }
+            if (new_b == -1 ) {
+                    new_b    = res->getInt("zone_brightness");
+            }
+            if (new_c == -1 ) {
+                    new_c        = res->getInt("zone_rgb256"); 
+            }
+            if (new_wt == -1 ) {
+                    new_wt     = res->getInt("zone_white_temprature"); 
+            }
+        
+        std::cout << "Status: " << new_s << " - ColorMode: " << new_cm << " - Brightness: " << new_b << " - Color: " << new_c << " - WhiteTemp: " << new_wt << std::endl: 
+        delete stmt;
+        delete res;
+
+    } catch (sql::SQLException &e) {
+        success = false;
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+    
     
     sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
        
@@ -835,6 +880,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
         std::cout << " updateZone: ( Zone: " << zone << " ) " << std::endl;
     
         delete stmt;
+        delete res;
 
     } catch (sql::SQLException &e) {
         success = false;
@@ -843,6 +889,9 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
     }
+    
+    return success;
+    
 }
 
 bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
@@ -1445,7 +1494,13 @@ void receive()
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
                                 if (!validateJSON (output) ) {
                                         log2db (con, 0, data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
-                                }
+                                } else {
+                                    if ( updateZone(con, getAtomikJSONValue("Status", output), getAtomikJSONValue("ColorMode", output), getAtomikJSONValue("Brightness", output), getAtomikJSONValue("Color", output), getAtomikJSONValue("WhiteTemp", output), 22, getLocalTimezone()) ) { 
+                                            std::cout << "Zone Updated!" << std::endl;
+                                    } else {
+                                            std::cout << "Error! Zone Not Updated!" << std::endl;
+                                    }
+                                } 
                                 sendJSON(output);
                                 JSONfilewrite(output);
                     			consoleWrite(output);
