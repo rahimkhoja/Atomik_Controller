@@ -273,6 +273,7 @@ void log2db (sql::Connection *con, int channel, std::string date, std::string re
 	
 	sql_update = "INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES (\""+source+"\", "+int2int(channel)+", \""+date+"\", \""+rec_data+"\", "+int2int(status)+", "+int2int(colormode)+", "+int2int(color)+", "+int2int(whitetemp)+", "+int2int(bright)+", "+int2int(processed)+", \""+add1+"\", \""+add2+"\")";
 
+    std::cout << sql_update << std::endl;
     try {
         
         sql::Statement *stmt;
@@ -855,7 +856,7 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
     } else {
         sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+" && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
     }
-    	std::cout << sql_select << std::endl;
+    
     try {
     
         sql::Statement *stmt;
