@@ -948,8 +948,8 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     
 }
 
-bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
-    bool success = false;
+int validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
+    int success = -1;
     std::string sql_select;
     int records;
 	
@@ -967,14 +967,14 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
         res = stmt->executeQuery(sql_select);
         
         records = res -> rowsCount();
-        
+        res -> next();
+                        
         std::cout << " validateRFChannel: "; 
         
         if ( records > 0 ) {
-            success = true;
             std::cout << " VALID" << std::endl;
+            success = res->getInt("zone_id");
         } else {
-            success = false;
             std::cout << " NOT VALID" << std::endl;
         }
         
@@ -984,27 +984,24 @@ bool validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
         
         delete res;
         delete stmt;
-
+        return success;
     } catch (sql::SQLException &e) {
-        success = false;
+        return -1;
         std::cout << "# ERR: SQLException in " << __FILE__;
         std::cout << "# ERR: " << e.what();
         std::cout << " (MySQL error code: " << e.getErrorCode();
         std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
     }
-    return success;
+    
 }
     
-bool validateJSON (std::string JSONstr) {
-    bool valid = false;
+int validateJSON (std::string JSONstr) {
+    
     int channel = getAtomikJSONValue("Channel", JSONstr);
     int add1 = getAtomikJSONValue("Address1", JSONstr);
     int add2 = getAtomikJSONValue("Address2", JSONstr);
+    int valid = validateRFChannel(con, add1 , add2, channel );
     
-    if( validateRFChannel(con, add1 , add2, channel ) ) {
-        // check if Valid
-        valid = true;
-    } 
     return valid;
 }
 
@@ -1495,16 +1492,17 @@ void receive()
                			{
                  			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
-                                if (!validateJSON (output) ) {
+                                int zone = validateJSON (output);
+                                if (zone == -1 ) {
                                         log2db (con, 0, data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
                                 } else {
-                                    if ( updateZone(con, getAtomikJSONValue("Status", output), getAtomikJSONValue("ColorMode", output), getAtomikJSONValue("Brightness", output), getAtomikJSONValue("Color", output), getAtomikJSONValue("WhiteTemp", output), 22, getLocalTimezone()) ) { 
+                                    if ( updateZone(con, getAtomikJSONValue("Status", output), getAtomikJSONValue("ColorMode", output), getAtomikJSONValue("Brightness", output), getAtomikJSONValue("Color", output), getAtomikJSONValue("WhiteTemp", output), zone, getLocalTimezone()) ) { 
                                             std::cout << "Zone Updated!" << std::endl;
                                     } else {
                                             std::cout << "Error! Zone Not Updated!" << std::endl;
                                     }
                                 } 
-                                sendJSON(output);
+                                // sendJSON(output);
                                 JSONfilewrite(output);
                     			consoleWrite(output);
                 		}
