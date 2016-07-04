@@ -1135,6 +1135,24 @@ void usage(const char *arg, const char *options)
 int main(int argc, char** argv)
 {
    
+   try {
+        
+        sql::Statement *stmt;
+        int recordsUpdated;
+
+        /* Create a connection */
+        driver = get_driver_instance();
+        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
+        /* Connect to the MySQL test database */
+        con->setSchema("atomik_controller");    
+    
+     } catch (sql::SQLException &e) {
+        std::cout << "# ERR: SQLException in " << __FILE__;
+        std::cout << "# ERR: " << e.what();
+        std::cout << " (MySQL error code: " << e.getErrorCode();
+        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+    }
+   
     const char *options = "hd";
     int c;
 
