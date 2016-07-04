@@ -1,4 +1,5 @@
-// g++ -std=c++11 -lcurl atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
+// sudo g++ -std=c++11 -lcurl -ljsoncpp -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
+
 
 #include <arpa/inet.h>
 #include <chrono>
@@ -75,18 +76,14 @@ int hex2int(std::string hexnum) {
 
 void runCommand(std::string command) {
 
-    std::string output = command;
-    std::replace( output.begin(), output.end(), ' ', ','); // replace all ' ' to ','
-    
-    addCommand(output);
-    //FILE *in;
-	//char buff[512];
+    FILE *in;
+	char buff[512];
 
-	//if(!(in = popen(command.c_str(), "r"))){
-	//	return;
-	//}
+	if(!(in = popen(command.c_str(), "r"))){
+		return;
+	}
     
-	//pclose(in);
+	pclose(in);
 }
 
 
@@ -239,9 +236,7 @@ void updateCurrentChannel(sql::Connection *con, int channel, int add1, int add2)
 
         stmt = con->createStatement();
         recordsUpdated = stmt->executeUpdate(sql_update);
-  
-        std::cout << " updateCurrentChannel: ( Remote: " << remote << " ) " << std::endl;
-    
+      
         delete stmt;
 
     } catch (sql::SQLException &e) {
