@@ -803,7 +803,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
 
         stmt = con->createStatement();
         res = stmt->executeQuery(sql_select);
-          
+        res->next();
         
             std::cout << "Loading Current Zone Data ... " << std::endl;
             /* Access column data by alias or column name */
