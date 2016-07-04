@@ -848,7 +848,7 @@ int validateRFChannel(sql::Connection *con, std::string mac, int chan) {
         }
         
         if ( chan != -1 ) {
-            //updateCurrentChannel(con, chan, mac); 
+            updateCurrentChannel(con, chan, mac); 
         }
         
         delete res;
