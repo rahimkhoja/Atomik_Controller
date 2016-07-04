@@ -807,7 +807,6 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
         
             std::cout << "Loading Current Zone Data ... " << std::endl;
             /* Access column data by alias or column name */
-            std::cout << "Device ID: " << res->getInt("device_id") << std::endl;
             
             if (new_s == -1 ) {
                     new_s        = res->getInt("zone_status");
