@@ -848,7 +848,7 @@ int validateRFChannel(sql::Connection *con, std::string mac, int chan) {
         }
         
         if ( chan != -1 ) {
-            updateCurrentChannel(con, chan, mac); 
+            //updateCurrentChannel(con, chan, mac); 
         }
         
         delete res;
@@ -868,8 +868,8 @@ int validateJSON (std::string JSONstr) {
     
     int channel = getAtomikJSONValue("Channel", JSONstr);
     std::string mac = getAtomikJSONMAC(JSONstr);
-    //int valid = validateRFChannel(con, mac, channel );
-    int valid = -1;
+    int valid = validateRFChannel(con, mac, channel );
+    //int valid = -1;
     return valid;
 }
 
