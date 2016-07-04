@@ -758,60 +758,9 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
         std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
     }
     
-    
-    sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
-       
-    try {
-        
-        sql::Statement *stmt;
-        sql::ResultSet *res;
+    std::string command = "/usr/bin/atomik-zone-update "+int2int(zone)+" "+int2int(new_s)+" "+int2int(new_b)+" "+int2int(new_cm)+" "+int2int(new_c)+" "+int2int(new_wt);
 
-        stmt = con->createStatement();
-        res = stmt->executeQuery(sql_select);
-          
-        while (res->next()) {
-            std::cout << "\tUpdating Devices... " << std::endl;
-            /* Access column data by alias or column name */
-            std::cout << "Device ID: " << res->getInt("device_id") << std::endl;
-            
-            int old_status        = res->getInt("device_status");
-            int old_colormode     = res->getInt("device_colormode");
-            int old_brightness    = res->getInt("device_brightness");
-            int old_color         = res->getInt("device_rgb256"); 
-            int old_whitetemp     = res->getInt("device_white_temprature"); 
-            int old_trans_id      = res->getInt("device_transmission");
-            int address1          = res->getInt("device_address1");
-            int address2          = res->getInt("device_address2"); 
-            int type_rgb          = res->getInt("device_type_rgb256");
-            int type_ww           = res->getInt("device_type_warm_white");
-            int type_cw           = res->getInt("device_type_cold_white");
-            int dev_id            = res->getInt("device_id"); 
-            
-            if ( type_cw == 1 & type_ww == 1 ) {
-                new_b = whiteBright(new_b);
-            } else {
-                    new_b = colorBright(new_b);
-            }
-            
-            int trans_id = transmit(new_b, old_brightness, new_s, old_status, new_c, old_color, new_wt, old_whitetemp, new_cm, old_colormode, address1, address2, old_trans_id, type_rgb, type_cw, type_ww);
-            updateDeviceProperties(con, new_s, new_cm, new_b, new_c, new_wt, trans_id, dev_id);
-        }
-        
-        updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm, timezone);
-        updateZoneDevicesProperties(con, zone, timezone);
-        
-        std::cout << " updateZone: ( Zone: " << zone << " ) " << std::endl;
-    
-        delete stmt;
-        delete res;
-
-    } catch (sql::SQLException &e) {
-        success = false;
-        std::cout << "# ERR: SQLException in " << __FILE__;
-        std::cout << "# ERR: " << e.what();
-        std::cout << " (MySQL error code: " << e.getErrorCode();
-        std::cout << ", SQLState: " << e.getSQLState() << " )" << std::endl;
-    }
+    runCommand(command);    
     
     return success;
     
@@ -838,7 +787,7 @@ int validateRFChannel(sql::Connection *con, std::string mac, int chan) {
         records = res -> rowsCount();
         res -> next();
                         
-        std::cout << " validateSMARTPHONEChannel: "; 
+        std::cout << " validateRFChannel: "; 
         
         if ( records > 0 ) {
             std::cout << " VALID" << std::endl;
@@ -1102,6 +1051,13 @@ void listen()
                     JSONfilewrite(jsontext);
                     // sendJSON(jsontext);
                     int zone = validateJSON(jsontext);
+                    if ( zone > 0 ) {
+                            if ( updateZone(con, getAtomikJSONValue("Status", jsontext), getAtomikJSONValue("ColorMode", jsontext), getAtomikJSONValue("Brightness", jsontext), getAtomikJSONValue("Color", jsontext), getAtomikJSONValue("WhiteTemp", jsontext), zone, getLocalTimezone());
+                                  std::cout << "Transmitted" << std::endl;  
+                            } else {
+                                   std::cout << "Not Transmitted" << std::endl;  
+                                }
+                    }
                     printf(jsontext.c_str());
                     printf("\n");
                     
