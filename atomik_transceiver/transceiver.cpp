@@ -122,6 +122,57 @@ option_code hashit (std::string inString) {
     if (inString == "-w") return w;
 }
 
+int getCommandListSize()
+{
+    int z;
+    commandListMutex.lock();
+    z = commandList.size();
+    commandListMutex.unlock();
+    return z; 
+}
+
+void addCommand(std::string str)
+{;
+    // add command string to bottom element of list
+    commandListMutex.lock();
+    commandList.push_back (str);
+    commandListMutex.unlock();
+    return; 
+}
+
+std::string getCommand()
+{
+    // returns the first command sting element in the list
+    
+    std::string str;
+    commandListMutex.lock();
+    str = commandList.front();
+    commandListMutex.unlock();
+    return str;
+}
+
+
+void removeCommand()
+{
+    // removes the first command string element from the listlong long c;
+    commandListMutex.lock();
+    commandList.pop_front();
+    commandListMutex.unlock();
+	return;     
+}
+
+std::string Vector2String(std::vector<std::string> vec)
+{
+    std::stringstream ss;
+    for(size_t i = 0; i < vec.size(); ++i)
+    {
+        if(i != 0)
+            ss << ",";
+        ss << vec[i];
+    }
+    return ss.str();
+}
+
 std::string int2hex(int x)
 {
     char out[2];
@@ -145,14 +196,18 @@ int hex2int(std::string hexnum) {
 
 void runCommand(std::string command) {
 
-    FILE *in;
-	char buff[512];
-
-	if(!(in = popen(command.c_str(), "r"))){
-		return;
-	}
+    std::string output = command;
+    std::replace( output.begin(), output.end(), ' ', ','); // replace all ' ' to ','
     
-	pclose(in);
+    addCommand(output);
+    //FILE *in;
+	//char buff[512];
+
+	//if(!(in = popen(command.c_str(), "r"))){
+	//	return;
+	//}
+    
+	//pclose(in);
 }
 
 
@@ -555,7 +610,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
     int move;
 	
 	if (cw == 1 && ww == 1 && rgb != 1) {
-    sendcommandbase = "sudo /usr/bin/transceiver -t 2 -q " + int2hex(add1) + " -r " + int2hex(add2) + " -c 01";
+    sendcommandbase = "/usr/bin/transceiver -t 2 -q " + int2hex(add1) + " -r " + int2hex(add2) + " -c 01";
 
     // White Bulb Details
 
@@ -651,7 +706,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
       }
 	  
   } else if (cw == 1 && rgb == 1 || ww == 1 && rgb == 1) {
-      sendcommandbase = "sudo /usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2);
+      sendcommandbase = "/usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2);
       // RGBWW and RGBCW
 
       if (new_s != old_s) {
@@ -1287,57 +1342,6 @@ void resetVars()
 
   command = 0x00;
   
-}
-
-int getCommandListSize()
-{
-    int z;
-    commandListMutex.lock();
-    z = commandList.size();
-    commandListMutex.unlock();
-    return z; 
-}
-
-void addCommand(std::string str)
-{;
-    // add command string to bottom element of list
-    commandListMutex.lock();
-    commandList.push_back (str);
-    commandListMutex.unlock();
-    return; 
-}
-
-std::string getCommand()
-{
-    // returns the first command sting element in the list
-    
-    std::string str;
-    commandListMutex.lock();
-    str = commandList.front();
-    commandListMutex.unlock();
-    return str;
-}
-
-
-void removeCommand()
-{
-    // removes the first command string element from the listlong long c;
-    commandListMutex.lock();
-    commandList.pop_front();
-    commandListMutex.unlock();
-	return;     
-}
-
-std::string Vector2String(std::vector<std::string> vec)
-{
-    std::stringstream ss;
-    for(size_t i = 0; i < vec.size(); ++i)
-    {
-        if(i != 0)
-            ss << ",";
-        ss << vec[i];
-    }
-    return ss.str();
 }
 
 std::vector<std::string> String2Vector (std::string vecstring)
