@@ -176,8 +176,29 @@ int getAtomikJSONValue(std::string name, std::string atomikJSON) {
                 } else {
                         return std::stoi(output);
                 }
+        } 
+
+}
+
+std::string getAtomikJSONMAC(std::string json) {
+
+        Json::Value root;
+        std::stringstream buffer;
+        Json::Reader reader;
+
+        bool parsingSuccessful = reader.parse( atomikJSON.c_str(), root );     //parse process
+        
+        if ( !parsingSuccessful )
+        {
+                std::cout  << "Failed to parse"
+                << reader.getFormattedErrorMessages();
+                return "error";
         }
 
+        if ( name == "MAC") {
+                std::string output = conf.get("MAC", "error" ).asString();
+                return output;
+        }
 }
 
 std::string getLocalTimezone() {
@@ -223,11 +244,11 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
     }
 }
 
-void updateCurrentChannel(sql::Connection *con, int channel, int add1, int add2) {
+void updateCurrentChannel(sql::Connection *con, int channel, std::string mac) {
 
     std::string sql_update;
 	
-	sql_update = "UPDATE atomik_remotes SET remote_current_channel="+int2int(channel)+" WHERE remote_address1="+int2int(add1)+" && remote_address2="+int2int(add2)+";"; 
+	sql_update = "UPDATE atomik_remotes SET remote_current_channel="+int2int(channel)+" WHERE remote_mac='"+mac+"';"; 
     
     try {
         
@@ -798,15 +819,15 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     
 }
 
-int validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
+int validateRFChannel(sql::Connection *con, std::string mac, int chan) {
     int success = -1;
     std::string sql_select;
     int records;
 	
     if ( chan == -1 ) {
-	    sql_select = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
+	    sql_select = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_mac='"mac+"' && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
     } else {
-        sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+" && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
+        sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_mac='"mac+"' && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
     }
     
     try {
@@ -819,7 +840,7 @@ int validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
         records = res -> rowsCount();
         res -> next();
                         
-        std::cout << " validateRFChannel: "; 
+        std::cout << " validateSMARTPHONEChannel: "; 
         
         if ( records > 0 ) {
             std::cout << " VALID" << std::endl;
@@ -829,7 +850,7 @@ int validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
         }
         
         if ( chan != -1 ) {
-            updateCurrentChannel(con, chan, add1, add2); 
+            updateCurrentChannel(con, chan, mac); 
         }
         
         delete res;
@@ -848,9 +869,8 @@ int validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
 int validateJSON (std::string JSONstr) {
     
     int channel = getAtomikJSONValue("Channel", JSONstr);
-    int add1 = getAtomikJSONValue("Address1", JSONstr);
-    int add2 = getAtomikJSONValue("Address2", JSONstr);
-    int valid = validateRFChannel(con, add1 , add2, channel );
+    std::string mac = getAtomikJSONMAC(JSONstr);
+    int valid = validateRFChannel(con, mac, channel );
     
     return valid;
 }
@@ -1080,9 +1100,10 @@ void listen()
                                   
                     sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                     jsontext = createJSON(mac_address.c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2]));
-                    
+                    printf(getAtomikJSONMAC(jsontext).c_str());
                     JSONfilewrite(jsontext);
-                    sendJSON(jsontext);
+                    // sendJSON(jsontext);
+                    int zone = validateJSON(jsontext);
                     printf(jsontext.c_str());
                     printf("\n");
                     
