@@ -823,9 +823,9 @@ int validateRFChannel(sql::Connection *con, std::string mac, int chan) {
     int records;
 	
     if ( chan == -1 ) {
-	    sql_select = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_mac='"mac+"' && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
+	    sql_select = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_mac='"+mac+"' && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
     } else {
-        sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_mac='"mac+"' && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
+        sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_mac='"+mac+"' && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
     }
     
     try {
