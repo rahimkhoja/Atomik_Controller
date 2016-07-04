@@ -1052,7 +1052,7 @@ void listen()
                     // sendJSON(jsontext);
                     int zone = validateJSON(jsontext);
                     if ( zone > 0 ) {
-                            if ( updateZone(con, getAtomikJSONValue("Status", jsontext), getAtomikJSONValue("ColorMode", jsontext), getAtomikJSONValue("Brightness", jsontext), getAtomikJSONValue("Color", jsontext), getAtomikJSONValue("WhiteTemp", jsontext), zone, getLocalTimezone());
+                            if ( updateZone(con, getAtomikJSONValue("Status", jsontext), getAtomikJSONValue("ColorMode", jsontext), getAtomikJSONValue("Brightness", jsontext), getAtomikJSONValue("Color", jsontext), getAtomikJSONValue("WhiteTemp", jsontext), zone, getLocalTimezone()) ) {
                                   std::cout << "Transmitted" << std::endl;  
                             } else {
                                    std::cout << "Not Transmitted" << std::endl;  
