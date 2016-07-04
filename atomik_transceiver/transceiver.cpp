@@ -922,6 +922,8 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
             
             if ( type_cw == 1 & type_ww == 1 ) {
                 new_b = whiteBright(new_b);
+            } else {
+                    new_b = colorBright(new_b);
             }
             
             int trans_id = transmit(new_b, old_brightness, new_s, old_status, new_c, old_color, new_wt, old_whitetemp, new_cm, old_colormode, address1, address2, old_trans_id, type_rgb, type_cw, type_ww);
