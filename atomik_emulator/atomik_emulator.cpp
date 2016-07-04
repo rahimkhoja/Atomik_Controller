@@ -186,7 +186,7 @@ std::string getAtomikJSONMAC(std::string json) {
         std::stringstream buffer;
         Json::Reader reader;
 
-        bool parsingSuccessful = reader.parse( atomikJSON.c_str(), root );     //parse process
+        bool parsingSuccessful = reader.parse( json.c_str(), root );     //parse process
         
         if ( !parsingSuccessful )
         {
@@ -195,10 +195,8 @@ std::string getAtomikJSONMAC(std::string json) {
                 return "error";
         }
 
-        if ( name == "MAC") {
-                std::string output = conf.get("MAC", "error" ).asString();
-                return output;
-        }
+        std::string output = root.get("MAC", "error" ).asString();
+        return output;
 }
 
 std::string getLocalTimezone() {
