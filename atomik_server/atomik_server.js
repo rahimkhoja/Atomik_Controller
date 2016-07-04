@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
 });
 
 var pool      =    mysql.createPool({
-    connectionLimit : 20, //important
+    connectionLimit : 3, //important
     host     : 'localhost',
     user     : 'root',
     password : 'raspberry',
@@ -31,56 +31,9 @@ connection.connect(function (err){
   }
 }); 
 
-
-function log2system(text) {
-  request({
-    url: 'http://localhost:42002/atomiklog', //URL to hit
-    qs: {from: 'Atomik_Server', time: +new Date()}, //Query string data
-    method: 'POST',
-    headers: {
-        'Content-Type': 'text/html',
-        'Custom-Header': 'Atomik'
-    },
-    body: text //Set the body as a string
-  }, function(error, response, body){
-    if(error) {
-        console.log(error);
-    }
-  });
-};
-
 var app = express();
 
 var PORT = 4200;
-
-
-function updateCurrentChannel(channel, remote_id ) {
-  console.log('Running -- updateCurrentChannel');
-     var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
-    pool.getConnection(function(err,connection){
-        if (err) {
-          connection.release();
-          console.log('{"code" : 100, "status" : "Error in connection database"}');
-          return;
-        }   
-
-        console.log('connected as id ' + connection.threadId);
-      console.log('SQL inside: ' + sql);
-        connection.query(sql,function(err,rows){
-            connection.release();
-            if (!err) {
-     console.log('Channel Updated');
-   } else {
-     console.log('Error while performing Query.');
-    }         
-        });
-
-        connection.on('error', function(err) {      
-              console.log('{"code" : 100, "status" : "Error in connection database"}');
-              return;     
-        });
-  });
-}
 
 
 function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
@@ -111,6 +64,7 @@ function log_emu_no_execute(channel, date, rec_data, status, colormode, color, w
     });
   });
 } 
+
 
 function updateDevice (status, colormode, brightness, color, whitetemp, transmission, device_id) {
   console.log('Running -- updateDevice');
@@ -206,71 +160,6 @@ function lastUpdate_Zone(zone_id) {
     });
   });
 } 
-
-
-
-
-function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
-
-  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES ("Radio", '+channel+', "'+date+'", "'+rec_data+'", '+status+', '+colormode+', '+color+', '+whitetemp+', '+bright+', 0, "'+add1+'", "'+add2+'")';
-
-  pool.getConnection(function(err,connection){
-    if (err) {
-      connection.release();
-      console.log('{"code" : 100, "status" : "Error in connection database"}');
-      return;
-    }   
-
-    console.log('connected as id ' + connection.threadId);
-    console.log('SQL inside: ' + sql);
-    connection.query(sql,function(err,rows){
-      connection.release();
-      if (!err) {
-        console.log('The solution is: ', rows);
-      } else {
-        console.log('Error while performing Query.');
-      }
-    });
- 
-    connection.on('error', function(err) {      
-      console.log('{"code" : 100, "status" : "Error in connection database"}');
-      return;     
-    });
-  });
-} 
-
-
-function log_tra_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
-
-  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES ("Radio", '+channel+', "'+date+'", "'+rec_data+'", '+status+', '+colormode+', '+color+', '+whitetemp+', '+bright+', 1, "'+add1+'", "'+add2+'")';
-
-
-  pool.getConnection(function(err,connection){
-    if (err) {
-      connection.release();
-      console.log('{"code" : 100, "status" : "Error in connection database"}');
-      return;
-    }   
-
-    console.log('connected as id ' + connection.threadId);
-    console.log('SQL inside: ' + sql);
-    connection.query(sql,function(err,rows){
-      connection.release();
-      if (!err) {
-      console.log('The solution is: ', rows);
-      log2system(sql);
-    } else {
-      console.log('Error while performing Query.');
-    }
-    });
- 
-    connection.on('error', function(err) {      
-      console.log('{"code" : 100, "status" : "Error in connection database"}');
-      return;     
-    });
-  });
-} 
-
 
 function validRF(zoneID, req){
   console.log('Valid Command!:');
@@ -417,77 +306,7 @@ function checkRFJSON ( address1, address2, channel, req ) {
   });
   
  }
-
-function validRFAddressCheck( add1, add2, callback ) {
-
-	var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+add1+" && atomik_remotes.remote_address2="+add2+";"; 
-    console.log(sql);
-	
-	pool.getConnection(function(err,connection){
-	  if (err) {
-        connection.release();
-        console.log('{"code" : 100, "status" : "Error in connection database"}');
-        return;
-      }   
-
-      console.log('connected as id ' + connection.threadId);
-      connection.query(sql,function(err,rows){
-			
-        connection.release();
-        if (err) throw err;
-   
-        if ( rows.length > 0) {
-          if ( rows ) {
-            console.log("Valid RF Remote"); 
-			callback(true);
-          }
-        } else {
-			callback(false);
-		}
-      });
-
-      connection.on('error', function(err) {      
-        console.log('{"code" : 100, "status" : "Error in connection database"}');
-        return;     
-      });
-	});
-}
-
-
-app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));  
-
-
-app.post('/emulator', function (req, res) {
-  res.send('ok!\n'); 
-  console.log('Emulator Data:');
-  console.log(req.body);
-
-  log_emu_no_execute(req.body.Configuration.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.IP, req.body.MAC);
-
-});
-
-app.post('/transceiver', function (req, res) {
- res.send('ok!\n');  
- console.log('Transceiver Data:');
- console.log(req.body);
  
- checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Configuration.Channel, req );
-});
-
-app.get('/cron', function (req, res) {
-  res.send('Hello Cron!');
-});
-
-
-app.listen(PORT, function () {
-  console.log('Atomik Server - Version 0.80');
-  console.log('Listening for Atomik JSON Data (Port: ' + PORT + ') : ( press ctrl-c to end )');
-});
-
 function atomikTransmitCMD(type, address1, address2, color, bright, tran, command ) {
   async.series([ 
     execFn('/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16), '/usr/atomik/')
@@ -804,3 +623,61 @@ function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_
   } // Close RGB WW and RGB CW Bulb Transmission
   return trans;
 }
+
+
+function validRFAddressCheck( add1, add2, callback ) {
+
+	var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+add1+" && atomik_remotes.remote_address2="+add2+";"; 
+    console.log(sql);
+	
+	pool.getConnection(function(err,connection){
+	  if (err) {
+        connection.release();
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;
+      }   
+
+      console.log('connected as id ' + connection.threadId);
+      connection.query(sql,function(err,rows){
+			
+        connection.release();
+        if (err) throw err;
+   
+        if ( rows.length > 0) {
+          if ( rows ) {
+            console.log("Valid RF Remote"); 
+			callback(true);
+          }
+        } else {
+			callback(false);
+		}
+      });
+
+      connection.on('error', function(err) {      
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;     
+      });
+	});
+}
+
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));  
+
+
+app.post('/atomik', function (req, res) {
+ res.send('ok!\n');  
+ console.log('Transceiver Data:');
+ console.log(req.body);
+ 
+ checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Configuration.Channel, req );
+});
+
+app.listen(PORT, function () {
+  console.log('Atomik Server - Version 0.80');
+  console.log('Listening for Atomik JSON Data (Port: ' + PORT + ') : ( press ctrl-c to end )');
+});
+
