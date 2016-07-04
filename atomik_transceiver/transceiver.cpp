@@ -273,7 +273,6 @@ void log2db (sql::Connection *con, int channel, std::string rec_data, int status
 	
 	sql_update = "INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES (\""+source+"\", "+int2int(channel)+", UTC_TIMESTAMP(6), \""+rec_data+"\", "+int2int(status)+", "+int2int(colormode)+", "+int2int(color)+", "+int2int(whitetemp)+", "+int2int(bright)+", "+int2int(processed)+", \""+add1+"\", \""+add2+"\")";
 
-    std::cout << sql_update << std::endl;
     try {
         
         sql::Statement *stmt;
