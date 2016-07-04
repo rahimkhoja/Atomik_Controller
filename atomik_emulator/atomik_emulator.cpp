@@ -868,8 +868,8 @@ int validateJSON (std::string JSONstr) {
     
     int channel = getAtomikJSONValue("Channel", JSONstr);
     std::string mac = getAtomikJSONMAC(JSONstr);
-    int valid = validateRFChannel(con, mac, channel );
-    
+    //int valid = validateRFChannel(con, mac, channel );
+    int valid = -1;
     return valid;
 }
 
