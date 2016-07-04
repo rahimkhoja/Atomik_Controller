@@ -825,7 +825,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
                     new_wt     = res->getInt("zone_white_temprature"); 
             }
         
-        std::cout << "Status: " << new_s << " - ColorMode: " << new_cm << " - Brightness: " << new_b << " - Color: " << new_c << " - WhiteTemp: " << new_wt << std::endl: 
+        std::cout << "Status: " << new_s << " - ColorMode: " << new_cm << " - Brightness: " << new_b << " - Color: " << new_c << " - WhiteTemp: " << new_wt << std::endl;
         delete stmt;
         delete res;
 
