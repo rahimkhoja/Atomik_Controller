@@ -1098,7 +1098,7 @@ void listen()
                                   
                     sprintf (message, "%02x %02x %02x", mesg[0], mesg[1], mesg[2]);
                     jsontext = createJSON(mac_address.c_str(), str, message,  MiLightCypher.getSmartPhoneAtomikJSON(mesg[0], mesg[1], mesg[2]));
-                    printf(getAtomikJSONMAC(jsontext).c_str());
+                    std::cout << getAtomikJSONMAC(jsontext).c_str()) << std::endl;
                     JSONfilewrite(jsontext);
                     // sendJSON(jsontext);
                     int zone = validateJSON(jsontext);
