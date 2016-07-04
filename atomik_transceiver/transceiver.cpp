@@ -267,11 +267,11 @@ std::string getLocalTimezone() {
     return str;
 }
 
-void log2db (sql::Connection *con, int channel, std::string date, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
+void log2db (sql::Connection *con, int channel, std::string rec_data, int status, int colormode, int color, int whitetemp, int bright, std::string add1, std::string add2, int processed, std::string source)  {
 	
 	std::string sql_update;
 	
-	sql_update = "INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES (\""+source+"\", "+int2int(channel)+", \""+date+"\", \""+rec_data+"\", "+int2int(status)+", "+int2int(colormode)+", "+int2int(color)+", "+int2int(whitetemp)+", "+int2int(bright)+", "+int2int(processed)+", \""+add1+"\", \""+add2+"\")";
+	sql_update = "INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES (\""+source+"\", "+int2int(channel)+", UTC_TIMESTAMP(6), \""+rec_data+"\", "+int2int(status)+", "+int2int(colormode)+", "+int2int(color)+", "+int2int(whitetemp)+", "+int2int(bright)+", "+int2int(processed)+", \""+add1+"\", \""+add2+"\")";
 
     std::cout << sql_update << std::endl;
     try {
@@ -282,7 +282,7 @@ void log2db (sql::Connection *con, int channel, std::string date, std::string re
         stmt = con->createStatement();
         recordsUpdated = stmt->executeUpdate(sql_update);
   
-        std::cout << " log2db: ( " << date << " ) " << recordsUpdated << " Records Updated!" << std::endl;
+        std::cout << " log2db: " << recordsUpdated << " Records Updated!" << std::endl;
     
         delete stmt;
 
@@ -1445,7 +1445,7 @@ void receive()
                  			sprintf(data, "%02X %02X %02X %02X %02X %02X %02X", packet[0], packet[1], packet[2], packet[3], packet[4], packet[5], packet[6]);
                     			std::string output = createJSON(int2hex(packet[1]), int2hex(packet[2]), data, MiLightCypher.getRadioAtomikJSON(packet[5], packet[3], packet[4]));
                                 if (!validateJSON (output) ) {
-                                        log2db (con, 0, getTime(), data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
+                                        log2db (con, 0, "", data, 0, 0, 0, 0, 0, int2hex(packet[1]), int2hex(packet[2]), 0, "Radio");
                                 }
                                 sendJSON(output);
                                 JSONfilewrite(output);
