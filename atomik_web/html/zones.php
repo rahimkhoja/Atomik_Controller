@@ -71,7 +71,8 @@ $rs->data_seek(0);
 <div class="container center-block">
     <div class="col-xs-2"></div>
         <div class="col-xs-4">
-           <h4><p>Zones List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Zones: <?php echo $db_records; ?></strong></p><p><a id="newzonebtn1" class="btn-primary btn">Add New Zone</a></p>  </div>
+           <h4>
+             <p>Zone List:</p></h4></div><div class="col-xs-4 text-right"><p><strong>Total Zones: <?php echo $db_records; ?></strong></p><p><a id="newzonebtn1" class="btn-primary btn">Add New Zone</a></p>  </div>
            <div class="col-xs-2"></div>
            </div><br>
            <div class="container center-block">

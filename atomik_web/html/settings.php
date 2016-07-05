@@ -560,8 +560,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-      <a class="navbar-brand" href="#"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
-    
+      <a class="navbar-brand" id="atomikLogo"><img src="img/Sun_Logo_Menu_50px.gif" width="50" height="50" alt=""/></a></div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
@@ -627,7 +626,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
           <hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a id="savesystem" href="#" class="btn-success btn">Save System Settings</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="savesystem" class="btn-success btn">Save System Settings</a></p></div>
   </div>
   <br><br>
   <hr><h4><p>Update Password:</p></h4>   
@@ -651,7 +650,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
   </table><hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a id="savepassword" href="#" class="btn-success btn">Save Password</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="savepassword" class="btn-success btn">Save Password</a></p></div>
   </div>
   <br><br>
   <hr>
@@ -701,7 +700,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
   <hr>
   <div class="container center col-xs-12">
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-6 text-center"><p><a id="savetime" href="#" class="btn-success btn">Save Time Settings</a></p></div>
+  <div class="col-xs-6 text-center"><p><a id="savetime" class="btn-success btn">Save Time Settings</a></p></div>
   </div>
   <br><br><hr>
         </div>
@@ -748,7 +747,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
     <div class="container center col-xs-12">
       <div class="col-xs-6 text-center"></div>
       <div class="col-xs-6 text-center">
-        <p><a id="saveeth0" href="#" class="btn-success btn">Save Ethernet Settings</a></p>
+        <p><a id="saveeth0" class="btn-success btn">Save Ethernet Settings</a></p>
       </div>
     </div>
   </div>
@@ -834,9 +833,9 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
       </tbody>
   </table><hr>
   <div class="container center col-xs-12">
-  <div class="col-xs-2 text-center"><p><a id="refreshssid" href="#" class="btn-primary btn">Refresh SSID List</a></p></div>  
+  <div class="col-xs-2 text-center"><p><a id="refreshssid" class="btn-primary btn">Refresh SSID List</a></p></div>  
   <div class="col-xs-6 text-center"></div>
-  <div class="col-xs-4 text-center"><p><a id="savewlan0" href="#" class="btn-success btn">Save Wireless Settings</a></p></div>
+  <div class="col-xs-4 text-center"><p><a id="savewlan0" class="btn-success btn">Save Wireless Settings</a></p></div>
   </div>
   <br><br><hr> 
     </div>
@@ -855,7 +854,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
   </div>
   <div class="col-xs-2">
   </div>
-  <div class="col-xs-2"><p><a href="#" id="reboot" class="btn-danger btn">Reboot System</a></p>
+  <div class="col-xs-2"><p><a id="reboot" class="btn-danger btn">Reboot System</a></p>
   </div>
   <div class="col-xs-2">
   </div>
