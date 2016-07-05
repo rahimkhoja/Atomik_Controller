@@ -14,6 +14,15 @@ var connection = mysql.createConnection({
   database: 'atomik_controller'
 });
 
+var pool      =    mysql.createPool({
+    connectionLimit : 3, //important
+    host     : 'localhost',
+    user     : 'root',
+    password : 'raspberry',
+    database : 'atomik_controller',
+    debug    :  false
+});
+
 connection.connect(function (err){
   if(!err) {
       console.log("Database is connected ... \n\n");  
@@ -22,73 +31,135 @@ connection.connect(function (err){
   }
 }); 
 
-
-function log2system(text) {
-  request({
-    url: 'http://localhost:42002/atomiklog', //URL to hit
-    qs: {from: 'Atomik_Server', time: +new Date()}, //Query string data
-    method: 'POST',
-    headers: {
-        'Content-Type': 'text/html',
-        'Custom-Header': 'Atomik'
-    },
-    body: text //Set the body as a string
-  }, function(error, response, body){
-    if(error) {
-        console.log(error);
-    }
-  });
-};
-
 var app = express();
 
 var PORT = 4200;
 
-function updateCurrentChannel( channel, remote_id ) {
-  console.log('Running -- updateCurrentChannel');
-  var sql = 'UPDATE atomik_remotes SET remote_current_channel = '+channel+' WHERE remote_id = '+remote_id+';'; 
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Channel Updated');
-   } else {
-     console.log('Error while performing Query.');
-    }
+
+function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
+
+  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_MAC, command_received_IP) VALUES ("Emulator", '+cha+', "'+date+'", "'+rec_data+'", '+sta+', '+cm+', '+col+', '+wt+', '+bri+', 0, "'+mac+'", "'+ip+'")'; 
+ 
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
   });
 } 
 
 
-function log_tra_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
+function updateDevice (status, colormode, brightness, color, whitetemp, transmission, device_id) {
+  console.log('Running -- updateDevice');
+  
+  var sql = "UPDATE atomik_devices SET device_status = "+status+", device_colormode = "+colormode+", device_brightness = "+brightness+", device_rgb256 = "+color+", device_white_temprature = "+whitetemp+", device_transmission = "+transmission+" WHERE device_id="+device_id+";";
+  
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
 
-  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES ("Radio", '+channel+', "'+date+'", "'+rec_data+'", '+status+', '+colormode+', '+color+', '+whitetemp+', '+bright+', 0, "'+add1+'", "'+add2+'")';
-
-  console.log(sql);
-  connection.query(sql, function(err, rows, fields) {
-    if (!err) {
-      console.log('The solution is: ', rows);
-      log2system(sql);
-    } else {
-      console.log('Error while performing Query.');
-    }
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
   });
-}
+} 
 
 
-function log_tra_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, add1, add2) {
+function lastUpdate_ZoneDevice(zone_id) {
+  console.log('Running -- lastUpdate_ZoneDevice');
+  
+  var tz = system_timezone();
+  
+  var sql = "UPDATE atomik_zone_devices SET zone_device_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_device_zone_id="+zone_id+";"; 
+  pool.getConnection(function(err,connection){
+   if (err) {
+     connection.release();
+     console.log('{"code" : 100, "status" : "Error in connection database"}');
+     return;
+   }   
 
-  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_ADD1, command_received_ADD2) VALUES ("Radio", '+channel+', "'+date+'", "'+rec_data+'", '+status+', '+colormode+', '+color+', '+whitetemp+', '+bright+', 1, "'+add1+'", "'+add2+'")';
+   console.log('connected as id ' + connection.threadId);
+   console.log('SQL inside: ' + sql);
+   connection.query(sql,function(err,rows){
+     connection.release();
+     if (!err) {
+       console.log('Zone Device- Last Update Set');
+     } else {
+       console.log('Error while performing Query.');
+     } 
+    });
 
-  console.log(sql);
-
-  connection.query(sql, function(err, rows, fields) {
-    if (!err) {
-      console.log('The solution is: ', rows);
-      log2system(sql);
-    } else {
-      console.log('Error while performing Query.');
-    }
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
   });
-}
+} 
+
+
+function lastUpdate_Zone(zone_id) {
+  console.log('Running -- lastUpdate_Zone');
+  
+  var tz = system_timezone();
+  
+  var sql = "UPDATE atomik_zones SET zone_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_id="+zone_id+";"; 
+  
+  pool.getConnection(function(err,connection){
+    if (err) {
+      connection.release();
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;
+    }   
+
+    console.log('connected as id ' + connection.threadId);
+    console.log('SQL inside: ' + sql);
+    connection.query(sql,function(err,rows){
+      connection.release();
+      if (!err) {
+        console.log('The solution is: ', rows);
+      } else {
+        console.log('Error while performing Query.');
+      }
+    });
+ 
+    connection.on('error', function(err) {      
+      console.log('{"code" : 100, "status" : "Error in connection database"}');
+      return;     
+    });
+  });
+} 
 
 function validRF(zoneID, req){
   console.log('Valid Command!:');
@@ -174,117 +245,68 @@ function invalidRF(req){
 
 function checkRFJSON ( address1, address2, channel, req ) {
   
+  var channel = channel;
   var addint1 = parseInt(address1, 16);
   var addint2 = parseInt(address2, 16);
+  var sql = "";
+  var updateChannel = false;
+  var fnreq = req;
   
-  if (typeof channel == 'undefined') {
-    (function(req) {
-    var sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
-    console.log(sql);
+  validRFAddressCheck ( addint1, addint2, function(response){  
+    var updatechannel = false;
     
-    connection.query(sql, function(err, rows ) {
-    if (err) throw err;
+    if (response == true) {
+      if (typeof channel == 'undefined') {
+	    sql = "SELECT atomik_zones.zone_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id = atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id = atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_remotes.remote_current_channel=atomik_zone_remotes.zone_remote_channel_number;";
+  	  } else {
+	    sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
+	    updateChannel = true;
+  	  }
+	
+  	  console.log(sql);
+    
+  	  pool.getConnection(function(err,connection){
+	    if (err) {
+          connection.release();
+          console.log('{"code" : 100, "status" : "Error in connection database"}');
+          return;
+	    }
+
+        console.log('connected as id ' + connection.threadId);
+        connection.query(sql,function(err,rows){
+			
+          console.log('SQL inside: ' + sql);
+          connection.release();
+          if (err) throw err;
    
-      if ( rows.length > 0) {
-        if ( rows ) {
-          console.log("Valid Command");
-          console.log("Row Zone_ID:" + rows[0].zone_id );
-          validRF(rows[0].zone_id, req);
+          if ( rows.length > 0) {
+            if ( rows ) {
+              console.log("Valid Command");
+              console.log("Row Zone_ID:" + rows[0].zone_id );
+              validRF(rows[0].zone_id, fnreq);
+            }
+         }  else {
+          invalidRF(fnreq);
+          updateChannel = true;
           
         }
-      }  else {
-        invalidRF(req);
-      }
-    });
-    })(req);
-    
-  } else {
-    (function(req) {
-      var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+" && atomik_zone_remotes.zone_remote_channel_number="+parseInt(channel)+";"; 
-      console.log(sql);
-    
-      connection.query(sql, function(err, rows ) {
-        if (err) throw err;
- 
-        if ( rows.length > 0) {
-          if (rows ) {
-            console.log("Valid Command and Updating Channel");
-            console.log("Row Zone_ID:" + rows[0].zone_id );
-            validRF(rows[0].zone_id, req);
-            updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
-          }
-        }  else {
-          // Check if valid remote addresses without valid channel, if so update channel for remote
-          var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+addint1+" && atomik_remotes.remote_address2="+addint2+";"; 
-          console.log(sql);
-          connection.query(sql, function(err, rows ) {
-            if (err) throw err;
-        
-            if ( rows.length > 0) {
-              if (rows ) {
-                updateCurrentChannel(req.body.Configuration.Channel, rows[0].zone_remote_remote_id);
-              }
-            }
-          });
-          invalidRF(req);
-        }
+	  
+	    if (updateChannel == true) {
+		   console.log("Updating Channel");
+		   updateCurrentChannel(fnreq.body.Configuration.Channel, rows[0].zone_remote_remote_id);
+	    }
+	  });
+
+      connection.on('error', function(err) {      
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;     
       });
-    })(req);
-  }
-}
-
-
-function log_emu_no_execute(channel, date, rec_data, status, colormode, color, whitetemp, bright, ip, mac) {
-
-  var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed, command_received_MAC, command_received_IP) VALUES ("Emulator", '+cha+', "'+date+'", "'+rec_data+'", '+sta+', '+cm+', '+col+', '+wt+', '+bri+', 0, "'+mac+'", "'+ip+'")'; 
-  console.log(sql);
-  connection.query(sql, function(err, rows, fields) {
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query.');
+    });
+    }   
   });
-} 
-
-app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));  
-
-
-app.get('/', function (req, res) {
-  res.send('Hello Root!');
-});
-
-
-app.post('/emulator', function (req, res) {
-  res.send('ok!\n'); 
-  console.log('Emulator Data:');
-  console.log(req.body);
-
-  log_emu_no_execute(req.body.Configuration.Channel, req.body.DateTime, req.body.Data, req.body.Configuration.Status, req.body.Configuration.ColorMode, req.body.Configuration.Color, req.body.Configuration.WhiteMode, req.body.Configuration.Brightness, req.body.IP, req.body.MAC);
-
-});
-
-app.post('/transceiver', function (req, res) {
- res.send('ok!\n');  
- console.log('Transceiver Data:');
- console.log(req.body);
+  
+ }
  
- checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Configuration.Channel, req );
-});
-
-app.get('/cron', function (req, res) {
-  res.send('Hello Cron!');
-});
-
-
-app.listen(PORT, function () {
-  console.log('Atomik Server - Version 0.80');
-  console.log('Listening for Atomik JSON Data (Port: ' + PORT + ') : ( press ctrl-c to end )');
-});
-
 function atomikTransmitCMD(type, address1, address2, color, bright, tran, command ) {
   async.series([ 
     execFn('/usr/bin/transceiver' + ' -t ' + type + ' -q ' + address1.toString(16)+' -r '+address2.toString(16)+' -c '+color.toString(16)+' -b '+bright.toString(16)+' -v '+trans.toString(16)+' -k '+command.toString(16), '/usr/atomik/')
@@ -373,111 +395,81 @@ function increaseTrans(tra) {
 }
 
 function updateZone(req, zoneID) {
-  console.log('Running -- updatezone');
-  (function (req) {
-    var sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission, atomik_zone_devices.zone_device_zone_id FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+zoneID+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1;";	
-    console.log(sql);
-    
-    connection.query(sql, function(err, results ) {
-      if (err) throw err;
-   
-      for (var i=0; i < results.length; i++) { 
-     
-        if (typeof req.body.Configuration.Status == 'undefined') {
-          sta = results[i].device_status;
-        } else if ( req.body.Configuration.Status == "On" ) {
-          sta = 1;
-        } else if ( req.body.Configuration.Status == "Off" ) {
-          sta = 0;
-        } else {
-          sta = '"'+req.body.Configuration.Status+'"';
-        }
-                
-        if (typeof req.body.Configuration.ColorMode == 'undefined') {
-          cm = results[i].device_colormode;
-        } else if ( req.body.Configuration.ColorMode == "RGB256" ) {
-          cm = 0;
-        } else if ( req.body.Configuration.ColorMode == "White" ) {
-          cm = 1;
-        }
-    
-        if (typeof req.body.Configuration.Color == 'undefined') {
-          col = results[i].device_rgb256;
-        } else {
-          col = req.body.Configuration.Color;
+    console.log('Running -- updatezone');
+
+    var zoneID = zoneID;
+    var req = req;
+    var sql = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission, atomik_zone_devices.zone_device_zone_id FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id=" + zoneID + " && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1;";
+
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            connection.release();
+            console.log('{"code" : 100, "status" : "Error in connection database"}');
+            return;
         }
 
-        if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
-          wt = results[i].device_white_temprature;
-        } else {
-          wt = req.body.Configuration.WhiteTemp;
-        }
-  
-        if (typeof req.body.Configuration.Brightness == 'undefined') {
-          bri = results[i].device_brightness;
-        } else {
-              bri = req.body.Configuration.Brightness;
-        }
-         console.log('Transmit Address: '+results[i].device_address1+' ('+parseInt(results[i].device_address1, 16)+') '+results[i].device_address2+' ('+parseInt(results[i].device_address2, 16)+')');
-        traNumber = transmit(bri, results[i].device_brightness, sta, results[i].device_status, col, results[i].device_rgb256, wt, results[i].device_white_temprature, cm, results[i].device_colormode, results[i].device_address1, results[i].device_address2, results[i].device_transmission, results[i].device_type_rgb256, results[i].device_type_cold_white, results[i].device_type_warm_white);
-        
-        updateDevice(sta, cm, bri, col, wt, traNumber, results[i].device_id);
-        lastUpdate_ZoneDevice(results[i].zone_device_zone_id);
-        lastUpdate_Zone(results[i].zone_device_zone_id);
-      }
+        console.log('connected as id ' + connection.threadId);
+        connection.query(sql, function(err, rows) {
+
+            console.log('SQL inside: ' + sql);
+            connection.release();
+            if (err) throw err;
+
+            if (rows.length > 0) {
+                if (rows) {
+                    for (var i = 0; i < rows.length; i++) {
+
+                        if (typeof req.body.Configuration.Status == 'undefined') {
+                            sta = rows[i].device_status;
+                        } else if (req.body.Configuration.Status == "On") {
+                            sta = 1;
+                        } else if (req.body.Configuration.Status == "Off") {
+                            sta = 0;
+                        } else {
+                            sta = '"' + req.body.Configuration.Status + '"';
+                        }
+
+                        if (typeof req.body.Configuration.ColorMode == 'undefined') {
+                            cm = rows[i].device_colormode;
+                        } else if (req.body.Configuration.ColorMode == "RGB256") {
+                            cm = 0;
+                        } else if (req.body.Configuration.ColorMode == "White") {
+                            cm = 1;
+                        }
+
+                        if (typeof req.body.Configuration.Color == 'undefined') {
+                            col = rows[i].device_rgb256;
+                        } else {
+                            col = req.body.Configuration.Color;
+                        }
+
+                        if (typeof req.body.Configuration.WhiteTemp == 'undefined') {
+                            wt = rows[i].device_white_temprature;
+                        } else {
+                            wt = req.body.Configuration.WhiteTemp;
+                        }
+
+                        if (typeof req.body.Configuration.Brightness == 'undefined') {
+                            bri = rows[i].device_brightness;
+                        } else {
+                            bri = req.body.Configuration.Brightness;
+                        }
+                        console.log('Transmit Address: ' + rows[i].device_address1 + ' (' + parseInt(rows[i].device_address1, 16) + ') ' + rows[i].device_address2 + ' (' + parseInt(rows[i].device_address2, 16) + ')');
+                        traNumber = transmit(bri, rows[i].device_brightness, sta, rows[i].device_status, col, rows[i].device_rgb256, wt, rows[i].device_white_temprature, cm, rows[i].device_colormode, rows[i].device_address1, rows[i].device_address2, rows[i].device_transmission, rows[i].device_type_rgb256, rows[i].device_type_cold_white, rows[i].device_type_warm_white);
+
+                        updateDevice(sta, cm, bri, col, wt, traNumber, rows[i].device_id);
+                    }
+                    lastUpdate_ZoneDevice(zoneID);
+                    lastUpdate_Zone(zoneID);
+                }
+            }
+        });
+
+        connection.on('error', function(err) {
+            console.log('{"code" : 100, "status" : "Error in connection database"}');
+            return;
+        });
     });
-  })(req);
-}
-
-function updateDevice (status, colormode, brightness, color, whitetemp, transmission, device_id) {
-  console.log('Running -- updateDevice');
-  
-  var sql = "UPDATE atomik_devices SET device_status = "+status+", device_colormode = "+colormode+", device_brightness = "+brightness+", device_rgb256 = "+color+", device_white_temprature = "+whitetemp+", device_transmission = "+transmission+" WHERE device_id="+device_id+";";
-  
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Device- Update Details');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
-}
-
-
-function lastUpdate_ZoneDevice(zone_id) {
-  console.log('Running -- lastUpdate_ZoneDevice');
-  
-  var tz = system_timezone();
-  
-  var sql = "UPDATE atomik_zone_devices SET zone_device_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_device_zone_id="+zone_id+";"; 
-  
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Zone Device- Last Update Set');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
-}
-
-
-function lastUpdate_Zone(zone_id) {
-  console.log('Running -- lastUpdate_Zone');
-  
-  var tz = system_timezone();
-  
-  var sql = "UPDATE atomik_zones SET zone_last_update = CONVERT_TZ(NOW(), '"+tz+"', 'UTC') WHERE zone_id="+zone_id+";"; 
-  
-  console.log(sql);
-  connection.query(sql, function(err) {
-   if (!err) {
-     console.log('Zone - Last Update Set');
-   } else {
-     console.log('Error while performing Query.');
-    }
-  });
 }
 
 
@@ -631,3 +623,61 @@ function transmit(new_b, old_b, new_s, old_s, new_c, old_c, new_wt, old_wt, new_
   } // Close RGB WW and RGB CW Bulb Transmission
   return trans;
 }
+
+
+function validRFAddressCheck( add1, add2, callback ) {
+
+	var sql = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+add1+" && atomik_remotes.remote_address2="+add2+";"; 
+    console.log(sql);
+	
+	pool.getConnection(function(err,connection){
+	  if (err) {
+        connection.release();
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;
+      }   
+
+      console.log('connected as id ' + connection.threadId);
+      connection.query(sql,function(err,rows){
+			
+        connection.release();
+        if (err) throw err;
+   
+        if ( rows.length > 0) {
+          if ( rows ) {
+            console.log("Valid RF Remote"); 
+			callback(true);
+          }
+        } else {
+			callback(false);
+		}
+      });
+
+      connection.on('error', function(err) {      
+        console.log('{"code" : 100, "status" : "Error in connection database"}');
+        return;     
+      });
+	});
+}
+
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));  
+
+
+app.post('/atomik', function (req, res) {
+ res.send('ok!\n');  
+ console.log('Transceiver Data:');
+ console.log(req.body);
+ 
+ checkRFJSON ( req.body.Address1, req.body.Address2, req.body.Configuration.Channel, req );
+});
+
+app.listen(PORT, function () {
+  console.log('Atomik Server - Version 0.80');
+  console.log('Listening for Atomik JSON Data (Port: ' + PORT + ') : ( press ctrl-c to end )');
+});
+
