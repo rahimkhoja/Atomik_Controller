@@ -78,7 +78,7 @@ function Check2700to6500( $input )
 function updateZone($db, $zon, $new_b,  $new_s,  $new_c,  $new_wt,  $new_cm, $tz) {
 
 	$updateZoneCommand = "sudo /usr/bin/atomik-zone-update ".trim($zon)." ".trim($new_s)." ".trim($new_cm)." ".trim($new_b)." ".trim($new_c)." ".trim($new_wt);
-	
+	echo $updateZoneCommand ;
 	exec($updateZoneCommand);
 	return TRUE;
 }
