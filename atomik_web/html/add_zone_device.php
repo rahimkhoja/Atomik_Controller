@@ -164,7 +164,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0B";
       }
 
-      exec($sendcom . ' > /dev/null &');
+      exec($sendcom);
     } // End Status Change
     if ($new_s == 1) {
 
@@ -182,7 +182,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 08";
         }
 
-        exec($sendcom . ' > /dev/null &');
+        exec($sendcom);
       }
 
       if ($new_b != $old_b) {
@@ -202,7 +202,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           if ($new_pos == array_search(100, $Brightness)) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           } else {
             // If not 100% brightness, calcuate how many Brightness positions to move. Issue correct amount of commands to increase Brightness to specified level
 
@@ -210,7 +210,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             for ($x = 0; $x <= $move; $x++) {
               $trans = IncrementTransmissionNum($trans);
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0C";
-              exec($sendcom . ' > /dev/null &');
+              exec($sendcom);
             }
           }
           // Lower Brightness Detected
@@ -221,7 +221,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           for ($x = 0; $x <= $move; $x++) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 04";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
         }
       }
@@ -241,7 +241,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           for ($x = 0; $x <= $move; $x++) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
           // Else White Temprature is getting colder
 
@@ -253,7 +253,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           for ($x = 0; $x <= $move; $x++) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
         }
       }
@@ -274,7 +274,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
       else {
         $sendcom = $sendcommandbase . " -k 04 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
       }
-      exec($sendcom . ' > /dev/null &');
+      exec($sendcom);
     }
 
     // End Status Change
@@ -293,7 +293,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $sendcom = $sendcommandbase . " -k 03 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
 		  $old_b = 0;
         }
-        exec($sendcom . ' > /dev/null &');
+        exec($sendcom);
       }
       // End Color Mode Change
 
@@ -303,10 +303,10 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           // Color Change
           $trans = IncrementTransmissionNum($trans);
           $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
-          exec($initcom . ' > /dev/null &');
+          exec($initcom);
           $trans = IncrementTransmissionNum($trans);
           $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 0f -v " . dechex($trans);
-          exec($sendcom . ' > /dev/null &');
+          exec($sendcom);
         }
         // End Color Change
       }
@@ -419,7 +419,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         if ($new_b == 100) { // 26
           $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(185) . " -k 0e -v " . dechex($trans);
         }
-        exec($sendcom . ' > /dev/null &');
+        exec($sendcom);
       }
       // End Brightness Change
     }
@@ -514,8 +514,6 @@ $drs->data_seek(0);
 		if ($conn->query($sql) === TRUE) {
 			$page_success = 1;
     		$success_text = "Zone Device Added To Zone DB!";
-    		echo "<br />";
-    		echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
   		}
 	}	
     
@@ -524,6 +522,9 @@ $drs->data_seek(0);
     $page_error = 1;
     $error_text = "Error Adding Device To Zone DB!";
   }
+  
+  echo "<br />";
+    		echo '<script type="text/javascript">' . "$().redirect('zone_details.php', {'zone_id': " . trim($_zone_id) . "});</script>";
 }
 
 

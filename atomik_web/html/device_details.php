@@ -132,7 +132,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0B";
       }
 
-      exec($sendcom . ' > /dev/null &');
+      exec($sendcom);
     } // End Status Change
     if ($new_s == 1) {
 
@@ -152,7 +152,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		  
         }
 
-        exec($sendcom . ' > /dev/null &');
+        exec($sendcom);
       }
 
       if ($new_b != $old_b || $old_cm != $new_cm) {
@@ -172,7 +172,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           if ($new_pos == array_search(100, $Brightness)) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 18";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
           else {
 
@@ -182,7 +182,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
             for ($x = 0; $x <= $move; $x++) {
               $trans = IncrementTransmissionNum($trans);
               $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0C";
-              exec($sendcom . ' > /dev/null &');
+              exec($sendcom);
             }
           }
 
@@ -197,7 +197,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           for ($x = 0; $x <= $move; $x++) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 04";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
         }
       }
@@ -220,7 +220,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           for ($x = 0; $x <= $move; $x++) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0e";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
 
           // Else White Temprature is getting colder
@@ -234,7 +234,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           for ($x = 0; $x <= $move; $x++) {
             $trans = IncrementTransmissionNum($trans);
             $sendcom = $sendcommandbase . " -k " . dechex((255 - $trans)) . " -v " . dechex($trans) . " -b 0f";
-            exec($sendcom . ' > /dev/null &');
+            exec($sendcom);
           }
         }
       }
@@ -259,7 +259,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         $sendcom = $sendcommandbase . " -k 04 -c " . dechex($old_c) . " -b " . dechex($old_b) . " -v " . dechex($trans);
       }
 
-      exec($sendcom . ' > /dev/null &');
+      exec($sendcom);
     }
 
     // End Status Change
@@ -282,7 +282,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 		  $old_b = 0;
         }
 
-        exec($sendcom . ' > /dev/null &');
+        exec($sendcom);
       }
 
       // End Color Mode Change
@@ -297,10 +297,10 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
           $trans = IncrementTransmissionNum($trans);
           $initcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 03 -v " . dechex($trans);
-          exec($initcom . ' > /dev/null &');
+          exec($initcom);
           $trans = IncrementTransmissionNum($trans);
           $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -k 0f -v " . dechex($trans);
-          exec($sendcom . ' > /dev/null &');
+          exec($sendcom);
         }
 
         // End Color Change
@@ -418,7 +418,7 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
           $sendcom = $sendcommandbase . " -c " . dechex($new_c) . " -b " . dechex(185) . " -k 0e -v " . dechex($trans);
         }
 
-        exec($sendcom . ' > /dev/null &');
+        exec($sendcom);
       }
 
       // End Brightness Change
@@ -1094,7 +1094,7 @@ if ($command <> "" && $command != "" && $command == "sync_device") {
       $sendcom = "sudo /usr/bin/transceiver -s -t 1 -q " . dechex($_device_address1) . " -r " . dechex($_device_address2) . " -v " . dechex($_device_transmission);
     }
 
-    exec($sendcom . ' > /dev/null &');
+    exec($sendcom);
     $_device_transmission = $_device_transmission + 5;
     $sql = "UPDATE atomik_devices SET device_transmission = " . trim($_device_transmission) . " WHERE device_id=" . $_device_id . ";";
     if ($conn->query($sql) === TRUE) {
@@ -1131,7 +1131,7 @@ if ($command <> "" && $command != "" && $command == "desync_device") {
       $sendcom = "sudo /usr/bin/transceiver -u -t 1 -q " . dechex($_device_address1) . " -r " . dechex($_device_address2) . " -v " . dechex($_device_transmission);
     }
 
-    exec($sendcom . ' > /dev/null &');
+    exec($sendcom);
     $_device_transmission = $_device_transmission + 5;
     $sql = "UPDATE atomik_devices SET device_transmission = " . trim($_device_transmission) . " WHERE device_id=" . $_device_id . ";";
     if ($conn->query($sql) === TRUE) {
