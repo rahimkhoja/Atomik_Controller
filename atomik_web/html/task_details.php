@@ -521,15 +521,15 @@ if ($command <> "" && $command !="" && $command == "save_general")
 		{
 			array_push($erro, "No Changes To Save");
 		} else {
-			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_remote_name)) {
-				array_push($erro, "Task Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_task_name = 1;
-			}
+			if (!preg_match("/^[a-zA-Z0-9. -]+$/", $_task_name)) {
+			array_push($erro, "Task Name Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_task_name = 1;
+		}
 		
-			if ( !( ( !empty($_task_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_task_description) ) || empty($_task_description) ) ) {
-				array_push($erro, "Task Description  Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
-				$_error_task_description = 1;
-			}
+		if ( !( ( !empty($_task_description) && preg_match("/^[a-zA-Z0-9. -]+$/", $_task_description) ) || empty($_task_description) ) ) {
+			array_push($erro, "Task Description Contains Illegal Characters, Please Only Use Letters, Numbers, Spaces, Periods, and Dashes");
+			$_error_task_description = 1;
+		}
 		}
 	}
 	
