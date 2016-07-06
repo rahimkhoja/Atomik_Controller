@@ -27,7 +27,7 @@ then
 printf "\twep_key0=%s\n" "$wlan0_password"
 fi
 
-echo -e 'wep_tx_keyidx=0'
+echo -e "\twep_tx_keyidx=0"
 fi
 
 if [ $wlan0_method == "2" ]
@@ -36,43 +36,43 @@ printf "\tssid=\"%s\"\n" "$wlan0_ssid"
 echo -e "\tkey_mgmt=NONE"
 if [ $wlan0_algorithm == "0" ]
 then
-echo -e 'wep_key0="$wlan0_password"'
+printf "\twep_key0=\"%s\"\n" "$wlan0_password"
 fi
 if [ $wlan0_algorithm == "1" ]
 then
-echo -e 'wep_key0=$wlan0_password'
+printf "\twep_key0=%s\n" "$wlan0_password"
 fi
 
-echo -e 'wep_tx_keyidx=0'
-echo -e 'auth_alg=SHARED'
+echo -e "\twep_tx_keyidx=0"
+echo -e "\tauth_alg=SHARED"
 fi
 
 if [ $wlan0_method == "3" ]
 then
 printf "\tssid=\"%s\"\n" "$wlan0_ssid"
-echo -e 'proto=WPA'
-echo -e 'key_mgmt=WPA-PSK'
-echo -e 'pairwise=CCMP TKIP'
-echo -e 'group=CCMP TKIP WEP104 WEP40'
-echo -e 'psk="$wlan0_password"'
+echo -e "\tproto=WPA"
+echo -e "\tkey_mgmt=WPA-PSK"
+echo -e "\tpairwise=CCMP TKIP"
+echo -e "\tgroup=CCMP TKIP WEP104 WEP40"
+printf "\tpsk=\"%s\"\n" "$wlan0_password"
 fi
 
 if [ $wlan0_method == "4" ]
 then
 printf "\tssid=\"%s\"\n" "$wlan0_ssid"
-echo -e 'psk="$wlan0_password"'
-echo -e 'proto=RSN'
-echo -e 'key_mgmt=WPA-PSK'
+printf "\tpsk=\"%s\"\n" "$wlan0_password"
+echo -e "\tproto=RSN"
+echo -e "\tkey_mgmt=WPA-PSK"
 if [ $wlan0_algorithm == "2" ]
 then
-echo -e ' pairwise=TKIP'
+echo -e "\tpairwise=TKIP"
 fi
 if [ $wlan0_algorithm == "3" ]
 then
-echo -e 'pairwise=CCMP'
+echo -e "\tpairwise=CCMP"
 fi
 
 fi
 
-sudo echo -e "\n}"
+sudo echo -e "}"
 exit 0
