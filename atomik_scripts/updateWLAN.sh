@@ -8,24 +8,23 @@ wlan0_password=$(mysql -uroot -praspberry -se "SELECT wlan0_password FROM atomik
 wpa_sup_file=$(sudo cat /etc/wpa_supplicant/wpa_supplicant.conf | sed -e '/network={/,/}/c\network={\n')
 
 sudo echo -e "$wpa_sup_file"
-printf "\tssid=\"%s\"\n" "$wlan0_ssid"
 if [ $wlan0_method == "0" ] 
 then 
-echo -e 'ssid="$wlan0_ssid"'
-echo -e 'key_mgmt=NONE'
+printf "\tssid=\"%s\"\n" "$wlan0_ssid"
+echo -e "\tkey_mgmt=NONE"
 fi
 
 if [ $wlan0_method == "1" ]
 then
-echo -e 'ssid="$wlan0_ssid"'
-echo -e 'key_mgmt=NONE'
+printf "\tssid=\"%s\"\n" "$wlan0_ssid"
+echo -e "\tkey_mgmt=NONE"
 if [ $wlan0_algorithm == "0" ]
 then
-echo -e 'wep_key0="$wlan0_password"'
+printf "\twep_key0=\"%s\"\n" "$wlan0_password"
 fi
 if [ $wlan0_algorithm == "1" ]
 then
-echo -e 'wep_key0=$wlan0_password'
+printf "\twep_key0=%s\n" "$wlan0_password"
 fi
 
 echo -e 'wep_tx_keyidx=0'
@@ -33,8 +32,8 @@ fi
 
 if [ $wlan0_method == "2" ]
 then
-echo -e 'ssid="$wlan0_ssid"'
-echo -e 'key_mgmt=NONE'
+printf "\tssid=\"%s\"\n" "$wlan0_ssid"
+echo -e "\tkey_mgmt=NONE"
 if [ $wlan0_algorithm == "0" ]
 then
 echo -e 'wep_key0="$wlan0_password"'
@@ -50,7 +49,7 @@ fi
 
 if [ $wlan0_method == "3" ]
 then
-echo -e 'ssid="$wlan0_ssid"'
+printf "\tssid=\"%s\"\n" "$wlan0_ssid"
 echo -e 'proto=WPA'
 echo -e 'key_mgmt=WPA-PSK'
 echo -e 'pairwise=CCMP TKIP'
@@ -60,7 +59,7 @@ fi
 
 if [ $wlan0_method == "4" ]
 then
-echo -e 'ssid="$wlan0_ssid"'
+printf "\tssid=\"%s\"\n" "$wlan0_ssid"
 echo -e 'psk="$wlan0_password"'
 echo -e 'proto=RSN'
 echo -e 'key_mgmt=WPA-PSK'
