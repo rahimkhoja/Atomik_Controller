@@ -12,7 +12,7 @@ eth0_ip=$(mysql -uroot -praspberry -se "SELECT eth0_ip FROM atomik_controller.at
 
 eth0_mask=$(mysql -uroot -praspberry -se "SELECT eth0_mask FROM atomik_controller.atomik_settings");
 
-eth0_gate=$(mysql -uroot -praspberry -se "SELECT eth0_gatway FROM atomik_controller.atomik_settings");
+eth0_gate=$(mysql -uroot -praspberry -se "SELECT eth0_gateway FROM atomik_controller.atomik_settings");
 
 eth0_dns=$(mysql -uroot -praspberry -se "SELECT eth0_dns FROM atomik_controller.atomik_settings");
 
