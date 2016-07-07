@@ -136,7 +136,7 @@ fi
 
 sudo sed -i '/denyinterfaces/d' /etc/dhcpcd.conf
 
-dhcpcd=$(sudosed '/^nohook lookup-hostname/q' /etc/dhcpcd.conf)
+dhcpcd=$(sudo sed '/^nohook lookup-hostname/q' /etc/dhcpcd.conf)
 
 echo -e "$denyadap" > /tmp/dhcpcd.conf
 echo -e "$dhcpcd" >> /tmp/dhcpcd.conf
