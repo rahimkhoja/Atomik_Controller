@@ -24,6 +24,11 @@ wlan0_gate=$(mysql -uroot -praspberry -se "SELECT wlan0_gateway FROM atomik_cont
 
 wlan0_dns=$(mysql -uroot -praspberry -se "SELECT wlan0_dns FROM atomik_controller.atomik_settings");
 
+echo $eth0_status+"\n"
+echo $wlan0_status+"\n"
+echo $eth0_type+"\n"
+echo $wlan0_type+"\n"
+
 
 if [ $wlan0_status -eq 0 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 0 ] # 0 1 0 0 
 then
