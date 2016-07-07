@@ -98,8 +98,8 @@ then
 fi
 
 
-echo "$denyadap" >> /tmp/t.out
-echo "$static" >> /tmp/t1.out
+echo $denyadap >> /tmp/t.out
+echo $static >> /tmp/t1.out
 
 
  
