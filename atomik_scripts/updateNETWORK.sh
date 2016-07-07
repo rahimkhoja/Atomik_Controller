@@ -1,5 +1,32 @@
 #!/bin/bash
 
+function netmask2cidr()
+{
+  case $1 in
+      0x*)
+      local hex=${1#0x*} quad=
+      while [ -n "${hex}" ]; do
+        local lastbut2=${hex#??*}
+        quad=${quad}${quad:+.}0x${hex%${lastbut2}*}
+        hex=${lastbut2}
+      done
+      set -- ${quad}
+      ;;
+  esac
+
+  local i= len=
+  local IFS=.
+  for i in $1; do
+    while [ ${i} != "0" ]; do
+      len=$((${len} + ${i} % 2))
+      i=$((${i} >> 1))
+    done
+  done
+
+  echo "${len}"
+}
+
+
 eth0_status=$(mysql -uroot -praspberry -se "SELECT eth0_status FROM atomik_controller.atomik_settings");
 
 wlan0_status=$(mysql -uroot -praspberry -se "SELECT wlan0_status FROM atomik_controller.atomik_settings");
@@ -24,11 +51,16 @@ wlan0_gate=$(mysql -uroot -praspberry -se "SELECT wlan0_gateway FROM atomik_cont
 
 wlan0_dns=$(mysql -uroot -praspberry -se "SELECT wlan0_dns FROM atomik_controller.atomik_settings");
 
+wlan0_mask_cidr=$(netmask2cidr wlan0_mask);
+eth0_mask_cidr=$(netmask2cidr eth0_mask);
 
 echo $wlan0_status
 echo $eth0_status
 echo $wlan0_type
 echo $eth0_type
+
+echo $wlan0_mask_cidr
+echo $eth0_mask_cidr
 
 if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "0" ] # 0 1 0 0 
 then
