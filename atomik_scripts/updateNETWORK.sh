@@ -50,6 +50,11 @@ then
 echo yup 4;
 fi
 
+if [ $wlan0_status -eq 1 ] && [ "$wlan0_status" == "1" ] && [ $wlan0_status == "1" ] && [[ $wlan0_status == *"1"* ]]
+then
+echo 4 conditions;
+fi
+
 if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "0" ] # 0 1 0 0 
 then
   denyadap = 'denyinterfaces wlan0'
