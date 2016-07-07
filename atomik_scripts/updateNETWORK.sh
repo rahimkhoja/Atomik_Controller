@@ -24,10 +24,10 @@ wlan0_gate=$(mysql -uroot -praspberry -se "SELECT wlan0_gateway FROM atomik_cont
 
 wlan0_dns=$(mysql -uroot -praspberry -se "SELECT wlan0_dns FROM atomik_controller.atomik_settings");
 
-echo $eth0_status+"\n"
-echo $wlan0_status+"\n"
-echo $eth0_type+"\n"
-echo $wlan0_type+"\n"
+echo $eth0_status
+echo $wlan0_status
+echo $eth0_type
+echo $wlan0_type
 
 
 if [ $wlan0_status -eq 0 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 0 ] # 0 1 0 0 
@@ -62,6 +62,7 @@ fi
 
 if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 1 ] # 1 1 0 1
 then
+  echo Here
   denyadap = 'denyinterfaces eth0'
   static = "interface eth0\nstatic ip_address=$eth0_ip\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
