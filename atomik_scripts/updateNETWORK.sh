@@ -51,8 +51,8 @@ wlan0_gate=$(mysql -uroot -praspberry -se "SELECT wlan0_gateway FROM atomik_cont
 
 wlan0_dns=$(mysql -uroot -praspberry -se "SELECT wlan0_dns FROM atomik_controller.atomik_settings");
 
-wlan0_mask_cidr=$(netmask2cidr wlan0_mask);
-eth0_mask_cidr=$(netmask2cidr eth0_mask);
+wlan0_mask_cidr=netmask2cidr wlan0_mask;
+eth0_mask_cidr=netmask2cidr eth0_mask;
 
 echo $wlan0_status
 echo $eth0_status
