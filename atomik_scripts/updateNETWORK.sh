@@ -134,13 +134,11 @@ then
   static="interface wlan0\nstatic ip_address=$wlan0_ip/$wlan0_mask_cidr\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search=\n\ninterface eth0\nstatic ip_address=$eth0_ip/$eth0_mask_cidr\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
 
+sudo sed -i '/denyinterfaces/d' /etc/dhcpcd.conf
 
-echo -e "$denyadap" >> /tmp/t.out
-echo -e $static >> /tmp/t1.out
+dhcpcd=$(sudosed '/^nohook lookup-hostname/q' /etc/dhcpcd.conf)
 
-
- 
-#sudo sed -i '/denyinterfaces/d' /etc/dhcpcd.conf 
-
-#sudo echo "$denyadap" >> /tmp/dhcpcd.conf 
+echo -e "$denyadap" > /tmp/dhcpcd.conf
+echo -e "$dhcpcd" >> /tmp/dhcpcd.conf
+echo -e "$static" >> /tmp/dhcpcd.conf
 
