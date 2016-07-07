@@ -131,7 +131,7 @@ fi
 if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "1" ] # 1 1 1 1
 then
   denyadap='denyinterfaces eth0 wlan0'
-  static="interface wlan0\nstatic ip_address=$wlan0_ip/$wlan0_mask_cidr\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search=\n\ninterface eth0\nstatic ip_address=$eth0_ip/$eth0_mask_cidr\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
+  static="interface wlan0\nstatic ip_address=$wlan0_ip/$wlan0_mask_cidr\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search=\n\n\n\ninterface eth0\nstatic ip_address=$eth0_ip/$eth0_mask_cidr\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
 
 sudo sed -i '/denyinterfaces/d' /etc/dhcpcd.conf
@@ -140,5 +140,6 @@ dhcpcd=$(sudo sed '/^nohook lookup-hostname/q' /etc/dhcpcd.conf)
 
 echo -e "$denyadap" > /tmp/dhcpcd.conf
 echo -e "$dhcpcd" >> /tmp/dhcpcd.conf
+echo -e "\n\n\n" >> /tmp/dhcpcd.conf
 echo -e "$static" >> /tmp/dhcpcd.conf
 
