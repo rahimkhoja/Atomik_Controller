@@ -462,7 +462,7 @@ if ($command <> "" && $command != "" && $command == "save_eth0") {
       $networkupdatecmd = shell_exec("sudo /var/atomik/scripts/updateNETWORK.sh");
       $rebootcmd = shell_exec("sudo /var/atomik/scripts/rebootATOMIK.sh > /dev/null &");
       echo '<script type="text/javascript">';
-      echo "$().redirect('logout.php', {'logout_title': 'Update and Restart', 'description': 'Please wait while the Atomik Controller is reconfigured and restarted. ', 'count': '120'});</script>";
+      echo "$().redirect('logout.php', {'logout_title': 'Update and Restart', 'description': 'Please wait while the Atomik Controller is reconfigured and restarted. ', 'count': '90'});</script>";
     }
     else {
       $page_error = 1;
@@ -547,7 +547,7 @@ if ($command <> "" && $command != "" && $command == "save_wlan0") // ($stat, $ty
       $rebootcmd = shell_exec("sudo /var/atomik/scripts/rebootATOMIK.sh > /dev/null &");
       
 	  echo '<script type="text/javascript">';
-      echo "$().redirect('logout.php', {'logout_title': 'Update and Restart', 'description': 'Please wait while the Atomik Controller is reconfigured and restarted. ', 'count': '120'});</script>";
+      echo "$().redirect('logout.php', {'logout_title': 'Update and Restart', 'description': 'Please wait while the Atomik Controller is reconfigured and restarted. ', 'count': '90'});</script>";
     }
     else {
       $page_error = 1;
