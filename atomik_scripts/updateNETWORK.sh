@@ -86,14 +86,8 @@ then
   static = ""
 fi
 
-echo $eth0_status
-echo $wlan0_status
-echo $eth0_type
-echo $wlan0_type
-
 if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "1" ];
 then
-  echo Here
   denyadap = 'denyinterfaces eth0'
   static = "interface eth0\nstatic ip_address=$eth0_ip\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
@@ -112,9 +106,8 @@ fi
 
 if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "0" ] # 1 1 1 0
 then
-  echo yup
-  denyadap = 'denyinterfaces wlan0'
-  static = "interface wlan0\nstatic ip_address=$wlan0_ip\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search="
+  denyadap='denyinterfaces wlan0'
+  static="interface wlan0\nstatic ip_address=$wlan0_ip\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search="
 fi
 
 if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1"] && [ $eth0_type == "1" ] # 0 1 1 1
