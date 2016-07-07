@@ -85,7 +85,12 @@ then
   static = ""
 fi
 
-if [ $wlan0_status == "1" -a $eth0_status == "1" -a $wlan0_type == "0" -a $eth0_type == "1" ];
+echo $eth0_status
+echo $wlan0_status
+echo $eth0_type
+echo $wlan0_type
+
+if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "1" ];
 then
   echo Here
   denyadap = 'denyinterfaces eth0'
