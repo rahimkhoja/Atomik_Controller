@@ -30,74 +30,74 @@ echo $eth0_type
 echo $wlan0_type
 
 
-if [ $wlan0_status -eq 0 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 0 ] # 0 1 0 0 
+if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "0" ] # 0 1 0 0 
 then
   denyadap = 'denyinterfaces wlan0'
   static = ""
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 0 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 0 ] # 1 0 0 0
+if [ $wlan0_status == "1" ] && [ $eth0_status == "0" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "0" ] # 1 0 0 0
 then
   denyadap = 'denyinterfaces eth0'
   static = ""
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 0 ] # 1 1 0 0 
+if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "0" ] # 1 1 0 0 
 then
   denyadap = '#denyinterfaces'
   static = ""
 fi
 
-if [ $wlan0_status -eq 0 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 1 ] # 0 1 0 1
+if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "1" ] # 0 1 0 1
 then
   denyadap = 'denyinterfaces eth0 wlan0'
   static = "interface eth0\nstatic ip_address=$eth0_ip\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 0 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 1 ] # 1 0 0 1
+if [ $wlan0_status == "1" ] && [ $eth0_status == "0" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "1" ] # 1 0 0 1
 then
   denyadap = 'denyinterfaces eth0'
   static = ""
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 0 ] && [ $eth0_type -eq 1 ] # 1 1 0 1
+if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "0" ] && [ $eth0_type == "1" ] # 1 1 0 1
 then
   echo Here
   denyadap = 'denyinterfaces eth0'
   static = "interface eth0\nstatic ip_address=$eth0_ip\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
 
-if [ $wlan0_status -eq 0 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 1 ] && [ $eth0_type -eq 0 ] # 0 1 1 0
+if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "0" ] # 0 1 1 0
 then
   denyadap = 'denyinterfaces wlan0'
   static = ""
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 0 ] && [ $wlan0_type -eq 1 ] && [ $eth0_type -eq 0 ] # 1 0 1 0 
+if [ $wlan0_status == "1" ] && [ $eth0_status == "0" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "0" ] # 1 0 1 0 
 then
   denyadap = 'denyinterfaces eth0 wlan0'
   static = "interface wlan0\nstatic ip_address=$wlan0_ip\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search="
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 1 ] && [ $eth0_type -eq 0 ] # 1 1 1 0
+if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "0" ] # 1 1 1 0
 then
   denyadap = 'denyinterfaces wlan0'
   static = "interface wlan0\nstatic ip_address=$wlan0_ip\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search="
 fi
 
-if [ $wlan0_status -eq 0 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 1 ] && [ $eth0_type -eq 1 ] # 0 1 1 1
+if [ $wlan0_status == "0" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1"] && [ $eth0_type == "1" ] # 0 1 1 1
 then
   denyadap = 'denyinterfaces eth0 wlan0'
   static = "interface eth0\nstatic ip_address=$eth0_ip\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 0 ] && [ $wlan0_type -eq 1 ] && [ $eth0_type -eq 1 ] # 1 0 1 1 
+if [ $wlan0_status == "1" ] && [ $eth0_status == "0" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "1" ] # 1 0 1 1 
 then
   denyadap = 'denyinterfaces eth0 wlan0'
   static = "interface wlan0\nstatic ip_address=$wlan0_ip\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search="
 fi
 
-if [ $wlan0_status -eq 1 ] && [ $eth0_status -eq 1 ] && [ $wlan0_type -eq 1 ] && [ $eth0_type -eq 1 ] # 1 1 1 1
+if [ $wlan0_status == "1" ] && [ $eth0_status == "1" ] && [ $wlan0_type == "1" ] && [ $eth0_type == "1" ] # 1 1 1 1
 then
   denyadap = 'denyinterfaces eth0 wlan0'
   static = "interface wlan0\nstatic ip_address=$wlan0_ip\nstatic routers=$wlan0_gate\nstatic domain_name_servers=$wlan0_dns\nstatic domain_search=\n\ninterface eth0\nstatic ip_address=$eth0_ip\nstatic routers=$eth0_gate\nstatic domain_name_servers=$eth0_dns\nstatic domain_search="
