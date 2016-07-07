@@ -143,4 +143,6 @@ echo -e "$dhcpcd" >> /tmp/dhcpcd.conf
 echo -e "\n\n\n" >> /tmp/dhcpcd.conf
 echo -e "$static" >> /tmp/dhcpcd.conf
 
+sudo cp /etc/dhcpcd.conf /etc/dhcpcd.conf.atomik
 sudo cp /tmp/dhcpcd.conf /etc/dhcpcd.conf
+exit 0
