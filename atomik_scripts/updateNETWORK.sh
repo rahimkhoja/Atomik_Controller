@@ -138,8 +138,12 @@ sudo sed -i '/denyinterfaces/d' /etc/dhcpcd.conf
 
 dhcpcd=$(sudo sed '/^nohook lookup-hostname/q' /etc/dhcpcd.conf)
 
-echo -e "$denyadap" > /tmp/dhcpcd.conf
-echo -e "$dhcpcd" >> /tmp/dhcpcd.conf
-echo -e "\n\n\n" >> /tmp/dhcpcd.conf
-echo -e "$static" >> /tmp/dhcpcd.conf
+sudo sh -c 'echo -e "$denyadap" > /tmp/dhcpcd.conf'
+sudo sh -c 'echo -e "$dhcpcd" >> /tmp/dhcpcd.conf'
+sudo sh -c 'echo -e "\n\n\n" >> /tmp/dhcpcd.conf'
+sudo sh -c 'echo -e "$static" >> /tmp/dhcpcd.conf'
 
+#echo -e "$denyadap" > /tmp/dhcpcd.conf
+#echo -e "$dhcpcd" >> /tmp/dhcpcd.conf
+#echo -e "\n\n\n" >> /tmp/dhcpcd.conf
+#echo -e "$static" >> /tmp/dhcpcd.conf
