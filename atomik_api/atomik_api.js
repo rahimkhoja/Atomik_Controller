@@ -84,7 +84,7 @@ function getListJSON( JSN, Res ) {
     return;
   }
     
-  var sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature, atomik_zone_remotes.zone_remote_channel_number FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_user="+JSON.body.User+" && atomik_remotes.remote_password="+JSON.body.Password+";";
+  var sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature, atomik_zone_remotes.zone_remote_channel_number FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_user='"+JSON.body.User+"' && atomik_remotes.remote_password='"+JSON.body.Password+"';";
   	 
   console.log(sql);
     
