@@ -232,12 +232,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));  
 
-app.post('/atomik', function (req, res) {
- res.send('ok!\n');  
+app.post('/atomik', function (req, res) { 
  console.log('Atomik API JSON Data:');
- validateJSON(req, res);
  console.log(req.body);
- 
+ validateJSON(req, res);
 });
 
 app.listen(PORT, function () {
