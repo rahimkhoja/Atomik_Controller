@@ -106,7 +106,7 @@ function getListJSON( JSN, Res ) {
       if ( rows.length > 0) {
        if ( rows ) {
          for (var i = 0; i < rows.length; i++) {
-           responseLIST = responseLIST + "{ \"ZoneName\":\""+rows[i].zone_name+"\", \"Configuration\":{ \"Channel\":\""+rows[i].zone_remote_channel_number+"\", \"Status\":\""+rows[i].zone_status+"\", \"ColorMode\":\""+rows[i].zone_colomode+"\", \"Brightness\":\""+rows[i].zone_brightness+"\", \"Color\":\""+rows[i].zone_rgb256+"\", \"WhiteTemp\":\""+rows[i].zone_white_temprature+"\"} }\n";
+           responseLIST = responseLIST + "{ \"ZoneName\":\""+rows[i].zone_name+"\", \"Configuration\":{ \"Channel\":\""+rows[i].zone_remote_channel_number+"\", \"Status\":\""+rows[i].zone_status+"\", \"ColorMode\":\""+rows[i].zone_colormode+"\", \"Brightness\":\""+rows[i].zone_brightness+"\", \"Color\":\""+rows[i].zone_rgb256+"\", \"WhiteTemp\":\""+rows[i].zone_white_temprature+"\"} }\n";
          }
          responseLIST = responseLIST + "}";
          console.log("Sending List to User:"+JSON.body.User);
@@ -175,7 +175,7 @@ function setIssueJSON(JSN, Res) {
     return;
   }
   
-  var sql = "SELECT atomik_zones.zone_id atomik_zones.zone_name, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature, atomik_zone_remotes.zone_remote_channel_number FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_user=\""+JSON.body.User+"\" && atomik_remotes.remote_password=\""+JSON.body.Password+"\" && atomik_zone_remotes.zone_remote_channel_number="+JSON.body.Configuration.Channel+";";
+  var sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature, atomik_zone_remotes.zone_remote_channel_number FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_user=\""+JSON.body.User+"\" && atomik_remotes.remote_password=\""+JSON.body.Password+"\" && atomik_zone_remotes.zone_remote_channel_number="+JSON.body.Configuration.Channel+";";
   
   console.log(sql);
     
