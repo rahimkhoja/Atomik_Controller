@@ -195,7 +195,7 @@ function setIssueJSON(JSN, Res) {
    
       if ( rows.length > 0) {
          log(1, "Atomik API", JSON.body.Configuration.Channel, JSON, JSON.body.Configuration.Status, JSON.body.Configuration.ColorMode, JSON.body.Configuration.Color, JSON.body.Configuration.WhiteTemp, JSON.body.Configuration.Brightness);
-         var commandSTR = '/usr/bin/atomik-zone-update '+rows[0].zone_id+' '+rows[0].zone_status+' '+rows[0].zone_brightness+' '+rows[0].zone_colormode+' '+rows[0].zone_rgb256+' '+rows[0].zone_white_temprature;
+         var commandSTR = '/usr/bin/atomik-zone-update '+rows[0].zone_id+' '+JSON.body.Configuration.Status+' '+JSON.body.Configuration.Brightness+' '+JSON.body.Configuration.ColorMode+' '+JSON.body.Configuration.Color+' '+JSON.body.Configuration.WhiteTemp;
          console.log(commandSTR);
          async.series([ 
           execFn(commandSTR, '/usr/atomik/')
