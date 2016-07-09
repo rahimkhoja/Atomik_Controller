@@ -2,7 +2,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql')
 var fs = require('fs');
-var async = require('async');
 var exec = require('child_process').exec;
 var request = require('request');
 
@@ -20,6 +19,7 @@ var app = express();
 var PORT = 4200;
 
 function log(processed, source, channel, data, status, colormode, color, whitetemp, bright) {
+  console.log('Running -- log');
 
   var sql = 'INSERT INTO atomik_commands_received (command_received_source_type, command_received_channel_id, command_received_date, command_received_data, command_received_status, command_received_color_mode, command_received_rgb256, command_received_white_temprature, command_received_brightness, command_received_processed) VALUES ("' + source + '", ' + channel + ', UTC_TIMESTAMP(6), "' + data + '", ' + status + ', ' + colormode + ', ' + color + ', ' + whitetemp + ', ' + bright + ', ' + processed + ');'; 
  
@@ -50,6 +50,7 @@ function log(processed, source, channel, data, status, colormode, color, whitete
 
 
 function processJSON( JSON, Response ){
+  console.log('Running -- processJSON');
 
   var command = JSON.body.Command;
   
@@ -70,6 +71,7 @@ function processJSON( JSON, Response ){
 }
 
 function getListJSON( JSN, Res ) {
+  console.log('Running -- getListJSON');
 
   var JSON = JSN;
   var Response = Res;
@@ -86,7 +88,7 @@ function getListJSON( JSN, Res ) {
     
   var sql = "SELECT atomik_zones.zone_name, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature, atomik_zone_remotes.zone_remote_channel_number FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_user='"+JSON.body.User+"' && atomik_remotes.remote_password='"+JSON.body.Password+"';";
   	 
-  console.log(sql);
+  // console.log(sql);
     
   pool.getConnection(function(err,connection){
     if (err) {
@@ -177,7 +179,7 @@ function setIssueJSON(JSN, Res) {
   
   var sql = "SELECT atomik_zones.zone_id, atomik_zones.zone_name, atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature, atomik_zone_remotes.zone_remote_channel_number FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_user=\""+JSON.body.User+"\" && atomik_remotes.remote_password=\""+JSON.body.Password+"\" && atomik_zone_remotes.zone_remote_channel_number="+JSON.body.Configuration.Channel+";";
   
-  console.log(sql);
+  // console.log(sql);
     
   pool.getConnection(function(err,connection){
     if (err) {
@@ -196,9 +198,10 @@ function setIssueJSON(JSN, Res) {
       if ( rows.length > 0) {
          log(1, "Atomik API", JSON.body.Configuration.Channel, JSON, JSON.body.Configuration.Status, JSON.body.Configuration.ColorMode, JSON.body.Configuration.Color, JSON.body.Configuration.WhiteTemp, JSON.body.Configuration.Brightness);
          var commandSTR = '/usr/bin/atomik-zone-update '+rows[0].zone_id+' '+JSON.body.Configuration.Status+' '+JSON.body.Configuration.Brightness+' '+JSON.body.Configuration.ColorMode+' '+JSON.body.Configuration.Color+' '+JSON.body.Configuration.WhiteTemp;
-         console.log(commandSTR);
+         // console.log(commandSTR);
          var child = exec(commandSTR,  (error, stdout, stderr) => {
-          console.log(`stdout: ${stdout}`);
+          // console.log(`stdout: ${stdout}`);
+          console.log('EXECUTING: '+ commandSTR);
           console.log(`stderr: ${stderr}`);
           if (error !== null) {
             console.log(`exec error: ${error}`);
@@ -222,17 +225,10 @@ function setIssueJSON(JSN, Res) {
 
 
 function getErrorJSON(error, Response) {
+  console.log('Running -- getErrorJSON');
   var errorJSON = "{\"Error\": \""+error+"\"}";
   Response.setHeader('Content-Type', 'application/json');
   Response.send(errorJSON);
-}
-
-
-var execFn = function(cmd, dir) {
-  return function(cb) {
-    console.log('EXECUTING: '+ cmd);
-    exec(cmd, { cwd: dir }, function() { cb(); });
-  }
 }
 
 app.use(bodyParser.json());
