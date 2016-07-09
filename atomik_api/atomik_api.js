@@ -235,7 +235,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.post('/atomik', function (req, res) {
  res.send('ok!\n');  
  console.log('Atomik API JSON Data:');
- validateJSON(req.body);
+ validateJSON(req, res);
  console.log(req.body);
  
 });
