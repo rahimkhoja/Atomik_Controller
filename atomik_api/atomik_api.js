@@ -4,7 +4,6 @@ var mysql = require('mysql')
 var fs = require('fs');
 var async = require('async');
 var exec = require('child_process').exec;
-var system_timezone = require('system-timezone');
 var request = require('request');
 
 var pool      =    mysql.createPool({
