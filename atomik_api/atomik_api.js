@@ -110,7 +110,9 @@ function getListJSON( JSN, Res ) {
          }
          responseLIST = responseLIST + "}";
          console.log("Sending List to User:"+JSON.body.User);
-         console.log(responseLIST);         
+         console.log(responseLIST);  
+         Response.setHeader('Content-Type', 'application/json');
+         Response.send(responseLIST);
        }
       } else {
          getErrorJSON("Invalid Username or Password", Response);
