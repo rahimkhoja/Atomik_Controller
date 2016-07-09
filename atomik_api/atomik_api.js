@@ -194,9 +194,11 @@ function setIssueJSON(JSN, Res) {
       if (err) throw err;
    
       if ( rows.length > 0) {
-         log(1, "Atomik API", JSON.body.Configuration.Channel, JSON, JSON.body.Configuration.Status, JSON.body.Configuration.ColorMode, JSON.body.Configuration.Color, JSON.body.Configuration.WhiteTemp, JSON.body.Configuration.Brightness)
+         log(1, "Atomik API", JSON.body.Configuration.Channel, JSON, JSON.body.Configuration.Status, JSON.body.Configuration.ColorMode, JSON.body.Configuration.Color, JSON.body.Configuration.WhiteTemp, JSON.body.Configuration.Brightness);
+         var commandSTR = '/usr/bin/atomik-zone-update '+rows[0].zone_id+' '+rows[0].zone_status+' '+rows[0].zone_brightness+' '+rows[0].zone_colormode+' '+rows[0].zone_rgb256+' '+rows[0].zone_white_temprature;
+         console.log(commandSTR);
          async.series([ 
-          execFn('/usr/bin/atomik-zone-update '+rows[0].zone_id+' '+rows[0].zone_status+' '+rows[0].zone_brightness+' '+rows[0].zone_colormode+' '+rows[0].zone_rgb256+' '+rows[0].zone_white_temprature, '/usr/atomik/')
+          execFn(commandSTR, '/usr/atomik/')
         ]);
          getListJSON(JSON, Response);
          
