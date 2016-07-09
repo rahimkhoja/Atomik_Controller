@@ -15,14 +15,6 @@ var pool      =    mysql.createPool({
     debug    :  false
 });
 
-connection.connect(function (err){
-  if(!err) {
-      console.log("Database is connected ... \n\n");  
-  } else {
-      console.log("Error connecting to the Database ... \n\n");  
-  }
-}); 
-
 var app = express();
 
 var PORT = 4200;
