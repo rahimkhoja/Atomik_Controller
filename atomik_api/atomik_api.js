@@ -197,7 +197,7 @@ function setIssueJSON(JSN, Res) {
          log(1, "Atomik API", JSON.body.Configuration.Channel, JSON, JSON.body.Configuration.Status, JSON.body.Configuration.ColorMode, JSON.body.Configuration.Color, JSON.body.Configuration.WhiteTemp, JSON.body.Configuration.Brightness);
          var commandSTR = '/usr/bin/atomik-zone-update '+rows[0].zone_id+' '+JSON.body.Configuration.Status+' '+JSON.body.Configuration.Brightness+' '+JSON.body.Configuration.ColorMode+' '+JSON.body.Configuration.Color+' '+JSON.body.Configuration.WhiteTemp;
          console.log(commandSTR);
-         var child = exec('cat *.js bad_file | wc -l',  (error, stdout, stderr) => {
+         var child = exec(commandSTR,  (error, stdout, stderr) => {
           console.log(`stdout: ${stdout}`);
           console.log(`stderr: ${stderr}`);
           if (error !== null) {
