@@ -1,19 +1,23 @@
-#!/bin/bash
-# location: /etc/systemd/system/
+
+cation: /etc/systemd/system/
 [Unit]
-Description = Atomik API Serivce 
+Description = Atomik API Serivce
 After       = syslog.target network.target
 
 [Service]
 WorkingDirectory=/usr/atomik/
-ExecStart   = /usr/local/bin/node /usr/atomik/atomik-api.js
+ExecStart   = /usr/local/bin/node /usr/atomik/atomik_api.js
 #ExecStop    = kill -INT `cat /run/atomikSER.pid`
 #ExecReload  = kill -TERM `cat /run/atomikSER.pid`
 Restart     = always
-Type        = simple 
+#Type        = simple
 NotifyAccess= main
 #PIDFile     = /run/atomikSER.pid
-StandardOutput=null
+StandardOutput=NULL
+StandardError=syslog                # Output to syslog
+SyslogIdentifier=atomik-api
+Environment=NODE_ENV=production PORT=4200
 
 [Install]
-WantedBy = multi-user.target
+WantedBy=multi-user.target
+

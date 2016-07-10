@@ -2,7 +2,7 @@
 # location: /etc/systemd/system/
 [Unit]
 Description = Atomik Mi-Light Emulator Serivce 
-After       = syslog.target network.target
+After       = syslog.target network.target atomik-transceiver.service 
 
 [Service]
 ExecStart   = /usr/bin/emulator
@@ -12,7 +12,9 @@ Restart     = always
 Type        = simple 
 NotifyAccess= main
 #PIDFile     = /run/atomikEMU.pid
-StandardOutput=null
+StandardOutput=NULL
+StandardError=syslog                # Output to syslog
+SyslogIdentifier=atomik-emulator
 
 [Install]
 WantedBy = multi-user.target

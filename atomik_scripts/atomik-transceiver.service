@@ -12,7 +12,9 @@ Restart     = always
 Type        = simple 
 NotifyAccess= main
 #PIDFile     = /run/atomikTRA.pid
-StandardOutput=null
+StandardOutput=NULL
+StandardError=syslog                # Output to syslog
+SyslogIdentifier=atomik-transceiver
 
 [Install]
 WantedBy = multi-user.target
