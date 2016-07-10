@@ -1,0 +1,54 @@
+#
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults	env_reset
+Defaults	mail_badpass
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root	ALL=(ALL:ALL) ALL
+
+# Allow members of group sudo to execute any command
+%sudo	ALL=(ALL:ALL) ALL
+%www-data ALL=(ALL) NOPASSWD: /usr/bin/timedatectl set-timezone 
+%www-data ALL=(ALL) NOPASSWD: /sbin/iwlist wlan0 scan
+%www-data ALL=(ALL) NOPASSWD: /var/atomik/scripts/updateSSIDlist.sh
+%www-data ALL=(ALL) NOPASSWD: /var/atomik/scripts/updateHOSTNAME.sh
+%www-data ALL=(ALL) NOPASSWD: /var/atomik/scripts/updateTIME.sh
+%www-data ALL=(ALL) NOPASSWD: /var/atomik/scripts/rebootATOMIK.sh
+%www-data ALL=(ALL) NOPASSWD: /var/atomik/scripts/updateNETWORK.sh
+%www-data ALL=(ALL) NOPASSWD: /var/atomik/scripts/updateWLAN.sh
+%www-data ALL=(ALL) NOPASSWD: /usr/sbin/service atomik-emulator start
+%www-data ALL=(ALL) NOPASSWD: /usr/sbin/service atomik-emulator stop
+%www-data ALL=(ALL) NOPASSWD: /bin/systemctl enable atomik-emulator.service
+%www-data ALL=(ALL) NOPASSWD: /bin/systemctl disable atomik-emulator.service
+%www-data ALL=(ALL) NOPASSWD: /usr/sbin/service atomik-transceiver start
+%www-data ALL=(ALL) NOPASSWD: /usr/sbin/service atomik-transceiver stop
+%www-data ALL=(ALL) NOPASSWD: /bin/systemctl enable atomik-transceiver.service
+%www-data ALL=(ALL) NOPASSWD: /bin/systemctl disable atomik-transceiver.service
+%www-data ALL=(ALL) NOPASSWD: /usr/sbin/service atomik-api start
+%www-data ALL=(ALL) NOPASSWD: /usr/sbin/service atomik-api stop
+%www-data ALL=(ALL) NOPASSWD: /bin/systemctl enable atomik-server.service
+%www-data ALL=(ALL) NOPASSWD: /bin/systemctl disable atomik-server.service
+%www-data ALL=(ALL) NOPASSWD: /usr/bin/transceiver
+%www-data ALL=(ALL) NOPASSWD: /usr/bin/atomik-zone-update
+
+# See sudoers(5) for more information on "#include" directives:
+
+#includedir /etc/sudoers.d
+
+pi ALL=(ALL) NOPASSWD: ALL
+atomik ALL=(ALL) NOPASSWD: ALL
+www-data ALL=(ALL) NOPASSWD: /usr/bin/timedatectl set-timezone *
+
