@@ -1,3 +1,9 @@
+// Atomik Controller API
+// Node.js
+// By Rahim Khoja
+
+// Accepts Atomik JSON commands to upadte Atomik Zone lights and provides a JSON list of all the Atomik Zones the user has access too.
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql')
@@ -17,6 +23,17 @@ var pool      =    mysql.createPool({
 var app = express();
 
 var PORT = 4200;
+
+var VERSION = 0.8;
+
+var LOGFILE = '/var/log/atomik/AtomikServerJSON.log';
+
+function log2file(text) {
+	fs.appendFile(LOGFILE, text+"\n", function (err) {
+		if (err) throw err;
+			console.log('Success!');
+	});
+}
 
 function log(processed, source, channel, data, status, colormode, color, whitetemp, bright) {
   console.log('Running -- log');
@@ -241,9 +258,10 @@ app.post('/atomik', function (req, res) {
  console.log('Atomik API JSON Data:');
  console.log(req.body);
  processJSON(req, res);
+ log2file(req.body);
 });
 
 app.listen(PORT, function () {
-  console.log('Atomik Server - Version 0.80');
+  console.log('Atomik Server - Version '+VERSION);
   console.log('Listening for Atomik JSON Data (Port: ' + PORT + ') : ( press ctrl-c to end )');
 });
