@@ -314,8 +314,8 @@ function getTimeZone() {
     </thead>
     <tbody>
       <tr>
-        <td>Atomik Controller Service: </td>
-        <td><?php getService('atomik-server'); ?></td>
+        <td>Atomik Controller API: </td>
+        <td><?php getService('atomik-api'); ?></td>
       </tr>
     <tr>
         <td>Mi-Light Emulator Service: </td>
