@@ -1,4 +1,8 @@
 <?php
+// Atomik Web Site - Autologin Script
+// PHP
+
+// Checks if cookie exists with username and password for the Atomik System
 if(isSet($cookie_name))
 {
     // Check if the cookie exists
