@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Atomik Controller Script - Update Time Servers
+# Bash
+# By Rahim Khoja
+
+# Requires Root, MySQL
+
+
 ntp1=$(mysql -uroot -praspberry -se "SELECT ntp_server_1 FROM atomik_controller.atomik_settings");
 
 ntp2=$(mysql -uroot -praspberry -se "SELECT ntp_server_2 FROM atomik_controller.atomik_settings");
