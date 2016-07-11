@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Atomik Controller Script - SystemD Transceiver Service
+# Bash
+# By Rahim Khoja
+
 # location: /etc/systemd/system/
 [Unit]
 Description = Atomik Mi-Light Transceiver Serivce 
