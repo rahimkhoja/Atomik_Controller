@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Remote Details Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Allows users to view and edit all remote information.
   session_start();
   if(!$_SESSION['username'])
   {
