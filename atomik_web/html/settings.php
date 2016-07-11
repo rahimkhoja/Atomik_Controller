@@ -300,7 +300,7 @@ if ($command <> "" && $command != "" && $command == "save_system") {
   else {
 	  
 	if ($_atomik_emulator != $row['atomik_emulator'] && $_atomik_emulator == 1) {
-		$_atomik_transceiver == 1;
+		$_atomik_transceiver = 1;
 	}
 	if ($_atomik_transceiver != $row['atomik_transceiver'] && $_atomik_transceiver == 0 && $_atomik_emulator == 1) {
 		$_atomik_emulator = 0;
