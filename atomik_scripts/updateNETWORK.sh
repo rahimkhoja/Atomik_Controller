@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Atomik Controller Script - Update Eth0 Network Settings
+# Bash
+# By Rahim Khoja
+
+# Requires Root, MySQL
+
 function netmask2cidr()
 {
   case $1 in
