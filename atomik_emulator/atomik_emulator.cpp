@@ -1,4 +1,9 @@
 // sudo g++ -std=c++11 -lcurl -ljsoncpp -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
+// Atomik Mi-Light WiFi Bridge Emulator
+// C / C++
+// By Rahim Khoja
+
+// Acts like a Mi-Light WiFi Bridge, Adds MAC address security and logging. Passes valid tramsmissions to the Atomik Transceiver
 
 
 #include <arpa/inet.h>
