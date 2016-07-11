@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Logout Page 
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Logs users out of system, waits for specified time period to redirect to login page. Displays custom logout messages
 
 $atomik_heading = $_POST["logout_title"];
 $atomik_description = "";
