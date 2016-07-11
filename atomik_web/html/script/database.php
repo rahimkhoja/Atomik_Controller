@@ -1,5 +1,10 @@
 <?php
 
+// Atomik Web Site - DB Setup  Script
+// PHP
+
+// DB Details
+
 $DBServer = '127.0.0.1'; // e.g 'localhost' or '192.168.1.100'
 $DBUser   = 'root';  // change this as some point
 $DBPass   = 'raspberry';
