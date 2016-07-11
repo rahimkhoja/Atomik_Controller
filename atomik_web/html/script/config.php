@@ -1,4 +1,8 @@
 <?php
+// Atomik Web Site - Authentication Config Script
+// PHP
+
+// Checks for valid credentials
 error_reporting(E_ALL ^ E_NOTICE);
  
 session_start(); // Start Session
