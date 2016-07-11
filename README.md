@@ -64,11 +64,17 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 LimitlessLED - MiLight - EasyBulb
 
 9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+
 9.0 Watt ALL Dual White Bulbs
+
 6.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+
 6.0 Watt ALL Dual White Bulbs
+
 5.0 Watt E14 RGBWW & RGBWW Bulbs (Cool White/Warm White)
+
 4.0 Watt GU10 RGBCW & RGBWW Bulbs (Cool White/Warm White)
+
 4.0 Watt MR16 RGBWW Bulbs (Warm White)
 
 Not Fully Compatible With V6 WiFi Bridge Bulbs (Only Tested with 9 W Beam Bulbs)
