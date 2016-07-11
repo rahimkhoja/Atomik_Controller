@@ -59,6 +59,35 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  7. Login to the Atomik Controller with (Username: admin, Password: admin) 
  
 
+### Compatible Bulbs & Remotes ###
+
+LimitlessLED - MiLight - EasyBulb
+
+9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+9.0 Watt ALL Dual White Bulbs
+6.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+6.0 Watt ALL Dual White Bulbs
+5.0 Watt E14 RGBWW & RGBWW Bulbs (Cool White/Warm White)
+4.0 Watt GU10 RGBCW & RGBWW Bulbs (Cool White/Warm White)
+4.0 Watt MR16 RGBWW Bulbs (Warm White)
+
+Not Fully Compatible With V6 WiFi Bridge Bulbs (Only Tested with 9 W Beam Bulbs)
+
+Compatible With All Mi-Light RGBWW & RGBCW Remotes
+
+Compatible With All IOS/Android Mi-Light SmartPhone Applications (Anything that communicates with the WiFi Bridge)
+
+
+
+### Atomik API Details ###
+
+The Atomik API accepts JSON Commands on Port 4200 of the Atomik Controller to control the Atomik lighting Zones. Atomik API Remotes are setup, and applied to Zones from within the Atomik Controller web administration GUI. Atomik Api Remotes only have two types of commands, List and Issue. List will accept JSON that contains a valid username and password and return a JSON list of all the available zones and their current settings to the user. Issue will accept JSON that contains a valid username and password along with zone light settings, then it will update the light settings and return a JSON list of all the available zones along with the updates zone information from the Issued command. If command is not accepted or invalid credentials are passed to the Atomik API, an error JSON is returned.
+
+Here are some example commands:
+
+
+
+
 ### Atomik Controller Technical Details ###
 
 
