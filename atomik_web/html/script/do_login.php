@@ -1,4 +1,8 @@
 <?php
+// Atomik Web Site - Login Script
+// PHP
+
+// Processes Login
 if(!$do_login) exit;
  
 // declare post fields
