@@ -9,7 +9,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 
 
- **Features:**
+###  Features: ###
 
  * Full featured web administration GUI
  * Maximum of 65,280 uniquely addressable Mi-Light RGB Devices ( But an unlimited amount of Devices can be Synced to a single address ) 
@@ -101,18 +101,18 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 Here are some example commands: 
 
-List Command JSON Request Example: 
+**List Command JSON Request Example:** 
 
- {"Command":"List","User":"rahimk","Password":"password"}
+ *{"Command":"List","User":"rahimk","Password":"password"}*
 
 
-List Command JSON Valid Response:
+**List Command JSON Valid Response:**
 
- {
+ *{
   { "ZoneName":"Bedroom", "Configuration":{ "Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"100", "Color":"198", "WhiteTemp":"2700" }}
   { "ZoneName":"Living Room", "Configuration":{ "Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"2700" }}
   { "ZoneName":"Hallway", "Configuration":{ "Channel":"2", "Status":"0", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"6500" }}
- }
+ }*
 
  Notes on Response:
  Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
