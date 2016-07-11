@@ -1,3 +1,9 @@
+// Atomik Controller Server - Depreciated
+// Node.js
+// By Rahim Khoja
+
+// Accepts Atomik JSON commands to upadte Atomik Zone lights and provides a JSON list of all the Atomik Zones the user has access too.
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var mysql = require('mysql')
