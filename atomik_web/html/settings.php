@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Settings Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Allows users to change all the Atomik Controller Network and System settings. 
   session_start();
   if(!$_SESSION['username'])
   {
@@ -573,7 +578,7 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
   $page_success = 1;
   $success_text = "SSID List Updated!";
 }
-?></head>
+?></head><div id="overlay"></div>
 <nav class="navbar navbar-default navbar-inverse">
   <div class="container-fluid"> 
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -888,8 +893,12 @@ if ($command <> "" && $command != "" && $command == "refresh_ssid") {
       </div>
       <hr></div><script type="text/javascript">
 	$("#reboot").on('click', function() {
-   document.forms["settingsfrm"].command.value = "reboot";
-   document.settingsfrm.submit();
+		$("#overlay").show();
+	if (window.confirm("Are You Sure You Want To Reboot the Atomik Controller?")) {
+    	document.forms["settingsfrm"].command.value = "reboot";
+   		document.settingsfrm.submit();
+	}
+	$("#overlay").hide();
 });
 $("#savewlan0").on('click', function() {
    document.forms["settingsfrm"].command.value = "save_wlan0";
