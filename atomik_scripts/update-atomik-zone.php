@@ -1,4 +1,9 @@
 <?php
+// Atomik Controller Script - Update Zone PHP Script - Depreciated
+// PHP
+// By Rahim Khoja
+
+// Updates all Zone Devices to new Settings 
 
 echo "Atomik Techonologies - CRON Zone Properties Update Script\n";
 echo "Version 0.8 Alpha\n";
