@@ -23,6 +23,40 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  * WiFi and Ethernet connectivity
  * Drop-in replacement for the Mi-Light WiFi Bridge 
 
+
+### Compatible Bulbs & Remotes (LimitlessLED - MiLight - EasyBulb) ###
+
+ - 9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+ - 9.0 Watt ALL Dual White Bulbs
+ - 6.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+ - 6.0 Watt ALL Dual White Bulbs
+ - 5.0 Watt E14 RGBWW & RGBWW Bulbs (Cool White/Warm White)
+ - 4.0 Watt GU10 RGBCW & RGBWW Bulbs (Cool White/Warm White)
+ - 4.0 Watt MR16 RGBWW Bulbs (Warm White)
+ - Not Fully Compatible With V6 WiFi Bridge Bulbs (Only Tested with 9 W Beam Bulbs)
+ - Compatible With All Mi-Light RGBWW & RGBCW Remotes
+ - Compatible With All IOS/Android Mi-Light SmartPhone Applications (Anything that communicates with the WiFi Bridge)
+
+
+
+### Screenshots of Web GUI ###
+
+ * [Zone List Screen](https://i.imgsafe.org/6f1bf11c52.png)
+ * [Zone Details Screen](https://i.imgsafe.org/6f1c079e18.png) 
+ * [Device List Screen](https://i.imgsafe.org/6f1b373281.png)
+ * [Device Details (White) Screen](https://i.imgsafe.org/6f1ad91fc0.png)
+ * [Device Details (RGBW) Screen](https://i.imgsafe.org/6f1ae13f74.png)
+ * [Login Screen](https://i.imgsafe.org/6f1bc9b8b6.png)
+ * [Logout Screen](https://i.imgsafe.org/6f1b87a10d.png)
+ * [Dashboard Screen](https://i.imgsafe.org/6f1ac5725d.png)
+ * [Settings Screen](https://i.imgsafe.org/6f1bce3dd7.png)
+ * [Remote List Screen](https://i.imgsafe.org/6f1be38077.png)
+ * [Remote Details (Smartphone) Screen](https://i.imgsafe.org/6f1b349821.png)
+ * [Remote Details (RGB RF) Screen](https://i.imgsafe.org/6f1bcc02db.png)
+ * [Scheduled Task Details Screen](https://i.imgsafe.org/6f1b93bb37.png)
+
+
+
 ### How do I get set up? ###
 
 
@@ -48,7 +82,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 ![raspberry_pi_nrf24l01_small.jpg](https://bitbucket.org/repo/z4EyAd/images/989963794-raspberry_pi_nrf24l01_small.jpg)
 
 
- **Install Instructions:**
+ **Quick Install Instructions:**
  
  1. Download the ISO of the Atomik Controller (link)
  2. Write the ISO to an SD Card (Must fit in your Raspberry Pi)
@@ -58,23 +92,6 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
  6. After 2 Minutes go to http://192.168.1.100 in your web browser
  7. Login to the Atomik Controller with (Username: admin, Password: admin) 
  
-
-### Compatible Bulbs & Remotes ###
-
-   ## LimitlessLED - MiLight - EasyBulb ## 
-
- - 9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
- - 9.0 Watt ALL Dual White Bulbs
- - 6.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
- - 6.0 Watt ALL Dual White Bulbs
- - 5.0 Watt E14 RGBWW & RGBWW Bulbs (Cool White/Warm White)
- - 4.0 Watt GU10 RGBCW & RGBWW Bulbs (Cool White/Warm White)
- - 4.0 Watt MR16 RGBWW Bulbs (Warm White)
- - Not Fully Compatible With V6 WiFi Bridge Bulbs (Only Tested with 9 W Beam Bulbs)
- - Compatible With All Mi-Light RGBWW & RGBCW Remotes
- - Compatible With All IOS/Android Mi-Light SmartPhone Applications (Anything that communicates with the WiFi Bridge)
-
-
 
 ### Atomik API Details ###
 
@@ -142,23 +159,6 @@ List Command JSON Invalid Response:
  * https://gist.github.com/jpawlowski/5359556  - Julian Pawlowski
 
  * http://stackexchange.com/ 
-
-
-### Screenshots of Web GUI ###
-
- * [Zone List Screen](https://i.imgsafe.org/6f1bf11c52.png)
- * [Zone Details Screen](https://i.imgsafe.org/6f1c079e18.png) 
- * [Device List Screen](https://i.imgsafe.org/6f1b373281.png)
- * [Device Details (White) Screen](https://i.imgsafe.org/6f1ad91fc0.png)
- * [Device Details (RGBW) Screen](https://i.imgsafe.org/6f1ae13f74.png)
- * [Login Screen](https://i.imgsafe.org/6f1bc9b8b6.png)
- * [Logout Screen](https://i.imgsafe.org/6f1b87a10d.png)
- * [Dashboard Screen](https://i.imgsafe.org/6f1ac5725d.png)
- * [Settings Screen](https://i.imgsafe.org/6f1bce3dd7.png)
- * [Remote List Screen](https://i.imgsafe.org/6f1be38077.png)
- * [Remote Details (Smartphone) Screen](https://i.imgsafe.org/6f1b349821.png)
- * [Remote Details (RGB RF) Screen](https://i.imgsafe.org/6f1bcc02db.png)
- * [Scheduled Task Details Screen](https://i.imgsafe.org/6f1b93bb37.png)
 
 
 
