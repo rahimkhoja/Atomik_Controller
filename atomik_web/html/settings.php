@@ -316,7 +316,6 @@ if ($command <> "" && $command != "" && $command == "save_system") {
     }
     // enable or disable atomik emulator, set service enabled or disabled on boot
     if ($_atomik_emulator != $row['atomik_emulator'] && $_atomik_emulator == 1) {
-		echo "emulator";
       $emulator_service_enable_on_boot = shell_exec("sudo /bin/systemctl enable atomik-emulator.service 2>&1");
       $emulator_service_start = shell_exec("sudo /usr/sbin/service atomik-emulator start 2>&1");
 	  $transceiver_service_enable_on_boot = shell_exec("sudo /bin/systemctl enable atomik-transceiver.service 2>&1");
@@ -332,7 +331,6 @@ if ($command <> "" && $command != "" && $command == "save_system") {
       $transceiver_service_start = shell_exec("sudo /usr/sbin/service atomik-transceiver start 2>&1");
     }
     else if ($_atomik_transceiver != $row['atomik_transceiver'] && $_atomik_transceiver == 0) {
-		echo "transceiver";
       $transceiver_service_disable_on_boot = shell_exec("sudo /bin/systemctl disable atomik-transceiver.service 2>&1");
       $transceiver_service_stop = shell_exec("sudo /usr/sbin/service atomik-transceiver stop 2>&1");
 	  $emulator_service_disable_on_boot = shell_exec("sudo /bin/systemctl disable atomik-emulator.service 2>&1");
