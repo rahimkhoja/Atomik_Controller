@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Zone List Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Lists all the available zones, lets users click them to open zone details. Page includes a add new zone button.
   session_start();
   if(!$_SESSION['username'])
   {
