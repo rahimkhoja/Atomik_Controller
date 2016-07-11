@@ -1,3 +1,9 @@
+#!/bin/bash
+
+# Atomik Controller Script - Atomik Starup Service - Run Once
+# Bash
+# By Rahim Khoja
+
 # location: /etc/systemd/system/
 [Unit]
 Description = Example script that runs a shell script at boot
