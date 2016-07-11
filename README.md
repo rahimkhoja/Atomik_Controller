@@ -63,25 +63,25 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 LimitlessLED - MiLight - EasyBulb
 
-9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+  - 9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
 
-9.0 Watt ALL Dual White Bulbs
+  - 9.0 Watt ALL Dual White Bulbs
 
-6.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
+  - 6.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
 
-6.0 Watt ALL Dual White Bulbs
+  - 6.0 Watt ALL Dual White Bulbs
 
-5.0 Watt E14 RGBWW & RGBWW Bulbs (Cool White/Warm White)
+  - 5.0 Watt E14 RGBWW & RGBWW Bulbs (Cool White/Warm White)
 
-4.0 Watt GU10 RGBCW & RGBWW Bulbs (Cool White/Warm White)
+  - 4.0 Watt GU10 RGBCW & RGBWW Bulbs (Cool White/Warm White)
 
-4.0 Watt MR16 RGBWW Bulbs (Warm White)
+  - 4.0 Watt MR16 RGBWW Bulbs (Warm White)
 
-Not Fully Compatible With V6 WiFi Bridge Bulbs (Only Tested with 9 W Beam Bulbs)
+  - Not Fully Compatible With V6 WiFi Bridge Bulbs (Only Tested with 9 W Beam Bulbs)
 
-Compatible With All Mi-Light RGBWW & RGBCW Remotes
+  - Compatible With All Mi-Light RGBWW & RGBCW Remotes
 
-Compatible With All IOS/Android Mi-Light SmartPhone Applications (Anything that communicates with the WiFi Bridge)
+  - Compatible With All IOS/Android Mi-Light SmartPhone Applications (Anything that communicates with the WiFi Bridge)
 
 
 
@@ -89,9 +89,34 @@ Compatible With All IOS/Android Mi-Light SmartPhone Applications (Anything that 
 
 The Atomik API accepts JSON Commands on Port 4200 of the Atomik Controller to control the Atomik lighting Zones. Atomik API Remotes are setup, and applied to Zones from within the Atomik Controller web administration GUI. Atomik Api Remotes only have two types of commands, List and Issue. List will accept JSON that contains a valid username and password and return a JSON list of all the available zones and their current settings to the user. Issue will accept JSON that contains a valid username and password along with zone light settings, then it will update the light settings and return a JSON list of all the available zones along with the updates zone information from the Issued command. If command is not accepted or invalid credentials are passed to the Atomik API, an error JSON is returned.
 
-Here are some example commands:
+All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Address of the controller )
+
+Here are some example commands: 
+
+List Command JSON Request Example: 
+
+ {"Command":"List","User":"rahimk","Password":"password"}
 
 
+List Command JSON Valid Response:
+
+ {
+  { "ZoneName":"Bedroom", "Configuration":{ "Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"100", "Color":"198", "WhiteTemp":"2700" }}
+  { "ZoneName":"Living Room", "Configuration":{ "Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"2700" }}
+  { "ZoneName":"Hallway", "Configuration":{ "Channel":"2", "Status":"0", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"6500" }}
+ }
+
+ Notes on Response:
+ Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
+ Status can be 0 or 1. 0 represents Zone lights Off, and 1 represents Zone lights On.
+ ColorMode can be 0 or 1. 0 represents Color Mode, and 1 represents White Mode.
+ Brightness can be any integer between 0 and 100. Brightness represents the percentage of Brightness a Zone is set to.
+ Color can be any integer between 0 and 255. Each Color integer represents a different color while in Color Mode.
+ WhiteTemp
+   
+List Command JSON Invalid Response:
+  
+ {"Error": "Invalid Username or Password"}
 
 
 ### Atomik Controller Technical Details ###
