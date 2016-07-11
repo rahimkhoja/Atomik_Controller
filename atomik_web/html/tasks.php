@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Tasks List Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Lists all the available tasks, lets users click them to open the task details. Page includes a add new task button.
   session_start();
   if(!$_SESSION['username'])
   {
