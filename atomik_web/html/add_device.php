@@ -1,5 +1,12 @@
 <?php
-  session_start();
+// Atomik Web Site - Add Device Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Adds Atomik Devices to Atomik Zones. Only lists available devices.
+
+
+session_start();
   if(!$_SESSION['username'])
   {
     header("Location: /index.php");
