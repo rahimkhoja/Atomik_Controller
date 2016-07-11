@@ -3,7 +3,7 @@
 // HTML/JQUERY/PHP/MySQL
 // By Rahim Khoja
 
-// Adds Atomik Devices to Atomik Zones. Only lists available devices.
+// Adds Atomik Devices to the Atomik system. Displays a list of device types
 
 
 session_start();
