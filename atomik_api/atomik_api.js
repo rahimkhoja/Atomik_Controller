@@ -26,7 +26,7 @@ var PORT = 4200;
 
 var VERSION = 0.8;
 
-var LOGFILE = '/var/log/atomik/AtomikServerJSON.log';
+var LOGFILE = '/var/log/atomik/AtomikAPIJSON.log';
 
 function log2file(text) {
 	fs.appendFile(LOGFILE, text+"\n", function (err) {
