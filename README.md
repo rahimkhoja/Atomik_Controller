@@ -61,7 +61,7 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### Compatible Bulbs & Remotes ###
 
-LimitlessLED - MiLight - EasyBulb
+ ##LimitlessLED - MiLight - EasyBulb##
 
  - 9.0 Watt ALL RGBCW & RGBWW Bulbs (Cool White/Warm White)
  - 9.0 Watt ALL Dual White Bulbs
