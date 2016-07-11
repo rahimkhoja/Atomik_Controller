@@ -3,7 +3,7 @@
 // HTML/JQUERY/PHP/MySQL
 // By Rahim Khoja
 
-// Post Login Landing page. Lists system information. 
+// Post Login Landing page. Lists system configuration information. 
   session_start();
   if(!$_SESSION['username'])
   {
