@@ -1,3 +1,9 @@
+// Atomik Mi-Light Radio & Socket Cypher
+// C / C++
+// By Rahim Khoja
+
+// Converts Mi-Light Transmission Hex Data into JSON
+
 #ifndef atomikCypher_H
 #define atomikCypher_H
 
