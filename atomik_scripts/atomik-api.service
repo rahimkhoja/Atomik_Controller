@@ -1,5 +1,10 @@
+#!/bin/bash
 
-cation: /etc/systemd/system/
+# Atomik Controller Script - SystemD Emulator Service
+# Bash
+# By Rahim Khoja
+
+# location: /etc/systemd/system/
 [Unit]
 Description = Atomik API Serivce
 After       = syslog.target network.target
