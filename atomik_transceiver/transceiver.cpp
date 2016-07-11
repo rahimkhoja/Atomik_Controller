@@ -1,4 +1,9 @@
 //  sudo g++ -std=c++11 -lrf24-bcm -lcurl -pthread -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik_transceiver/PL1167_nRF24.cpp atomik_transceiver/MiLightRadio.cpp atomik_transceiver/transceiver.cpp atomik_cypher/atomikCypher.cpp -o transceiver
+// Atomik Transciever
+// C / C++
+// By Rahim Khoja
+
+// Listens for and Transmits to Mi-Light Bulbs. Listens on the RGB settings, Transmits with both RGB and CCT
 
 #include <cstdlib>
 #include <iostream>
