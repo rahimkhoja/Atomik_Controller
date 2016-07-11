@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Zone Details Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Allows users to view and edit all zone information.
   session_start();
   if(!$_SESSION['username'])
   {
