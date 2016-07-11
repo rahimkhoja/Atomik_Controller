@@ -3,7 +3,8 @@
 // HTML/JQUERY/PHP/MySQL
 // By Rahim Khoja
 
-// Adds Atomik Remotes to Atomik Zones. Only lists available remotes.
+// Adds Atomik Remotes to the Atomik system. Displays a list of remote types
+
   session_start();
   if(!$_SESSION['username'])
   {
