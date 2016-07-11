@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Add Remote Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Adds Atomik Remotes to Atomik Zones. Only lists available remotes.
   session_start();
   if(!$_SESSION['username'])
   {
