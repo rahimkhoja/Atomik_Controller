@@ -1,3 +1,10 @@
+// sudo g++ -std=c++11 -lcurl -ljsoncpp -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik_cypher/atomikCypher.cpp atomik_emulator/atomik_emulator.cpp -o emulator
+// Atomik Repeate Command Buffer - Depreiated
+// C / C++
+// By Rahim Khoja
+
+// Stops duplicate messages during a 1 second period from slowing down the system. Lag Stopper Attempt.
+
 #include <iostream>
 #include <string>
 #include <vector>
