@@ -1,4 +1,9 @@
 // sudo g++ -std=c++11 -pthread -L/usr/lib -lmysqlcppconn -I/usr/include/cppconn atomik-zone-update.cpp -o atomik-zone-update
+// Atomik Zone Update Command
+// C / C++
+// By Rahim Khoja
+
+// Updates all the bulbs in the supplied zone to the newly submitted settings.
 
 #include <iostream>
 #include <string>
