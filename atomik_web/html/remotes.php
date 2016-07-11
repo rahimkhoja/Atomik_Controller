@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Remotes List Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Lists all the available remotes, lets users click them to open remote details. Page includes a add new remote button.
   session_start();
   if(!$_SESSION['username'])
   {
