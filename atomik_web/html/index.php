@@ -1,4 +1,10 @@
-<?php include 'script/database.php';?><!doctype html>
+<?php 
+// Atomik Web Site - Index Page (Landing/Login)
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Default landing page and Atomik Controller login page.
+include 'script/database.php';?><!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
