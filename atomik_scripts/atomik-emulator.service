@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# Atomik Controller Script - SystemD Emulator Service
+# Bash
+# By Rahim Khoja
+
 # location: /etc/systemd/system/
 [Unit]
 Description = Atomik Mi-Light Emulator Serivce 
