@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Device Details Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Allows users to view and edit all device information.
   session_start();
   if(!$_SESSION['username'])
   {
