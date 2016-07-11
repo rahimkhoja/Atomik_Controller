@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Task Details Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Allows users to view and edit all scheduled task information. 
   session_start();
   if(!$_SESSION['username'])
   {
