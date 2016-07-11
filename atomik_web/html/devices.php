@@ -1,4 +1,9 @@
 <?php
+// Atomik Web Site - Devices List Page
+// HTML/JQUERY/PHP/MySQL
+// By Rahim Khoja
+
+// Lists all the available devices, lets users click them to open device details. Page includes a add new device button.
   session_start();
   if(!$_SESSION['username'])
   {
