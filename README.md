@@ -114,17 +114,22 @@ Here are some example commands:
   { "ZoneName":"Hallway", "Configuration":{ "Channel":"2", "Status":"0", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"6500" }}
  }*
 
- Notes on Response:
- Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
- Status can be 0 or 1. 0 represents Zone lights Off, and 1 represents Zone lights On.
- ColorMode can be 0 or 1. 0 represents Color Mode, and 1 represents White Mode.
- Brightness can be any integer between 0 and 100. Brightness represents the percentage of Brightness a Zone is set to.
- Color can be any integer between 0 and 255. Each Color integer represents a different color while in Color Mode.
- WhiteTemp
-   
-List Command JSON Invalid Response:
+
+**List Command JSON Invalid Response:**
   
- {"Error": "Invalid Username or Password"}
+ *{"Error": "Invalid Username or Password"}*
+
+
+**Notes on Response:**
+
+ * Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
+ * Status can be 0 or 1. 0 represents Zone lights Off, and 1 represents Zone lights On.
+ * ColorMode can be 0 or 1. 0 represents Color Mode, and 1 represents White Mode.
+ * Brightness can be any integer between 0 and 100. Brightness represents the percentage of Brightness a Zone is set to.
+ * Color can be any integer between 0 and 255. Each Color integer represents a different color while in Color Mode.
+ * WhiteTemp can be any integer between 2700 ( Warm White ) and 6500 ( Cold White ). 
+   
+
 
 
 ### Atomik Controller Technical Details ###
