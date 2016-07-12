@@ -88,23 +88,25 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
   **Issue Command - JSON Response:**
 
-   {
-    {"ZoneName":"Bedroom", "Configuration":{"Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"96", "Color":"221", "WhiteTemp":"6500"}}
-    {"ZoneName":"Living Room", "Configuration":{"Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"68", "Color":"215", "WhiteTemp":"6500"}}
-    {"ZoneName":"Hallway", "Configuration":{"Channel":"2", "Status":"1", "ColorMode":"1", "Brightness":"18", "Color":"215", "WhiteTemp":"6500"}}
-   }
+    {
+     {"ZoneName":"Bedroom", "Configuration":{"Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"96", "Color":"221", "WhiteTemp":"6500"}}
+     {"ZoneName":"Living Room", "Configuration":{"Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"68", "Color":"215", "WhiteTemp":"6500"}}
+     {"ZoneName":"Hallway", "Configuration":{"Channel":"2", "Status":"1", "ColorMode":"1", "Brightness":"18", "Color":"215", "WhiteTemp":"6500"}}
+    }
 
 
 
   **Invalid Request - JSON Error Response Example:**
   
-   {"Error": "Invalid Username or Password"}
+    {"Error": "Invalid Username or Password"}
 
 
 
-  **Notes on Response:**
+  **Notes on Request Response:**
 
-   * Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
+   * Channel can be any integer, but it is assigned by the controller. Each Atomik API will have a channel associated to a Zone.
+   * User is the Atomik Username of the Atomik Remote.
+   * Password is the Atomik User's password of the Atomik Remote.
    * Status can be 0 or 1. 0 represents Zone lights Off, and 1 represents Zone lights On.
    * ColorMode can be 0 or 1. 0 represents Color Mode, and 1 represents White Mode.
    * Brightness can be any integer between 0 and 100. Brightness represents the percentage of Brightness a Zone is set to.
@@ -112,12 +114,14 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
    * WhiteTemp can be any integer between 2700 ( Warm White ) and 6500 ( Cold White ). 
    
 
+
   **Testing the API with cURL:**
 
-  *curl -H "Content-Type: application/json" -X POST -d '{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"2","Status":"1","Brightness":"10","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}' http://192.168.1.100:4200/atomik
-*
+    curl -H "Content-Type: application/json" -X POST -d '{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"2","Status":"1","Brightness":"10","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}' http://192.168.1.100:4200/atomik
 
-  *curl -H "Content-Type: application/json" -X POST -d '{"Command":"List","User":"rahimk","Password":"password"}' http://192.168.1.100:4200/atomik*
+
+    curl -H "Content-Type: application/json" -X POST -d '{"Command":"List","User":"rahimk","Password":"password"}' http://192.168.1.100:4200/atomik
+
 
 
 ### How do I get set up? ###
