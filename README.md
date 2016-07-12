@@ -159,6 +159,7 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 ![raspberry_pi_nrf24l01_small.jpg](https://bitbucket.org/repo/z4EyAd/images/989963794-raspberry_pi_nrf24l01_small.jpg)
 
 
+
  **Quick Install Instructions:**
  
  1. Download the ISO of the Atomik Controller (link)
@@ -170,6 +171,8 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  7. Login to the Atomik Controller with (Username: admin, Password: admin) 
  
 
+
+
  **Full System Install Instructions:**
 
   Coming Soon! (or when I get around to it)
@@ -177,13 +180,16 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 
 
+
 ### Atomik Controller Technical Details ###
+
 
 
  **Operating System:**
 
  
  * Raspbian (jessie)
+
 
 
  **Software Dependencies:**
@@ -197,6 +203,7 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  * MariaDB (MySQL Fork) - Cuz we all love Microseconds
  * G++
  * MySQL C++ Connector
+
 
 
 ### References & Thanks ###
