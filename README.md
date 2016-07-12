@@ -57,37 +57,37 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### Atomik API Details ###
 
-The Atomik API accepts JSON Commands on Port 4200 of the Atomik Controller to control the Atomik lighting Zones. Atomik API Remotes are setup, and applied to Zones from within the Atomik Controller web administration GUI. Atomik Api Remotes only have two types of commands, List and Issue. List will accept JSON that contains a valid username and password and return a JSON list of all the available zones and their current settings to the user. Issue will accept JSON that contains a valid username and password along with zone light settings, then it will update the light settings and return a JSON list of all the available zones along with the updates zone information from the Issued command. If command is not accepted or invalid credentials are passed to the Atomik API, an error JSON is returned.
+     The Atomik API accepts JSON Commands on Port 4200 of the Atomik Controller to control the Atomik lighting Zones. Atomik API Remotes are setup, and applied to Zones from within the Atomik Controller web administration GUI. Atomik Api Remotes only have two types of commands, List and Issue. List will accept JSON that contains a valid username and password and return a JSON list of all the available zones and their current settings to the user. Issue will accept JSON that contains a valid username and password along with zone light settings, then it will update the light settings and return a JSON list of all the available zones along with the updates zone information from the Issued command. If command is not accepted or invalid credentials are passed to the Atomik API, an error JSON is returned.
 
 All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Address of the controller )
 
 Here are some example commands: 
 
 
-**List Command - JSON Request Example:** 
+  **List Command - JSON Request Example:** 
 
- *{"Command":"List","User":"rahimk","Password":"password"}*
-
-
-
-**List Command - JSON Response:**
-
- *{
-  { "ZoneName":"Bedroom", "Configuration":{ "Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"100", "Color":"198", "WhiteTemp":"2700" }}
-  { "ZoneName":"Living Room", "Configuration":{ "Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"2700" }}
-  { "ZoneName":"Hallway", "Configuration":{ "Channel":"2", "Status":"0", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"6500" }}
- }*
-
-
-**Issue Command - JSON Request Example:** 
-
- *{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"1","Status":"1","Brightness":"65","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}*
+    *{"Command":"List","User":"rahimk","Password":"password"}*
 
 
 
-**Issue Command - JSON Response:**
+  **List Command - JSON Response:**
 
- *{{"ZoneName":"Bedroom", "Configuration":{"Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"96", "Color":"221", "WhiteTemp":"6500"}}
+    *{
+     { "ZoneName":"Bedroom", "Configuration":{ "Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"100", "Color":"198", "WhiteTemp":"2700" }}
+     { "ZoneName":"Living Room", "Configuration":{ "Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"2700" }}
+     { "ZoneName":"Hallway", "Configuration":{ "Channel":"2", "Status":"0", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"6500" }}
+    }*
+
+
+  **Issue Command - JSON Request Example:** 
+
+    *{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"1","Status":"1","Brightness":"65","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}*
+
+
+
+  **Issue Command - JSON Response:**
+
+   *{{"ZoneName":"Bedroom", "Configuration":{"Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"96", "Color":"221", "WhiteTemp":"6500"}}
 {"ZoneName":"Living Room", "Configuration":{"Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"68", "Color":"215", "WhiteTemp":"6500"}}
 {"ZoneName":"Hallway", "Configuration":{"Channel":"2", "Status":"1", "ColorMode":"1", "Brightness":"18", "Color":"215", "WhiteTemp":"6500"}}}
 
@@ -98,20 +98,22 @@ Here are some example commands:
 
 
 
-**Notes on Response:**
+  **Notes on Response:**
 
- * Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
- * Status can be 0 or 1. 0 represents Zone lights Off, and 1 represents Zone lights On.
- * ColorMode can be 0 or 1. 0 represents Color Mode, and 1 represents White Mode.
- * Brightness can be any integer between 0 and 100. Brightness represents the percentage of Brightness a Zone is set to.
- * Color can be any integer between 0 and 255. Each Color integer represents a different color while in Color Mode.
- * WhiteTemp can be any integer between 2700 ( Warm White ) and 6500 ( Cold White ). 
+   * Channel can be any integer, but it is assigned by the controller. Each Atomik Api will have a channel associated to a Zone.
+   * Status can be 0 or 1. 0 represents Zone lights Off, and 1 represents Zone lights On.
+   * ColorMode can be 0 or 1. 0 represents Color Mode, and 1 represents White Mode.
+   * Brightness can be any integer between 0 and 100. Brightness represents the percentage of Brightness a Zone is set to.
+   * Color can be any integer between 0 and 255. Each Color integer represents a different color while in Color Mode.
+   * WhiteTemp can be any integer between 2700 ( Warm White ) and 6500 ( Cold White ). 
    
 
-**Testing the API with cURL:**
+  **Testing the API with cURL:**
 
- *curl -H "Content-Type: application/json" -X POST -d '{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"2","Status":"1","Brightness":"10","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}' http://192.168.1.100:4200/atomik
+  *curl -H "Content-Type: application/json" -X POST -d '{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"2","Status":"1","Brightness":"10","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}' http://192.168.1.100:4200/atomik
 *
+
+  *curl -H "Content-Type: application/json" -X POST -d '{"Command":"List","User":"rahimk","Password":"password"}' http://192.168.1.100:4200/atomik*
 
 
 ### How do I get set up? ###
