@@ -64,9 +64,11 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  Here are some example commands: 
 
 
+
   **List Command - JSON Request Example:** 
 
     {"Command":"List","User":"rahimk","Password":"password"}
+
 
 
 
@@ -80,9 +82,11 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 
 
+
   **Issue Command - JSON Request Example:** 
 
     {"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"1","Status":"1","Brightness":"65","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}
+
 
 
 
@@ -96,9 +100,11 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 
 
+
   **Invalid Request - JSON Error Response Example:**
   
     {"Error": "Invalid Username or Password"}
+
 
 
 
@@ -115,12 +121,16 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
    
 
 
+
   **Testing the API with cURL:**
 
-    curl -H "Content-Type: application/json" -X POST -d '{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"2","Status":"1","Brightness":"10","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}' http://192.168.1.100:4200/atomik
+  *curl -H "Content-Type: application/json" -X POST -d '{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"2","Status":"1","Brightness":"10","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}' http://192.168.1.100:4200/atomik*
 
 
-    curl -H "Content-Type: application/json" -X POST -d '{"Command":"List","User":"rahimk","Password":"password"}' http://192.168.1.100:4200/atomik
+
+
+  *curl -H "Content-Type: application/json" -X POST -d '{"Command":"List","User":"rahimk","Password":"password"}' http://192.168.1.100:4200/atomik*
+
 
 
 
