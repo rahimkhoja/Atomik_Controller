@@ -66,36 +66,39 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
   **List Command - JSON Request Example:** 
 
-    *{"Command":"List","User":"rahimk","Password":"password"}*
+    {"Command":"List","User":"rahimk","Password":"password"}
 
 
 
   **List Command - JSON Response:**
 
-    *{
+    {
      { "ZoneName":"Bedroom", "Configuration":{ "Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"100", "Color":"198", "WhiteTemp":"2700" }}
      { "ZoneName":"Living Room", "Configuration":{ "Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"2700" }}
      { "ZoneName":"Hallway", "Configuration":{ "Channel":"2", "Status":"0", "ColorMode":"1", "Brightness":"100", "Color":"0", "WhiteTemp":"6500" }}
-    }*
+    }
+
 
 
   **Issue Command - JSON Request Example:** 
 
-    *{"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"1","Status":"1","Brightness":"65","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}*
+    {"Command":"Issue","User":"rahimk","Password":"password","Configuration":{"Channel":"1","Status":"1","Brightness":"65","ColorMode":"1","Color":"215","WhiteTemp":"6500"}}
 
 
 
   **Issue Command - JSON Response:**
 
-   *{{"ZoneName":"Bedroom", "Configuration":{"Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"96", "Color":"221", "WhiteTemp":"6500"}}
-{"ZoneName":"Living Room", "Configuration":{"Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"68", "Color":"215", "WhiteTemp":"6500"}}
-{"ZoneName":"Hallway", "Configuration":{"Channel":"2", "Status":"1", "ColorMode":"1", "Brightness":"18", "Color":"215", "WhiteTemp":"6500"}}}*
+   {
+    {"ZoneName":"Bedroom", "Configuration":{"Channel":"0", "Status":"1", "ColorMode":"0", "Brightness":"96", "Color":"221", "WhiteTemp":"6500"}}
+    {"ZoneName":"Living Room", "Configuration":{"Channel":"1", "Status":"1", "ColorMode":"1", "Brightness":"68", "Color":"215", "WhiteTemp":"6500"}}
+    {"ZoneName":"Hallway", "Configuration":{"Channel":"2", "Status":"1", "ColorMode":"1", "Brightness":"18", "Color":"215", "WhiteTemp":"6500"}}
+   }
 
 
 
-**Invalid Request - JSON Error Response Example:**
+  **Invalid Request - JSON Error Response Example:**
   
- *{"Error": "Invalid Username or Password"}*
+   {"Error": "Invalid Username or Password"}
 
 
 
