@@ -108,7 +108,7 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 
 
-  **Notes on Request Response:**
+  **Notes on Atomik JSON Requests and Response:**
 
    * Channel can be any integer, but it is assigned by the controller. Each Atomik API will have a channel associated to a Zone.
    * User is the Atomik Username of the Atomik Remote.
@@ -170,6 +170,13 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  7. Login to the Atomik Controller with (Username: admin, Password: admin) 
  
 
+ **Full System Install Instructions:**
+
+  Coming Soon! (or when I get around to it)
+
+
+
+
 ### Atomik Controller Technical Details ###
 
 
@@ -202,6 +209,14 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  * https://gist.github.com/jpawlowski/5359556  - Julian Pawlowski
 
  * http://stackexchange.com/ 
+
+
+
+### Notes ###
+
+ * The code is rather messy and inefficient ( sorry )
+ * I didn't comment much
+ * If the Atomik Transceiver is reprogrammed to use two Nrf24l01+ Radio Modules it would greatly improve responsiveness.
 
 
 
