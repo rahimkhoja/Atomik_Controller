@@ -1103,11 +1103,11 @@ int main(int argc, char** argv)
         int recordsUpdated;
 
         
-connection_properties ["hostName"] = std::string("localhost");      
-connection_properties ["userName"] = "root";
-connection_properties ["password"] = "raspberry";
-connection_properties ["schema"] = "atomik_controller";
-connection_properties ["OPT_RECONNECT"] = true;
+        connection_properties ["hostName"] = std::string("localhost");      
+        connection_properties ["userName"] = std::string("root");
+        connection_properties ["password"] = std::string("raspberry");
+        connection_properties ["schema"] = std::string("atomik_controller");
+        connection_properties ["OPT_RECONNECT"] = true;
 
 
         /* Create a connection */
