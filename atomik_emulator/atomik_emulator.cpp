@@ -55,13 +55,8 @@ std::mutex JSONfileMutex;
 
 
 sql::Driver *driver;
-sql::Connection *con;
+sql::Connection *con;  
 sql::ConnectOptionsMap connection_properties;
-connection_properties ["hostName"] = "tcp://127.0.0.1:3306";      
-connection_properties ["userName"] = "root";
-connection_properties ["password"] = "raspberry";
-connection_properties ["schema"] = "atomik_controller";
-connection_properties ["OPT_RECONNECT"] = true;
 
 
 std::string int2hex(int x)
@@ -1107,6 +1102,12 @@ int main(int argc, char** argv)
         sql::Statement *stmt;
         int recordsUpdated;
 
+        
+connection_properties ["hostName"] = "tcp://127.0.0.1:3306";      
+connection_properties ["userName"] = "root";
+connection_properties ["password"] = "raspberry";
+connection_properties ["schema"] = "atomik_controller";
+connection_properties ["OPT_RECONNECT"] = true;
         /* Create a connection */
         driver = get_driver_instance();
         con = driver->connect(connection_properties);
