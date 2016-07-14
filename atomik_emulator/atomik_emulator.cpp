@@ -1103,7 +1103,7 @@ int main(int argc, char** argv)
         int recordsUpdated;
 
         
-connection_properties ["hostName"] = "tcp://127.0.0.1:3306";      
+connection_properties ["hostName"] = "localhost";      
 connection_properties ["userName"] = "root";
 connection_properties ["password"] = "raspberry";
 connection_properties ["schema"] = "atomik_controller";
