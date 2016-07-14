@@ -56,6 +56,12 @@ std::mutex JSONfileMutex;
 
 sql::Driver *driver;
 sql::Connection *con;
+sql::ConnectOptionsMap connection_properties;
+connection_properties ["hostName"] = "tcp://127.0.0.1:3306";      
+connection_properties ["userName"] = "root";
+connection_properties ["password"] = "raspberry";
+connection_properties ["schema"] = "atomik_controller";
+connection_properties ["OPT_RECONNECT"] = true;
 
 
 std::string int2hex(int x)
@@ -1103,9 +1109,9 @@ int main(int argc, char** argv)
 
         /* Create a connection */
         driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
+        con = driver->connect(connection_properties);
         /* Connect to the MySQL test database */
-        con->setSchema("atomik_controller");    
+        //con->setSchema("atomik_controller");    
     
      } catch (sql::SQLException &e) {
         std::cout << "# ERR: SQLException in " << __FILE__;
