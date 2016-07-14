@@ -1103,11 +1103,13 @@ int main(int argc, char** argv)
         int recordsUpdated;
 
         
-connection_properties ["hostName"] = "localhost";      
+connection_properties ["hostName"] = std::string("localhost");      
 connection_properties ["userName"] = "root";
 connection_properties ["password"] = "raspberry";
 connection_properties ["schema"] = "atomik_controller";
 connection_properties ["OPT_RECONNECT"] = true;
+
+
         /* Create a connection */
         driver = get_driver_instance();
         con = driver->connect(connection_properties);
