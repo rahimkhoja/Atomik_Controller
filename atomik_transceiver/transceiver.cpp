@@ -92,6 +92,7 @@ std::vector<std::string> socket_args;
 
 sql::Driver *driver;
 sql::Connection *con;
+sql::ConnectOptionsMap connection_properties;
 
 enum option_code {
     h,
