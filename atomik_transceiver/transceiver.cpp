@@ -1861,12 +1861,18 @@ int main(int argc, char** argv)
         
         sql::Statement *stmt;
         int recordsUpdated;
+        
+        
+        connection_properties ["hostName"] = std::string("localhost");      
+        connection_properties ["userName"] = std::string("root");
+        connection_properties ["password"] = std::string("raspberry");
+        connection_properties ["schema"] = std::string("atomik_controller");
+        connection_properties ["OPT_RECONNECT"] = true;
+        
 
         /* Create a connection */
         driver = get_driver_instance();
-        con = driver->connect("tcp://127.0.0.1:3306", "root", "raspberry");
-        /* Connect to the MySQL test database */
-        con->setSchema("atomik_controller");    
+        con = driver->connect(connection_properties);
     
      } catch (sql::SQLException &e) {
         std::cout << "# ERR: SQLException in " << __FILE__;
