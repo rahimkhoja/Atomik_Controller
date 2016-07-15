@@ -370,7 +370,8 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
           sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans);
 		  
 		old_b = -1;
-        old_c = -1;
+        old_c = 256;
+        old_cm = -1;
 		  
         }        else {
           sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans);
@@ -390,7 +391,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 
           trans = IncrementTransmissionNum(trans);
 
-		
         
           if (new_cm == 1) {
             sendcom = sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c);
@@ -407,8 +407,6 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 
         if (new_cm == 0) {
           // Color Mode Color
-            old_c = 256;
-          if (new_c != old_c ) {
           
             // Color Change
             trans = IncrementTransmissionNum(trans);
@@ -419,7 +417,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 
             sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans);
             runCommand(sendcom);
-          }
+         
           // End Color Change
 
         }
