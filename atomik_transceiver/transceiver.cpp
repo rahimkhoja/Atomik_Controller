@@ -856,7 +856,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     std::string sql_select;
     
     sql_select = "SELECT atomik_zones.zone_status, atomik_zones.zone_colormode, atomik_zones.zone_brightness, atomik_zones.zone_rgb256, atomik_zones.zone_white_temprature FROM atomik_zones WHERE atomik_zones.zone_id="+int2int(zone)+";";
-    
+    std::cout << sql_select << std::endl;
     try {
         
         sql::Statement *stmt;
@@ -899,7 +899,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
     
     
     sql_select = "SELECT atomik_devices.device_id, atomik_devices.device_status, atomik_devices.device_colormode, atomik_devices.device_brightness, atomik_devices.device_rgb256, atomik_devices.device_white_temprature, atomik_devices.device_address1, atomik_devices.device_address2, atomik_device_types.device_type_rgb256, atomik_device_types.device_type_warm_white, atomik_device_types.device_type_cold_white, atomik_devices.device_transmission FROM atomik_zone_devices, atomik_device_types, atomik_devices WHERE atomik_zone_devices.zone_device_zone_id="+int2int(zone)+" && atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && atomik_devices.device_type=atomik_device_types.device_type_id && atomik_device_types.device_type_brightness=1 ORDER BY atomik_devices.device_type ASC;";
-       
+       std::cout << sql_select << std::endl;
     try {
         
         sql::Statement *stmt;
@@ -967,6 +967,7 @@ int validateRFChannel(sql::Connection *con, int add1, int add2, int chan) {
         sql_select = "SELECT atomik_zones.zone_id, atomik_zone_remotes.zone_remote_remote_id FROM atomik_zones, atomik_remotes, atomik_zone_remotes WHERE atomik_zones.zone_id=atomik_zone_remotes.zone_remote_zone_id && atomik_zone_remotes.zone_remote_remote_id=atomik_remotes.remote_id && atomik_remotes.remote_address1="+int2int(add1)+" && atomik_remotes.remote_address2="+int2int(add2)+" && atomik_zone_remotes.zone_remote_channel_number="+int2int(chan)+";"; 
     }
     
+    std::cout << sql_select << std::endl;
     try {
     
         sql::Statement *stmt;
