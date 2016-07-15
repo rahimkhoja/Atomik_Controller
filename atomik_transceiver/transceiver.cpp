@@ -306,6 +306,14 @@ int getAtomikJSONValue(std::string name, std::string atomikJSON) {
                 } else {
                         return std::stoi(output);
                 }
+        } else if ( name == "WhiteTemp") {
+                std::string output = conf.get("WhiteTemp", "error" ).asString();
+
+                if (  output == "error" ) {
+                        return -1;
+                } else {
+                        return std::stoi(output);
+                }
         }
 
 }
