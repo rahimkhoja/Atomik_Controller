@@ -237,8 +237,8 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 ### Notes ###
 
- * The code is rather messy and inefficient ( sorry )
- * I didn't comment much
+ * The code is rather messy and inefficient ( sorry ). With some polishing it should easily become efficient. 
+ * Comments have not been added yet. This is still a work in progress.
  * If the Atomik Transceiver is reprogrammed to use two Nrf24l01+ Radio Modules it would greatly improve responsiveness.
 
 
@@ -246,7 +246,6 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 ### Who do I talk to? ###
 
 * Managed by Rahim Khoja (rahimk@khojacorp.com)
-* Other community or team contact
 
 
 
