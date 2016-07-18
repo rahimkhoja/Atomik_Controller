@@ -587,7 +587,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
       }
 	  
   } else if (cw == 1 && rgb == 1 || ww == 1 && rgb == 1) {
-      sendcommandbase = "/usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2) + "!";
+      sendcommandbase = "/usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2);
       // RGBWW and RGBCW
 
       if (new_s != old_s) {
