@@ -39,7 +39,9 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### Screenshots of Web GUI ###
 
- * [Zone List Screen](https://i.imgsafe.org/6f1bf11c52.png)
+ * [Zone List Screen]
+   ![Zones-Screen.png](https://bitbucket.org/repo/z4EyAd/images/4039907140-Zones-Screen.png)
+
  * [Zone Details Screen](https://i.imgsafe.org/6f1c079e18.png) 
  * [Device List Screen](https://i.imgsafe.org/6f1b373281.png)
  * [Device Details (White) Screen](https://i.imgsafe.org/6f1ad91fc0.png)
