@@ -1190,18 +1190,18 @@ void listen()
                     printf("\n");
                     
                     fflush(stdout);
-                    
+                    usleep(100000);
                 } else {
                    
                     printf("failed! Message Error!");
                     fprintf(stderr, "Message has invalid size %d (expecting 2 or 3)!\n", n);
                     
                 } /* End message size check */
-usleep(100000);
+
             } /* End handling data */
 
         } /* End select */
-  
+          printf("loop\n");
     } /* While (1) */
 
 }
