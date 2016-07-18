@@ -39,23 +39,31 @@ Hopefully in the future the Atomik Controller will add blue tooth connectivity, 
 
 ### Screenshots of Web GUI ###
 
- * Zone List Screen
-   
+ * [Zone List Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Zones-Screen_zpsmxpq5ehy.png)  
 
- * [Zone Details Screen]
+ * [Zone Details Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Zone%20Details-Screen_zps02cvx0ni.png)
+
  ![Zone Details Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Zone%20Details-Screen_zps02cvx0ni.png)
 
- * [Device List Screen](https://i.imgsafe.org/6f1b373281.png)
- * [Device Details (White) Screen](https://i.imgsafe.org/6f1ad91fc0.png)
- * [Device Details (RGBW) Screen](https://i.imgsafe.org/6f1ae13f74.png)
- * [Login Screen](https://i.imgsafe.org/6f1bc9b8b6.png)
- * [Logout Screen](https://i.imgsafe.org/6f1b87a10d.png)
- * [Dashboard Screen](https://i.imgsafe.org/6f1ac5725d.png)
- * [Settings Screen](https://i.imgsafe.org/6f1bce3dd7.png)
- * [Remote List Screen](https://i.imgsafe.org/6f1be38077.png)
- * [Remote Details (Smartphone) Screen](https://i.imgsafe.org/6f1b349821.png)
- * [Remote Details (RGB RF) Screen](https://i.imgsafe.org/6f1bcc02db.png)
- * [Scheduled Task Details Screen](https://i.imgsafe.org/6f1b93bb37.png)
+ * [Device List Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Devices-Screen_zpsnhulhziy.png)
+ * [Device Details (White) Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Device%20CCT%20Details-Screen_zpskhnek0rl.png)
+ * [Device Details (RGBW) Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Device%20RGBW%20Details-Screen_zpsvpohtb3z.png)
+ * [Login Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Login-Screen_zpsnokmgigq.png)
+ * [Logout Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Logout-Screen_zpsgauwv1ct.png)
+ * [Dashboard Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Dashboard-Screen_zpskhkzc05d.png)
+
+ ![Dashboard Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Dashboard-Screen_zpskhkzc05d.png)
+ 
+ * Settings Screen
+
+ ![Settings Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Settings-Screen_zpskpc8psrh.png)
+
+ * [Remote List Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Remote-Screen_zpssx155bpi.png)
+ * [Remote Details (Smartphone) Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Remote%20Smartphone%20Details-Screen_zps53lo9scc.png)
+ * [Remote Details (RGB RF) Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Remote%20RGB%20RF%20Details-Screen_zps1454hf20.png)
+ * [Scheduled Task Details Screen](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Task%20Details-Screen_zps52vwjzpu.png)
+
+ ![Scheduled Task Details](http://i1378.photobucket.com/albums/ah82/rahimkhoja/Task%20Details-Screen_zps52vwjzpu.png)
 
 
 
