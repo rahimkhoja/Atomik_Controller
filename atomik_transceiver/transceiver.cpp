@@ -160,7 +160,7 @@ void addCommand(std::string str)
         std::list<std::string> temp;
      std::string delim = "!";
     if (str.find(delim) != std::string::npos) {
-        temp = split(str.c_str())
+        temp = split(str.c_str());
         commandListMutex.lock();
         commandList.insert(commandList.end(), temp.begin(), temp.end());
         
