@@ -137,14 +137,45 @@ int getCommandListSize()
     return z; 
 }
 
+std::list<std::string> split(const char *str, char c = '!')
+{
+    std::list<std::string> result;
+
+    do
+    {
+        const char *begin = str;
+
+        while(*str != c && *str)
+            str++;
+
+        result.push_back(string(begin, str));
+    } while (0 != *str++);
+
+    return result;
+}
+
 void addCommand(std::string str)
-{;
+{
+        std::list temp;
+     std::string delim = "!";
+    if (str.find(delim) != std::string::npos) {
+        temp = split(str.c_str())
+        commandListMutex.lock();
+        commandList.insert(a.end(), temp.begin(), temp.end());
+        
+    commandListMutex.unlock();
+    } else {
+    
+    
     // add command string to bottom element of list
     commandListMutex.lock();
     commandList.push_back (str);
     commandListMutex.unlock();
+    }
     return; 
 }
+
+
 
 std::string getCommand()
 {
