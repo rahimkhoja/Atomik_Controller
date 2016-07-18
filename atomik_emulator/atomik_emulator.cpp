@@ -1201,7 +1201,7 @@ void listen()
             } /* End handling data */
 
         } /* End select */
-  usleep(100000)
+  usleep(100000);
     } /* While (1) */
 
 }
