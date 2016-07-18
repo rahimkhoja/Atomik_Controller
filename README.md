@@ -176,12 +176,13 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  
  1. Download the IMG of the Atomik Controller (Download Link)
  2. Download an IMG burning tool such as [win32diskimager](https://sourceforge.net/projects/win32diskimager/)
- 2. Write the IMG to an SD Card (Must fit in your Raspberry Pi)
- 3. Put the SD Card into the Raspberry Pi that has been modified
- 3. Set your systems Ethernet adapter's IP to 192.168.1.1 
- 4. Plug the Atomik Controller into your lan and power it up
- 6. After 2 Minutes go to http://192.168.1.100 in your web browser
- 7. Login to the Atomik Controller with (Username: admin, Password: admin) 
+ 3. Write the IMG to an SD Card (Must fit in your Raspberry Pi)
+ 4. Put the SD Card into the Raspberry Pi that has been modified
+ 5. Set your systems Ethernet adapter's IP to 192.168.1.1 
+ 6. Plug the Atomik Controller into your lan and power it up
+ 7. After 2 Minutes go to http://192.168.1.100 in your web browser
+ 8. Login to the Atomik Controller with (Username: admin, Password: admin) 
+ 9. Restart the Emulator, Transceiver, and API from the settings page after first boot
  
 
 
