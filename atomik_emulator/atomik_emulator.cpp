@@ -84,8 +84,8 @@ void runCommand(std::string command) {
 
     FILE *in;
 	char buff[512];
-
-	if(!(in = popen(command.c_str(), "r"))){
+    std::string temp = command.substr(0, command.size()-1);
+	if(!(in = popen(temp.c_str(), "r"))){
 		return;
 	}
     
@@ -1201,7 +1201,7 @@ void listen()
             } /* End handling data */
 
         } /* End select */
-
+  usleep(100000)
     } /* While (1) */
 
 }
