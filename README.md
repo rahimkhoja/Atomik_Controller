@@ -174,8 +174,9 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
  **Quick Install Instructions:**
  
- 1. Download the ISO of the Atomik Controller (link)
- 2. Write the ISO to an SD Card (Must fit in your Raspberry Pi)
+ 1. Download the IMG of the Atomik Controller (Download Link)
+ 2. Download an IMG burning tool such as [win32diskimager](https://sourceforge.net/projects/win32diskimager/)
+ 2. Write the IMG to an SD Card (Must fit in your Raspberry Pi)
  3. Put the SD Card into the Raspberry Pi that has been modified
  3. Set your systems Ethernet adapter's IP to 192.168.1.1 
  4. Plug the Atomik Controller into your lan and power it up
@@ -188,6 +189,8 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
  **Full System Install Instructions:**
 
   Coming Soon! (or when I get around to it)
+
+  Most Important CPP files have compile instruction on line 1
 
 
 
