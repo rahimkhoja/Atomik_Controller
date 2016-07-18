@@ -145,7 +145,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
 
       if ($old_cm != $new_cm) {
         $trans = IncrementTransmissionNum($trans);
-        echo 'current CM: ' . $new_cm . '\n';
 
         // Color Mode Change
 		$old_b = 9;
@@ -278,7 +277,6 @@ function transmit($new_b, $old_b, $new_s, $old_s, $new_c, $old_c, $new_wt, $old_
         // Color Mode Change
 
         $trans = IncrementTransmissionNum($trans);
-        echo 'current CM: ' . $new_cm . '\n';
         if ($new_cm == 1) {
           $sendcom = $sendcommandbase . " -k 13 -b " . dechex($old_b) . " -v " . dechex($trans);
         }
