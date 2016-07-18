@@ -1089,6 +1089,8 @@ void listen()
 
     while (1)
     {
+        printf("loop\n");
+        usleep(100000);
         socklen_t len = sizeof(cliaddr);
 
         FD_ZERO(&socks);
@@ -1190,7 +1192,7 @@ void listen()
                     printf("\n");
                     
                     fflush(stdout);
-                    usleep(100000);
+                    
                 } else {
                    
                     printf("failed! Message Error!");
@@ -1201,7 +1203,7 @@ void listen()
             } /* End handling data */
 
         } /* End select */
-          printf("loop\n");
+          
     } /* While (1) */
 
 }
