@@ -819,7 +819,7 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
             updateDeviceProperties(con, new_s, new_cm, new_b, new_c, new_wt, trans_id, dev_id);
         }
         runCommand(listofcommands);
-        listofcommands = "":
+        listofcommands = "";
         
         updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm, timezone);
         updateZoneDevicesProperties(con, zone, timezone);
