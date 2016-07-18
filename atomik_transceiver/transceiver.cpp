@@ -148,7 +148,7 @@ std::list<std::string> split(const char *str, char c = '!')
         while(*str != c && *str)
             str++;
 
-        result.push_back(string(begin, str));
+        result.push_back(std::string(begin, str));
     } while (0 != *str++);
 
     return result;
