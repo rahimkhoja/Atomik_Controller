@@ -235,7 +235,7 @@ void updateZoneDevicesProperties(sql::Connection *con, int zone, std::string tim
 
     std::string sql_update;
 	
-	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_device_zone_id="+int2int(zone)+";";
+	sql_update = "UPDATE atomik_zone_devices SET zone_device_last_update=UTC_TIMESTAMP(6) WHERE zone_device_zone_id="+int2int(zone)+";";
     try {
         
         sql::Statement *stmt;
@@ -355,7 +355,7 @@ void updateZoneProperties(sql::Connection *con, int zone, int bright, int status
 	
 	std::string sql_update;
 	
-	sql_update = "UPDATE atomik_zones SET zone_status="+int2int(status)+", zone_colormode="+int2int(colormode)+", zone_brightness="+int2int(bright)+", zone_rgb256="+int2int(color)+", zone_white_temprature="+int2int(whitetemp)+",zone_last_update = CONVERT_TZ(NOW(), '"+timezone+"', 'UTC') WHERE zone_id="+int2int(zone)+";";
+	sql_update = "UPDATE atomik_zones SET zone_status="+int2int(status)+", zone_colormode="+int2int(colormode)+", zone_brightness="+int2int(bright)+", zone_rgb256="+int2int(color)+", zone_white_temprature="+int2int(whitetemp)+",zone_last_update = UTC_TIMESTAMP(6) WHERE zone_id="+int2int(zone)+";";
 	
     try {
         
