@@ -714,6 +714,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 
       // End Status On
     }
+    printf(sendcom);
     runCommand(sendcom);
     return trans;
   }
