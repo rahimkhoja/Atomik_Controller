@@ -504,13 +504,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
       trans = IncrementTransmissionNum(trans);
 
       if (new_s == 1) {
-        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08" + "!";
 		old_b = 9;
       } else {
-        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B";
+        sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0B" + "!";
       }
 
-      runCommand(sendcom);
+      // runCommand(sendcom);
     } // End Status Change
     
 	if (new_s == 1) {
@@ -522,13 +522,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         // Color Mode Change
 		old_b = 9;
         if (new_cm == 1) {
-          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
+          sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18" + "!";
 		  
         } else {
-          sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08";
+          sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 08" + "!";
         }
 
-        runCommand(sendcom);
+        //runCommand(sendcom);
 	  }
 
 	if (new_b != old_b) {
@@ -540,22 +540,22 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 		if (new_pos > old_pos) {
 			if (new_pos == std::distance(Brightness, std::find(Brightness, Brightness + 11, 100)) ) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18";
-                runCommand(sendcom);
+				sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 18" + "!";
+                //runCommand(sendcom);
             } else {
 				move = new_pos - old_pos;
 				for (int x = 0; x <= move; x++) {
 					trans = IncrementTransmissionNum(trans);
-					sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C";
-                    runCommand(sendcom);
+					sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0C" + "!";
+                    //runCommand(sendcom);
 				}
 			}
 		} else {
 			move = old_pos - new_pos;
 			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04";
-                runCommand(sendcom);
+				sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 04" + "!";
+                //runCommand(sendcom);
 			}
 		}
 	}
@@ -572,22 +572,22 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 			
 			for (int x = 0; x <= move; x++) {
 				trans = IncrementTransmissionNum(trans);
-				sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f";
-                runCommand(sendcom);
+				sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0f" + "!";
+                //runCommand(sendcom);
 			}
 		} else {
 			move = old_pos - new_pos;
             for (int x = 0; x <= move; x++) {
               trans = IncrementTransmissionNum(trans);
-              sendcom = sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e";
-              runCommand(sendcom);
+              sendcom = sendcom + sendcommandbase + " -k " + int2hex((255 - trans)) + " -v " + int2hex(trans) + " -b 0e" + "!";
+              //runCommand(sendcom);
             }
           }
         }
       }
 	  
   } else if (cw == 1 && rgb == 1 || ww == 1 && rgb == 1) {
-      sendcommandbase = "/usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2);
+      sendcommandbase = "/usr/bin/transceiver -t 1 -q " + int2hex(add1) + " -r " + int2hex(add2) + "!";
       // RGBWW and RGBCW
 
       if (new_s != old_s) {
@@ -596,14 +596,14 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
         trans = IncrementTransmissionNum(trans);
 
         if (new_s == 1) {
-          sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans);
+          sendcom = sendcom + sendcommandbase + " -k 03 -v " + int2hex(trans) + "!";
 		  old_cm = -1;
 		  old_b = 0;
 		  
         }        else {
-          sendcom = sendcommandbase + " -k 04 -v " + int2hex(trans);
+          sendcom = sendcom + sendcommandbase + " -k 04 -v " + int2hex(trans) + "!";
         }
-        runCommand(sendcom);
+        // runCommand(sendcom);
       }
       // End Status Change
 
@@ -618,13 +618,13 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
           trans = IncrementTransmissionNum(trans);
 
           if (new_cm == 1) {
-            sendcom = sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+            sendcom = sendcom + sendcommandbase + " -k 13 -v " + int2hex(trans) + " -c " + int2hex(old_c) + "!";
 			
           }          else {
-            sendcom = sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c);
+            sendcom = sendcom + sendcommandbase + " -k 03 -v " + int2hex(trans) + " -c " + int2hex(old_c) + "!";
 			old_b = 0;
           }
-          runCommand(sendcom);
+          // runCommand(sendcom);
         }
 
         // End Color Mode Change > /dev/null &
@@ -636,12 +636,12 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
             // Color Change
             trans = IncrementTransmissionNum(trans);
 
-            initcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans);
-            runCommand(initcom);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -k 03 -v " + int2hex(trans) + "!";
+            //runCommand(initcom);
             trans = IncrementTransmissionNum(trans);
 
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans);
-            runCommand(sendcom);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -k 0f -v " + int2hex(trans) + "!";
+            // runCommand(sendcom);
           }
           // End Color Change
 
@@ -654,59 +654,59 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
           trans = IncrementTransmissionNum(trans);
 
           if (new_b == 4) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(129) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(129) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 8) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(121) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(121) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 12) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(113) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(113) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 15) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(105) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(105) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 19) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(97) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(97) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 23) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(89) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(89) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 27) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(81) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(81) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 31) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(73) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(73) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 35) {
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(65) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(65) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 39) { //10
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(57) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(57) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 42) { //11
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(49) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(49) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 46) { //12
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(41) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(41) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 50) { //13
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(33) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(33) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 54) { //14
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(25) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(25) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 58) { //15
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(17) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(17) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 62) { //16
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(9) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(9) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 65) { //17
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(1) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(1) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 69) { //18
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(249) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(249) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 73) { //19
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(241) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(241) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 77) { // 20
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(233) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(233) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 81) { // 21
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(225) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(225) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 85) { // 22
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(217) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(217) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 88) { // 23
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(209) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(209) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 92) { // 24
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(201) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(201) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 96) { // 25
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(193) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(193) + " -k 0e -v " + int2hex(trans) + "!";
            } else if ( new_b == 100) { // 26
-            sendcom = sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(185) + " -k 0e -v " + int2hex(trans);
+            sendcom = sendcom + sendcommandbase + " -c " + int2hex(new_c) + " -b " + int2hex(185) + " -k 0e -v " + int2hex(trans) + "!";
           }
-          runCommand(sendcom);
+          // runCommand(sendcom);
         }
 
         // End Brightness Change
@@ -714,6 +714,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
 
       // End Status On
     }
+    runCommand(sendcom);
     return trans;
   }
 
