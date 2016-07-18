@@ -1089,8 +1089,6 @@ void listen()
 
     while (1)
     {
-        printf("loop\n");
-        usleep(100000);
         socklen_t len = sizeof(cliaddr);
 
         FD_ZERO(&socks);
