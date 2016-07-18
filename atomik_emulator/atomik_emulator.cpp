@@ -217,7 +217,7 @@ std::string getLocalTimezone() {
 
     FILE *in;
 	char buff[512];
-
+        return "";
 	if(!(in = popen("cat /etc/timezone", "r"))){
 		return "";
 	}
