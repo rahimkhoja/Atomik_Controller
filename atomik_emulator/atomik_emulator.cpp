@@ -58,6 +58,7 @@ sql::Driver *driver;
 sql::Connection *con;  
 sql::ConnectOptionsMap connection_properties;
 
+std::string listofcommands = "";
 
 std::string int2hex(int x)
 {
@@ -79,6 +80,12 @@ int hex2int(std::string hexnum) {
         return x;
 }
 
+
+void addCommand(std::string com) {
+
+  listofcommands = listofcommands + com;
+
+}
 
 void runCommand(std::string command) {
 
@@ -715,7 +722,7 @@ int transmit(int new_b, int old_b, int new_s, int old_s, int new_c, int old_c, i
       // End Status On
     }
     printf(sendcom.c_str());
-    runCommand(sendcom);
+    addCommand(sendcom);
     return trans;
   }
 
@@ -811,6 +818,8 @@ bool updateZone(sql::Connection *con, int status, int colormode, int brightness,
             int trans_id = transmit(new_b, old_brightness, new_s, old_status, new_c, old_color, new_wt, old_whitetemp, new_cm, old_colormode, address1, address2, old_trans_id, type_rgb, type_cw, type_ww);
             updateDeviceProperties(con, new_s, new_cm, new_b, new_c, new_wt, trans_id, dev_id);
         }
+        runCommand(listofcommands);
+        listofcommands = "":
         
         updateZoneProperties(con, zone, new_b, new_s, new_c, new_wt, new_cm, timezone);
         updateZoneDevicesProperties(con, zone, timezone);
