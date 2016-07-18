@@ -156,7 +156,8 @@ std::list<std::string> split(const char *str, char c = '!')
 
 void addCommand(std::string str)
 {
-        std::list temp;
+        
+        std::list<std::string> temp;
      std::string delim = "!";
     if (str.find(delim) != std::string::npos) {
         temp = split(str.c_str())
