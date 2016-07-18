@@ -244,3 +244,8 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 * Managed by Rahim Khoja (rahimk@khojacorp.com)
 * Other community or team contact
+
+
+### Disclaimer ###
+
+I take no
