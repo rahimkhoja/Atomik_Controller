@@ -174,7 +174,7 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
  **Quick Install Instructions:**
  
- 1. Download the IMG of the Atomik Controller (Direct Download Link - Coming soon) [Torrent Download](http://www.mediafire.com/download/r5sbso18rrw1dsc/atomik_controller_0.8.img.torrent)
+ 1. Download the IMG of the Atomik Controller [7z Direct Download](https://www.mediafire.com/?7ad6j22xgp2q8oj) [Torrent Download](http://www.mediafire.com/download/r5sbso18rrw1dsc/atomik_controller_0.8.img.torrent)
  2. Download an IMG burning tool such as [win32diskimager](https://sourceforge.net/projects/win32diskimager/)
  3. Write the IMG to an SD Card (Must fit in your Raspberry Pi)
  4. Put the SD Card into the Raspberry Pi that has been modified
