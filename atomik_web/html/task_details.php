@@ -483,8 +483,7 @@ atomik_zone_devices, atomik_device_types, atomik_devices
 WHERE 
 atomik_zone_devices.zone_device_zone_id=".$_task_zone." &&
 atomik_zone_devices.zone_device_device_id=atomik_devices.device_id && 
-atomik_devices.device_type=atomik_device_types.device_type_id && 
-atomik_device_types.device_type_rgb256=1;";  
+atomik_devices.device_type=atomik_device_types.device_type_id;";  
 
 	$brs=$conn->query($sql);
  
