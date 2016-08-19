@@ -194,7 +194,8 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
   Most Important CPP files have compile instruction on line 1
 
   SSH Credentials (pi/raspberry)
-
+  
+  MariaDB Credentials (root/raspberry)
 
 
 
