@@ -21,10 +21,5 @@
 #
 # m h  dom mon dow   command
 */30 * * * *    sudo /var/atomik/scripts/updateSSIDlist.sh
-30 23 * * *	sudo /usr/bin/atomik-zone-update 25 0 0 1 0 2700 # Atomik: 15-
 
-0 22 * * 0,1,2,3,4	sudo /usr/bin/atomik-zone-update 24 0 100 1 0 2700 # Atomik: 14-
 
-30 21 * * *	sudo /usr/bin/atomik-zone-update 22 1 100 1 0 2700 # Atomik: 18-
-
-0 10 * * *	sudo /usr/bin/atomik-zone-update 24 1 100 1 0 2700 # Atomik: 16-
