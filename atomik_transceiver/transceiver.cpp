@@ -1140,7 +1140,7 @@ void usage(const char *arg, const char *options){
   printf("   -b BB<hex>               Brightness byte\n");
   printf("   -k KK<hex>               Key byte\n");
   printf("   -v SS<hex>               Sequence byte\n");
-  printf("   -t T<int>                Radio Mode ( RGB=1 White=2 )\n");
+  printf("   -t T<int>                Radio Mode ( RGB=1 White=2 New_Bulb_Test=3 )\n");
   printf("   -s                       Sync Bulb ( Requires options -q and -r )\n");
   printf("   -u                       De-Sync Bulb ( Requires options -q and -r )\n");
   printf("   -w SSPPRRRRCCBBKKNN<hex> Complete message to send\n");
