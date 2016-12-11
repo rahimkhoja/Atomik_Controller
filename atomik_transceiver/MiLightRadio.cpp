@@ -67,6 +67,19 @@ int MiLightRadio::begin()
     }
   }
 
+  
+  
+  if (radioMode == 3) {
+   CHANNELS[0] = 8;
+  CHANNELS[1] = 39;
+  CHANNELS[2] = 70;
+  // New Channels  {8, 39, 70};   
+    retval = _pl1167.setSyncword(0x7236, 0x1809);      // WoodsterDK Syncword
+    if (retval < 0) {
+      return retval;
+    }
+  }
+  
   retval = _pl1167.setMaxPacketLength(8);
   if (retval < 0) {
     return retval;
