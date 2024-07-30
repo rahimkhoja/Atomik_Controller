@@ -1,4 +1,5 @@
 # Atomik Controller README #
+### By: Rahim Khoja (rahim@khoja.ca)
 
 # Version 0.8 Alpha
 By Rahim Khoja
