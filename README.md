@@ -249,18 +249,32 @@ All Commands are posted to 'http://192.168.1.100:4200/atomik' ( or the IP Addres
 
 ### Who do I talk to? ###
 
-* Managed by Rahim Khoja (rahimk@khojacorp.com)
-
-
-
-### License ###
-
-Released under the GNU General Public License v2
-
-http://www.gnu.org/licenses/gpl-2.0.html
+* Managed by Rahim Khoja (rahimk@khoja.com)
 
 
 
 ### Disclaimer ###
 
 THIS SOFTWARE IS PROVIDED BY ATOMIK (Rahim Khoja) AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANT ABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL ATOMIK OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+## Support
+
+Since I am extremely lazy I am not going to offer any support. Well maybe every once-n-a while. It really depends on my mood. 
+
+That being said, time was spent documenting each command in the scripts. This should allow the scripts to be easily understood and modified if needed. 
+
+
+## Donations
+Many Bothans died getting this Mi-Light Bulb Controller to you, honor them by sending me some Crypto. ;)
+
+ETH Mainnet: 0x1F4EABD7495E4B3D1D4F6dac07f953eCb28fD798   
+BNB Chain: 0x1F4EABD7495E4B3D1D4F6dac07f953eCb28fD798   
+
+
+
+## License
+Released under the GNU General Public License v2
+
+http://www.gnu.org/licenses/gpl-2.0.html
